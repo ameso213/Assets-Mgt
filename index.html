@@ -1,0 +1,1914 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>IT Asset Management</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css"/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+/* ══════════════════════════════════════════════
+   TOKENS
+══════════════════════════════════════════════ */
+:root {
+  --sb-bg:#ffffff; --sb-border:#e8edf3; --sb-text:#5a6a7e;
+  --sb-active-bg:#eff6ff; --sb-active-text:#2563eb; --sb-active-border:#2563eb;
+  --sb-hover-bg:#f5f8ff; --sb-section:#94a3b8;
+  --bg:#f4f7fb; --surface:#ffffff; --border:#e5eaf1; --border-light:#f1f5f9;
+  --text:#111827; --muted:#6b7280; --light:#9ca3af;
+  --blue:#2563eb; --blue-lt:#eff6ff; --blue-bd:#bfdbfe;
+  --green:#059669; --green-lt:#ecfdf5; --green-bd:#a7f3d0;
+  --orange:#d97706; --orange-lt:#fffbeb; --orange-bd:#fde68a;
+  --red:#dc2626; --red-lt:#fef2f2; --red-bd:#fecaca;
+  --purple:#7c3aed; --purple-lt:#f5f3ff; --purple-bd:#ddd6fe;
+  --teal:#0891b2; --teal-lt:#ecfeff; --teal-bd:#a5f3fc;
+  --pink:#db2777; --pink-lt:#fdf2f8; --pink-bd:#fbcfe8;
+  --sh1:0 1px 2px rgba(0,0,0,.04);
+  --sh2:0 2px 8px rgba(0,0,0,.07);
+  --sh3:0 8px 24px rgba(0,0,0,.1);
+  --sh4:0 16px 48px rgba(0,0,0,.14);
+  --r:8px; --rsm:6px; --rlg:12px; --rxl:16px;
+  --sans:'DM Sans',sans-serif; --mono:'DM Mono',monospace;
+  --sb-w:248px;
+}
+.dark {
+  --sb-bg:#0f1623; --sb-border:rgba(255,255,255,.07); --sb-text:#7d9ab5;
+  --sb-active-bg:rgba(37,99,235,.18); --sb-active-text:#60a5fa; --sb-active-border:#3b82f6;
+  --sb-hover-bg:rgba(255,255,255,.05); --sb-section:#4b6075;
+  --bg:#0d1117; --surface:#161b26; --border:#21293a; --border-light:#1a2234;
+  --text:#e2e8f0; --muted:#8899aa; --light:#546e7a;
+  --blue:#3b82f6; --blue-lt:rgba(59,130,246,.12); --blue-bd:rgba(59,130,246,.3);
+  --green:#10b981; --green-lt:rgba(16,185,129,.12); --green-bd:rgba(16,185,129,.3);
+  --orange:#f59e0b; --orange-lt:rgba(245,158,11,.12); --orange-bd:rgba(245,158,11,.3);
+  --red:#ef4444; --red-lt:rgba(239,68,68,.12); --red-bd:rgba(239,68,68,.3);
+  --purple:#a78bfa; --purple-lt:rgba(167,139,250,.12); --purple-bd:rgba(167,139,250,.3);
+  --teal:#22d3ee; --teal-lt:rgba(34,211,238,.12); --teal-bd:rgba(34,211,238,.3);
+  --pink:#f472b6; --pink-lt:rgba(244,114,182,.12); --pink-bd:rgba(244,114,182,.3);
+}
+
+/* ══════════════════════════════════════════════
+   RESET + BASE
+══════════════════════════════════════════════ */
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{height:100%;overflow:hidden;}
+body{font-family:var(--sans);background:var(--bg);color:var(--text);display:flex;font-size:14px;transition:background .25s,color .25s;}
+button{cursor:pointer;font-family:var(--sans);}
+a{text-decoration:none;color:inherit;}
+
+/* Hide all scrollbars but keep scroll functionality */
+*::-webkit-scrollbar{width:0;height:0;display:none;}
+*{scrollbar-width:none;-ms-overflow-style:none;}
+
+/* ══════════════════════════════════════════════
+   SIDEBAR  (light)
+══════════════════════════════════════════════ */
+.sidebar{
+  width:var(--sb-w);min-height:100vh;
+  background:var(--sb-bg);
+  border-right:1px solid var(--sb-border);
+  display:flex;flex-direction:column;
+  flex-shrink:0;position:fixed;left:0;top:0;bottom:0;
+  z-index:50;overflow-y:auto;
+  transition:background .25s,border-color .25s;
+}
+.sb-logo{
+  display:flex;align-items:center;gap:10px;
+  padding:18px 16px 14px;
+  border-bottom:1px solid var(--sb-border);
+}
+.sb-logo-box{
+  width:34px;height:34px;border-radius:9px;
+  background:var(--blue);display:grid;place-items:center;flex-shrink:0;
+}
+.sb-logo-box i{font-size:18px;color:#fff;}
+.sb-logo-name{font-weight:800;font-size:14px;color:var(--text);line-height:1.2;}
+.sb-logo-sub{font-size:10px;color:var(--muted);font-family:var(--mono);}
+.sb-section{
+  padding:18px 14px 6px;
+  font-size:10px;font-family:var(--mono);
+  color:var(--sb-section);letter-spacing:1.5px;text-transform:uppercase;
+}
+.nav-item{
+  display:flex;align-items:center;gap:9px;
+  padding:9px 10px;border-radius:var(--rsm);
+  margin:1px 8px;cursor:pointer;
+  transition:all .15s;
+  color:var(--sb-text);font-size:13px;font-weight:500;
+  border-left:2px solid transparent;
+}
+.nav-item:hover{background:var(--sb-hover-bg);color:var(--text);}
+.nav-item.active{
+  background:var(--sb-active-bg);
+  color:var(--sb-active-text);
+  border-left-color:var(--sb-active-border);
+  font-weight:600;
+}
+.nav-item.active i{color:var(--sb-active-text);}
+.nav-item i{font-size:17px;width:20px;text-align:center;flex-shrink:0;color:var(--sb-text);}
+.nav-item:hover i{color:var(--text);}
+.nav-badge{
+  margin-left:auto;font-size:10px;font-family:var(--mono);
+  background:var(--blue-lt);color:var(--blue);
+  padding:2px 7px;border-radius:20px;min-width:22px;text-align:center;
+  border:1px solid var(--blue-bd);
+}
+.nav-badge.red{background:var(--red-lt);color:var(--red);border-color:var(--red-bd);}
+.nav-badge.orange{background:var(--orange-lt);color:var(--orange);border-color:var(--orange-bd);}
+.sb-footer{
+  margin-top:auto;padding:12px;
+  border-top:1px solid var(--sb-border);
+}
+.sb-user{display:flex;align-items:center;gap:10px;padding:8px 6px;border-radius:var(--rsm);cursor:pointer;}
+.sb-user:hover{background:var(--sb-hover-bg);}
+.av-sm{
+  width:32px;height:32px;border-radius:50%;
+  background:var(--blue);display:grid;place-items:center;
+  font-size:12px;font-weight:700;color:#fff;flex-shrink:0;
+}
+.sb-user-name{font-size:13px;font-weight:600;color:var(--text);}
+.sb-user-role{font-size:11px;color:var(--muted);}
+
+/* ══════════════════════════════════════════════
+   MAIN
+══════════════════════════════════════════════ */
+.main{margin-left:var(--sb-w);flex:1;display:flex;flex-direction:column;height:100vh;overflow:hidden;}
+
+/* ══════════════════════════════════════════════
+   TOPBAR
+══════════════════════════════════════════════ */
+.topbar{
+  background:var(--surface);border-bottom:1px solid var(--border);
+  height:58px;display:flex;align-items:center;justify-content:space-between;
+  padding:0 26px;flex-shrink:0;
+  box-shadow:var(--sh1);transition:background .25s,border-color .25s;
+}
+.tb-bc{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:700;color:var(--text);}
+.tb-bc i{font-size:18px;color:var(--blue);}
+.tb-right{display:flex;align-items:center;gap:6px;}
+.icon-btn{
+  width:36px;height:36px;border-radius:var(--rsm);
+  background:transparent;border:1px solid var(--border);
+  display:grid;place-items:center;color:var(--muted);
+  transition:all .15s;position:relative;cursor:pointer;
+}
+.icon-btn:hover{background:var(--bg);color:var(--text);}
+.icon-btn i{font-size:17px;}
+.nb-dot{
+  position:absolute;top:7px;right:8px;width:7px;height:7px;
+  background:var(--red);border-radius:50%;border:2px solid var(--surface);
+}
+.av-btn{
+  width:34px;height:34px;border-radius:50%;
+  background:var(--blue);display:grid;place-items:center;
+  font-size:12px;font-weight:800;color:#fff;
+  border:2px solid var(--blue-bd);cursor:pointer;
+  transition:box-shadow .15s;user-select:none;
+}
+.av-btn:hover{box-shadow:0 0 0 3px rgba(37,99,235,.2);}
+
+/* ══════════════════════════════════════════════
+   DROPDOWN
+══════════════════════════════════════════════ */
+.dd{position:relative;}
+.dd-menu{
+  position:absolute;top:calc(100% + 8px);right:0;
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--rlg);box-shadow:var(--sh4);
+  min-width:300px;z-index:500;display:none;overflow:hidden;
+}
+.dd-menu.open{display:block;animation:ddIn .18s ease;}
+@keyframes ddIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
+.dd-head{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:13px 16px;border-bottom:1px solid var(--border);
+}
+.dd-head-title{font-size:14px;font-weight:700;display:flex;align-items:center;gap:8px;}
+.dd-link{font-size:12px;color:var(--blue);cursor:pointer;font-weight:600;}
+.n-badge{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:18px;height:18px;background:var(--red);color:#fff;
+  border-radius:50%;font-size:10px;font-weight:700;
+}
+.notif-list{max-height:320px;overflow-y:auto;}
+.ni{
+  display:flex;gap:11px;padding:12px 16px;cursor:pointer;
+  transition:background .12s;border-bottom:1px solid var(--border-light);
+}
+.ni:hover{background:var(--bg);}
+.ni:last-child{border-bottom:none;}
+.ni-icon{
+  width:32px;height:32px;border-radius:50%;
+  display:grid;place-items:center;flex-shrink:0;
+}
+.ni-icon i{font-size:15px;}
+.ni-body{flex:1;}
+.ni-text{font-size:13px;line-height:1.4;}
+.ni-time{font-size:11px;color:var(--light);margin-top:3px;font-family:var(--mono);}
+.ni-dot{width:7px;height:7px;border-radius:50%;background:var(--blue);flex-shrink:0;margin-top:6px;}
+.dd-footer{padding:10px 16px;text-align:center;border-top:1px solid var(--border);}
+.dd-footer a{font-size:13px;color:var(--blue);font-weight:600;}
+/* Profile dropdown */
+.profile-dd{min-width:240px;}
+.pd-info{
+  display:flex;align-items:center;gap:12px;
+  padding:16px;border-bottom:1px solid var(--border);
+}
+.av-lg{
+  width:46px;height:46px;border-radius:50%;
+  background:var(--blue);display:grid;place-items:center;
+  font-size:16px;font-weight:800;color:#fff;flex-shrink:0;
+}
+.pd-name{font-weight:700;font-size:14px;}
+.pd-role{font-size:12px;color:var(--muted);}
+.pd-email{font-size:11px;color:var(--light);font-family:var(--mono);}
+.dd-item{
+  display:flex;align-items:center;gap:10px;
+  padding:10px 16px;cursor:pointer;font-size:13px;
+  transition:background .12s;
+}
+.dd-item:hover{background:var(--bg);}
+.dd-item i{font-size:16px;color:var(--muted);width:18px;}
+.dd-item .toggle-track{
+  margin-left:auto;width:36px;height:20px;
+  background:var(--border);border-radius:10px;
+  position:relative;transition:background .2s;
+}
+.dd-item .toggle-thumb{
+  position:absolute;top:2px;left:2px;
+  width:16px;height:16px;background:#fff;border-radius:50%;
+  transition:transform .2s;box-shadow:0 1px 3px rgba(0,0,0,.2);
+}
+.dark .dd-item .toggle-track{background:var(--blue);}
+.dark .dd-item .toggle-thumb{transform:translateX(16px);}
+.dd-item.danger{color:var(--red);}
+.dd-item.danger i{color:var(--red);}
+.dd-sep{height:1px;background:var(--border);margin:4px 0;}
+
+/* ══════════════════════════════════════════════
+   CONTENT
+══════════════════════════════════════════════ */
+.content{flex:1;padding:22px 26px;overflow-y:auto;}
+.page{display:none;}
+.page.active{display:block;}
+
+/* Page header */
+.ph{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:22px;}
+.ph-left{display:flex;align-items:center;gap:14px;}
+.ph-icon{width:44px;height:44px;border-radius:var(--r);display:grid;place-items:center;flex-shrink:0;}
+.ph-icon i{font-size:22px;}
+.ph-title{font-size:21px;font-weight:800;}
+.ph-sub{font-size:13px;color:var(--muted);margin-top:2px;}
+.ph-actions{display:flex;gap:8px;align-items:center;}
+
+/* Buttons */
+.btn{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:8px 16px;border-radius:var(--rsm);border:none;
+  font-family:var(--sans);font-size:13px;font-weight:600;
+  transition:all .15s;cursor:pointer;
+}
+.btn i{font-size:16px;}
+.btn-primary{background:var(--blue);color:#fff;}
+.btn-primary:hover{background:#1d4ed8;box-shadow:0 4px 12px rgba(37,99,235,.3);}
+.btn-ghost{background:transparent;color:var(--muted);border:1px solid var(--border);}
+.btn-ghost:hover{background:var(--bg);color:var(--text);}
+.btn-danger{background:var(--red);color:#fff;}
+.btn-danger:hover{background:#b91c1c;}
+.btn-success{background:var(--green);color:#fff;}
+.btn-success:hover{background:#047857;}
+.btn-sm{padding:6px 12px;font-size:12px;}
+
+/* ══════════════════════════════════════════════
+   KPI ROW
+══════════════════════════════════════════════ */
+.kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px;}
+.kpi{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--rlg);padding:18px;
+  display:flex;align-items:center;gap:13px;
+  box-shadow:var(--sh1);transition:box-shadow .2s,background .25s;
+}
+.kpi:hover{box-shadow:var(--sh2);}
+.kpi-icon{width:44px;height:44px;border-radius:var(--r);display:grid;place-items:center;flex-shrink:0;}
+.kpi-icon i{font-size:21px;}
+.kpi-val{font-size:26px;font-weight:800;font-family:var(--mono);line-height:1;}
+.kpi-lbl{font-size:12px;color:var(--muted);margin-top:3px;}
+.kpi-note{font-size:11px;margin-top:3px;color:var(--green);font-weight:600;}
+.kpi-note.warn{color:var(--orange);}
+.kpi-note.bad{color:var(--red);}
+
+/* ══════════════════════════════════════════════
+   PANEL
+══════════════════════════════════════════════ */
+.panel{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--rlg);box-shadow:var(--sh1);overflow:hidden;
+  transition:background .25s,border-color .25s;
+}
+.panel-hd{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 20px;border-bottom:1px solid var(--border);
+}
+.panel-title{font-size:14px;font-weight:700;}
+.panel-body{padding:18px;}
+
+/* ══════════════════════════════════════════════
+   FILTER BAR
+══════════════════════════════════════════════ */
+.fbar{
+  display:flex;gap:10px;padding:12px 18px;
+  border-bottom:1px solid var(--border);flex-wrap:wrap;
+}
+.sw{position:relative;flex:1;min-width:180px;}
+.sw input{
+  width:100%;background:var(--bg);border:1px solid var(--border);
+  border-radius:var(--rsm);padding:8px 12px 8px 32px;
+  color:var(--text);font-size:13px;font-family:var(--sans);outline:none;
+  transition:border .15s;
+}
+.sw input:focus{border-color:var(--blue);background:var(--surface);}
+.sw i{position:absolute;left:9px;top:50%;transform:translateY(-50%);font-size:15px;color:var(--muted);}
+.fsel{
+  background:var(--bg);border:1px solid var(--border);
+  border-radius:var(--rsm);padding:8px 10px;
+  color:var(--text);font-size:13px;font-family:var(--sans);outline:none;
+}
+.fsel:focus{border-color:var(--blue);}
+
+/* ══════════════════════════════════════════════
+   TABLE
+══════════════════════════════════════════════ */
+.tw{overflow-x:auto;}
+table{width:100%;border-collapse:collapse;font-size:13px;}
+thead tr{background:var(--border-light);}
+th{
+  padding:10px 15px;text-align:left;
+  font-size:11px;font-weight:600;color:var(--muted);
+  text-transform:uppercase;letter-spacing:.6px;
+  border-bottom:1px solid var(--border);white-space:nowrap;
+}
+td{padding:11px 15px;border-bottom:1px solid var(--border-light);vertical-align:middle;}
+tbody tr:last-child td{border-bottom:none;}
+tbody tr{transition:background .1s;}
+tbody tr:hover{background:var(--bg);}
+.empty-td{text-align:center;padding:40px;color:var(--muted);}
+.empty-td i{font-size:38px;display:block;margin-bottom:10px;opacity:.2;}
+
+/* Asset cell */
+.acell{display:flex;align-items:center;gap:10px;}
+.acell-ico{width:32px;height:32px;border-radius:var(--rsm);display:grid;place-items:center;flex-shrink:0;}
+.acell-ico i{font-size:16px;}
+.acell-name{font-weight:600;font-size:13px;}
+.acell-id{font-size:11px;color:var(--muted);font-family:var(--mono);}
+
+/* Badges */
+.badge{
+  display:inline-flex;align-items:center;gap:4px;
+  padding:3px 9px;border-radius:20px;
+  font-size:11px;font-weight:600;font-family:var(--mono);
+}
+.badge i{font-size:11px;}
+.b-active  {background:var(--green-lt); color:var(--green);  border:1px solid var(--green-bd);}
+.b-maint   {background:var(--orange-lt);color:var(--orange); border:1px solid var(--orange-bd);}
+.b-inactive{background:var(--red-lt);   color:var(--red);    border:1px solid var(--red-bd);}
+.b-storage {background:var(--purple-lt);color:var(--purple); border:1px solid var(--purple-bd);}
+.b-info    {background:var(--blue-lt);  color:var(--blue);   border:1px solid var(--blue-bd);}
+.b-teal    {background:var(--teal-lt);  color:var(--teal);   border:1px solid var(--teal-bd);}
+.b-critical{background:var(--red-lt);   color:var(--red);    border:1px solid var(--red-bd);}
+.b-warning {background:var(--orange-lt);color:var(--orange); border:1px solid var(--orange-bd);}
+.b-low     {background:var(--blue-lt);  color:var(--blue);   border:1px solid var(--blue-bd);}
+
+.store-tag{
+  display:inline-flex;align-items:center;gap:5px;
+  padding:3px 9px;background:var(--blue-lt);color:var(--blue);
+  border:1px solid var(--blue-bd);border-radius:var(--rsm);
+  font-size:11px;font-family:var(--mono);
+}
+.store-tag i{font-size:12px;}
+
+/* Action buttons */
+.acts{display:flex;gap:3px;}
+.act{
+  width:29px;height:29px;border-radius:var(--rsm);
+  border:1px solid var(--border);background:transparent;
+  display:grid;place-items:center;color:var(--muted);
+  transition:all .12s;cursor:pointer;
+}
+.act.v:hover{background:var(--blue-lt);  border-color:var(--blue-bd); color:var(--blue);}
+.act.e:hover{background:var(--orange-lt);border-color:var(--orange-bd);color:var(--orange);}
+.act.d:hover{background:var(--red-lt);   border-color:var(--red-bd);  color:var(--red);}
+.act i{font-size:14px;}
+.pg-bar{display:flex;align-items:center;justify-content:space-between;padding:11px 18px;border-top:1px solid var(--border);}
+.pg-info{font-size:12px;color:var(--muted);}
+
+/* ══════════════════════════════════════════════
+   DASHBOARD
+══════════════════════════════════════════════ */
+.dash-grid{display:grid;grid-template-columns:1fr 310px;gap:18px;}
+.cat-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px;}
+.cat-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--rlg);padding:15px;
+  display:flex;align-items:center;gap:12px;
+  cursor:pointer;box-shadow:var(--sh1);transition:all .15s;
+}
+.cat-card:hover{box-shadow:var(--sh3);transform:translateY(-2px);}
+.cc-ico{width:40px;height:40px;border-radius:var(--rsm);display:grid;place-items:center;flex-shrink:0;}
+.cc-ico i{font-size:20px;}
+.cc-num{font-size:22px;font-weight:800;font-family:var(--mono);}
+.cc-lbl{font-size:11px;color:var(--muted);}
+.rcol{display:flex;flex-direction:column;gap:16px;}
+/* Store bars */
+.sbars{display:flex;flex-direction:column;gap:13px;}
+.sbar-item{display:flex;flex-direction:column;gap:5px;}
+.sbar-row{display:flex;justify-content:space-between;align-items:center;}
+.sbar-lbl{display:flex;align-items:center;gap:7px;font-size:13px;font-weight:600;}
+.sbar-lbl i{font-size:15px;color:var(--muted);}
+.sbar-cnt{font-family:var(--mono);font-size:12px;color:var(--muted);}
+.bar-track{height:5px;background:var(--border);border-radius:3px;overflow:hidden;}
+.bar-fill{height:100%;border-radius:3px;}
+/* Activity */
+.act-list{display:flex;flex-direction:column;}
+.al-item{display:flex;gap:11px;padding:11px 0;border-bottom:1px solid var(--border-light);}
+.al-item:last-child{border-bottom:none;}
+.al-ico{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;flex-shrink:0;}
+.al-ico i{font-size:14px;}
+.al-text{font-size:13px;line-height:1.4;}
+.al-time{font-size:11px;color:var(--light);margin-top:2px;font-family:var(--mono);}
+
+/* ══════════════════════════════════════════════
+   STORES PAGE
+══════════════════════════════════════════════ */
+.stores-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:22px;}
+.store-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--rlg);overflow:hidden;box-shadow:var(--sh1);
+  transition:box-shadow .2s;cursor:pointer;
+}
+.store-card:hover{box-shadow:var(--sh3);}
+.store-card-hd{
+  padding:16px;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+}
+.store-card-left{display:flex;align-items:center;gap:10px;}
+.store-ico{width:38px;height:38px;border-radius:var(--rsm);display:grid;place-items:center;flex-shrink:0;}
+.store-ico i{font-size:19px;}
+.store-name{font-weight:700;font-size:14px;}
+.store-location{font-size:12px;color:var(--muted);}
+.store-card-stats{display:grid;grid-template-columns:1fr 1fr 1fr;border-top:1px solid var(--border);}
+.stat-cell{padding:12px 14px;text-align:center;border-right:1px solid var(--border);}
+.stat-cell:last-child{border-right:none;}
+.stat-num{font-size:18px;font-weight:800;font-family:var(--mono);}
+.stat-lbl{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-top:2px;}
+/* Store detail (opened by click) */
+.store-detail{display:none;margin-top:20px;}
+.store-detail.open{display:block;}
+.tabs{display:flex;gap:0;border-bottom:1px solid var(--border);margin-bottom:20px;}
+.tab{
+  padding:10px 18px;font-size:13px;font-weight:600;
+  color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;
+  transition:all .15s;
+}
+.tab:hover{color:var(--text);}
+.tab.active{color:var(--blue);border-bottom-color:var(--blue);}
+.tab-pane{display:none;}
+.tab-pane.active{display:block;}
+
+/* ══════════════════════════════════════════════
+   ALERTS PAGE
+══════════════════════════════════════════════ */
+.alerts-filters{display:flex;gap:8px;margin-bottom:18px;flex-wrap:wrap;}
+.af-pill{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:6px 14px;border-radius:20px;font-size:12px;font-weight:600;
+  border:1px solid var(--border);background:var(--surface);
+  cursor:pointer;transition:all .15s;color:var(--muted);
+}
+.af-pill:hover,.af-pill.active{color:var(--blue);background:var(--blue-lt);border-color:var(--blue-bd);}
+.af-pill i{font-size:14px;}
+.alert-item{
+  display:flex;gap:14px;padding:16px 20px;
+  border-bottom:1px solid var(--border-light);
+  transition:background .12s;
+}
+.alert-item:hover{background:var(--bg);}
+.alert-item:last-child{border-bottom:none;}
+.alert-side{width:4px;border-radius:2px;flex-shrink:0;}
+.alert-icon-wrap{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;flex-shrink:0;}
+.alert-icon-wrap i{font-size:18px;}
+.alert-body{flex:1;}
+.alert-title{font-size:14px;font-weight:700;margin-bottom:3px;}
+.alert-desc{font-size:13px;color:var(--muted);line-height:1.4;}
+.alert-meta{display:flex;align-items:center;gap:10px;margin-top:8px;flex-wrap:wrap;}
+.alert-time{font-size:11px;color:var(--light);font-family:var(--mono);}
+.alert-actions{display:flex;gap:5px;align-items:flex-start;}
+.btn-xs{padding:4px 10px;font-size:11px;border-radius:5px;}
+.btn-xs i{font-size:13px;}
+
+/* ══════════════════════════════════════════════
+   SETTINGS PAGE
+══════════════════════════════════════════════ */
+.settings-layout{display:grid;grid-template-columns:220px 1fr;gap:20px;}
+.settings-nav{display:flex;flex-direction:column;gap:2px;}
+.sn-item{
+  display:flex;align-items:center;gap:9px;
+  padding:9px 12px;border-radius:var(--rsm);cursor:pointer;
+  font-size:13px;font-weight:500;color:var(--muted);
+  transition:all .15s;
+}
+.sn-item:hover{background:var(--bg);color:var(--text);}
+.sn-item.active{background:var(--blue-lt);color:var(--blue);font-weight:600;}
+.sn-item i{font-size:16px;}
+.settings-panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--rlg);overflow:hidden;}
+.settings-section{display:none;padding:24px;}
+.settings-section.active{display:block;}
+.settings-section h3{font-size:16px;font-weight:700;margin-bottom:4px;}
+.settings-section .desc{font-size:13px;color:var(--muted);margin-bottom:22px;}
+.setting-row{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 0;border-bottom:1px solid var(--border-light);
+}
+.setting-row:last-child{border-bottom:none;}
+.setting-label{font-size:14px;font-weight:600;}
+.setting-desc{font-size:12px;color:var(--muted);margin-top:3px;}
+/* Toggle */
+.tog{position:relative;width:40px;height:22px;cursor:pointer;flex-shrink:0;}
+.tog input{opacity:0;width:0;height:0;}
+.tog-track{
+  position:absolute;inset:0;background:var(--border);
+  border-radius:11px;transition:background .2s;
+}
+.tog-thumb{
+  position:absolute;top:3px;left:3px;
+  width:16px;height:16px;background:#fff;border-radius:50%;
+  transition:transform .2s;box-shadow:0 1px 3px rgba(0,0,0,.2);
+}
+.tog input:checked + .tog-track{background:var(--blue);}
+.tog input:checked + .tog-track + .tog-thumb{transform:translateX(18px);}
+/* Form inputs for settings */
+.sf-group{display:flex;flex-direction:column;gap:6px;margin-bottom:14px;}
+.sf-label{font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;}
+.sf-input,.sf-select{
+  background:var(--bg);border:1px solid var(--border);
+  border-radius:var(--rsm);padding:9px 12px;
+  color:var(--text);font-size:13px;font-family:var(--sans);outline:none;
+  transition:border .15s;
+}
+.sf-input:focus,.sf-select:focus{border-color:var(--blue);background:var(--surface);}
+
+/* ══════════════════════════════════════════════
+   PROFILE / SECURITY PAGES
+══════════════════════════════════════════════ */
+.profile-layout{display:grid;grid-template-columns:280px 1fr;gap:20px;}
+.profile-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--rlg);padding:24px;text-align:center;
+}
+.prof-av{
+  width:80px;height:80px;border-radius:50%;
+  background:var(--blue);display:grid;place-items:center;
+  font-size:28px;font-weight:800;color:#fff;
+  margin:0 auto 12px;border:3px solid var(--blue-bd);
+}
+.prof-name{font-size:18px;font-weight:800;margin-bottom:4px;}
+.prof-role{font-size:13px;color:var(--muted);margin-bottom:4px;}
+.prof-email{font-size:12px;color:var(--light);font-family:var(--mono);margin-bottom:16px;}
+.prof-stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px;}
+.prof-stat{
+  background:var(--bg);border-radius:var(--rsm);
+  padding:10px;text-align:center;
+}
+.prof-stat-num{font-size:20px;font-weight:800;font-family:var(--mono);color:var(--blue);}
+.prof-stat-lbl{font-size:11px;color:var(--muted);margin-top:2px;}
+/* Security */
+.sec-item{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:16px 0;border-bottom:1px solid var(--border-light);
+}
+.sec-item:last-child{border-bottom:none;}
+.sec-left{display:flex;align-items:center;gap:12px;}
+.sec-icon{width:38px;height:38px;border-radius:var(--rsm);display:grid;place-items:center;flex-shrink:0;}
+.sec-icon i{font-size:18px;}
+.sec-label{font-size:14px;font-weight:600;}
+.sec-desc{font-size:12px;color:var(--muted);margin-top:2px;}
+
+/* ══════════════════════════════════════════════
+   MODAL
+══════════════════════════════════════════════ */
+.ov{
+  display:none;position:fixed;inset:0;
+  background:rgba(15,23,42,.4);backdrop-filter:blur(4px);
+  z-index:300;place-items:center;
+}
+.ov.open{display:grid;}
+.modal{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--rlg);width:540px;max-height:88vh;
+  overflow-y:auto;box-shadow:var(--sh4);animation:mIn .2s ease;
+}
+.modal.sm{width:400px;}
+@keyframes mIn{from{opacity:0;transform:scale(.96)}to{opacity:1;transform:scale(1)}}
+.mhd{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:17px 22px;border-bottom:1px solid var(--border);flex-shrink:0;
+}
+.mhd-l{display:flex;align-items:center;gap:11px;}
+.m-ico{width:36px;height:36px;border-radius:var(--rsm);display:grid;place-items:center;flex-shrink:0;}
+.m-ico i{font-size:18px;}
+.m-title{font-size:15px;font-weight:700;}
+.m-sub{font-size:12px;color:var(--muted);}
+.close-btn{
+  width:30px;height:30px;border-radius:var(--rsm);
+  border:1px solid var(--border);background:transparent;
+  display:grid;place-items:center;color:var(--muted);cursor:pointer;
+}
+.close-btn:hover{background:var(--red-lt);color:var(--red);border-color:var(--red-bd);}
+.close-btn i{font-size:16px;}
+.mbody{padding:20px 22px;}
+.mft{
+  display:flex;justify-content:flex-end;gap:8px;
+  padding:14px 22px;border-top:1px solid var(--border);
+}
+/* Form */
+.fgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.fg{display:flex;flex-direction:column;gap:5px;}
+.fg.full{grid-column:1/-1;}
+label{font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;}
+input[type=text],input[type=date],input[type=number],input[type=password],input[type=email],.fi,textarea.fi{
+  background:var(--bg);border:1px solid var(--border);
+  border-radius:var(--rsm);padding:8px 11px;
+  color:var(--text);font-size:13px;font-family:var(--sans);outline:none;
+  transition:border .15s;width:100%;
+}
+input:focus,.fi:focus,textarea.fi:focus{border-color:var(--blue);background:var(--surface);}
+textarea.fi{resize:vertical;min-height:70px;}
+/* View grid */
+.vg{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.vi{display:flex;flex-direction:column;gap:4px;padding:11px;background:var(--bg);border-radius:var(--rsm);}
+.vi.full{grid-column:1/-1;}
+.vi-lbl{font-size:10px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;}
+.vi-val{font-size:13px;font-weight:500;}
+/* Delete */
+.del-body{padding:22px;text-align:center;}
+.del-ico{width:58px;height:58px;background:var(--red-lt);border-radius:50%;display:grid;place-items:center;margin:0 auto 13px;}
+.del-ico i{font-size:27px;color:var(--red);}
+.del-title{font-size:16px;font-weight:700;margin-bottom:7px;}
+.del-msg{font-size:13px;color:var(--muted);line-height:1.5;}
+/* Store form */
+.store-color-picker{display:flex;gap:8px;flex-wrap:wrap;}
+.sc-swatch{width:28px;height:28px;border-radius:50%;cursor:pointer;border:2px solid transparent;transition:all .15s;}
+.sc-swatch.selected{border-color:var(--text);transform:scale(1.15);}
+
+/* ══════════════════════════════════════════════
+   SIGN OUT OVERLAY
+══════════════════════════════════════════════ */
+.signout-ov{
+  display:none;position:fixed;inset:0;
+  background:rgba(15,23,42,.6);backdrop-filter:blur(6px);
+  z-index:600;place-items:center;
+}
+.signout-ov.open{display:grid;}
+.signout-box{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--rxl);padding:40px;text-align:center;
+  width:360px;box-shadow:var(--sh4);animation:mIn .2s ease;
+}
+.so-icon{width:64px;height:64px;background:var(--red-lt);border-radius:50%;display:grid;place-items:center;margin:0 auto 16px;}
+.so-icon i{font-size:30px;color:var(--red);}
+.so-title{font-size:20px;font-weight:800;margin-bottom:8px;}
+.so-desc{font-size:13px;color:var(--muted);margin-bottom:24px;line-height:1.5;}
+.so-btns{display:flex;gap:10px;justify-content:center;}
+
+/* ══════════════════════════════════════════════
+   TOAST
+══════════════════════════════════════════════ */
+.toast-wrap{position:fixed;bottom:24px;right:24px;z-index:999;display:flex;flex-direction:column;gap:8px;}
+.toast{
+  display:flex;align-items:center;gap:10px;
+  padding:12px 16px;border-radius:var(--rsm);
+  background:var(--surface);border:1px solid var(--border);
+  box-shadow:var(--sh3);font-size:13px;font-weight:500;
+  animation:toastIn .25s ease;min-width:240px;
+}
+.toast i{font-size:17px;flex-shrink:0;}
+.toast.success{border-left:3px solid var(--green);}
+.toast.success i{color:var(--green);}
+.toast.error{border-left:3px solid var(--red);}
+.toast.error i{color:var(--red);}
+.toast.info{border-left:3px solid var(--blue);}
+.toast.info i{color:var(--blue);}
+@keyframes toastIn{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:translateX(0)}}
+
+/* ══════════════════════════════════════════════
+   MOBILE RESPONSIVE
+══════════════════════════════════════════════ */
+.mob-menu-btn{
+  display:none;width:36px;height:36px;border-radius:var(--rsm);
+  background:transparent;border:1px solid var(--border);
+  place-items:center;color:var(--muted);cursor:pointer;
+  transition:all .15s;flex-shrink:0;
+}
+.mob-menu-btn:hover{background:var(--bg);color:var(--text);}
+.mob-menu-btn i{font-size:20px;}
+.sb-overlay{
+  display:none;position:fixed;inset:0;
+  background:rgba(15,23,42,.45);backdrop-filter:blur(3px);
+  z-index:49;
+}
+.sb-overlay.open{display:block;}
+
+@media(max-width:768px){
+  /* Show hamburger */
+  .mob-menu-btn{display:grid;}
+
+  /* Sidebar off-canvas */
+  .sidebar{
+    transform:translateX(-100%);
+    transition:transform .25s ease;
+    box-shadow:none;
+    z-index:50;
+  }
+  .sidebar.open{
+    transform:translateX(0);
+    box-shadow:var(--sh4);
+  }
+
+  /* Main fills full width */
+  .main{margin-left:0;}
+
+  /* Topbar adjustments */
+  .topbar{padding:0 14px;}
+  .tb-bc span{font-size:13px;}
+
+  /* Content padding */
+  .content{padding:16px 14px;}
+
+  /* KPI row stacks to 2 columns */
+  .kpi-row{grid-template-columns:1fr 1fr;gap:10px;}
+
+  /* Category cards 2 columns */
+  .cat-cards{grid-template-columns:1fr 1fr;gap:10px;}
+
+  /* Dashboard grid single column */
+  .dash-grid{grid-template-columns:1fr;}
+  .rcol{flex-direction:column;}
+
+  /* Stores grid single column */
+  .stores-grid{grid-template-columns:1fr;}
+
+  /* Settings layout stacks */
+  .settings-layout{grid-template-columns:1fr;}
+  .settings-nav{
+    display:flex;flex-direction:row;
+    overflow-x:auto;gap:4px;
+    padding-bottom:6px;
+    border-bottom:1px solid var(--border);
+    margin-bottom:4px;
+  }
+  .sn-item{white-space:nowrap;flex-shrink:0;}
+
+  /* Profile layout stacks */
+  .profile-layout{grid-template-columns:1fr;}
+
+  /* Account settings grid */
+  .page #page-account-settings > div{grid-template-columns:1fr;}
+
+  /* Security grid */
+  .page #page-security > div{grid-template-columns:1fr;}
+
+  /* Tables scroll horizontally */
+  .tw{overflow-x:auto;}
+  table{min-width:560px;}
+
+  /* Alert items flex-wrap */
+  .alert-item{flex-wrap:wrap;gap:10px;}
+  .alert-actions{width:100%;justify-content:flex-end;margin-top:2px;}
+
+  /* Dropdowns full-width on mobile */
+  .dd-menu{min-width:280px;right:-10px;}
+
+  /* Modal full-width */
+  .modal{width:calc(100vw - 28px);max-width:540px;}
+  .modal.sm{width:calc(100vw - 28px);max-width:400px;}
+  .signout-box{width:calc(100vw - 40px);}
+
+  /* Form grids single column */
+  .fgrid{grid-template-columns:1fr;}
+  .fg.full{grid-column:1;}
+  .vg{grid-template-columns:1fr;}
+  .vi.full{grid-column:1;}
+
+  /* Dash grid 2-col for KPIs is fine, page head wraps */
+  .ph{flex-direction:column;gap:12px;align-items:flex-start;}
+  .ph-actions{width:100%;justify-content:flex-start;}
+
+  /* Store detail back + actions wrap */
+  .panel-hd{flex-wrap:wrap;gap:8px;}
+
+  /* Store card stats */
+  .store-card-stats{grid-template-columns:1fr 1fr 1fr;}
+
+  /* Tab bar scrolls */
+  .tabs{overflow-x:auto;white-space:nowrap;}
+
+  /* Toast bottom margin for mobile */
+  .toast-wrap{bottom:16px;right:12px;left:12px;}
+  .toast{min-width:unset;}
+}
+
+@media(max-width:420px){
+  .kpi-row{grid-template-columns:1fr;}
+  .cat-cards{grid-template-columns:1fr 1fr;}
+}
+</style>
+</head>
+<body>
+
+<!-- Sidebar overlay (mobile) -->
+<div class="sb-overlay" id="sbOverlay" onclick="closeSidebar()"></div>
+
+<!-- ════════ SIDEBAR ════════ -->
+<aside class="sidebar" id="sidebar">
+  <div class="sb-logo">
+    <div class="sb-logo-box"><i class="ti ti-cpu"></i></div>
+    <div>
+      <div class="sb-logo-name">MOH</div>
+      <div class="sb-logo-sub">IT Assets Mgt</div>
+    </div>
+  </div>
+
+  <div class="sb-section">Overview</div>
+  <div class="nav-item active" data-page="dashboard">
+    <i class="ti ti-layout-dashboard"></i> Dashboard
+  </div>
+
+  <div class="sb-section">IT Assets</div>
+  <div class="nav-item" data-page="switches"><i class="ti ti-arrows-transfer-up"></i> Switches <span class="nav-badge" id="nb-switches">0</span></div>
+  <div class="nav-item" data-page="routers"><i class="ti ti-router"></i> Routers <span class="nav-badge" id="nb-routers">0</span></div>
+  <div class="nav-item" data-page="cables"><i class="ti ti-plug-connected"></i> Cables <span class="nav-badge" id="nb-cables">0</span></div>
+  <div class="nav-item" data-page="rj45"><i class="ti ti-git-commit"></i> RJ45 / Connectors <span class="nav-badge" id="nb-rj45">0</span></div>
+  <div class="nav-item" data-page="racks"><i class="ti ti-server"></i> Racks &amp; Mounts <span class="nav-badge" id="nb-racks">0</span></div>
+  <div class="nav-item" data-page="aps"><i class="ti ti-wifi"></i> Access Points <span class="nav-badge" id="nb-aps">0</span></div>
+  <div class="nav-item" data-page="others"><i class="ti ti-box"></i> Others <span class="nav-badge" id="nb-others">0</span></div>
+
+  <div class="sb-section">Hospital Stores</div>
+  <div class="nav-item" data-page="stores"><i class="ti ti-building-hospital"></i> All Stores <span class="nav-badge" id="nb-stores">0</span></div>
+
+  <div class="sb-section">System</div>
+  <div class="nav-item" data-page="alerts"><i class="ti ti-alert-triangle"></i> Alerts <span class="nav-badge red" id="nb-alerts">0</span></div>
+  <div class="nav-item" data-page="settings"><i class="ti ti-settings"></i> Settings</div>
+
+  <div class="sb-footer">
+    <div class="sb-user" onclick="navigate('profile')">
+      <div class="av-sm">JM</div>
+      <div>
+        <div class="sb-user-name">John Mukasa</div>
+        <div class="sb-user-role">IT Administrator</div>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<!-- ════════ MAIN ════════ -->
+<div class="main">
+  <!-- TOPBAR -->
+  <header class="topbar">
+    <div style="display:flex;align-items:center;gap:10px">
+      <button class="mob-menu-btn" onclick="toggleSidebar()" title="Menu">
+        <i class="ti ti-menu-2" id="menuIcon"></i>
+      </button>
+      <div class="tb-bc" id="breadcrumb"><i class="ti ti-layout-dashboard"></i><span>Dashboard</span></div>
+    </div>
+    <div class="tb-right">
+      <div class="dd" id="notifDD">
+        <button class="icon-btn" onclick="toggleDD('notifDD')" title="Notifications">
+          <i class="ti ti-bell"></i><span class="nb-dot" id="ndot"></span>
+        </button>
+        <div class="dd-menu" id="notifMenu" style="min-width:340px">
+          <div class="dd-head">
+            <div class="dd-head-title">Notifications <span class="n-badge" id="nBadge">5</span></div>
+            <span class="dd-link" onclick="markRead()">Mark all read</span>
+          </div>
+          <div class="notif-list" id="notifList"></div>
+          <div class="dd-footer"><a href="#">View all notifications</a></div>
+        </div>
+      </div>
+
+      <div class="dd" id="profileDD">
+        <div class="av-btn" onclick="toggleDD('profileDD')">JM</div>
+        <div class="dd-menu profile-dd" id="profileMenu">
+          <div class="pd-info">
+            <div class="av-lg">JM</div>
+            <div>
+              <div class="pd-name">John Mukasa</div>
+              <div class="pd-role">IT Administrator</div>
+              <div class="pd-email"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="c4aeeaa9b1afa5b7a584acabb7b4adb0a5a8eaa3abeab1a3">[email&#160;protected]</a></div>
+            </div>
+          </div>
+          <div class="dd-item" onclick="gotoPage('profile')"><i class="ti ti-user-circle"></i> My Profile</div>
+          <div class="dd-item" onclick="gotoPage('account-settings')"><i class="ti ti-settings-2"></i> Account Settings</div>
+          <div class="dd-item" onclick="gotoPage('security')"><i class="ti ti-shield-lock"></i> Security</div>
+          <div class="dd-item" onclick="toggleDark()">
+            <i class="ti ti-moon" id="darkIcon"></i> Dark Mode
+            <div class="toggle-track"><div class="toggle-thumb"></div></div>
+          </div>
+          <div class="dd-sep"></div>
+          <div class="dd-item danger" onclick="openSignOut()"><i class="ti ti-logout"></i> Sign Out</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- CONTENT -->
+  <div class="content">
+
+    <!-- ══ DASHBOARD ══ -->
+    <div class="page active" id="page-dashboard">
+      <div class="ph">
+        <div class="ph-left">
+          <div class="ph-icon" style="background:var(--blue-lt)"><i class="ti ti-layout-dashboard" style="color:var(--blue)"></i></div>
+          <div><div class="ph-title">Dashboard Overview</div><div class="ph-sub">Hospital IT infrastructure summary</div></div>
+        </div>
+        <button class="btn btn-ghost"><i class="ti ti-download"></i> Export</button>
+      </div>
+      <div class="kpi-row">
+        <div class="kpi"><div class="kpi-icon" style="background:var(--blue-lt)"><i class="ti ti-packages" style="color:var(--blue)"></i></div><div><div class="kpi-val" style="color:var(--blue)" id="kpi-total">0</div><div class="kpi-lbl">Total Assets</div><div class="kpi-note">+8 this month</div></div></div>
+        <div class="kpi"><div class="kpi-icon" style="background:var(--green-lt)"><i class="ti ti-circle-check" style="color:var(--green)"></i></div><div><div class="kpi-val" style="color:var(--green)" id="kpi-active">0</div><div class="kpi-lbl">Active</div><div class="kpi-note">Operational</div></div></div>
+        <div class="kpi"><div class="kpi-icon" style="background:var(--orange-lt)"><i class="ti ti-tool" style="color:var(--orange)"></i></div><div><div class="kpi-val" style="color:var(--orange)" id="kpi-maint">0</div><div class="kpi-lbl">Maintenance</div><div class="kpi-note warn">Needs service</div></div></div>
+        <div class="kpi"><div class="kpi-icon" style="background:var(--red-lt)"><i class="ti ti-alert-circle" style="color:var(--red)"></i></div><div><div class="kpi-val" style="color:var(--red)" id="kpi-fault">0</div><div class="kpi-lbl">Inactive/Faulty</div><div class="kpi-note bad">Attention needed</div></div></div>
+      </div>
+      <div class="panel" style="margin-bottom:18px">
+        <div class="panel-hd"><div class="panel-title">Assets by Category</div><span style="font-size:12px;color:var(--muted)">Click a card to manage</span></div>
+        <div class="panel-body"><div class="cat-cards" id="dash-cats"></div></div>
+      </div>
+      <div class="dash-grid">
+        <div class="panel">
+          <div class="panel-hd"><div class="panel-title">Recent Activity</div><button class="btn btn-ghost btn-sm">View All</button></div>
+          <div style="padding:4px 18px"><div class="act-list" id="dash-activity"></div></div>
+        </div>
+        <div class="rcol">
+          <div class="panel">
+            <div class="panel-hd"><div class="panel-title">Store Breakdown</div></div>
+            <div class="panel-body"><div class="sbars" id="dash-store-bars"></div></div>
+          </div>
+          <div class="panel">
+            <div class="panel-hd"><div class="panel-title">Status Summary</div></div>
+            <div class="panel-body" style="display:flex;flex-direction:column;gap:9px" id="dash-status"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ CATEGORY PAGES ══ -->
+    <div class="page" id="page-switches"></div>
+    <div class="page" id="page-routers"></div>
+    <div class="page" id="page-cables"></div>
+    <div class="page" id="page-rj45"></div>
+    <div class="page" id="page-racks"></div>
+    <div class="page" id="page-aps"></div>
+    <div class="page" id="page-others"></div>
+
+    <!-- ══ STORES ══ -->
+    <div class="page" id="page-stores">
+      <div class="ph">
+        <div class="ph-left">
+          <div class="ph-icon" style="background:var(--teal-lt)"><i class="ti ti-building-hospital" style="color:var(--teal)"></i></div>
+          <div><div class="ph-title">Hospital Stores</div><div class="ph-sub" id="stores-sub">Manage all hospital department stores</div></div>
+        </div>
+        <button class="btn btn-primary" onclick="openAddStore()"><i class="ti ti-plus"></i> Add Store</button>
+      </div>
+      <div class="stores-grid" id="stores-grid"></div>
+      <!-- Store detail section -->
+      <div class="store-detail" id="store-detail">
+        <div class="panel">
+          <div class="panel-hd">
+            <div style="display:flex;align-items:center;gap:10px">
+              <button class="btn btn-ghost btn-sm" onclick="closeStoreDetail()"><i class="ti ti-arrow-left"></i> Back</button>
+              <div class="panel-title" id="store-detail-title">Store Name</div>
+            </div>
+            <div style="display:flex;gap:8px">
+              <button class="btn btn-ghost btn-sm" onclick="openStoreEntry('received')"><i class="ti ti-arrow-down-circle"></i> Record Received</button>
+              <button class="btn btn-primary btn-sm" onclick="openStoreEntry('sent')"><i class="ti ti-arrow-up-circle"></i> Record Sent</button>
+            </div>
+          </div>
+          <div style="padding:16px 20px">
+            <div class="tabs" id="store-tabs">
+              <div class="tab active" onclick="switchTab('received',this)">Received</div>
+              <div class="tab" onclick="switchTab('sent',this)">Sent Out</div>
+              <div class="tab" onclick="switchTab('inventory',this)">Current Inventory</div>
+            </div>
+            <div class="tab-pane active" id="tp-received"></div>
+            <div class="tab-pane" id="tp-sent"></div>
+            <div class="tab-pane" id="tp-inventory"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ ALERTS ══ -->
+    <div class="page" id="page-alerts">
+      <div class="ph">
+        <div class="ph-left">
+          <div class="ph-icon" style="background:var(--red-lt)"><i class="ti ti-alert-triangle" style="color:var(--red)"></i></div>
+          <div><div class="ph-title">System Alerts</div><div class="ph-sub" id="alerts-sub">Active alerts requiring attention</div></div>
+        </div>
+        <button class="btn btn-ghost" onclick="resolveAll()"><i class="ti ti-checks"></i> Resolve All</button>
+      </div>
+      <div class="alerts-filters">
+        <div class="af-pill active" onclick="filterAlerts('all',this)"><i class="ti ti-list"></i> All</div>
+        <div class="af-pill" onclick="filterAlerts('critical',this)"><i class="ti ti-alert-octagon"></i> Critical</div>
+        <div class="af-pill" onclick="filterAlerts('warning',this)"><i class="ti ti-alert-triangle"></i> Warning</div>
+        <div class="af-pill" onclick="filterAlerts('info',this)"><i class="ti ti-info-circle"></i> Info</div>
+      </div>
+      <div class="panel" id="alerts-panel">
+        <div id="alerts-list"></div>
+      </div>
+    </div>
+
+    <!-- ══ SETTINGS ══ -->
+    <div class="page" id="page-settings">
+      <div class="ph">
+        <div class="ph-left">
+          <div class="ph-icon" style="background:var(--border-light)"><i class="ti ti-settings" style="color:var(--muted)"></i></div>
+          <div><div class="ph-title">Settings</div><div class="ph-sub">System configuration and preferences</div></div>
+        </div>
+        <button class="btn btn-primary" onclick="saveSettings()"><i class="ti ti-device-floppy"></i> Save Changes</button>
+      </div>
+      <div class="settings-layout">
+        <div class="settings-nav">
+          <div class="sn-item active" onclick="switchSettings('general',this)"><i class="ti ti-adjustments"></i> General</div>
+          <div class="sn-item" onclick="switchSettings('appearance',this)"><i class="ti ti-palette"></i> Appearance</div>
+          <div class="sn-item" onclick="switchSettings('notifications',this)"><i class="ti ti-bell"></i> Notifications</div>
+          <div class="sn-item" onclick="switchSettings('data',this)"><i class="ti ti-database"></i> Data &amp; Backup</div>
+          <div class="sn-item" onclick="switchSettings('users',this)"><i class="ti ti-users"></i> User Access</div>
+        </div>
+        <div class="settings-panel">
+          <!-- General -->
+          <div class="settings-section active" id="ss-general">
+            <h3>General Settings</h3><div class="desc">Manage system-wide configuration</div>
+            <div class="sf-group"><div class="sf-label">System Name</div><input type="text" class="sf-input" value="Hospital IT Asset Management"/></div>
+            <div class="sf-group"><div class="sf-label">Organisation</div><input type="text" class="sf-input" value="Mulago National Referral Hospital"/></div>
+            <div class="sf-group"><div class="sf-label">Default Currency</div><select class="sf-select"><option>UGX – Ugandan Shilling</option><option>USD – US Dollar</option><option>KES – Kenyan Shilling</option></select></div>
+            <div class="sf-group"><div class="sf-label">Fiscal Year Start</div><select class="sf-select"><option>January</option><option>April</option><option>July</option></select></div>
+            <div class="setting-row"><div><div class="setting-label">Auto-generate Asset IDs</div><div class="setting-desc">Automatically assign IDs when adding assets</div></div><label class="tog"><input type="checkbox" checked/><div class="tog-track"></div><div class="tog-thumb"></div></label></div>
+            <div class="setting-row"><div><div class="setting-label">Low Stock Alerts</div><div class="setting-desc">Alert when asset count falls below threshold</div></div><label class="tog"><input type="checkbox" checked/><div class="tog-track"></div><div class="tog-thumb"></div></label></div>
+          </div>
+          <!-- Appearance -->
+          <div class="settings-section" id="ss-appearance">
+            <h3>Appearance</h3><div class="desc">Customise the look and feel</div>
+            <div class="setting-row"><div><div class="setting-label">Dark Mode</div><div class="setting-desc">Switch to dark interface</div></div><label class="tog" onclick="toggleDark()"><input type="checkbox" id="darkToggle"/><div class="tog-track"></div><div class="tog-thumb"></div></label></div>
+            <div class="setting-row"><div><div class="setting-label">Compact Sidebar</div><div class="setting-desc">Collapse sidebar to icons only</div></div><label class="tog"><input type="checkbox"/><div class="tog-track"></div><div class="tog-thumb"></div></label></div>
+            <div class="sf-group" style="margin-top:16px"><div class="sf-label">Accent Color</div>
+              <div style="display:flex;gap:10px;margin-top:4px">
+                <div style="width:28px;height:28px;border-radius:50%;background:#2563eb;border:2px solid var(--text);cursor:pointer" title="Blue"></div>
+                <div style="width:28px;height:28px;border-radius:50%;background:#059669;cursor:pointer" title="Green" onclick="changeAccent('#059669')"></div>
+                <div style="width:28px;height:28px;border-radius:50%;background:#7c3aed;cursor:pointer" title="Purple" onclick="changeAccent('#7c3aed')"></div>
+                <div style="width:28px;height:28px;border-radius:50%;background:#db2777;cursor:pointer" title="Pink" onclick="changeAccent('#db2777')"></div>
+                <div style="width:28px;height:28px;border-radius:50%;background:#0891b2;cursor:pointer" title="Teal" onclick="changeAccent('#0891b2')"></div>
+              </div>
+            </div>
+          </div>
+          <!-- Notifications -->
+          <div class="settings-section" id="ss-notifications">
+            <h3>Notifications</h3><div class="desc">Configure alert and notification preferences</div>
+            <div class="setting-row"><div><div class="setting-label">Email Notifications</div><div class="setting-desc">Receive alerts via email</div></div><label class="tog"><input type="checkbox" checked/><div class="tog-track"></div><div class="tog-thumb"></div></label></div>
+            <div class="setting-row"><div><div class="setting-label">Asset Maintenance Due</div><div class="setting-desc">Notify when assets require maintenance</div></div><label class="tog"><input type="checkbox" checked/><div class="tog-track"></div><div class="tog-thumb"></div></label></div>
+            <div class="setting-row"><div><div class="setting-label">New Asset Added</div><div class="setting-desc">Notify on new asset registration</div></div><label class="tog"><input type="checkbox"/><div class="tog-track"></div><div class="tog-thumb"></div></label></div>
+            <div class="setting-row"><div><div class="setting-label">Store Movement Alerts</div><div class="setting-desc">Notify on assets sent/received between stores</div></div><label class="tog"><input type="checkbox" checked/><div class="tog-track"></div><div class="tog-thumb"></div></label></div>
+            <div class="sf-group" style="margin-top:16px"><div class="sf-label">Alert Email</div><input type="email" class="sf-input" value="it-admin@hospital.go.ug"/></div>
+          </div>
+          <!-- Data -->
+          <div class="settings-section" id="ss-data">
+            <h3>Data &amp; Backup</h3><div class="desc">Manage data exports and backups</div>
+            <div class="setting-row"><div><div class="setting-label">Auto Backup</div><div class="setting-desc">Daily automatic database backup</div></div><label class="tog"><input type="checkbox" checked/><div class="tog-track"></div><div class="tog-thumb"></div></label></div>
+            <div style="display:flex;gap:10px;margin-top:16px">
+              <button class="btn btn-ghost"><i class="ti ti-file-export"></i> Export CSV</button>
+              <button class="btn btn-ghost"><i class="ti ti-file-spreadsheet"></i> Export Excel</button>
+              <button class="btn btn-ghost"><i class="ti ti-file-type-pdf"></i> Export PDF</button>
+            </div>
+            <div style="margin-top:16px;padding:14px;background:var(--bg);border-radius:var(--rsm);font-size:13px;color:var(--muted)">
+              <i class="ti ti-database" style="margin-right:6px"></i>Last backup: <strong>Today, 02:00 AM</strong> — 4.2 MB
+            </div>
+          </div>
+          <!-- Users -->
+          <div class="settings-section" id="ss-users">
+            <h3>User Access</h3><div class="desc">Manage who can access the system</div>
+            <div style="display:flex;justify-content:flex-end;margin-bottom:12px">
+              <button class="btn btn-primary btn-sm"><i class="ti ti-user-plus"></i> Add User</button>
+            </div>
+            <table>
+              <thead><tr><th>User</th><th>Role</th><th>Last Login</th><th>Status</th></tr></thead>
+              <tbody>
+                <tr><td><div class="acell"><div class="acell-ico" style="background:var(--blue-lt)"><i class="ti ti-user" style="color:var(--blue)"></i></div><div><div class="acell-name">John Mukasa</div><div class="acell-id"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="5b3175362e303a283a1b3334282b322f3a37753c34752e3c">[email&#160;protected]</a></div></div></div></td><td><span class="badge b-info">Administrator</span></td><td style="font-family:var(--mono);font-size:11px;color:var(--muted)">Today</td><td><span class="badge b-active">Active</span></td></tr>
+                <tr><td><div class="acell"><div class="acell-ico" style="background:var(--green-lt)"><i class="ti ti-user" style="color:var(--green)"></i></div><div><div class="acell-name">Sarah Nakato</div><div class="acell-id"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="cfbce1a1aea4aebba08fa7a0bcbfa6bbaea3e1a8a0e1baa8">[email&#160;protected]</a></div></div></div></td><td><span class="badge b-teal">Technician</span></td><td style="font-family:var(--mono);font-size:11px;color:var(--muted)">Yesterday</td><td><span class="badge b-active">Active</span></td></tr>
+                <tr><td><div class="acell"><div class="acell-ico" style="background:var(--purple-lt)"><i class="ti ti-user" style="color:var(--purple)"></i></div><div><div class="acell-name">David Ochen</div><div class="acell-id"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="42266c2d212a272c022a2d31322b36232e6c252d6c3725">[email&#160;protected]</a></div></div></div></td><td><span class="badge b-storage">Viewer</span></td><td style="font-family:var(--mono);font-size:11px;color:var(--muted)">3 days ago</td><td><span class="badge b-active">Active</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ PROFILE ══ -->
+    <div class="page" id="page-profile">
+      <div class="ph">
+        <div class="ph-left">
+          <div class="ph-icon" style="background:var(--blue-lt)"><i class="ti ti-user-circle" style="color:var(--blue)"></i></div>
+          <div><div class="ph-title">My Profile</div><div class="ph-sub">Manage your personal information</div></div>
+        </div>
+        <button class="btn btn-primary" onclick="toast('Profile updated successfully.','success')"><i class="ti ti-device-floppy"></i> Save Changes</button>
+      </div>
+      <div class="profile-layout">
+        <div>
+          <div class="profile-card">
+            <div class="prof-av">JM</div>
+            <div class="prof-name">John Mukasa</div>
+            <div class="prof-role">IT Administrator</div>
+            <div class="prof-email"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="244e0a49514f455745644c4b57544d5045480a434b0a5143">[email&#160;protected]</a></div>
+            <button class="btn btn-ghost btn-sm" style="width:100%"><i class="ti ti-camera"></i> Change Photo</button>
+            <div class="prof-stats">
+              <div class="prof-stat"><div class="prof-stat-num" id="ps-total">0</div><div class="prof-stat-lbl">Total Assets</div></div>
+              <div class="prof-stat"><div class="prof-stat-num" style="color:var(--green)" id="ps-active">0</div><div class="prof-stat-lbl">Active</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-hd"><div class="panel-title">Personal Information</div></div>
+          <div class="panel-body">
+            <div class="fgrid">
+              <div class="fg"><label>First Name</label><input type="text" value="John"/></div>
+              <div class="fg"><label>Last Name</label><input type="text" value="Mukasa"/></div>
+              <div class="fg"><label>Email</label><input type="email" value="j.mukasa@hospital.go.ug"/></div>
+              <div class="fg"><label>Phone</label><input type="text" value="+256 700 123 456"/></div>
+              <div class="fg"><label>Department</label><input type="text" value="Information Technology"/></div>
+              <div class="fg"><label>Employee ID</label><input type="text" value="MNH-IT-001"/></div>
+              <div class="fg full"><label>Office Location</label><input type="text" value="Block C, Ground Floor, IT Department"/></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ ACCOUNT SETTINGS ══ -->
+    <div class="page" id="page-account-settings">
+      <div class="ph">
+        <div class="ph-left">
+          <div class="ph-icon" style="background:var(--blue-lt)"><i class="ti ti-settings-2" style="color:var(--blue)"></i></div>
+          <div><div class="ph-title">Account Settings</div><div class="ph-sub">Manage your account preferences</div></div>
+        </div>
+        <button class="btn btn-primary" onclick="toast('Account settings saved.','success')"><i class="ti ti-device-floppy"></i> Save</button>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px">
+        <div class="panel">
+          <div class="panel-hd"><div class="panel-title">Change Password</div></div>
+          <div class="panel-body">
+            <div class="fg" style="margin-bottom:12px"><label>Current Password</label><input type="password" placeholder="••••••••"/></div>
+            <div class="fg" style="margin-bottom:12px"><label>New Password</label><input type="password" placeholder="••••••••"/></div>
+            <div class="fg" style="margin-bottom:16px"><label>Confirm Password</label><input type="password" placeholder="••••••••"/></div>
+            <button class="btn btn-primary btn-sm" onclick="toast('Password changed successfully.','success')"><i class="ti ti-lock-check"></i> Update Password</button>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-hd"><div class="panel-title">Preferences</div></div>
+          <div class="panel-body">
+            <div class="setting-row"><div><div class="setting-label">Email Digest</div><div class="setting-desc">Receive weekly activity summary</div></div><label class="tog"><input type="checkbox" checked/><div class="tog-track"></div><div class="tog-thumb"></div></label></div>
+            <div class="setting-row"><div><div class="setting-label">Login Alerts</div><div class="setting-desc">Alert on new device login</div></div><label class="tog"><input type="checkbox" checked/><div class="tog-track"></div><div class="tog-thumb"></div></label></div>
+            <div class="setting-row"><div><div class="setting-label">Show Asset Counts</div><div class="setting-desc">Display count badges on sidebar</div></div><label class="tog"><input type="checkbox" checked/><div class="tog-track"></div><div class="tog-thumb"></div></label></div>
+          </div>
+        </div>
+        <div class="panel" style="grid-column:1/-1">
+          <div class="panel-hd"><div class="panel-title">Active Sessions</div></div>
+          <div class="panel-body">
+            <table>
+              <thead><tr><th>Device</th><th>Location</th><th>Last Active</th><th>Action</th></tr></thead>
+              <tbody>
+                <tr><td><div style="display:flex;align-items:center;gap:8px"><i class="ti ti-device-laptop" style="font-size:18px;color:var(--blue)"></i><div><div style="font-weight:600">Chrome on Windows</div><div style="font-size:11px;color:var(--muted)">Current session</div></div></div></td><td>Kampala, UG</td><td style="font-family:var(--mono);font-size:11px;color:var(--muted)">Now</td><td><span class="badge b-active">Active</span></td></tr>
+                <tr><td><div style="display:flex;align-items:center;gap:8px"><i class="ti ti-device-mobile" style="font-size:18px;color:var(--muted)"></i><div><div style="font-weight:600">Safari on iPhone</div><div style="font-size:11px;color:var(--muted)">192.168.0.14</div></div></div></td><td>Entebbe, UG</td><td style="font-family:var(--mono);font-size:11px;color:var(--muted)">2 days ago</td><td><button class="btn btn-danger btn-sm" onclick="toast('Session revoked.','info')">Revoke</button></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ SECURITY ══ -->
+    <div class="page" id="page-security">
+      <div class="ph">
+        <div class="ph-left">
+          <div class="ph-icon" style="background:var(--green-lt)"><i class="ti ti-shield-lock" style="color:var(--green)"></i></div>
+          <div><div class="ph-title">Security</div><div class="ph-sub">Protect your account and data</div></div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px">
+        <div class="panel">
+          <div class="panel-hd"><div class="panel-title">Security Settings</div></div>
+          <div class="panel-body">
+            <div class="sec-item">
+              <div class="sec-left"><div class="sec-icon" style="background:var(--green-lt)"><i class="ti ti-shield-check" style="color:var(--green)"></i></div><div><div class="sec-label">Two-Factor Auth (2FA)</div><div class="sec-desc">Protect with an OTP code</div></div></div>
+              <label class="tog"><input type="checkbox"/><div class="tog-track"></div><div class="tog-thumb"></div></label>
+            </div>
+            <div class="sec-item">
+              <div class="sec-left"><div class="sec-icon" style="background:var(--blue-lt)"><i class="ti ti-lock" style="color:var(--blue)"></i></div><div><div class="sec-label">Auto Lock (15 min)</div><div class="sec-desc">Lock session after inactivity</div></div></div>
+              <label class="tog"><input type="checkbox" checked/><div class="tog-track"></div><div class="tog-thumb"></div></label>
+            </div>
+            <div class="sec-item">
+              <div class="sec-left"><div class="sec-icon" style="background:var(--orange-lt)"><i class="ti ti-device-desktop" style="color:var(--orange)"></i></div><div><div class="sec-label">Trusted Devices Only</div><div class="sec-desc">Restrict to registered devices</div></div></div>
+              <label class="tog"><input type="checkbox"/><div class="tog-track"></div><div class="tog-thumb"></div></label>
+            </div>
+            <div class="sec-item" style="border:none">
+              <div class="sec-left"><div class="sec-icon" style="background:var(--red-lt)"><i class="ti ti-eye-off" style="color:var(--red)"></i></div><div><div class="sec-label">Login IP Whitelist</div><div class="sec-desc">Allow only specific IP addresses</div></div></div>
+              <label class="tog"><input type="checkbox"/><div class="tog-track"></div><div class="tog-thumb"></div></label>
+            </div>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-hd"><div class="panel-title">Audit Log</div></div>
+          <div class="panel-body" style="padding:0">
+            <table>
+              <thead><tr><th>Action</th><th>IP Address</th><th>Time</th></tr></thead>
+              <tbody>
+                <tr><td><div style="display:flex;align-items:center;gap:7px"><i class="ti ti-login" style="color:var(--green)"></i> Login</div></td><td style="font-family:var(--mono);font-size:11px">192.168.1.10</td><td style="font-family:var(--mono);font-size:11px;color:var(--muted)">Today 08:02</td></tr>
+                <tr><td><div style="display:flex;align-items:center;gap:7px"><i class="ti ti-pencil" style="color:var(--orange)"></i> Asset edited</div></td><td style="font-family:var(--mono);font-size:11px">192.168.1.10</td><td style="font-family:var(--mono);font-size:11px;color:var(--muted)">Today 08:15</td></tr>
+                <tr><td><div style="display:flex;align-items:center;gap:7px"><i class="ti ti-plus" style="color:var(--blue)"></i> Asset added</div></td><td style="font-family:var(--mono);font-size:11px">192.168.1.10</td><td style="font-family:var(--mono);font-size:11px;color:var(--muted)">Today 09:44</td></tr>
+                <tr><td><div style="display:flex;align-items:center;gap:7px"><i class="ti ti-trash" style="color:var(--red)"></i> Asset deleted</div></td><td style="font-family:var(--mono);font-size:11px">192.168.1.10</td><td style="font-family:var(--mono);font-size:11px;color:var(--muted)">Yesterday</td></tr>
+                <tr><td><div style="display:flex;align-items:center;gap:7px"><i class="ti ti-logout" style="color:var(--muted)"></i> Logout</div></td><td style="font-family:var(--mono);font-size:11px">192.168.1.10</td><td style="font-family:var(--mono);font-size:11px;color:var(--muted)">Yesterday</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /content -->
+</div><!-- /main -->
+
+<!-- ════════ MODALS ════════ -->
+<!-- Add/Edit Asset -->
+<div class="ov" id="formOv" onclick="bgClose(event,'formOv')">
+  <div class="modal">
+    <div class="mhd"><div class="mhd-l"><div class="m-ico" id="fmIco"><i id="fmIcoI" class="ti ti-plus" style="color:var(--blue)"></i></div><div><div class="m-title" id="fmTitle">Add Asset</div><div class="m-sub" id="fmSub"></div></div></div><button class="close-btn" onclick="closeOv('formOv')"><i class="ti ti-x"></i></button></div>
+    <div class="mbody">
+      <input type="hidden" id="fmEditId"/>
+      <input type="hidden" id="fmCat"/>
+      <div class="fgrid">
+        <div class="fg full"><label>Asset Name / Model</label><input type="text" id="fmName" placeholder="e.g. Cisco Catalyst 2960"/></div>
+        <div class="fg"><label>Asset ID</label><input type="text" id="fmId" placeholder="Auto-generated"/></div>
+        <div class="fg"><label>Quantity</label><input type="number" id="fmQty" value="1" min="1"/></div>
+        <div class="fg"><label>Store (Origin)</label><select class="fi" id="fmStore"></select></div>
+        <div class="fg"><label>Assigned To</label><input type="text" id="fmAssigned" placeholder="Team or department"/></div>
+        <div class="fg"><label>Status</label><select class="fi" id="fmStatus"><option>Active</option><option>Maintenance</option><option>Inactive</option><option>In Storage</option></select></div>
+        <div class="fg"><label>Date Acquired</label><input type="date" id="fmDate"/></div>
+        <div class="fg"><label>Condition</label><select class="fi" id="fmCond"><option>New</option><option>Good</option><option>Fair</option><option>Poor</option></select></div>
+        <div class="fg full"><label>Notes / Serial No.</label><textarea class="fi" id="fmNotes" placeholder="Serial number, remarks..."></textarea></div>
+      </div>
+    </div>
+    <div class="mft"><button class="btn btn-ghost" onclick="closeOv('formOv')">Cancel</button><button class="btn btn-primary" id="fmSaveBtn" onclick="saveAsset()"><i class="ti ti-check"></i> Save</button></div>
+  </div>
+</div>
+
+<!-- View Asset -->
+<div class="ov" id="viewOv" onclick="bgClose(event,'viewOv')">
+  <div class="modal">
+    <div class="mhd"><div class="mhd-l"><div class="m-ico" style="background:var(--blue-lt)"><i class="ti ti-eye" style="color:var(--blue)"></i></div><div><div class="m-title">Asset Details</div><div class="m-sub" id="vmSub"></div></div></div><button class="close-btn" onclick="closeOv('viewOv')"><i class="ti ti-x"></i></button></div>
+    <div class="mbody"><div class="vg" id="vmGrid"></div></div>
+    <div class="mft"><button class="btn btn-ghost" onclick="closeOv('viewOv')">Close</button><button class="btn btn-primary" onclick="switchToEdit()"><i class="ti ti-pencil"></i> Edit</button></div>
+  </div>
+</div>
+
+<!-- Delete Asset -->
+<div class="ov" id="delOv" onclick="bgClose(event,'delOv')">
+  <div class="modal sm">
+    <div class="mhd"><div class="mhd-l"><div class="m-ico" style="background:var(--red-lt)"><i class="ti ti-trash" style="color:var(--red)"></i></div><div><div class="m-title">Confirm Delete</div><div class="m-sub">Cannot be undone</div></div></div><button class="close-btn" onclick="closeOv('delOv')"><i class="ti ti-x"></i></button></div>
+    <div class="del-body"><div class="del-ico"><i class="ti ti-trash-x"></i></div><div class="del-title">Delete Asset?</div><div class="del-msg">Permanently removing <span id="delName" style="font-weight:700;color:var(--text)"></span> from the system.</div></div>
+    <div class="mft"><button class="btn btn-ghost" onclick="closeOv('delOv')">Cancel</button><button class="btn btn-danger" onclick="confirmDelete()"><i class="ti ti-trash"></i> Delete</button></div>
+  </div>
+</div>
+
+<!-- Add Store -->
+<div class="ov" id="storeOv" onclick="bgClose(event,'storeOv')">
+  <div class="modal sm">
+    <div class="mhd"><div class="mhd-l"><div class="m-ico" style="background:var(--teal-lt)"><i class="ti ti-building-hospital" style="color:var(--teal)"></i></div><div><div class="m-title">Add Hospital Store</div><div class="m-sub">Register a new department store</div></div></div><button class="close-btn" onclick="closeOv('storeOv')"><i class="ti ti-x"></i></button></div>
+    <div class="mbody">
+      <div class="fg" style="margin-bottom:12px"><label>Store / Department Name</label><input type="text" id="snName" placeholder="e.g. Pharmacy Store"/></div>
+      <div class="fg" style="margin-bottom:12px"><label>Hospital / Location</label><input type="text" id="snHosp" placeholder="e.g. Mulago National Referral Hospital"/></div>
+      <div class="fg" style="margin-bottom:12px"><label>Contact Person</label><input type="text" id="snContact" placeholder="Name of store manager"/></div>
+      <div class="fg" style="margin-bottom:12px"><label>Phone</label><input type="text" id="snPhone" placeholder="+256 ..."/></div>
+      <div class="fg"><label>Notes</label><textarea class="fi" id="snNotes" placeholder="Additional information..."></textarea></div>
+    </div>
+    <div class="mft"><button class="btn btn-ghost" onclick="closeOv('storeOv')">Cancel</button><button class="btn btn-primary" onclick="saveStore()"><i class="ti ti-check"></i> Add Store</button></div>
+  </div>
+</div>
+
+<!-- Store Entry (Received / Sent) -->
+<div class="ov" id="entryOv" onclick="bgClose(event,'entryOv')">
+  <div class="modal">
+    <div class="mhd"><div class="mhd-l"><div class="m-ico" id="entryIco"><i id="entryIcoI" class="ti ti-arrow-down-circle" style="color:var(--green)"></i></div><div><div class="m-title" id="entryTitle">Record Received</div><div class="m-sub" id="entrySub"></div></div></div><button class="close-btn" onclick="closeOv('entryOv')"><i class="ti ti-x"></i></button></div>
+    <div class="mbody">
+      <input type="hidden" id="entryType"/>
+      <div class="fgrid">
+        <div class="fg full"><label>Item / Asset Name</label><input type="text" id="enItem" placeholder="e.g. Cisco Switch SW-042"/></div>
+        <div class="fg"><label>Category</label><select class="fi" id="enCat"><option>Switch</option><option>Router</option><option>Cable</option><option>RJ45</option><option>Rack</option><option>Access Point</option><option>Other</option></select></div>
+        <div class="fg"><label>Quantity</label><input type="number" id="enQty" value="1" min="1"/></div>
+        <div class="fg"><label>Condition</label><select class="fi" id="enCond"><option>New</option><option>Good</option><option>Fair</option><option>Poor</option></select></div>
+        <div class="fg"><label>Date</label><input type="date" id="enDate"/></div>
+        <div class="fg"><label>Received From / Sent To</label><input type="text" id="enParty" placeholder="Source or destination"/></div>
+        <div class="fg full"><label>Notes / Reference</label><textarea class="fi" id="enNotes" placeholder="Delivery note, reference number..."></textarea></div>
+      </div>
+    </div>
+    <div class="mft"><button class="btn btn-ghost" onclick="closeOv('entryOv')">Cancel</button><button class="btn btn-primary" onclick="saveEntry()"><i class="ti ti-check"></i> Save Record</button></div>
+  </div>
+</div>
+
+<!-- Sign Out -->
+<div class="signout-ov" id="signoutOv">
+  <div class="signout-box">
+    <div class="so-icon"><i class="ti ti-logout"></i></div>
+    <div class="so-title">Sign Out?</div>
+    <div class="so-desc">You are about to sign out of <strong>IT Asset Management</strong>. Any unsaved changes will be lost.</div>
+    <div class="so-btns">
+      <button class="btn btn-ghost" onclick="document.getElementById('signoutOv').classList.remove('open')">Cancel</button>
+      <button class="btn btn-danger" onclick="doSignOut()"><i class="ti ti-logout"></i> Sign Out</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast-wrap" id="toastWrap"></div>
+
+<!-- ════════ SCRIPT ════════ -->
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+/* ── CONFIG ────────────────────────────────────── */
+const CAT = {
+  switches:{label:'Switches',     icon:'ti-arrows-transfer-up',color:'#2563eb',bg:'#eff6ff',prefix:'SW',add:'Add Switch'},
+  routers: {label:'Routers',      icon:'ti-router',            color:'#7c3aed',bg:'#f5f3ff',prefix:'RT',add:'Add Router'},
+  cables:  {label:'Cables',       icon:'ti-plug-connected',    color:'#d97706',bg:'#fffbeb',prefix:'CB',add:'Add Cable'},
+  rj45:    {label:'RJ45/Connectors',icon:'ti-git-commit',      color:'#059669',bg:'#ecfdf5',prefix:'RJ',add:'Add Connector'},
+  racks:   {label:'Racks & Mounts',icon:'ti-server',           color:'#dc2626',bg:'#fef2f2',prefix:'RK',add:'Add Rack'},
+  aps:     {label:'Access Points', icon:'ti-wifi',             color:'#0891b2',bg:'#ecfeff',prefix:'AP',add:'Add Access Point'},
+  others:  {label:'Others',        icon:'ti-box',              color:'#64748b',bg:'#f8fafc',prefix:'OT',add:'Add Asset'},
+};
+const SB={'Active':'b-active','Maintenance':'b-maint','Inactive':'b-inactive','In Storage':'b-storage'};
+const SI={'Active':'ti-circle-check','Maintenance':'ti-tool','Inactive':'ti-alert-circle','In Storage':'ti-archive'};
+
+/* ── DATA ──────────────────────────────────────── */
+let idC=300;
+function uid(p){return`${p}-${String(++idC).padStart(3,'0')}`;}
+
+const DB = {
+  switches:[
+    {id:'SW-001',name:'Cisco Catalyst 2960',store:'Pharmacy Store',assigned:'Network Team',status:'Active',date:'2025-08-12',qty:1,condition:'Good',notes:'24-port managed switch'},
+    {id:'SW-002',name:'HP ProCurve 2524',store:'ICU Store',assigned:'ICU Network',status:'Active',date:'2025-09-01',qty:1,condition:'Good',notes:''},
+    {id:'SW-003',name:'TP-Link TL-SG108',store:'OPD Store',assigned:'OPD Reception',status:'Maintenance',date:'2025-10-14',qty:2,condition:'Fair',notes:'Port 3 faulty'},
+    {id:'SW-004',name:'Netgear GS308',store:'Theatre Store',assigned:'Ops Team',status:'In Storage',date:'2026-02-14',qty:1,condition:'New',notes:'Spare unit'},
+  ],
+  routers:[
+    {id:'RT-001',name:'MikroTik RB750Gr3',store:'ICU Store',assigned:'ICU IT',status:'Active',date:'2025-07-22',qty:1,condition:'Good',notes:''},
+    {id:'RT-002',name:'Cisco ISR 1100',store:'Admin Store',assigned:'Admin Network',status:'Active',date:'2025-06-05',qty:1,condition:'Good',notes:'ISP gateway router'},
+    {id:'RT-003',name:'Ubiquiti EdgeRouter 4',store:'OPD Store',assigned:'Branch',status:'Inactive',date:'2024-11-30',qty:1,condition:'Poor',notes:'Hardware fault'},
+  ],
+  cables:[
+    {id:'CB-001',name:'CAT6 Ethernet 5m',store:'Pharmacy Store',assigned:'Data Center',status:'Active',date:'2026-01-10',qty:20,condition:'New',notes:'Blue coded'},
+    {id:'CB-002',name:'CAT6A Shielded 10m',store:'Admin Store',assigned:'Server Room',status:'Active',date:'2025-12-03',qty:10,condition:'Good',notes:''},
+    {id:'CB-003',name:'Fiber Optic SM 50m',store:'Theatre Store',assigned:'ISP Link',status:'Maintenance',date:'2025-05-18',qty:2,condition:'Fair',notes:'Jacket damaged'},
+    {id:'CB-004',name:'CAT5e Patch 1m',store:'ICU Store',assigned:'Patch Panel',status:'Active',date:'2025-09-01',qty:50,condition:'Good',notes:''},
+  ],
+  rj45:[
+    {id:'RJ-001',name:'RJ45 Cat6 ×50',store:'OPD Store',assigned:'Field Team',status:'In Storage',date:'2026-02-01',qty:50,condition:'New',notes:''},
+    {id:'RJ-002',name:'Keystone Jack ×20',store:'Pharmacy Store',assigned:'IT Dept',status:'Active',date:'2025-11-11',qty:20,condition:'Good',notes:''},
+  ],
+  racks:[
+    {id:'RK-001',name:'StarTech 12U Open Rack',store:'Admin Store',assigned:'DC Floor 1',status:'Active',date:'2025-04-20',qty:1,condition:'Good',notes:''},
+    {id:'RK-002',name:'APC 42U Server Cabinet',store:'Theatre Store',assigned:'DC Floor 2',status:'Active',date:'2024-09-15',qty:1,condition:'Good',notes:'Locked cabinet'},
+  ],
+  aps:[
+    {id:'AP-001',name:'Ubiquiti UAP-AC-PRO',store:'ICU Store',assigned:'Ward 3A',status:'Active',date:'2025-11-05',qty:2,condition:'New',notes:'Ceiling mount, PoE'},
+    {id:'AP-002',name:'Cisco Aironet 1850',store:'OPD Store',assigned:'OPD Waiting',status:'Active',date:'2025-08-20',qty:3,condition:'Good',notes:'802.11ac Wave 2'},
+    {id:'AP-003',name:'Aruba AP-305',store:'Admin Store',assigned:'Admin Block',status:'Maintenance',date:'2025-06-10',qty:1,condition:'Fair',notes:'Antenna issue'},
+    {id:'AP-004',name:'TP-Link EAP660 HD',store:'Theatre Store',assigned:'Theatres',status:'Active',date:'2026-01-18',qty:2,condition:'New',notes:'Wi-Fi 6'},
+    {id:'AP-005',name:'Ruckus R550',store:'Pharmacy Store',assigned:'Pharmacy',status:'Active',date:'2025-12-01',qty:1,condition:'Good',notes:''},
+  ],
+  others:[
+    {id:'OT-001',name:'APC Smart-UPS 1500VA',store:'Admin Store',assigned:'Data Center',status:'Active',date:'2024-12-01',qty:2,condition:'Good',notes:'Battery replaced 2025'},
+    {id:'OT-002',name:'KVM Switch 8-Port',store:'Admin Store',assigned:'Server Room',status:'Active',date:'2025-06-15',qty:1,condition:'Good',notes:''},
+  ],
+};
+
+/* Hospital Stores */
+let STORES = [
+  {id:'store-1',name:'Pharmacy Store',hospital:'Mulago National Referral Hospital',contact:'Sarah Nakato',phone:'+256 700 111 222',color:'#2563eb',received:[],sent:[]},
+  {id:'store-2',name:'ICU Store',hospital:'Mulago National Referral Hospital',contact:'Dr. Peter Okello',phone:'+256 701 333 444',color:'#059669',received:[],sent:[]},
+  {id:'store-3',name:'OPD Store',hospital:'Butabika Hospital',contact:'Grace Atim',phone:'+256 702 555 666',color:'#d97706',received:[],sent:[]},
+  {id:'store-4',name:'Theatre Store',hospital:'Nsambya Hospital',contact:'Ivan Twinamasiko',phone:'+256 703 777 888',color:'#7c3aed',received:[],sent:[]},
+  {id:'store-5',name:'Admin Store',hospital:'Mulago National Referral Hospital',contact:'John Mukasa',phone:'+256 704 999 000',color:'#0891b2',received:[],sent:[]},
+];
+
+/* Alerts */
+let ALERTS = [
+  {id:'al-1',type:'critical',title:'Router RT-003 Hardware Fault',desc:'Ubiquiti EdgeRouter 4 in OPD Store has detected a hardware fault. Immediate replacement recommended.',time:'5 min ago',asset:'RT-003',category:'routers',resolved:false},
+  {id:'al-2',type:'warning', title:'Switch SW-003 in Maintenance',desc:'TP-Link TL-SG108 at OPD Reception has port 3 faulty. Scheduled for servicing this week.',time:'22 min ago',asset:'SW-003',category:'switches',resolved:false},
+  {id:'al-3',type:'warning', title:'Access Point AP-003 Degraded',desc:'Aruba AP-305 in Admin Block reporting antenna issue. Signal quality below threshold.',time:'1 hr ago',asset:'AP-003',category:'aps',resolved:false},
+  {id:'al-4',type:'info',    title:'Fiber Cable Maintenance Due',desc:'Fiber Optic SM 50m in Theatre Store has damaged outer jacket. Requires replacement.',time:'2 hrs ago',asset:'CB-003',category:'cables',resolved:false},
+  {id:'al-5',type:'info',    title:'New Assets Added to ICU Store',desc:'2x Access Points (Ubiquiti UAP-AC-PRO) received by ICU Store. Registration complete.',time:'3 hrs ago',asset:'AP-001',category:'aps',resolved:false},
+  {id:'al-6',type:'warning', title:'Low Stock: RJ45 Connectors',desc:'RJ45 Cat6 ×50 in OPD Store is the last batch. Consider restocking soon.',time:'Yesterday',asset:'RJ-001',category:'rj45',resolved:false},
+];
+
+/* Notifications */
+const NOTIFS = [
+  {icon:'ti-alert-circle',cls:'ni-red',text:'Router <strong>RT-003</strong> flagged as Inactive in OPD Store',time:'5 min ago',unread:true},
+  {icon:'ti-tool',cls:'ni-orange',text:'Switch <strong>SW-003</strong> sent for maintenance by Admin',time:'22 min ago',unread:true},
+  {icon:'ti-wifi',cls:'ni-blue',text:'Access Point <strong>AP-001</strong> added to ICU Store by Sarah K.',time:'1 hr ago',unread:true},
+  {icon:'ti-circle-check',cls:'ni-green',text:'Cable <strong>CB-001</strong> returned to active',time:'3 hrs ago',unread:false},
+  {icon:'ti-building-hospital',cls:'ni-blue',text:'New store <strong>Theatre Store</strong> registered',time:'Yesterday',unread:false},
+];
+
+/* Store entries seeding */
+STORES[0].received=[{item:'CAT6 Cable ×10',cat:'Cable',qty:10,cond:'New',date:'2026-02-20',party:'Central Procurement',notes:'Delivery note #4421'}];
+STORES[1].sent=[{item:'Cisco Switch SW-002',cat:'Switch',qty:1,cond:'Good',date:'2026-02-18',party:'OPD Store',notes:'Transfer for OPD expansion'}];
+STORES[2].received=[{item:'RJ45 Connectors ×50',cat:'RJ45',qty:50,cond:'New',date:'2026-02-15',party:'Distributor Ltd',notes:''}];
+
+/* ── STATE ─────────────────────────────────────── */
+let curPage='dashboard';
+let editTgt=null,viewTgt=null,formCat=null;
+let openStoreId=null;
+let alertFilter='all';
+
+/* ── NAVIGATION ────────────────────────────────── */
+function navigate(page){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  const pel=document.getElementById('page-'+page);
+  if(pel)pel.classList.add('active');
+  const nel=document.querySelector(`.nav-item[data-page="${page}"]`);
+  if(nel)nel.classList.add('active');
+  curPage=page;
+  // Breadcrumb
+  let icon='ti-layout-dashboard',label='Dashboard';
+  if(CAT[page]){icon=CAT[page].icon;label=CAT[page].label;}
+  const pmap={stores:['ti-building-hospital','Hospital Stores'],alerts:['ti-alert-triangle','Alerts'],settings:['ti-settings','Settings'],profile:['ti-user-circle','My Profile'],'account-settings':['ti-settings-2','Account Settings'],security:['ti-shield-lock','Security']};
+  if(pmap[page]){icon=pmap[page][0];label=pmap[page][1];}
+  document.getElementById('breadcrumb').innerHTML=`<i class="ti ${icon}"></i><span>${label}</span>`;
+  if(CAT[page])renderCatPage(page);
+  else if(page==='stores')renderStores();
+  else if(page==='alerts')renderAlerts();
+  else if(page==='dashboard')renderDashboard();
+  else if(page==='profile'){
+    let t=0,a=0;Object.values(DB).forEach(arr=>arr.forEach(x=>{t++;if(x.status==='Active')a++;}));
+    document.getElementById('ps-total').textContent=t;
+    document.getElementById('ps-active').textContent=a;
+  }
+  closeAllDD();
+}
+document.querySelectorAll('.nav-item[data-page]').forEach(el=>el.addEventListener('click',()=>{navigate(el.dataset.page);closeSidebar();}));
+
+function gotoPage(page){closeAllDD();setTimeout(()=>navigate(page),80);}
+
+/* ── DASHBOARD ─────────────────────────────────── */
+function renderDashboard(){
+  let total=0,active=0,maint=0,fault=0,stor=0;
+  Object.values(DB).forEach(arr=>arr.forEach(a=>{
+    total++;
+    if(a.status==='Active')active++;
+    else if(a.status==='Maintenance')maint++;
+    else if(a.status==='Inactive')fault++;
+    else if(a.status==='In Storage')stor++;
+  }));
+  const set=(id,v)=>{const el=document.getElementById(id);if(el)el.textContent=v;};
+  set('kpi-total',total);set('kpi-active',active);set('kpi-maint',maint);set('kpi-fault',fault);
+  // Nav badges
+  Object.keys(CAT).forEach(k=>{const el=document.getElementById('nb-'+k);if(el)el.textContent=DB[k].length;});
+  document.getElementById('nb-stores').textContent=STORES.length;
+  document.getElementById('nb-alerts').textContent=ALERTS.filter(a=>!a.resolved).length;
+  // Category cards
+  document.getElementById('dash-cats').innerHTML=Object.entries(CAT).map(([k,c])=>`
+    <div class="cat-card" onclick="navigate('${k}')">
+      <div class="cc-ico" style="background:${c.bg}"><i class="ti ${c.icon}" style="color:${c.color}"></i></div>
+      <div><div class="cc-num" style="color:${c.color}">${DB[k].length}</div><div class="cc-lbl">${c.label}</div></div>
+    </div>`).join('');
+  // Store bars
+  const sColors=['#2563eb','#059669','#d97706','#7c3aed','#0891b2'];
+  const storeCounts=STORES.map(s=>{
+    let c=0;Object.values(DB).forEach(arr=>arr.forEach(a=>{if(a.store===s.name)c++;}));return{...s,count:c};
+  });
+  const mx=Math.max(...storeCounts.map(s=>s.count),1);
+  document.getElementById('dash-store-bars').innerHTML=storeCounts.map((s,i)=>`
+    <div class="sbar-item">
+      <div class="sbar-row"><div class="sbar-lbl"><i class="ti ti-building-hospital"></i>${s.name}</div><div class="sbar-cnt">${s.count} assets</div></div>
+      <div class="bar-track"><div class="bar-fill" style="width:${Math.round(s.count/mx*100)}%;background:${sColors[i]||'#94a3b8'}"></div></div>
+    </div>`).join('');
+  // Status summary
+  document.getElementById('dash-status').innerHTML=`
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:9px;background:var(--green-lt);border-radius:var(--rsm)"><div style="display:flex;align-items:center;gap:8px"><i class="ti ti-circle-check" style="color:var(--green)"></i><span style="font-size:13px;font-weight:600">Active</span></div><span class="badge b-active">${active}</span></div>
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:9px;background:var(--orange-lt);border-radius:var(--rsm)"><div style="display:flex;align-items:center;gap:8px"><i class="ti ti-tool" style="color:var(--orange)"></i><span style="font-size:13px;font-weight:600">Maintenance</span></div><span class="badge b-maint">${maint}</span></div>
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:9px;background:var(--purple-lt);border-radius:var(--rsm)"><div style="display:flex;align-items:center;gap:8px"><i class="ti ti-archive" style="color:var(--purple)"></i><span style="font-size:13px;font-weight:600">In Storage</span></div><span class="badge b-storage">${stor}</span></div>
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:9px;background:var(--red-lt);border-radius:var(--rsm)"><div style="display:flex;align-items:center;gap:8px"><i class="ti ti-alert-circle" style="color:var(--red)"></i><span style="font-size:13px;font-weight:600">Inactive</span></div><span class="badge b-inactive">${fault}</span></div>`;
+  // Activity
+  const acts=[
+    {ico:'ti-circle-check',cls:'green-lt',c:'green',text:'<strong>John M.</strong> checked out <strong>Switch SW-001</strong> from Pharmacy Store',time:'2 min ago'},
+    {ico:'ti-tool',cls:'orange-lt',c:'orange',text:'<strong>Admin</strong> flagged Router <strong>RT-003</strong> for maintenance',time:'18 min ago'},
+    {ico:'ti-wifi',cls:'teal-lt',c:'teal',text:'<strong>Sarah K.</strong> added 2× Access Points to ICU Store',time:'1 hr ago'},
+    {ico:'ti-alert-circle',cls:'red-lt',c:'red',text:'Cable <strong>CB-003</strong> marked faulty — Theatre Store',time:'3 hrs ago'},
+    {ico:'ti-building-hospital',cls:'purple-lt',c:'purple',text:'<strong>David O.</strong> registered Theatre Store',time:'Yesterday'},
+  ];
+  document.getElementById('dash-activity').innerHTML=acts.map(a=>`
+    <div class="al-item"><div class="al-ico" style="background:var(--${a.cls})"><i class="ti ${a.ico}" style="color:var(--${a.c})"></i></div>
+    <div><div class="al-text">${a.text}</div><div class="al-time">${a.time}</div></div></div>`).join('');
+  // Notifications
+  document.getElementById('notifList').innerHTML=NOTIFS.map(n=>`
+    <div class="ni"><div class="ni-icon ${n.cls}"><i class="ti ${n.icon}"></i></div>
+    <div class="ni-body"><div class="ni-text">${n.text}</div><div class="ni-time">${n.time}</div></div>
+    ${n.unread?'<div class="ni-dot"></div>':''}</div>`).join('');
+}
+
+/* ── CATEGORY PAGE ─────────────────────────────── */
+function renderCatPage(cat){
+  const c=CAT[cat];
+  document.getElementById('page-'+cat).innerHTML=`
+    <div class="ph">
+      <div class="ph-left">
+        <div class="ph-icon" style="background:${c.bg}"><i class="ti ${c.icon}" style="color:${c.color}"></i></div>
+        <div><div class="ph-title">${c.label}</div><div class="ph-sub" id="cat-sub-${cat}">${DB[cat].length} records</div></div>
+      </div>
+      <button class="btn btn-primary" onclick="openAdd('${cat}')"><i class="ti ti-plus"></i> ${c.add}</button>
+    </div>
+    <div class="panel">
+      <div class="fbar">
+        <div class="sw"><i class="ti ti-search"></i><input type="text" id="sq-${cat}" placeholder="Search name, ID..." oninput="drawTable('${cat}')"/></div>
+        <select class="fsel" id="sf-store-${cat}" onchange="drawTable('${cat}')">
+          <option value="">All Stores</option>${STORES.map(s=>`<option>${s.name}</option>`).join('')}
+        </select>
+        <select class="fsel" id="sf-status-${cat}" onchange="drawTable('${cat}')">
+          <option value="">All Status</option><option>Active</option><option>Maintenance</option><option>Inactive</option><option>In Storage</option>
+        </select>
+      </div>
+      <div class="tw"><table>
+        <thead><tr><th>Asset</th><th>Store</th><th>Assigned To</th><th>Qty</th><th>Status</th><th>Date</th><th>Actions</th></tr></thead>
+        <tbody id="tb-${cat}"></tbody>
+      </table></div>
+      <div class="pg-bar"><div class="pg-info" id="pg-${cat}"></div></div>
+    </div>`;
+  drawTable(cat);
+}
+
+function drawTable(cat){
+  const q=(document.getElementById('sq-'+cat)?.value||'').toLowerCase();
+  const sf=document.getElementById('sf-store-'+cat)?.value||'';
+  const ss=document.getElementById('sf-status-'+cat)?.value||'';
+  const c=CAT[cat];
+  const rows=DB[cat].filter(a=>(!q||(a.name+a.id+(a.assigned||'')).toLowerCase().includes(q))&&(!sf||a.store===sf)&&(!ss||a.status===ss));
+  const sub=document.getElementById('cat-sub-'+cat);if(sub)sub.textContent=`${DB[cat].length} records`;
+  document.getElementById('pg-'+cat).textContent=`Showing ${rows.length} of ${DB[cat].length} records`;
+  document.getElementById('tb-'+cat).innerHTML=rows.length?rows.map(a=>`
+    <tr>
+      <td><div class="acell"><div class="acell-ico" style="background:${c.bg}"><i class="ti ${c.icon}" style="color:${c.color}"></i></div><div><div class="acell-name">${a.name}</div><div class="acell-id">${a.id}</div></div></div></td>
+      <td><span class="store-tag"><i class="ti ti-building-hospital"></i>${a.store}</span></td>
+      <td>${a.assigned||'—'}</td>
+      <td style="font-family:var(--mono);font-size:12px">${a.qty||1}</td>
+      <td><span class="badge ${SB[a.status]||'b-active'}"><i class="ti ${SI[a.status]}"></i>${a.status}</span></td>
+      <td style="font-family:var(--mono);font-size:11px;color:var(--muted)">${a.date||'—'}</td>
+      <td><div class="acts">
+        <button class="act v" onclick="openView('${cat}','${a.id}')"><i class="ti ti-eye"></i></button>
+        <button class="act e" onclick="openEdit('${cat}','${a.id}')"><i class="ti ti-pencil"></i></button>
+        <button class="act d" onclick="openDel('${cat}','${a.id}')"><i class="ti ti-trash"></i></button>
+      </div></td>
+    </tr>`).join(''):`<tr><td colspan="7" class="empty-td"><i class="ti ti-database-off"></i>No records found</td></tr>`;
+}
+
+/* ── STORES ────────────────────────────────────── */
+function renderStores(){
+  const sColors=['#2563eb','#059669','#d97706','#7c3aed','#0891b2'];
+  document.getElementById('stores-sub').textContent=`${STORES.length} hospital department stores`;
+  document.getElementById('stores-grid').innerHTML=STORES.map((s,i)=>{
+    let inv=0;Object.values(DB).forEach(arr=>arr.forEach(a=>{if(a.store===s.name)inv++;}));
+    return`<div class="store-card" onclick="openStoreDetail('${s.id}')">
+      <div class="store-card-hd">
+        <div class="store-card-left">
+          <div class="store-ico" style="background:${s.color}1a"><i class="ti ti-building-hospital" style="color:${s.color}"></i></div>
+          <div><div class="store-name">${s.name}</div><div class="store-location">${s.hospital}</div></div>
+        </div>
+        <span class="badge" style="background:${s.color}18;color:${s.color};border:1px solid ${s.color}33">${s.contact}</span>
+      </div>
+      <div class="store-card-stats">
+        <div class="stat-cell"><div class="stat-num" style="color:${s.color}">${inv}</div><div class="stat-lbl">Assets</div></div>
+        <div class="stat-cell"><div class="stat-num" style="color:var(--green)">${s.received.length}</div><div class="stat-lbl">Received</div></div>
+        <div class="stat-cell"><div class="stat-num" style="color:var(--orange)">${s.sent.length}</div><div class="stat-lbl">Sent</div></div>
+      </div>
+    </div>`;
+  }).join('');
+  closeStoreDetail();
+}
+
+function openStoreDetail(id){
+  openStoreId=id;
+  const s=STORES.find(x=>x.id===id);if(!s)return;
+  document.getElementById('store-detail-title').textContent=`${s.name} — ${s.hospital}`;
+  renderStoreTabPanes(id);
+  document.getElementById('store-detail').classList.add('open');
+  document.querySelector('.stores-grid').style.display='none';
+  document.getElementById('stores-sub').textContent=`${s.name} · ${s.hospital}`;
+}
+function closeStoreDetail(){
+  openStoreId=null;
+  document.getElementById('store-detail').classList.remove('open');
+  document.querySelector('.stores-grid').style.display='grid';
+  document.getElementById('stores-sub').textContent=`${STORES.length} hospital department stores`;
+  // reset tabs
+  document.querySelectorAll('.tab').forEach((t,i)=>t.classList.toggle('active',i===0));
+  document.querySelectorAll('.tab-pane').forEach((t,i)=>t.classList.toggle('active',i===0));
+}
+
+function renderStoreTabPanes(id){
+  const s=STORES.find(x=>x.id===id);
+  const entryTable=(rows,type)=>{
+    if(!rows.length)return`<div style="text-align:center;padding:32px;color:var(--muted)"><i class="ti ti-inbox" style="font-size:36px;display:block;margin-bottom:10px;opacity:.2"></i>No records yet</div>`;
+    return`<div class="tw"><table>
+      <thead><tr><th>Item</th><th>Category</th><th>Qty</th><th>Condition</th><th>${type==='received'?'Received From':'Sent To'}</th><th>Date</th><th>Notes</th></tr></thead>
+      <tbody>${rows.map(r=>`<tr>
+        <td style="font-weight:600">${r.item}</td>
+        <td><span class="badge b-info">${r.cat}</span></td>
+        <td style="font-family:var(--mono);font-size:12px">${r.qty}</td>
+        <td><span class="badge ${r.cond==='New'?'b-active':r.cond==='Good'?'b-active':r.cond==='Fair'?'b-maint':'b-inactive'}">${r.cond}</span></td>
+        <td>${r.party||'—'}</td>
+        <td style="font-family:var(--mono);font-size:11px;color:var(--muted)">${r.date||'—'}</td>
+        <td style="color:var(--muted);font-size:12px">${r.notes||'—'}</td>
+      </tr>`).join('')}</tbody>
+    </table></div>`;
+  };
+  // Current inventory
+  let invRows=[];Object.entries(DB).forEach(([cat,arr])=>{arr.filter(a=>a.store===s.name).forEach(a=>invRows.push({...a,_cat:cat}));});
+  const invHtml=invRows.length?`<div class="tw"><table>
+    <thead><tr><th>Asset</th><th>Category</th><th>Assigned To</th><th>Status</th></tr></thead>
+    <tbody>${invRows.map(a=>{const c=CAT[a._cat];return`<tr>
+      <td><div class="acell"><div class="acell-ico" style="background:${c.bg}"><i class="ti ${c.icon}" style="color:${c.color}"></i></div><div><div class="acell-name">${a.name}</div><div class="acell-id">${a.id}</div></div></div></td>
+      <td style="color:var(--muted);font-size:12px">${c.label}</td>
+      <td>${a.assigned||'—'}</td>
+      <td><span class="badge ${SB[a.status]}">${a.status}</span></td>
+    </tr>`;}).join('')}</tbody></table></div>`:
+    `<div style="text-align:center;padding:32px;color:var(--muted)"><i class="ti ti-box" style="font-size:36px;display:block;margin-bottom:10px;opacity:.2"></i>No inventory recorded</div>`;
+  document.getElementById('tp-received').innerHTML=entryTable(s.received,'received');
+  document.getElementById('tp-sent').innerHTML=entryTable(s.sent,'sent');
+  document.getElementById('tp-inventory').innerHTML=invHtml;
+}
+
+function switchTab(tab,el){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.tab-pane').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('tp-'+tab).classList.add('active');
+}
+
+function openAddStore(){
+  ['snName','snHosp','snContact','snPhone','snNotes'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  openOv('storeOv');
+}
+function saveStore(){
+  const name=document.getElementById('snName').value.trim();
+  const hosp=document.getElementById('snHosp').value.trim();
+  if(!name||!hosp){toast('Please fill in store name and hospital.','error');return;}
+  const colors=['#2563eb','#059669','#d97706','#7c3aed','#0891b2','#db2777','#dc2626'];
+  STORES.push({
+    id:'store-'+Date.now(),name,hospital:hosp,
+    contact:document.getElementById('snContact').value||'—',
+    phone:document.getElementById('snPhone').value||'—',
+    color:colors[STORES.length%colors.length],received:[],sent:[]
+  });
+  closeOv('storeOv');
+  renderStores();
+  renderDashboard();
+  toast(`Store "${name}" added successfully.`,'success');
+}
+
+function openStoreEntry(type){
+  if(!openStoreId)return;
+  const s=STORES.find(x=>x.id===openStoreId);
+  document.getElementById('entryType').value=type;
+  document.getElementById('entryTitle').textContent=type==='received'?'Record Received':'Record Sent Out';
+  document.getElementById('entrySub').textContent=`${s.name} — ${type==='received'?'Item received into':'Item sent from'} this store`;
+  document.getElementById('entryIco').style.background=type==='received'?'var(--green-lt)':'var(--orange-lt)';
+  document.getElementById('entryIcoI').className=`ti ${type==='received'?'ti-arrow-down-circle':'ti-arrow-up-circle'}`;
+  document.getElementById('entryIcoI').style.color=type==='received'?'var(--green)':'var(--orange)';
+  document.getElementById('enDate').value=new Date().toISOString().slice(0,10);
+  ['enItem','enQty','enNotes','enParty'].forEach(id=>{const el=document.getElementById(id);if(el&&id!=='enQty')el.value='';else if(el)el.value=1;});
+  openOv('entryOv');
+}
+function saveEntry(){
+  const item=document.getElementById('enItem').value.trim();
+  if(!item){toast('Please enter item name.','error');return;}
+  const s=STORES.find(x=>x.id===openStoreId);
+  const type=document.getElementById('entryType').value;
+  const entry={item,cat:document.getElementById('enCat').value,qty:parseInt(document.getElementById('enQty').value)||1,cond:document.getElementById('enCond').value,date:document.getElementById('enDate').value,party:document.getElementById('enParty').value,notes:document.getElementById('enNotes').value};
+  s[type].push(entry);
+  closeOv('entryOv');
+  renderStoreTabPanes(openStoreId);
+  toast(`Record saved to ${type==='received'?'Received':'Sent'} log.`,'success');
+}
+
+/* ── ALERTS ────────────────────────────────────── */
+function renderAlerts(){
+  const unresolved=ALERTS.filter(a=>!a.resolved);
+  document.getElementById('alerts-sub').textContent=`${unresolved.length} active alert${unresolved.length!==1?'s':''} requiring attention`;
+  document.getElementById('nb-alerts').textContent=unresolved.length;
+  const typeMap={critical:{badge:'b-critical',icon:'ti-alert-octagon',color:'var(--red)',sidec:'var(--red)'},warning:{badge:'b-warning',icon:'ti-alert-triangle',color:'var(--orange)',sidec:'var(--orange)'},info:{badge:'b-low',icon:'ti-info-circle',color:'var(--blue)',sidec:'var(--blue)'}};
+  let filtered=ALERTS.filter(a=>!a.resolved&&(alertFilter==='all'||a.type===alertFilter));
+  document.getElementById('alerts-list').innerHTML=filtered.length?filtered.map(a=>{
+    const t=typeMap[a.type];
+    return`<div class="alert-item" id="alert-${a.id}">
+      <div class="alert-side" style="background:${t.sidec}"></div>
+      <div class="alert-icon-wrap" style="background:${t.sidec}18"><i class="ti ${t.icon}" style="color:${t.sidec}"></i></div>
+      <div class="alert-body">
+        <div class="alert-title">${a.title}</div>
+        <div class="alert-desc">${a.desc}</div>
+        <div class="alert-meta">
+          <span class="badge ${t.badge}"><i class="ti ${t.icon}"></i>${a.type}</span>
+          <span style="font-size:11px;color:var(--muted);font-family:var(--mono)">${a.time}</span>
+          <span style="font-size:11px;color:var(--muted)">Asset: <strong>${a.asset}</strong></span>
+        </div>
+      </div>
+      <div class="alert-actions">
+        <button class="btn btn-ghost btn-xs" onclick="navigate('${a.category}')"><i class="ti ti-external-link"></i> View Asset</button>
+        <button class="btn btn-success btn-xs" onclick="resolveAlert('${a.id}')"><i class="ti ti-check"></i> Resolve</button>
+      </div>
+    </div>`;
+  }).join(''):`<div style="text-align:center;padding:48px;color:var(--muted)"><i class="ti ti-circle-check" style="font-size:44px;display:block;margin-bottom:12px;color:var(--green);opacity:.5"></i><div style="font-weight:600">All clear!</div><div style="font-size:13px;margin-top:4px">No ${alertFilter==='all'?'':''+alertFilter+' '}alerts at this time.</div></div>`;
+}
+function filterAlerts(type,el){
+  alertFilter=type;
+  document.querySelectorAll('.af-pill').forEach(p=>p.classList.remove('active'));
+  el.classList.add('active');
+  renderAlerts();
+}
+function resolveAlert(id){
+  ALERTS=ALERTS.map(a=>a.id===id?{...a,resolved:true}:a);
+  renderAlerts();
+  renderDashboard();
+  toast('Alert resolved.','success');
+}
+function resolveAll(){
+  ALERTS=ALERTS.map(a=>({...a,resolved:true}));
+  renderAlerts();renderDashboard();
+  toast('All alerts resolved.','success');
+}
+
+/* ── CRUD ──────────────────────────────────────── */
+function buildStoreOptions(sel=''){
+  const s=document.getElementById('fmStore');if(!s)return;
+  s.innerHTML=STORES.map(st=>`<option${st.name===sel?' selected':''}>${st.name}</option>`).join('');
+}
+function setForm(cat,asset){
+  formCat=cat;const c=CAT[cat];
+  document.getElementById('fmCat').value=cat;
+  document.getElementById('fmIco').style.background=c.bg;
+  document.getElementById('fmIcoI').className=`ti ${asset?'ti-pencil':'ti-plus'}`;
+  document.getElementById('fmIcoI').style.color=c.color;
+  document.getElementById('fmTitle').textContent=asset?`Edit — ${asset.name}`:c.add;
+  document.getElementById('fmSub').textContent=asset?`ID: ${asset.id}`:`Category: ${c.label}`;
+  document.getElementById('fmSaveBtn').innerHTML=`<i class="ti ti-check"></i> ${asset?'Update':'Save'}`;
+  document.getElementById('fmEditId').value=asset?.id||'';
+  document.getElementById('fmName').value=asset?.name||'';
+  document.getElementById('fmId').value='';
+  document.getElementById('fmQty').value=asset?.qty||1;
+  document.getElementById('fmAssigned').value=asset?.assigned||'';
+  document.getElementById('fmNotes').value=asset?.notes||'';
+  document.getElementById('fmDate').value=asset?.date||new Date().toISOString().slice(0,10);
+  document.getElementById('fmStatus').value=asset?.status||'Active';
+  document.getElementById('fmCond').value=asset?.condition||'New';
+  buildStoreOptions(asset?.store);
+}
+function openAdd(cat){editTgt=null;setForm(cat,null);openOv('formOv');}
+function openEdit(cat,id){
+  const a=DB[cat].find(x=>x.id===id);if(!a)return;
+  editTgt={cat,id};setForm(cat,a);openOv('formOv');
+}
+function saveAsset(){
+  const name=document.getElementById('fmName').value.trim();
+  if(!name){toast('Please enter an asset name.','error');return;}
+  const cat=document.getElementById('fmCat').value,c=CAT[cat];
+  const data={name,store:document.getElementById('fmStore').value,assigned:document.getElementById('fmAssigned').value,qty:parseInt(document.getElementById('fmQty').value)||1,status:document.getElementById('fmStatus').value,date:document.getElementById('fmDate').value,condition:document.getElementById('fmCond').value,notes:document.getElementById('fmNotes').value};
+  if(editTgt){const i=DB[cat].findIndex(x=>x.id===editTgt.id);if(i>-1)DB[cat][i]={...DB[cat][i],...data};}
+  else{const nid=document.getElementById('fmId').value.trim()||uid(c.prefix);DB[cat].unshift({id:nid,...data});}
+  closeOv('formOv');refresh();toast(`Asset ${editTgt?'updated':'added'} successfully.`,'success');
+}
+function openView(cat,id){
+  const a=DB[cat].find(x=>x.id===id);if(!a)return;
+  viewTgt={cat,id};const c=CAT[cat];
+  document.getElementById('vmSub').textContent=`${c.label} · ${a.id}`;
+  document.getElementById('vmGrid').innerHTML=`
+    <div class="vi full"><div class="vi-lbl">Asset Name</div><div class="vi-val" style="font-size:15px;font-weight:700">${a.name}</div></div>
+    <div class="vi"><div class="vi-lbl">Asset ID</div><div class="vi-val" style="font-family:var(--mono)">${a.id}</div></div>
+    <div class="vi"><div class="vi-lbl">Category</div><div class="vi-val">${c.label}</div></div>
+    <div class="vi"><div class="vi-lbl">Store</div><div class="vi-val">${a.store}</div></div>
+    <div class="vi"><div class="vi-lbl">Assigned To</div><div class="vi-val">${a.assigned||'—'}</div></div>
+    <div class="vi"><div class="vi-lbl">Quantity</div><div class="vi-val" style="font-family:var(--mono)">${a.qty||1}</div></div>
+    <div class="vi"><div class="vi-lbl">Status</div><div class="vi-val"><span class="badge ${SB[a.status]}">${a.status}</span></div></div>
+    <div class="vi"><div class="vi-lbl">Condition</div><div class="vi-val">${a.condition||'—'}</div></div>
+    <div class="vi"><div class="vi-lbl">Date Acquired</div><div class="vi-val" style="font-family:var(--mono)">${a.date||'—'}</div></div>
+    <div class="vi full"><div class="vi-lbl">Notes</div><div class="vi-val">${a.notes||'No notes added.'}</div></div>`;
+  openOv('viewOv');
+}
+function switchToEdit(){if(!viewTgt)return;closeOv('viewOv');setTimeout(()=>openEdit(viewTgt.cat,viewTgt.id),150);}
+function openDel(cat,id){
+  const a=DB[cat].find(x=>x.id===id);if(!a)return;
+  editTgt={cat,id};
+  document.getElementById('delName').textContent=`"${a.name}" (${a.id})`;
+  openOv('delOv');
+}
+function confirmDelete(){
+  if(!editTgt)return;
+  DB[editTgt.cat]=DB[editTgt.cat].filter(x=>x.id!==editTgt.id);
+  closeOv('delOv');refresh();toast('Asset deleted.','info');
+}
+function refresh(){
+  if(CAT[curPage])renderCatPage(curPage);
+  renderDashboard();
+}
+
+/* ── SETTINGS ──────────────────────────────────── */
+function switchSettings(sec,el){
+  document.querySelectorAll('.sn-item').forEach(x=>x.classList.remove('active'));
+  document.querySelectorAll('.settings-section').forEach(x=>x.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('ss-'+sec).classList.add('active');
+}
+function saveSettings(){toast('Settings saved successfully.','success');}
+function changeAccent(c){document.documentElement.style.setProperty('--blue',c);}
+
+/* ── DARK MODE ─────────────────────────────────── */
+let darkMode=false;
+function toggleDark(){
+  darkMode=!darkMode;
+  document.body.classList.toggle('dark',darkMode);
+  const i=document.getElementById('darkIcon');
+  if(i)i.className=darkMode?'ti ti-sun':'ti ti-moon';
+  const dt=document.getElementById('darkToggle');
+  if(dt)dt.checked=darkMode;
+  closeAllDD();
+}
+
+/* ── DROPDOWNS ─────────────────────────────────── */
+function toggleDD(id){
+  const all=['notifDD','profileDD'];
+  all.forEach(d=>{if(d!==id){const m=document.getElementById(d)?.querySelector('.dd-menu');if(m)m.classList.remove('open');}});
+  document.getElementById(id)?.querySelector('.dd-menu').classList.toggle('open');
+}
+function closeAllDD(){document.querySelectorAll('.dd-menu').forEach(m=>m.classList.remove('open'));}
+document.addEventListener('click',e=>{if(!e.target.closest('.dd'))closeAllDD();});
+function markRead(){
+  document.querySelectorAll('.ni-dot').forEach(d=>d.remove());
+  const b=document.getElementById('nBadge');if(b)b.remove();
+  const d=document.getElementById('ndot');if(d)d.style.display='none';
+  NOTIFS.forEach(n=>n.unread=false);
+  toast('All notifications marked as read.','info');
+}
+
+/* ── MODALS ────────────────────────────────────── */
+function openOv(id){document.getElementById(id).classList.add('open');}
+function closeOv(id){document.getElementById(id).classList.remove('open');}
+function bgClose(e,id){if(e.target===document.getElementById(id))closeOv(id);}
+
+/* ── SIGN OUT ──────────────────────────────────── */
+function openSignOut(){closeAllDD();document.getElementById('signoutOv').classList.add('open');}
+function doSignOut(){
+  document.getElementById('signoutOv').classList.remove('open');
+  document.body.innerHTML=`<div style="min-height:100vh;display:grid;place-items:center;background:var(--bg);font-family:'DM Sans',sans-serif">
+    <div style="text-align:center;padding:40px">
+      <div style="width:70px;height:70px;background:var(--blue-lt);border-radius:50%;display:grid;place-items:center;margin:0 auto 18px">
+        <i class="ti ti-cpu" style="font-size:32px;color:var(--blue)"></i>
+      </div>
+      <div style="font-size:22px;font-weight:800;margin-bottom:8px">Signed Out</div>
+      <div style="color:var(--muted);font-size:14px;margin-bottom:24px">You have been signed out of IT Asset Management.</div>
+      <button onclick="location.reload()" style="background:var(--blue);color:#fff;border:none;padding:10px 24px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif">Sign Back In</button>
+    </div>
+  </div>`;
+}
+
+/* ── TOAST ───────────────
+/* ── TOAST ────────────────────────────────────── */
+function toast(msg,type='info'){
+  const wrap=document.getElementById('toastWrap');
+  const icons={success:'ti-circle-check',error:'ti-alert-circle',info:'ti-info-circle'};
+  const el=document.createElement('div');
+  el.className=`toast ${type}`;
+  el.innerHTML=`<i class="ti ${icons[type]||'ti-info-circle'}"></i><span>${msg}</span>`;
+  wrap.appendChild(el);
+  setTimeout(()=>{el.style.opacity='0';el.style.transition='opacity .3s';setTimeout(()=>el.remove(),300);},3000);
+}
+
+/* ── MOBILE SIDEBAR ────────────────────────────── */
+function toggleSidebar(){
+  const sb=document.getElementById('sidebar');
+  const ov=document.getElementById('sbOverlay');
+  const icon=document.getElementById('menuIcon');
+  const isOpen=sb.classList.contains('open');
+  sb.classList.toggle('open',!isOpen);
+  ov.classList.toggle('open',!isOpen);
+  icon.className=isOpen?'ti ti-menu-2':'ti ti-x';
+}
+function closeSidebar(){
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sbOverlay').classList.remove('open');
+  document.getElementById('menuIcon').className='ti ti-menu-2';
+}
+
+/* ── INIT ──────────────────────────────────────── */
+renderDashboard();
+</script>
+</body>
+</html>
