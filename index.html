@@ -47,8 +47,17 @@ html,body{height:100%;overflow:hidden;}
 body{font-family:var(--sans);background:var(--bg);color:var(--text);display:flex;font-size:14px;transition:background .25s,color .25s;}
 button{cursor:pointer;font-family:var(--sans);}
 a{text-decoration:none;color:inherit;}
-*::-webkit-scrollbar{width:0;height:0;display:none;}
-*{scrollbar-width:none;-ms-overflow-style:none;}
+/* hide scrollbars on desktop sidebar/nav, but ALLOW on main content */
+.sidebar,nav,*[class*="sb-"]{scrollbar-width:none;-ms-overflow-style:none;}
+.sidebar::-webkit-scrollbar,nav::-webkit-scrollbar{width:0;height:0;display:none;}
+/* content area: thin scrollbar on desktop, allow on mobile */
+.content{scrollbar-width:thin;scrollbar-color:var(--border) transparent;}
+.content::-webkit-scrollbar{width:4px;}
+.content::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px;}
+/* tw (table wrapper) always scrollable */
+.tw{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+.tw::-webkit-scrollbar{height:4px;}
+.tw::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px;}
 .sidebar{
   width:var(--sb-w);min-height:100vh;
   background:var(--sb-bg);border-right:1px solid var(--sb-border);
@@ -132,9 +141,12 @@ a{text-decoration:none;color:inherit;}
 .dd-item.danger{color:var(--red);}
 .dd-item.danger i{color:var(--red);}
 .dd-sep{height:1px;background:var(--border);margin:4px 0;}
-.content{flex:1;padding:22px 26px;overflow-y:auto;}
+/* FIXED: content scrolls fully to bottom */
+.content{flex:1;padding:22px 26px;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;}
 .page{display:none;}
 .page.active{display:block;}
+/* extra bottom padding so last element clears on mobile */
+.page.active{padding-bottom:32px;}
 .ph{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:22px;}
 .ph-left{display:flex;align-items:center;gap:14px;}
 .ph-icon{width:44px;height:44px;border-radius:var(--r);display:grid;place-items:center;flex-shrink:0;}
@@ -153,6 +165,8 @@ a{text-decoration:none;color:inherit;}
 .btn-success{background:var(--green);color:#fff;}
 .btn-success:hover{background:#047857;}
 .btn-sm{padding:6px 12px;font-size:12px;}
+/* FIXED: export buttons even smaller on mobile */
+.btn-xs-compact{padding:5px 10px;font-size:11px;line-height:1.2;}
 .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px;}
 .kpi{background:var(--surface);border:1px solid var(--border);border-radius:var(--rlg);padding:18px;display:flex;align-items:center;gap:13px;box-shadow:var(--sh1);transition:box-shadow .2s,background .25s;}
 .kpi:hover{box-shadow:var(--sh2);}
@@ -174,7 +188,7 @@ a{text-decoration:none;color:inherit;}
 .sw i{position:absolute;left:9px;top:50%;transform:translateY(-50%);font-size:15px;color:var(--muted);}
 .fsel{background:var(--bg);border:1px solid var(--border);border-radius:var(--rsm);padding:8px 10px;color:var(--text);font-size:13px;font-family:var(--sans);outline:none;}
 .fsel:focus{border-color:var(--blue);}
-.tw{overflow-x:auto;}
+.tw{overflow-x:auto;-webkit-overflow-scrolling:touch;width:100%;}
 table{width:100%;border-collapse:collapse;font-size:13px;}
 thead tr{background:var(--border-light);}
 th{padding:10px 15px;text-align:left;font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;border-bottom:1px solid var(--border);white-space:nowrap;}
@@ -235,13 +249,24 @@ tbody tr:hover{background:var(--bg);}
 .al-text{font-size:13px;line-height:1.4;}
 .al-time{font-size:11px;color:var(--light);margin-top:2px;font-family:var(--mono);}
 /* Sub-type tabs on cat pages */
-.subtype-tabs{display:flex;gap:0;border-bottom:1px solid var(--border);margin-bottom:18px;overflow-x:auto;}
+.subtype-tabs{display:flex;gap:0;border-bottom:1px solid var(--border);margin-bottom:18px;overflow-x:auto;-webkit-overflow-scrolling:touch;}
 .subtype-tab{display:flex;align-items:center;gap:7px;padding:10px 16px;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;white-space:nowrap;flex-shrink:0;}
 .subtype-tab:hover{color:var(--text);}
 .subtype-tab.active{color:var(--tab-clr,var(--blue));border-bottom-color:var(--tab-clr,var(--blue));}
 .subtype-tab i{font-size:15px;}
 /* Stores */
-.stores-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:22px;}
+/* Store category groups */
+#stores-grid{display:block;}
+.store-cat-group{margin-bottom:24px;}
+.store-cat-header{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:var(--surface);border:1px solid var(--border);border-radius:var(--rlg);margin-bottom:14px;cursor:pointer;transition:box-shadow .15s,background .15s;box-shadow:var(--sh1);}
+.store-cat-header:hover{box-shadow:var(--sh2);background:var(--bg);}
+.store-cat-header-left{display:flex;align-items:center;gap:12px;}
+.store-cat-icon{width:40px;height:40px;border-radius:var(--rsm);display:grid;place-items:center;flex-shrink:0;}
+.store-cat-icon i{font-size:20px;}
+.store-cat-label{font-size:15px;font-weight:700;color:var(--text);}
+.store-cat-meta{font-size:12px;color:var(--muted);margin-top:2px;}
+.stores-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:0;}
+@media(max-width:768px){.stores-grid{grid-template-columns:1fr;}}
 .store-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--rlg);overflow:hidden;box-shadow:var(--sh1);transition:box-shadow .2s;cursor:pointer;}
 .store-card:hover{box-shadow:var(--sh3);}
 .store-card-hd{padding:16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
@@ -257,8 +282,8 @@ tbody tr:hover{background:var(--bg);}
 .stat-lbl{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-top:2px;}
 .store-detail{display:none;margin-top:20px;}
 .store-detail.open{display:block;}
-.tabs{display:flex;gap:0;border-bottom:1px solid var(--border);margin-bottom:20px;}
-.tab{padding:10px 18px;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;}
+.tabs{display:flex;gap:0;border-bottom:1px solid var(--border);margin-bottom:20px;overflow-x:auto;-webkit-overflow-scrolling:touch;}
+.tab{padding:10px 18px;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;white-space:nowrap;flex-shrink:0;}
 .tab:hover{color:var(--text);}
 .tab.active{color:var(--blue);border-bottom-color:var(--blue);}
 .tab-pane{display:none;}
@@ -309,11 +334,22 @@ tbody tr:hover{background:var(--bg);}
 .sf-label{font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;}
 .sf-input,.sf-select{background:var(--bg);border:1px solid var(--border);border-radius:var(--rsm);padding:9px 12px;color:var(--text);font-size:13px;font-family:var(--sans);outline:none;transition:border .15s;}
 .sf-input:focus,.sf-select:focus{border-color:var(--blue);background:var(--surface);}
+/* FIXED: cfg-table wrapper must allow scroll; remove overflow:hidden from settings-panel */
+.settings-panel{overflow:visible;}
+.cfg-table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;width:100%;}
+.cfg-table-wrap::-webkit-scrollbar{height:4px;}
+.cfg-table-wrap::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px;}
 .cfg-table{width:100%;border-collapse:collapse;font-size:13px;}
-.cfg-table th{padding:9px 14px;text-align:left;font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;border-bottom:1px solid var(--border);background:var(--border-light);}
+.cfg-table th{padding:9px 14px;text-align:left;font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;border-bottom:1px solid var(--border);background:var(--border-light);white-space:nowrap;}
 .cfg-table td{padding:11px 14px;border-bottom:1px solid var(--border-light);vertical-align:middle;}
 .cfg-table tbody tr:last-child td{border-bottom:none;}
 .cfg-table tbody tr:hover{background:var(--bg);}
+/* FIXED: specific column widths */
+.cfg-table .col-phone{min-width:180px;}
+.cfg-table .col-email{min-width:220px;}
+.cfg-table .col-icon{min-width:200px;}
+.cfg-table .col-prefix{min-width:90px;}
+.cfg-table .col-actions{min-width:80px;}
 .cfg-actions{display:flex;gap:4px;}
 .cfg-act{width:28px;height:28px;border-radius:var(--rsm);border:1px solid var(--border);background:transparent;display:grid;place-items:center;color:var(--muted);cursor:pointer;transition:all .12s;}
 .cfg-act.e:hover{background:var(--orange-lt);border-color:var(--orange-bd);color:var(--orange);}
@@ -398,24 +434,31 @@ textarea.fi{resize:vertical;min-height:70px;}
 .mob-menu-btn i{font-size:20px;}
 .sb-overlay{display:none;position:fixed;inset:0;background:rgba(15,23,42,.45);backdrop-filter:blur(3px);z-index:49;}
 .sb-overlay.open{display:block;}
+
+/* ── EXPORT BUTTONS ROW (compact on mobile) ── */
+.export-btns{display:flex;gap:8px;margin-top:16px;flex-wrap:wrap;}
+.export-btns .btn{padding:6px 12px;font-size:12px;}
+
 @media(max-width:768px){
   .mob-menu-btn{display:grid;}
   .sidebar{transform:translateX(-100%);transition:transform .25s ease;box-shadow:none;z-index:50;}
   .sidebar.open{transform:translateX(0);box-shadow:var(--sh4);}
   .main{margin-left:0;}
   .topbar{padding:0 14px;}
-  .content{padding:16px 14px;}
+  /* FIXED: content scrolls fully on mobile */
+  .content{padding:16px 14px 80px 14px;overflow-y:auto;height:calc(100vh - 58px);}
+  .page.active{padding-bottom:0;}/* reset — parent handles it */
   .kpi-row{grid-template-columns:1fr 1fr;gap:10px;}
   .cat-cards{grid-template-columns:1fr 1fr;gap:10px;}
   .dash-grid{grid-template-columns:1fr;}
-  .stores-grid{grid-template-columns:1fr;}
   .settings-layout{grid-template-columns:1fr;}
-  .settings-nav{flex-direction:row;overflow-x:auto;gap:4px;padding-bottom:6px;border-bottom:1px solid var(--border);margin-bottom:4px;}
+  .settings-nav{flex-direction:row;overflow-x:auto;-webkit-overflow-scrolling:touch;gap:4px;padding-bottom:6px;border-bottom:1px solid var(--border);margin-bottom:4px;}
   .sn-item{white-space:nowrap;flex-shrink:0;}
   .sn-group-label{display:none;}
   .profile-layout{grid-template-columns:1fr;}
-  .tw{overflow-x:auto;}
-  table{min-width:560px;}
+  /* all tables scroll sideways */
+  .tw,.cfg-table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+  table,.cfg-table{min-width:520px;}
   .modal{width:calc(100vw - 28px);max-width:540px;}
   .modal.sm{width:calc(100vw - 28px);max-width:400px;}
   .fgrid{grid-template-columns:1fr;}
@@ -424,6 +467,10 @@ textarea.fi{resize:vertical;min-height:70px;}
   .ph-actions{width:100%;}
   .tabs{overflow-x:auto;white-space:nowrap;}
   .toast-wrap{bottom:16px;right:12px;left:12px;}
+  /* smaller export buttons on mobile */
+  .export-btns .btn{padding:5px 10px;font-size:11px;}
+  /* alert actions stack on very small screens */
+  .alert-item{flex-wrap:wrap;}
 }
 @media(max-width:420px){.kpi-row{grid-template-columns:1fr;}.cat-cards{grid-template-columns:1fr 1fr;}}
 </style>
@@ -532,7 +579,7 @@ textarea.fi{resize:vertical;min-height:70px;}
             <div>
               <div class="pd-name">John Mukasa</div>
               <div class="pd-role">IT Administrator</div>
-              <div class="pd-email">j.mukasa@hospital.go.ug</div>
+              <div class="pd-email"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="197337746c72786a785971766a69706d7875377e76376c7e">[email&#160;protected]</a></div>
             </div>
           </div>
           <div class="dd-item" onclick="gotoPage('profile')"><i class="ti ti-user-circle"></i> My Profile</div>
@@ -588,7 +635,7 @@ textarea.fi{resize:vertical;min-height:70px;}
       </div>
     </div>
 
-    <!-- CATEGORY PAGES (12 combinations: it/furniture/cars × assets/components/consumables/accessories) -->
+    <!-- CATEGORY PAGES -->
     <div class="page" id="page-it_assets"></div>
     <div class="page" id="page-it_components"></div>
     <div class="page" id="page-it_consumables"></div>
@@ -701,81 +748,156 @@ textarea.fi{resize:vertical;min-height:70px;}
             <div class="setting-row"><div><div class="setting-label">Asset Maintenance Due</div><div class="setting-desc">Notify when assets require maintenance</div></div><label class="tog"><input type="checkbox" checked/><div class="tog-track"></div><div class="tog-thumb"></div></label></div>
             <div class="sf-group" style="margin-top:16px"><div class="sf-label">Alert Email</div><input type="email" class="sf-input" value="it-admin@moh.go.ug"/></div>
           </div>
+          <!-- FIXED: Data & Backup — compact export buttons -->
           <div class="settings-section" id="ss-data">
             <h3>Data &amp; Backup</h3><div class="desc">Manage data exports and backups</div>
             <div class="setting-row"><div><div class="setting-label">Auto Backup</div><div class="setting-desc">Daily automatic database backup</div></div><label class="tog"><input type="checkbox" checked/><div class="tog-track"></div><div class="tog-thumb"></div></label></div>
-            <div style="display:flex;gap:10px;margin-top:16px">
+            <div class="export-btns">
               <button class="btn btn-ghost"><i class="ti ti-file-export"></i> Export CSV</button>
               <button class="btn btn-ghost"><i class="ti ti-file-spreadsheet"></i> Export Excel</button>
               <button class="btn btn-ghost"><i class="ti ti-file-type-pdf"></i> Export PDF</button>
             </div>
           </div>
+          <!-- FIXED: User Access table wrapped in cfg-table-wrap for horizontal scroll -->
           <div class="settings-section" id="ss-users">
             <h3>User Access</h3><div class="desc">Manage who can access the system</div>
             <div style="display:flex;justify-content:flex-end;margin-bottom:12px">
               <button class="btn btn-primary btn-sm" onclick="toast('User invitation sent.','success')"><i class="ti ti-user-plus"></i> Add User</button>
             </div>
-            <table class="cfg-table">
-              <thead><tr><th>User</th><th>Role</th><th>Last Login</th><th>Status</th></tr></thead>
-              <tbody>
-                <tr><td><div class="acell"><div class="acell-ico" style="background:var(--blue-lt)"><i class="ti ti-user" style="color:var(--blue)"></i></div><div><div class="acell-name">John Mukasa</div><div class="acell-id">j.mukasa@moh.go.ug</div></div></div></td><td><span class="badge b-info">Administrator</span></td><td style="font-family:var(--mono);font-size:11px;color:var(--muted)">Today</td><td><span class="badge b-active">Active</span></td></tr>
-                <tr><td><div class="acell"><div class="acell-ico" style="background:var(--green-lt)"><i class="ti ti-user" style="color:var(--green)"></i></div><div><div class="acell-name">Sarah Nakato</div><div class="acell-id">s.nakato@moh.go.ug</div></div></div></td><td><span class="badge b-teal">Technician</span></td><td style="font-family:var(--mono);font-size:11px;color:var(--muted)">Yesterday</td><td><span class="badge b-active">Active</span></td></tr>
-              </tbody>
-            </table>
+            <div class="cfg-table-wrap">
+              <table class="cfg-table">
+                <thead><tr><th>User</th><th>Role</th><th>Last Login</th><th>Status</th></tr></thead>
+                <tbody>
+                  <tr><td><div class="acell"><div class="acell-ico" style="background:var(--blue-lt)"><i class="ti ti-user" style="color:var(--blue)"></i></div><div><div class="acell-name">John Mukasa</div><div class="acell-id"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="12783c7f6779736173527f7d7a3c757d3c6775">[email&#160;protected]</a></div></div></div></td><td><span class="badge b-info">Administrator</span></td><td style="font-family:var(--mono);font-size:11px;color:var(--muted)">Today</td><td><span class="badge b-active">Active</span></td></tr>
+                  <tr><td><div class="acell"><div class="acell-ico" style="background:var(--green-lt)"><i class="ti ti-user" style="color:var(--green)"></i></div><div><div class="acell-name">Sarah Nakato</div><div class="acell-id"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="2f5c01414e444e5b406f424047014840015a48">[email&#160;protected]</a></div></div></div></td><td><span class="badge b-teal">Technician</span></td><td style="font-family:var(--mono);font-size:11px;color:var(--muted)">Yesterday</td><td><span class="badge b-active">Active</span></td></tr>
+                </tbody>
+              </table>
+            </div>
           </div>
+          <!-- FIXED: Categories table — wider icon col, wrapped for scroll -->
           <div class="settings-section" id="ss-categories">
             <h3>Categories</h3><div class="desc">IT, Furniture, and Vehicles sub-type configuration</div>
             <div style="display:flex;justify-content:flex-end;margin-bottom:14px">
               <button class="btn btn-primary btn-sm" onclick="openAddCategory()"><i class="ti ti-plus"></i> Add Category</button>
             </div>
-            <table class="cfg-table"><thead><tr><th>Category</th><th>Sub-type</th><th>Icon</th><th>ID Prefix</th><th>Count</th><th>Actions</th></tr></thead>
-            <tbody id="cat-settings-body"></tbody></table>
+            <div class="cfg-table-wrap">
+              <table class="cfg-table">
+                <thead><tr><th>Category</th><th>Sub-type</th><th class="col-icon">Icon Class</th><th class="col-prefix">ID Prefix</th><th>Count</th><th class="col-actions">Actions</th></tr></thead>
+                <tbody id="cat-settings-body"></tbody>
+              </table>
+            </div>
           </div>
+          <!-- FIXED: Status Labels wrapped for scroll -->
           <div class="settings-section" id="ss-statuslabels">
             <h3>Status Labels</h3><div class="desc">Customise asset state labels used across the system</div>
-            <table class="cfg-table"><thead><tr><th>Label</th><th>Color</th><th>Type</th><th>Default</th></tr></thead>
-            <tbody>
-              <tr><td><strong>Active</strong></td><td><span class="color-dot" style="background:#059669;width:18px;height:18px;border-radius:4px;display:inline-block"></span></td><td>Deployable</td><td><span class="badge b-active">Yes</span></td></tr>
-              <tr><td><strong>Maintenance</strong></td><td><span class="color-dot" style="background:#d97706;width:18px;height:18px;border-radius:4px;display:inline-block"></span></td><td>Pending</td><td>—</td></tr>
-              <tr><td><strong>Inactive</strong></td><td><span class="color-dot" style="background:#dc2626;width:18px;height:18px;border-radius:4px;display:inline-block"></span></td><td>Archived</td><td>—</td></tr>
-              <tr><td><strong>In Storage</strong></td><td><span class="color-dot" style="background:#7c3aed;width:18px;height:18px;border-radius:4px;display:inline-block"></span></td><td>Undeployable</td><td>—</td></tr>
-            </tbody></table>
+            <div class="cfg-table-wrap">
+              <table class="cfg-table">
+                <thead><tr><th>Label</th><th>Color</th><th>Type</th><th>Default</th></tr></thead>
+                <tbody>
+                  <tr><td><strong>Active</strong></td><td><span class="color-dot" style="background:#059669;width:18px;height:18px;border-radius:4px;display:inline-block"></span></td><td>Deployable</td><td><span class="badge b-active">Yes</span></td></tr>
+                  <tr><td><strong>Maintenance</strong></td><td><span class="color-dot" style="background:#d97706;width:18px;height:18px;border-radius:4px;display:inline-block"></span></td><td>Pending</td><td>—</td></tr>
+                  <tr><td><strong>Inactive</strong></td><td><span class="color-dot" style="background:#dc2626;width:18px;height:18px;border-radius:4px;display:inline-block"></span></td><td>Archived</td><td>—</td></tr>
+                  <tr><td><strong>In Storage</strong></td><td><span class="color-dot" style="background:#7c3aed;width:18px;height:18px;border-radius:4px;display:inline-block"></span></td><td>Undeployable</td><td>—</td></tr>
+                </tbody>
+              </table>
+            </div>
           </div>
+          <!-- FIXED: Suppliers — wider phone + email columns, full supplier list -->
           <div class="settings-section" id="ss-suppliers">
             <h3>Suppliers</h3><div class="desc">Manage vendors from whom assets are procured</div>
             <div style="display:flex;justify-content:flex-end;margin-bottom:12px"><button class="btn btn-primary btn-sm" onclick="toast('Add supplier form coming soon.','info')"><i class="ti ti-plus"></i> Add Supplier</button></div>
-            <table class="cfg-table"><thead><tr><th>Supplier</th><th>Contact</th><th>Phone</th><th>Assets Supplied</th></tr></thead>
-            <tbody>
-              <tr><td><strong>Compuline Uganda Ltd</strong></td><td>Mr. Kato</td><td style="font-family:var(--mono);font-size:11px">+256 414 123 456</td><td><span class="badge b-teal">12</span></td></tr>
-              <tr><td><strong>Network Solutions EA</strong></td><td>Ms. Apio</td><td style="font-family:var(--mono);font-size:11px">+256 772 999 000</td><td><span class="badge b-teal">8</span></td></tr>
-            </tbody></table>
+            <div class="cfg-table-wrap">
+              <table class="cfg-table">
+                <thead><tr><th>Supplier</th><th>Category</th><th>Contact</th><th class="col-phone">Phone</th><th class="col-email">Email</th><th>Assets</th><th>Actions</th></tr></thead>
+                <tbody>
+                  <tr>
+                    <td><div class="acell"><div class="acell-ico" style="background:var(--blue-lt)"><i class="ti ti-building-store" style="color:var(--blue)"></i></div><div><div class="acell-name">Compuline Uganda Ltd</div></div></div></td>
+                    <td><span class="badge b-info">IT Equipment</span></td>
+                    <td>Mr. Robert Kato</td>
+                    <td class="col-phone" style="font-family:var(--mono);font-size:12px;white-space:nowrap">+256 414 123 456</td>
+                    <td class="col-email" style="font-family:var(--mono);font-size:12px;white-space:nowrap"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="e390828f8690a3808c8e93968f8a8d86cd808ccd9684">[email&#160;protected]</a></td>
+                    <td><span class="badge b-teal">12</span></td>
+                    <td><div class="cfg-actions"><button class="cfg-act e" title="Edit"><i class="ti ti-pencil"></i></button><button class="cfg-act d" title="Delete"><i class="ti ti-trash"></i></button></div></td>
+                  </tr>
+                  <tr>
+                    <td><div class="acell"><div class="acell-ico" style="background:var(--teal-lt)"><i class="ti ti-building-store" style="color:var(--teal)"></i></div><div><div class="acell-name">Network Solutions EA</div></div></div></td>
+                    <td><span class="badge b-teal">Networking</span></td>
+                    <td>Ms. Patricia Apio</td>
+                    <td class="col-phone" style="font-family:var(--mono);font-size:12px;white-space:nowrap">+256 772 999 000</td>
+                    <td class="col-email" style="font-family:var(--mono);font-size:12px;white-space:nowrap"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="e78e898188a789829394888b92938e888994c98488c99280">[email&#160;protected]</a></td>
+                    <td><span class="badge b-teal">8</span></td>
+                    <td><div class="cfg-actions"><button class="cfg-act e" title="Edit"><i class="ti ti-pencil"></i></button><button class="cfg-act d" title="Delete"><i class="ti ti-trash"></i></button></div></td>
+                  </tr>
+                  <tr>
+                    <td><div class="acell"><div class="acell-ico" style="background:var(--orange-lt)"><i class="ti ti-building-store" style="color:var(--orange)"></i></div><div><div class="acell-name">Kampala Furnishers Ltd</div></div></div></td>
+                    <td><span class="badge b-warning">Furniture</span></td>
+                    <td>Mr. Denis Ssebunya</td>
+                    <td class="col-phone" style="font-family:var(--mono);font-size:12px;white-space:nowrap">+256 414 567 890</td>
+                    <td class="col-email" style="font-family:var(--mono);font-size:12px;white-space:nowrap"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="bcd3ced8d9cecffcd7ddd1ccdac9ced2d5cfd492c9db">[email&#160;protected]</a></td>
+                    <td><span class="badge b-teal">15</span></td>
+                    <td><div class="cfg-actions"><button class="cfg-act e" title="Edit"><i class="ti ti-pencil"></i></button><button class="cfg-act d" title="Delete"><i class="ti ti-trash"></i></button></div></td>
+                  </tr>
+                  <tr>
+                    <td><div class="acell"><div class="acell-ico" style="background:var(--green-lt)"><i class="ti ti-building-store" style="color:var(--green)"></i></div><div><div class="acell-name">Toyota Uganda Ltd</div></div></div></td>
+                    <td><span class="badge b-active">Vehicles</span></td>
+                    <td>Mr. James Mulindwa</td>
+                    <td class="col-phone" style="font-family:var(--mono);font-size:12px;white-space:nowrap">+256 414 200 100</td>
+                    <td class="col-email" style="font-family:var(--mono);font-size:12px;white-space:nowrap"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="f1979d949485b1859e889e85908496909f9590df929edf8496">[email&#160;protected]</a></td>
+                    <td><span class="badge b-teal">4</span></td>
+                    <td><div class="cfg-actions"><button class="cfg-act e" title="Edit"><i class="ti ti-pencil"></i></button><button class="cfg-act d" title="Delete"><i class="ti ti-trash"></i></button></div></td>
+                  </tr>
+                  <tr>
+                    <td><div class="acell"><div class="acell-ico" style="background:var(--purple-lt)"><i class="ti ti-building-store" style="color:var(--purple)"></i></div><div><div class="acell-name">Total Energies Uganda</div></div></div></td>
+                    <td><span class="badge b-storage">Consumables</span></td>
+                    <td>Ms. Annet Nabukenya</td>
+                    <td class="col-phone" style="font-family:var(--mono);font-size:12px;white-space:nowrap">+256 800 100 200</td>
+                    <td class="col-email" style="font-family:var(--mono);font-size:12px;white-space:nowrap">—</td>
+                    <td><span class="badge b-teal">7</span></td>
+                    <td><div class="cfg-actions"><button class="cfg-act e" title="Edit"><i class="ti ti-pencil"></i></button><button class="cfg-act d" title="Delete"><i class="ti ti-trash"></i></button></div></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
+          <!-- FIXED: Departments wrapped for scroll -->
           <div class="settings-section" id="ss-departments">
             <h3>Departments</h3><div class="desc">Define departments for asset assignment tracking</div>
-            <table class="cfg-table"><thead><tr><th>Department</th><th>Manager</th><th>Assets</th></tr></thead>
-            <tbody>
-              <tr><td><strong>Information Technology</strong></td><td>John Mukasa</td><td><span class="badge b-teal">12</span></td></tr>
-              <tr><td><strong>Intensive Care Unit</strong></td><td>Dr. Peter Okello</td><td><span class="badge b-teal">6</span></td></tr>
-              <tr><td><strong>Administration</strong></td><td>Sarah Nakato</td><td><span class="badge b-teal">10</span></td></tr>
-            </tbody></table>
+            <div class="cfg-table-wrap">
+              <table class="cfg-table">
+                <thead><tr><th>Department</th><th>Manager</th><th>Assets</th></tr></thead>
+                <tbody>
+                  <tr><td><strong>Information Technology</strong></td><td>John Mukasa</td><td><span class="badge b-teal">12</span></td></tr>
+                  <tr><td><strong>Intensive Care Unit</strong></td><td>Dr. Peter Okello</td><td><span class="badge b-teal">6</span></td></tr>
+                  <tr><td><strong>Administration</strong></td><td>Sarah Nakato</td><td><span class="badge b-teal">10</span></td></tr>
+                </tbody>
+              </table>
+            </div>
           </div>
           <div class="settings-section" id="ss-locations">
             <h3>Locations</h3><div class="desc">Map physical locations where assets are deployed</div>
-            <table class="cfg-table"><thead><tr><th>Location</th><th>Parent</th><th>Assets</th></tr></thead>
-            <tbody>
-              <tr><td><strong>Main Campus</strong></td><td>—</td><td><span class="badge b-teal">30</span></td></tr>
-              <tr><td><strong>Block C – IT</strong></td><td>Main Campus</td><td><span class="badge b-teal">12</span></td></tr>
-              <tr><td><strong>Vehicle Bay</strong></td><td>Main Campus</td><td><span class="badge b-teal">9</span></td></tr>
-            </tbody></table>
+            <div class="cfg-table-wrap">
+              <table class="cfg-table">
+                <thead><tr><th>Location</th><th>Parent</th><th>Assets</th></tr></thead>
+                <tbody>
+                  <tr><td><strong>Main Campus</strong></td><td>—</td><td><span class="badge b-teal">30</span></td></tr>
+                  <tr><td><strong>Block C – IT</strong></td><td>Main Campus</td><td><span class="badge b-teal">12</span></td></tr>
+                  <tr><td><strong>Vehicle Bay</strong></td><td>Main Campus</td><td><span class="badge b-teal">9</span></td></tr>
+                </tbody>
+              </table>
+            </div>
           </div>
           <div class="settings-section" id="ss-depreciation">
             <h3>Depreciation</h3><div class="desc">Configure depreciation methods applied per asset category</div>
-            <table class="cfg-table"><thead><tr><th>Name</th><th>Method</th><th>Rate</th><th>Applies To</th></tr></thead>
-            <tbody>
-              <tr><td><strong>Standard 5-Year Linear</strong></td><td><span style="color:var(--green);font-weight:600">Straight-Line</span></td><td style="font-family:var(--mono);font-size:12px">20% / yr</td><td>All Hardware</td></tr>
-              <tr><td><strong>Rapid Network Gear</strong></td><td><span style="color:var(--orange);font-weight:600">Declining Balance</span></td><td style="font-family:var(--mono);font-size:12px">30% / yr</td><td>IT Assets</td></tr>
-              <tr><td><strong>Long-Life Furniture</strong></td><td><span style="color:var(--purple);font-weight:600">Sum-of-Years</span></td><td style="font-family:var(--mono);font-size:12px">15 years</td><td>Furniture</td></tr>
-            </tbody></table>
+            <div class="cfg-table-wrap">
+              <table class="cfg-table">
+                <thead><tr><th>Name</th><th>Method</th><th>Rate</th><th>Applies To</th></tr></thead>
+                <tbody>
+                  <tr><td><strong>Standard 5-Year Linear</strong></td><td><span style="color:var(--green);font-weight:600">Straight-Line</span></td><td style="font-family:var(--mono);font-size:12px;white-space:nowrap">20% / yr</td><td>All Hardware</td></tr>
+                  <tr><td><strong>Rapid Network Gear</strong></td><td><span style="color:var(--orange);font-weight:600">Declining Balance</span></td><td style="font-family:var(--mono);font-size:12px;white-space:nowrap">30% / yr</td><td>IT Assets</td></tr>
+                  <tr><td><strong>Long-Life Furniture</strong></td><td><span style="color:var(--purple);font-weight:600">Sum-of-Years</span></td><td style="font-family:var(--mono);font-size:12px;white-space:nowrap">15 years</td><td>Furniture</td></tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>
@@ -796,7 +918,7 @@ textarea.fi{resize:vertical;min-height:70px;}
             <div class="prof-av">JM</div>
             <div class="prof-name">John Mukasa</div>
             <div class="prof-role">IT Administrator</div>
-            <div class="prof-email">j.mukasa@moh.go.ug</div>
+            <div class="prof-email"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="afc581c2dac4cedcceefc2c0c781c8c081dac8">[email&#160;protected]</a></div>
             <button class="btn btn-ghost btn-sm" style="width:100%"><i class="ti ti-camera"></i> Change Photo</button>
             <div class="prof-stats">
               <div class="prof-stat"><div class="prof-stat-num" id="ps-total">0</div><div class="prof-stat-lbl">Total Assets</div></div>
@@ -912,8 +1034,15 @@ textarea.fi{resize:vertical;min-height:70px;}
   <div class="modal sm">
     <div class="mhd"><div class="mhd-l"><div class="m-ico" style="background:var(--teal-lt)"><i class="ti ti-building-hospital" style="color:var(--teal)"></i></div><div><div class="m-title">Add Store</div><div class="m-sub">Register a new store</div></div></div><button class="close-btn" onclick="closeOv('storeOv')"><i class="ti ti-x"></i></button></div>
     <div class="mbody">
-      <div class="fg" style="margin-bottom:12px"><label>Store Name</label><input type="text" id="snName" placeholder="e.g. Pharmacy Store"/></div>
-      <div class="fg" style="margin-bottom:12px"><label>Hospital / Location</label><input type="text" id="snHosp" placeholder="e.g. Mulago National Referral Hospital"/></div>
+      <div class="fg" style="margin-bottom:12px"><label>Category</label>
+        <select class="fi" id="snCat">
+          <option value="it">IT Stores</option>
+          <option value="furniture">Furniture Stores</option>
+          <option value="vehicles">Vehicle Stores</option>
+        </select>
+      </div>
+      <div class="fg" style="margin-bottom:12px"><label>Store Name</label><input type="text" id="snName" placeholder="e.g. Gulu Regional Hospital"/></div>
+      <div class="fg" style="margin-bottom:12px"><label>Location / District</label><input type="text" id="snHosp" placeholder="e.g. Gulu City"/></div>
       <div class="fg" style="margin-bottom:12px"><label>Contact Person</label><input type="text" id="snContact" placeholder="Store manager name"/></div>
       <div class="fg"><label>Phone</label><input type="text" id="snPhone" placeholder="+256 ..."/></div>
     </div>
@@ -971,7 +1100,7 @@ textarea.fi{resize:vertical;min-height:70px;}
 
 <div class="toast-wrap" id="toastWrap"></div>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 /* ── TOP-LEVEL CATEGORIES ── */
 const TOP = {
   it:        { label:'IT',        icon:'ti-cpu',      color:'#2563eb', bg:'#eff6ff', clrVar:'var(--blue)',   bgVar:'var(--blue-lt)' },
@@ -979,7 +1108,6 @@ const TOP = {
   cars:      { label:'Vehicles',  icon:'ti-car',      color:'#059669', bg:'#ecfdf5', clrVar:'var(--green)',  bgVar:'var(--green-lt)' },
 };
 
-/* ── SUB-TYPE CATEGORIES ── */
 const SUB = {
   assets:      { label:'Assets',      itIcon:'ti-device-laptop',    furIcon:'ti-armchair', carIcon:'ti-car',            prefix:'A' },
   components:  { label:'Components',  itIcon:'ti-circuit-board',    furIcon:'ti-tool',     carIcon:'ti-engine',         prefix:'C' },
@@ -987,25 +1115,21 @@ const SUB = {
   accessories: { label:'Accessories', itIcon:'ti-plug',             furIcon:'ti-lamp',     carIcon:'ti-steering-wheel', prefix:'X' },
 };
 
-/* ── ICON LOOKUP ── */
 const CAT_ICON = {
   it_assets:'ti-device-laptop', it_components:'ti-circuit-board', it_consumables:'ti-package', it_accessories:'ti-plug',
   furniture_assets:'ti-armchair', furniture_components:'ti-tool', furniture_consumables:'ti-spray', furniture_accessories:'ti-lamp',
   cars_assets:'ti-car', cars_components:'ti-engine', cars_consumables:'ti-droplet', cars_accessories:'ti-steering-wheel',
 };
 
-/* ── ID PREFIXES ── */
 const PREFIX = {
   it_assets:'ITA', it_components:'ITC', it_consumables:'ITN', it_accessories:'ITX',
   furniture_assets:'FNA', furniture_components:'FNC', furniture_consumables:'FNN', furniture_accessories:'FNX',
   cars_assets:'CRA', cars_components:'CRC', cars_consumables:'CRN', cars_accessories:'CRX',
 };
 
-/* ── STATUS CONFIG ── */
 const SB = {'Active':'b-active','Maintenance':'b-maint','Inactive':'b-inactive','In Storage':'b-storage'};
 const SI = {'Active':'ti-circle-check','Maintenance':'ti-tool','Inactive':'ti-alert-circle','In Storage':'ti-archive'};
 
-/* ── DATABASE ── */
 let idCtr = 400;
 function uid(p){ return `${p}-${String(++idCtr).padStart(3,'0')}`; }
 
@@ -1081,12 +1205,27 @@ const DB = {
   },
 };
 
+const STORE_CATS = {
+  it:        { label:'IT Stores',        icon:'ti-cpu',      color:'#2563eb', bg:'#eff6ff' },
+  furniture: { label:'Furniture Stores', icon:'ti-armchair', color:'#d97706', bg:'#fffbeb' },
+  vehicles:  { label:'Vehicle Stores',   icon:'ti-car',      color:'#059669', bg:'#ecfdf5' },
+};
+
 let STORES = [
-  {id:'store-1',name:'IT Store',hospital:'Main Campus',contact:'John Mukasa',phone:'+256 700 111 222',color:'#2563eb',received:[],sent:[]},
-  {id:'store-2',name:'Main Store',hospital:'Main Campus',contact:'Sarah Nakato',phone:'+256 701 333 444',color:'#059669',received:[],sent:[]},
-  {id:'store-3',name:'Admin Store',hospital:'Main Campus',contact:'David Ochen',phone:'+256 702 555 666',color:'#d97706',received:[],sent:[]},
-  {id:'store-4',name:'Furniture Store',hospital:'Main Campus',contact:'Grace Atim',phone:'+256 703 777 888',color:'#7c3aed',received:[],sent:[]},
-  {id:'store-5',name:'Vehicle Bay',hospital:'Transport Yard',contact:'Ivan Twinamasiko',phone:'+256 704 999 000',color:'#0891b2',received:[],sent:[]},
+  /* ── IT ── */
+  {id:'store-it-1', cat:'it', name:'Kabong General Hospital',      location:'Kabong District',     contact:'Mr. Peter Oyet',       phone:'+256 772 100 201', color:'#2563eb', received:[], sent:[]},
+  {id:'store-it-2', cat:'it', name:'Karenga Health Centre IV',     location:'Karenga Sub-County',  contact:'Ms. Stella Akello',    phone:'+256 782 300 402', color:'#2563eb', received:[], sent:[]},
+  {id:'store-it-3', cat:'it', name:'Luwero Hospital',              location:'Luwero Town',         contact:'Mr. Ronald Ssemanda',  phone:'+256 701 500 603', color:'#2563eb', received:[], sent:[]},
+  {id:'store-it-4', cat:'it', name:'Mulago National Referral',     location:'Kampala',             contact:'Ms. Sarah Nakato',     phone:'+256 701 333 444', color:'#2563eb', received:[], sent:[]},
+  {id:'store-it-5', cat:'it', name:'Mbarara Regional Referral',    location:'Mbarara City',        contact:'Mr. David Tumusiime',  phone:'+256 752 700 800', color:'#2563eb', received:[], sent:[]},
+  /* ── FURNITURE ── */
+  {id:'store-fn-1', cat:'furniture', name:"Sam's Furniture",        location:'Kampala Industrial',  contact:'Mr. Samuel Kizito',    phone:'+256 414 600 100', color:'#d97706', received:[], sent:[]},
+  {id:'store-fn-2', cat:'furniture', name:'Mirembe Beddings',       location:'Ndeeba, Kampala',     contact:'Ms. Miriam Namirembe', phone:'+256 776 200 300', color:'#d97706', received:[], sent:[]},
+  {id:'store-fn-3', cat:'furniture', name:'Comfort Office Supplies', location:'Jinja Road, Kampala', contact:'Mr. Ali Mubarak',     phone:'+256 700 450 550', color:'#d97706', received:[], sent:[]},
+  /* ── VEHICLES ── */
+  {id:'store-veh-1', cat:'vehicles', name:'Spear Motors Uganda',    location:'Ntinda, Kampala',     contact:'Mr. James Mulindwa',   phone:'+256 414 200 100', color:'#059669', received:[], sent:[]},
+  {id:'store-veh-2', cat:'vehicles', name:'Toyota Uganda Ltd',      location:'Jinja Road, Kampala', contact:'Mr. Henry Byaruhanga', phone:'+256 414 320 456', color:'#059669', received:[], sent:[]},
+  {id:'store-veh-3', cat:'vehicles', name:'Victoria Motors',        location:'Industrial Area, Kla',contact:'Ms. Joyce Atwine',     phone:'+256 752 800 900', color:'#059669', received:[], sent:[]},
 ];
 
 let ALERTS = [
@@ -1103,13 +1242,11 @@ const NOTIFS = [
   {icon:'ti-package',col:'var(--blue-lt)',ic:'var(--blue)',text:'Low stock: Thermal Paste <strong>ITN-001</strong>',time:'4 hrs ago',unread:false},
 ];
 
-/* ── STATE ── */
 let curPage = 'dashboard';
 let editTgt = null, viewTgt = null;
 let openStoreId = null;
 let alertFilter = 'all';
 
-/* ── SIDEBAR GROUP TOGGLE ── */
 function toggleGroup(id, header) {
   const body = document.getElementById(id);
   const isOpen = body.classList.contains('open');
@@ -1117,7 +1254,6 @@ function toggleGroup(id, header) {
   header.classList.toggle('open', !isOpen);
 }
 
-/* ── NAVIGATION ── */
 function navigate(page) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
@@ -1125,7 +1261,10 @@ function navigate(page) {
   const nel = document.querySelector(`.nav-item[data-page="${page}"]`); if (nel) nel.classList.add('active');
   curPage = page;
 
-  // Breadcrumb
+  // Scroll content back to top on page change
+  const content = document.querySelector('.content');
+  if (content) content.scrollTop = 0;
+
   let icon = 'ti-layout-dashboard', label = 'Dashboard';
   const pmap = {
     stores: ['ti-building-hospital','All Stores'],
@@ -1159,7 +1298,6 @@ function navigate(page) {
 document.querySelectorAll('.nav-item[data-page]').forEach(el => el.addEventListener('click', () => { navigate(el.dataset.page); closeSidebar(); }));
 function gotoPage(page) { closeAllDD(); setTimeout(() => navigate(page), 80); }
 
-/* ── BADGE UPDATES ── */
 function updateBadges() {
   Object.keys(PREFIX).forEach(key => {
     const [top, sub] = key.split('_');
@@ -1170,7 +1308,6 @@ function updateBadges() {
   const na = document.getElementById('nb-alerts'); if (na) na.textContent = ALERTS.filter(a => !a.resolved).length;
 }
 
-/* ── DASHBOARD ── */
 function allItems() {
   const arr = [];
   Object.values(DB).forEach(top => Object.values(top).forEach(sub => sub.forEach(a => arr.push(a))));
@@ -1189,7 +1326,6 @@ function renderDashboard() {
   const set = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
   set('kpi-total', total); set('kpi-active', active); set('kpi-maint', maint); set('kpi-fault', fault);
 
-  // Category cards
   document.getElementById('dash-cats').innerHTML = Object.entries(TOP).map(([k, c]) => {
     const count = Object.values(DB[k]).reduce((s, arr) => s + arr.length, 0);
     return `<div class="cat-card" onclick="navigate('${k}_assets')">
@@ -1198,7 +1334,6 @@ function renderDashboard() {
     </div>`;
   }).join('');
 
-  // Store bars
   const sColors = ['#2563eb','#059669','#d97706','#7c3aed','#0891b2'];
   const storeCounts = STORES.map(s => {
     let c = 0; allItems().forEach(a => { if (a.store === s.name) c++; }); return { ...s, count: c };
@@ -1233,7 +1368,6 @@ function renderDashboard() {
     ${n.unread ? '<div class="ni-dot"></div>' : ''}</div>`).join('');
 }
 
-/* ── CATEGORY PAGE (top_sub) ── */
 function renderCatPage(pageKey) {
   const [topKey, subKey] = pageKey.split('_');
   const tc = TOP[topKey], sc = SUB[subKey];
@@ -1304,7 +1438,6 @@ function drawTable(pageKey) {
     </tr>`).join('') : `<tr><td colspan="7" class="empty-td"><i class="ti ti-database-off"></i>No records found</td></tr>`;
 }
 
-/* ── CRUD ── */
 function buildStoreOptions(sel = '') {
   const s = document.getElementById('fmStore'); if (!s) return;
   s.innerHTML = STORES.map(st => `<option${st.name === sel ? ' selected' : ''}>${st.name}</option>`).join('');
@@ -1313,7 +1446,7 @@ function buildStoreOptions(sel = '') {
 function openAdd(pageKey) {
   editTgt = null;
   const [topKey, subKey] = pageKey.split('_');
-  const tc = TOP[topKey]; const icon = CAT_ICON[pageKey];
+  const tc = TOP[topKey];
   document.getElementById('fmPageKey').value = pageKey;
   document.getElementById('fmIco').style.background = tc.bg;
   document.getElementById('fmIcoI').className = `ti ti-plus`;
@@ -1423,51 +1556,93 @@ function refresh(pageKey) {
   updateBadges();
 }
 
-/* ── STORES ── */
 function renderStores() {
-  document.getElementById('stores-sub').textContent = `${STORES.length} stores`;
-  document.getElementById('stores-grid').innerHTML = STORES.map(s => {
-    let inv = 0; allItems().forEach(a => { if (a.store === s.name) inv++; });
-    return `<div class="store-card" onclick="openStoreDetail('${s.id}')">
-      <div class="store-card-hd">
-        <div class="store-card-left">
-          <div class="store-ico" style="background:${s.color}1a"><i class="ti ti-building-hospital" style="color:${s.color}"></i></div>
-          <div><div class="store-name">${s.name}</div><div class="store-location">${s.hospital}</div></div>
+  const total = STORES.length;
+  document.getElementById('stores-sub').textContent = `${total} stores across ${Object.keys(STORE_CATS).length} categories`;
+
+  const html = Object.entries(STORE_CATS).map(([catKey, catCfg]) => {
+    const catStores = STORES.filter(s => s.cat === catKey);
+    const catTotal = catStores.reduce((sum, s) => {
+      let inv = 0; allItems().forEach(a => { if (a.store === s.name) inv++; }); return sum + inv;
+    }, 0);
+
+    const cards = catStores.map(s => {
+      let inv = 0; allItems().forEach(a => { if (a.store === s.name) inv++; });
+      return `<div class="store-card" onclick="openStoreDetail('${s.id}')">
+        <div class="store-card-hd">
+          <div class="store-card-left">
+            <div class="store-ico" style="background:${catCfg.color}18"><i class="ti ${catCfg.icon}" style="color:${catCfg.color}"></i></div>
+            <div>
+              <div class="store-name">${s.name}</div>
+              <div class="store-location"><i class="ti ti-map-pin" style="font-size:11px;margin-right:3px;color:var(--muted)"></i>${s.location}</div>
+            </div>
+          </div>
+          <div style="text-align:right;flex-shrink:0">
+            <div style="font-size:11px;color:var(--muted);white-space:nowrap">${s.contact}</div>
+            <div style="font-size:11px;font-family:var(--mono);color:var(--light);margin-top:2px;white-space:nowrap">${s.phone}</div>
+          </div>
         </div>
-        <span class="badge" style="background:${s.color}18;color:${s.color};border:1px solid ${s.color}33">${s.contact}</span>
-      </div>
-      <div class="store-card-stats">
-        <div class="stat-cell"><div class="stat-num" style="color:${s.color}">${inv}</div><div class="stat-lbl">Assets</div></div>
-        <div class="stat-cell"><div class="stat-num" style="color:var(--green)">${s.received.length}</div><div class="stat-lbl">Received</div></div>
-        <div class="stat-cell"><div class="stat-num" style="color:var(--orange)">${s.sent.length}</div><div class="stat-lbl">Sent</div></div>
-      </div>
-    </div>`;
+        <div class="store-card-stats">
+          <div class="stat-cell"><div class="stat-num" style="color:${catCfg.color}">${inv}</div><div class="stat-lbl">Assets</div></div>
+          <div class="stat-cell"><div class="stat-num" style="color:var(--green)">${s.received.length}</div><div class="stat-lbl">Received</div></div>
+          <div class="stat-cell"><div class="stat-num" style="color:var(--orange)">${s.sent.length}</div><div class="stat-lbl">Sent</div></div>
+        </div>
+      </div>`;
+    }).join('');
+
+    return `
+      <div class="store-cat-group" id="stgrp-${catKey}">
+        <div class="store-cat-header" onclick="toggleStoreGroup('${catKey}')">
+          <div class="store-cat-header-left">
+            <div class="store-cat-icon" style="background:${catCfg.bg}"><i class="ti ${catCfg.icon}" style="color:${catCfg.color}"></i></div>
+            <div>
+              <div class="store-cat-label">${catCfg.label}</div>
+              <div class="store-cat-meta">${catStores.length} stores · ${catTotal} assets</div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px">
+            <span class="badge" style="background:${catCfg.bg};color:${catCfg.color};border:1px solid ${catCfg.color}30">${catStores.length}</span>
+            <i class="ti ti-chevron-down store-cat-chev" id="stchev-${catKey}" style="color:var(--muted);font-size:16px;transition:transform .2s"></i>
+          </div>
+        </div>
+        <div class="stores-grid" id="stgrid-${catKey}">${cards}</div>
+      </div>`;
   }).join('');
+
+  document.getElementById('stores-grid').innerHTML = html;
   closeStoreDetail();
+}
+
+function toggleStoreGroup(catKey) {
+  const grid = document.getElementById('stgrid-' + catKey);
+  const chev = document.getElementById('stchev-' + catKey);
+  const isOpen = grid.style.display !== 'none';
+  grid.style.display = isOpen ? 'none' : 'grid';
+  chev.style.transform = isOpen ? 'rotate(-90deg)' : 'rotate(0deg)';
 }
 
 function openStoreDetail(id) {
   openStoreId = id;
   const s = STORES.find(x => x.id === id); if (!s) return;
-  document.getElementById('store-detail-title').textContent = `${s.name} — ${s.hospital}`;
+  const catCfg = STORE_CATS[s.cat];
+  document.getElementById('store-detail-title').textContent = `${s.name} — ${s.location}`;
   renderStoreTabPanes(id);
   document.getElementById('store-detail').classList.add('open');
-  document.querySelector('.stores-grid').style.display = 'none';
-  document.getElementById('stores-sub').textContent = `${s.name} · ${s.hospital}`;
+  document.getElementById('stores-grid').style.display = 'none';
+  document.getElementById('stores-sub').textContent = `${catCfg.label} · ${s.name}`;
 }
 
 function closeStoreDetail() {
   openStoreId = null;
   document.getElementById('store-detail').classList.remove('open');
-  document.querySelector('.stores-grid').style.display = 'grid';
-  document.getElementById('stores-sub').textContent = `${STORES.length} stores`;
+  document.getElementById('stores-grid').style.display = 'block';
+  document.getElementById('stores-sub').textContent = `${STORES.length} stores across ${Object.keys(STORE_CATS).length} categories`;
   document.querySelectorAll('.tab').forEach((t, i) => t.classList.toggle('active', i === 0));
   document.querySelectorAll('.tab-pane').forEach((t, i) => t.classList.toggle('active', i === 0));
 }
 
 function renderStoreTabPanes(id) {
-  const s = STORES.find(x => x.id === id);
-  const entryTable = (rows, type) => {
+  const s = STORES.find(x => x.id === id);  const entryTable = (rows, type) => {
     if (!rows.length) return `<div style="text-align:center;padding:32px;color:var(--muted)"><i class="ti ti-inbox" style="font-size:36px;display:block;margin-bottom:10px;opacity:.2"></i>No records yet</div>`;
     return `<div class="tw"><table>
       <thead><tr><th>Item</th><th>Category</th><th>Qty</th><th>Condition</th><th>${type === 'received' ? 'From' : 'To'}</th><th>Date</th><th>Notes</th></tr></thead>
@@ -1518,10 +1693,11 @@ function openAddStore() {
 
 function saveStore() {
   const name = document.getElementById('snName').value.trim();
-  const hosp = document.getElementById('snHosp').value.trim();
-  if (!name || !hosp) { toast('Please fill in store name and location.', 'error'); return; }
-  const colors = ['#2563eb','#059669','#d97706','#7c3aed','#0891b2','#db2777','#dc2626'];
-  STORES.push({ id:'store-'+Date.now(), name, hospital:hosp, contact:document.getElementById('snContact').value||'—', phone:document.getElementById('snPhone').value||'—', color:colors[STORES.length%colors.length], received:[], sent:[] });
+  const loc  = document.getElementById('snHosp').value.trim();
+  const cat  = document.getElementById('snCat').value;
+  if (!name || !loc) { toast('Please fill in store name and location.', 'error'); return; }
+  const catColors = { it:'#2563eb', furniture:'#d97706', vehicles:'#059669' };
+  STORES.push({ id:'store-'+Date.now(), cat, name, location:loc, contact:document.getElementById('snContact').value||'—', phone:document.getElementById('snPhone').value||'—', color:catColors[cat]||'#2563eb', received:[], sent:[] });
   closeOv('storeOv'); renderStores(); renderDashboard();
   toast(`Store "${name}" added successfully.`, 'success');
 }
@@ -1551,7 +1727,6 @@ function saveEntry() {
   toast(`Record saved to ${type === 'received' ? 'Received' : 'Sent'} log.`, 'success');
 }
 
-/* ── ALERTS ── */
 function renderAlerts() {
   const unresolved = ALERTS.filter(a => !a.resolved);
   document.getElementById('alerts-sub').textContent = `${unresolved.length} active alert${unresolved.length !== 1 ? 's' : ''} requiring attention`;
@@ -1587,7 +1762,6 @@ function filterAlerts(type, el) { alertFilter = type; document.querySelectorAll(
 function resolveAlert(id) { ALERTS = ALERTS.map(a => a.id === id ? { ...a, resolved:true } : a); renderAlerts(); renderDashboard(); toast('Alert resolved.', 'success'); }
 function resolveAll() { ALERTS = ALERTS.map(a => ({ ...a, resolved:true })); renderAlerts(); renderDashboard(); toast('All alerts resolved.', 'success'); }
 
-/* ── SETTINGS CATEGORIES TABLE ── */
 function renderCatSettings() {
   const tbody = document.getElementById('cat-settings-body'); if (!tbody) return;
   tbody.innerHTML = Object.entries(TOP).flatMap(([topKey, tc]) =>
@@ -1599,10 +1773,10 @@ function renderCatSettings() {
       return `<tr>
         <td><div style="display:flex;align-items:center;gap:8px"><div style="width:28px;height:28px;border-radius:6px;background:${tc.bg};display:grid;place-items:center"><i class="ti ${tc.icon}" style="color:${tc.color};font-size:14px"></i></div><strong>${tc.label}</strong></div></td>
         <td><div style="display:flex;align-items:center;gap:6px"><i class="ti ${icon}" style="color:${tc.color}"></i>${sc.label}</div></td>
-        <td><code style="font-size:11px;background:var(--bg);padding:2px 7px;border-radius:4px;border:1px solid var(--border)">${icon}</code></td>
-        <td><span class="badge b-info" style="font-family:var(--mono)">${prefix}</span></td>
+        <td class="col-icon"><code style="font-size:11px;background:var(--bg);padding:2px 7px;border-radius:4px;border:1px solid var(--border);white-space:nowrap">${icon}</code></td>
+        <td class="col-prefix"><span class="badge b-info" style="font-family:var(--mono)">${prefix}</span></td>
         <td><span class="badge b-teal">${count}</span></td>
-        <td><div class="cfg-actions">
+        <td class="col-actions"><div class="cfg-actions">
           <button class="cfg-act e" onclick="editCategory('${topKey}','${subKey}')" title="Edit"><i class="ti ti-pencil"></i></button>
           <button class="cfg-act d" onclick="deleteCategory('${topKey}','${subKey}')" title="Delete"><i class="ti ti-trash"></i></button>
         </div></td>
@@ -1659,7 +1833,6 @@ function switchSettings(sec, el) {
 }
 function saveSettings() { toast('Settings saved successfully.', 'success'); }
 
-/* ── DARK MODE ── */
 let darkMode = false;
 function toggleDark() {
   darkMode = !darkMode;
@@ -1669,7 +1842,6 @@ function toggleDark() {
   closeAllDD();
 }
 
-/* ── DROPDOWNS ── */
 function toggleDD(id) {
   const all = ['notifDD','profileDD'];
   all.forEach(d => { if (d !== id) { const m = document.getElementById(d)?.querySelector('.dd-menu'); if (m) m.classList.remove('open'); } });
@@ -1685,12 +1857,10 @@ function markRead() {
   toast('All notifications marked as read.', 'info');
 }
 
-/* ── MODALS ── */
 function openOv(id) { document.getElementById(id).classList.add('open'); }
 function closeOv(id) { document.getElementById(id).classList.remove('open'); }
 function bgClose(e, id) { if (e.target === document.getElementById(id)) closeOv(id); }
 
-/* ── SIGN OUT ── */
 function openSignOut() { closeAllDD(); document.getElementById('signoutOv').classList.add('open'); }
 function doSignOut() {
   document.getElementById('signoutOv').classList.remove('open');
@@ -1706,33 +1876,34 @@ function doSignOut() {
   </div>`;
 }
 
-/* ── TOAST ── */
 function toast(msg, type = 'info') {
-  const wrap = document.getElementById('toastWrap');
   const icons = { success:'ti-circle-check', error:'ti-alert-circle', info:'ti-info-circle' };
-  const el = document.createElement('div');
-  el.className = `toast ${type}`;
-  el.innerHTML = `<i class="ti ${icons[type]||'ti-info-circle'}"></i><span>${msg}</span>`;
-  wrap.appendChild(el);
-  setTimeout(() => { el.style.opacity = '0'; el.style.transition = 'opacity .3s'; setTimeout(() => el.remove(), 300); }, 3000);
+  const wrap = document.getElementById('toastWrap');
+  const t = document.createElement('div');
+  t.className = `toast ${type}`;
+  t.innerHTML = `<i class="ti ${icons[type]||icons.info}"></i><span>${msg}</span>`;
+  wrap.appendChild(t);
+  setTimeout(() => t.remove(), 3800);
 }
 
-/* ── MOBILE ── */
 function toggleSidebar() {
-  const sb = document.getElementById('sidebar'), ov = document.getElementById('sbOverlay'), icon = document.getElementById('menuIcon');
-  const isOpen = sb.classList.contains('open');
-  sb.classList.toggle('open', !isOpen); ov.classList.toggle('open', !isOpen);
-  icon.className = isOpen ? 'ti ti-menu-2' : 'ti ti-x';
+  const sb = document.getElementById('sidebar');
+  const ov = document.getElementById('sbOverlay');
+  const ic = document.getElementById('menuIcon');
+  const open = sb.classList.toggle('open');
+  ov.classList.toggle('open', open);
+  if (ic) ic.className = open ? 'ti ti-x' : 'ti ti-menu-2';
 }
 function closeSidebar() {
   document.getElementById('sidebar').classList.remove('open');
   document.getElementById('sbOverlay').classList.remove('open');
-  document.getElementById('menuIcon').className = 'ti ti-menu-2';
+  const ic = document.getElementById('menuIcon');
+  if (ic) ic.className = 'ti ti-menu-2';
 }
 
-/* ── INIT ── */
-updateBadges();
+// Init
 renderDashboard();
+navigate('dashboard');
 </script>
 </body>
 </html>
