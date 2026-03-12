@@ -47,17 +47,9 @@ html,body{height:100%;overflow:hidden;}
 body{font-family:var(--sans);background:var(--bg);color:var(--text);display:flex;font-size:14px;transition:background .25s,color .25s;}
 button{cursor:pointer;font-family:var(--sans);}
 a{text-decoration:none;color:inherit;}
-/* hide scrollbars on desktop sidebar/nav, but ALLOW on main content */
-.sidebar,nav,*[class*="sb-"]{scrollbar-width:none;-ms-overflow-style:none;}
-.sidebar::-webkit-scrollbar,nav::-webkit-scrollbar{width:0;height:0;display:none;}
-/* content area: thin scrollbar on desktop, allow on mobile */
-.content{scrollbar-width:thin;scrollbar-color:var(--border) transparent;}
-.content::-webkit-scrollbar{width:4px;}
-.content::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px;}
-/* tw (table wrapper) always scrollable */
+*{scrollbar-width:none;-ms-overflow-style:none;}
+*::-webkit-scrollbar{width:0;height:0;display:none;}
 .tw{overflow-x:auto;-webkit-overflow-scrolling:touch;}
-.tw::-webkit-scrollbar{height:4px;}
-.tw::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px;}
 .sidebar{
   width:var(--sb-w);min-height:100vh;
   background:var(--sb-bg);border-right:1px solid var(--sb-border);
@@ -141,11 +133,9 @@ a{text-decoration:none;color:inherit;}
 .dd-item.danger{color:var(--red);}
 .dd-item.danger i{color:var(--red);}
 .dd-sep{height:1px;background:var(--border);margin:4px 0;}
-/* FIXED: content scrolls fully to bottom */
 .content{flex:1;padding:22px 26px;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;}
 .page{display:none;}
 .page.active{display:block;}
-/* extra bottom padding so last element clears on mobile */
 .page.active{padding-bottom:32px;}
 .ph{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:22px;}
 .ph-left{display:flex;align-items:center;gap:14px;}
@@ -165,7 +155,6 @@ a{text-decoration:none;color:inherit;}
 .btn-success{background:var(--green);color:#fff;}
 .btn-success:hover{background:#047857;}
 .btn-sm{padding:6px 12px;font-size:12px;}
-/* FIXED: export buttons even smaller on mobile */
 .btn-xs-compact{padding:5px 10px;font-size:11px;line-height:1.2;}
 .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px;}
 .kpi{background:var(--surface);border:1px solid var(--border);border-radius:var(--rlg);padding:18px;display:flex;align-items:center;gap:13px;box-shadow:var(--sh1);transition:box-shadow .2s,background .25s;}
@@ -183,9 +172,9 @@ a{text-decoration:none;color:inherit;}
 .panel-body{padding:18px;}
 .fbar{display:flex;gap:10px;padding:12px 18px;border-bottom:1px solid var(--border);flex-wrap:wrap;}
 .sw{position:relative;flex:1;min-width:180px;}
-.sw input{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:var(--rsm);padding:8px 12px 8px 32px;color:var(--text);font-size:13px;font-family:var(--sans);outline:none;transition:border .15s;}
+.sw input{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:var(--rsm);padding:8px 36px 8px 12px;color:var(--text);font-size:13px;font-family:var(--sans);outline:none;transition:border .15s;}
 .sw input:focus{border-color:var(--blue);background:var(--surface);}
-.sw i{position:absolute;left:9px;top:50%;transform:translateY(-50%);font-size:15px;color:var(--muted);}
+.sw i{position:absolute;right:10px;top:50%;transform:translateY(-50%);font-size:15px;color:var(--muted);pointer-events:none;}
 .fsel{background:var(--bg);border:1px solid var(--border);border-radius:var(--rsm);padding:8px 10px;color:var(--text);font-size:13px;font-family:var(--sans);outline:none;}
 .fsel:focus{border-color:var(--blue);}
 .tw{overflow-x:auto;-webkit-overflow-scrolling:touch;width:100%;}
@@ -203,6 +192,15 @@ tbody tr:hover{background:var(--bg);}
 .acell-ico i{font-size:16px;}
 .acell-name{font-weight:600;font-size:13px;}
 .acell-id{font-size:11px;color:var(--muted);font-family:var(--mono);}
+/* Person cell for Assigned To */
+.person-cell{display:flex;flex-direction:column;gap:1px;}
+.person-name{font-size:12px;font-weight:700;color:var(--text);}
+.person-title{font-size:11px;color:var(--muted);}
+.person-tel{font-size:10px;font-family:var(--mono);color:var(--light);display:flex;align-items:center;gap:3px;}
+.person-tel i{font-size:10px;}
+/* Engraving badge */
+.engrave-tag{display:inline-flex;align-items:center;gap:4px;padding:3px 8px;background:var(--purple-lt);color:var(--purple);border:1px solid var(--purple-bd);border-radius:var(--rsm);font-size:11px;font-family:var(--mono);font-weight:600;white-space:nowrap;}
+.engrave-tag i{font-size:11px;}
 .badge{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:600;font-family:var(--mono);}
 .badge i{font-size:11px;}
 .b-active  {background:var(--green-lt); color:var(--green);  border:1px solid var(--green-bd);}
@@ -214,6 +212,11 @@ tbody tr:hover{background:var(--bg);}
 .b-critical{background:var(--red-lt);   color:var(--red);    border:1px solid var(--red-bd);}
 .b-warning {background:var(--orange-lt);color:var(--orange); border:1px solid var(--orange-bd);}
 .b-low     {background:var(--blue-lt);  color:var(--blue);   border:1px solid var(--blue-bd);}
+/* Condition badge variants */
+.b-cond-new  {background:#f0fdf4;color:#166534;border:1px solid #bbf7d0;font-weight:700;}
+.b-cond-good {background:var(--teal-lt);color:var(--teal);border:1px solid var(--teal-bd);}
+.b-cond-fair {background:var(--orange-lt);color:var(--orange);border:1px solid var(--orange-bd);}
+.b-cond-poor {background:var(--red-lt);color:var(--red);border:1px solid var(--red-bd);}
 .store-tag{display:inline-flex;align-items:center;gap:5px;padding:3px 9px;background:var(--blue-lt);color:var(--blue);border:1px solid var(--blue-bd);border-radius:var(--rsm);font-size:11px;font-family:var(--mono);}
 .store-tag i{font-size:12px;}
 .acts{display:flex;gap:3px;}
@@ -248,14 +251,11 @@ tbody tr:hover{background:var(--bg);}
 .al-ico i{font-size:14px;}
 .al-text{font-size:13px;line-height:1.4;}
 .al-time{font-size:11px;color:var(--light);margin-top:2px;font-family:var(--mono);}
-/* Sub-type tabs on cat pages */
 .subtype-tabs{display:flex;gap:0;border-bottom:1px solid var(--border);margin-bottom:18px;overflow-x:auto;-webkit-overflow-scrolling:touch;}
 .subtype-tab{display:flex;align-items:center;gap:7px;padding:10px 16px;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;white-space:nowrap;flex-shrink:0;}
 .subtype-tab:hover{color:var(--text);}
 .subtype-tab.active{color:var(--tab-clr,var(--blue));border-bottom-color:var(--tab-clr,var(--blue));}
 .subtype-tab i{font-size:15px;}
-/* Stores */
-/* Store category groups */
 #stores-grid{display:block;}
 .store-cat-group{margin-bottom:24px;}
 .store-cat-header{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:var(--surface);border:1px solid var(--border);border-radius:var(--rlg);margin-bottom:14px;cursor:pointer;transition:box-shadow .15s,background .15s;box-shadow:var(--sh1);}
@@ -288,7 +288,6 @@ tbody tr:hover{background:var(--bg);}
 .tab.active{color:var(--blue);border-bottom-color:var(--blue);}
 .tab-pane{display:none;}
 .tab-pane.active{display:block;}
-/* Alerts */
 .alerts-filters{display:flex;gap:8px;margin-bottom:18px;flex-wrap:wrap;}
 .af-pill{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:20px;font-size:12px;font-weight:600;border:1px solid var(--border);background:var(--surface);cursor:pointer;transition:all .15s;color:var(--muted);}
 .af-pill:hover,.af-pill.active{color:var(--blue);background:var(--blue-lt);border-color:var(--blue-bd);}
@@ -307,7 +306,6 @@ tbody tr:hover{background:var(--bg);}
 .alert-actions{display:flex;gap:5px;align-items:flex-start;}
 .btn-xs{padding:4px 10px;font-size:11px;border-radius:5px;}
 .btn-xs i{font-size:13px;}
-/* Settings */
 .settings-layout{display:grid;grid-template-columns:220px 1fr;gap:20px;}
 .settings-nav{display:flex;flex-direction:column;gap:2px;}
 .sn-item{display:flex;align-items:center;gap:9px;padding:9px 12px;border-radius:var(--rsm);cursor:pointer;font-size:13px;font-weight:500;color:var(--muted);transition:all .15s;}
@@ -334,7 +332,6 @@ tbody tr:hover{background:var(--bg);}
 .sf-label{font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;}
 .sf-input,.sf-select{background:var(--bg);border:1px solid var(--border);border-radius:var(--rsm);padding:9px 12px;color:var(--text);font-size:13px;font-family:var(--sans);outline:none;transition:border .15s;}
 .sf-input:focus,.sf-select:focus{border-color:var(--blue);background:var(--surface);}
-/* cfg-table: always scrollable, section/panel must not clip */
 .settings-panel{overflow:visible;}
 .settings-section{overflow:visible;}
 .cfg-table-wrap{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch;width:100%;max-width:100%;}
@@ -345,7 +342,6 @@ tbody tr:hover{background:var(--bg);}
 .cfg-table td{padding:11px 14px;border-bottom:1px solid var(--border-light);vertical-align:middle;}
 .cfg-table tbody tr:last-child td{border-bottom:none;}
 .cfg-table tbody tr:hover{background:var(--bg);}
-/* FIXED: specific column widths */
 .cfg-table .col-phone{min-width:180px;}
 .cfg-table .col-email{min-width:220px;}
 .cfg-table .col-icon{min-width:200px;}
@@ -359,8 +355,6 @@ tbody tr:hover{background:var(--bg);}
 .color-dot{width:14px;height:14px;border-radius:50%;display:inline-block;flex-shrink:0;}
 .cfg-empty{text-align:center;padding:36px;color:var(--muted);}
 .cfg-empty i{font-size:32px;display:block;margin-bottom:8px;opacity:.2;}
-.depr-method{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;}
-/* Profile */
 .profile-layout{display:grid;grid-template-columns:280px 1fr;gap:20px;}
 .profile-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--rlg);padding:24px;text-align:center;}
 .prof-av{width:80px;height:80px;border-radius:50%;background:var(--blue);display:grid;place-items:center;font-size:28px;font-weight:800;color:#fff;margin:0 auto 12px;border:3px solid var(--blue-bd);}
@@ -378,11 +372,10 @@ tbody tr:hover{background:var(--bg);}
 .sec-icon i{font-size:18px;}
 .sec-label{font-size:14px;font-weight:600;}
 .sec-desc{font-size:12px;color:var(--muted);margin-top:2px;}
-/* Modal */
 .ov{display:none;position:fixed;inset:0;background:rgba(15,23,42,.4);backdrop-filter:blur(4px);z-index:300;place-items:center;}
 .ov.open{display:grid;}
-.modal{background:var(--surface);border:1px solid var(--border);border-radius:var(--rlg);width:540px;max-height:88vh;overflow-y:auto;box-shadow:var(--sh4);animation:mIn .2s ease;}
-.modal.sm{width:400px;}
+.modal{background:var(--surface);border:1px solid var(--border);border-radius:var(--rlg);width:560px;max-height:88vh;overflow-y:auto;box-shadow:var(--sh4);animation:mIn .2s ease;}
+.modal.sm{width:420px;}
 @keyframes mIn{from{opacity:0;transform:scale(.96)}to{opacity:1;transform:scale(1)}}
 .mhd{display:flex;align-items:center;justify-content:space-between;padding:17px 22px;border-bottom:1px solid var(--border);flex-shrink:0;}
 .mhd-l{display:flex;align-items:center;gap:11px;}
@@ -398,15 +391,21 @@ tbody tr:hover{background:var(--bg);}
 .fgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
 .fg{display:flex;flex-direction:column;gap:5px;}
 .fg.full{grid-column:1/-1;}
+.fg.third{grid-column:span 1;}
 label{font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;}
 input[type=text],input[type=date],input[type=number],input[type=password],input[type=email],.fi,textarea.fi{background:var(--bg);border:1px solid var(--border);border-radius:var(--rsm);padding:8px 11px;color:var(--text);font-size:13px;font-family:var(--sans);outline:none;transition:border .15s;width:100%;}
 input:focus,.fi:focus,textarea.fi:focus{border-color:var(--blue);background:var(--surface);}
 textarea.fi{resize:vertical;min-height:70px;}
+/* Fieldset group divider in modal */
+.fg-divider{grid-column:1/-1;border:none;border-top:1px solid var(--border-light);margin:4px 0;}
+.fg-section-label{grid-column:1/-1;font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1px;padding:2px 0 0;display:flex;align-items:center;gap:8px;}
+.fg-section-label::after{content:'';flex:1;height:1px;background:var(--border-light);}
 .vg{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
 .vi{display:flex;flex-direction:column;gap:4px;padding:11px;background:var(--bg);border-radius:var(--rsm);}
 .vi.full{grid-column:1/-1;}
 .vi-lbl{font-size:10px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;}
 .vi-val{font-size:13px;font-weight:500;}
+.vi-val.mono{font-family:var(--mono);}
 .del-body{padding:22px;text-align:center;}
 .del-ico{width:58px;height:58px;background:var(--red-lt);border-radius:50%;display:grid;place-items:center;margin:0 auto 13px;}
 .del-ico i{font-size:27px;color:var(--red);}
@@ -435,11 +434,8 @@ textarea.fi{resize:vertical;min-height:70px;}
 .mob-menu-btn i{font-size:20px;}
 .sb-overlay{display:none;position:fixed;inset:0;background:rgba(15,23,42,.45);backdrop-filter:blur(3px);z-index:49;}
 .sb-overlay.open{display:block;}
-
-/* ── EXPORT BUTTONS ROW (compact on mobile) ── */
 .export-btns{display:flex;gap:8px;margin-top:16px;flex-wrap:wrap;}
 .export-btns .btn{padding:6px 12px;font-size:12px;}
-
 @media(max-width:768px){
   .mob-menu-btn{display:grid;}
   .sidebar{transform:translateX(-100%);transition:transform .25s ease;box-shadow:none;z-index:50;}
@@ -451,27 +447,12 @@ textarea.fi{resize:vertical;min-height:70px;}
   .kpi-row{grid-template-columns:1fr 1fr;gap:10px;}
   .cat-cards{grid-template-columns:1fr 1fr;gap:10px;}
   .dash-grid{grid-template-columns:1fr;}
-  /* KEY FIX: settings grid becomes single column, panel must NOT expand past viewport */
   .settings-layout{grid-template-columns:1fr;}
   .settings-panel{min-width:0;overflow:visible;}
   .settings-section{min-width:0;overflow:visible;padding:16px;}
-  /* cfg-table-wrap must be a proper block scroll container */
-  .cfg-table-wrap{
-    display:block;
-    width:100%;
-    max-width:100%;
-    overflow-x:scroll;
-    -webkit-overflow-scrolling:touch;
-    scrollbar-width:none;
-    -ms-overflow-style:none;
-  }
+  .cfg-table-wrap{display:block;width:100%;max-width:100%;overflow-x:scroll;-webkit-overflow-scrolling:touch;scrollbar-width:none;-ms-overflow-style:none;}
   .cfg-table-wrap::-webkit-scrollbar{display:none;}
-  /* tables inside must have a real min-width to force overflow */
-  .cfg-table{
-    min-width:600px;
-    width:max-content;
-  }
-  /* regular asset tables */
+  .cfg-table{min-width:600px;width:max-content;}
   .tw{display:block;width:100%;overflow-x:scroll;-webkit-overflow-scrolling:touch;scrollbar-width:none;-ms-overflow-style:none;}
   .tw::-webkit-scrollbar{display:none;}
   table{min-width:520px;width:max-content;}
@@ -479,8 +460,8 @@ textarea.fi{resize:vertical;min-height:70px;}
   .sn-item{white-space:nowrap;flex-shrink:0;}
   .sn-group-label{display:none;}
   .profile-layout{grid-template-columns:1fr;}
-  .modal{width:calc(100vw - 28px);max-width:540px;}
-  .modal.sm{width:calc(100vw - 28px);max-width:400px;}
+  .modal{width:calc(100vw - 28px);max-width:560px;}
+  .modal.sm{width:calc(100vw - 28px);max-width:420px;}
   .fgrid{grid-template-columns:1fr;}
   .fg.full{grid-column:1;}
   .ph{flex-direction:column;gap:12px;align-items:flex-start;}
@@ -489,15 +470,7 @@ textarea.fi{resize:vertical;min-height:70px;}
   .toast-wrap{bottom:16px;right:12px;left:12px;}
   .export-btns .btn{padding:5px 10px;font-size:11px;}
   .alert-item{flex-wrap:wrap;}
-  /* notification dropdown centred on mobile */
-  #notifDD .dd-menu{
-    right:auto;
-    left:50%;
-    transform:translateX(-50%);
-    width:calc(100vw - 28px);
-    max-width:360px;
-    min-width:unset;
-  }
+  #notifDD .dd-menu{right:auto;left:50%;transform:translateX(-50%);width:calc(100vw - 28px);max-width:360px;min-width:unset;}
   #notifDD .dd-menu.open{transform:translateX(-50%);}
 }
 @media(max-width:420px){.kpi-row{grid-template-columns:1fr;}.cat-cards{grid-template-columns:1fr 1fr;}}
@@ -519,21 +492,19 @@ textarea.fi{resize:vertical;min-height:70px;}
   <div class="sb-section">Overview</div>
   <div class="nav-item active" data-page="dashboard"><i class="ti ti-layout-dashboard"></i> Dashboard</div>
 
-  <!-- IT Group -->
   <div class="sb-section">IT Assets</div>
-  <div class="nav-group-header open" onclick="toggleGroup('grp-it',this)" style="--active-bg:var(--blue-lt);--active-clr:var(--blue)">
+  <div class="nav-group-header open" onclick="toggleGroup('grp-it',this)">
     <i class="ti ti-cpu grp-icon" style="color:var(--blue)"></i>
     <span style="flex:1;font-size:13px">IT</span>
     <i class="ti ti-chevron-right chev"></i>
   </div>
   <div class="nav-group-body open" id="grp-it">
-    <div class="nav-item sub" data-page="it_assets" style="--active-bg:var(--blue-lt);--active-clr:var(--blue)"><i class="ti ti-device-laptop"></i> Assets <span class="nav-badge" id="nb-it_assets">0</span></div>
-    <div class="nav-item sub" data-page="it_components" style="--active-bg:var(--blue-lt);--active-clr:var(--blue)"><i class="ti ti-circuit-board"></i> Components <span class="nav-badge" id="nb-it_components">0</span></div>
-    <div class="nav-item sub" data-page="it_consumables" style="--active-bg:var(--blue-lt);--active-clr:var(--blue)"><i class="ti ti-package"></i> Consumables <span class="nav-badge" id="nb-it_consumables">0</span></div>
-    <div class="nav-item sub" data-page="it_accessories" style="--active-bg:var(--blue-lt);--active-clr:var(--blue)"><i class="ti ti-plug"></i> Accessories <span class="nav-badge" id="nb-it_accessories">0</span></div>
+    <div class="nav-item sub" data-page="it_assets"><i class="ti ti-device-laptop"></i> Assets <span class="nav-badge" id="nb-it_assets">0</span></div>
+    <div class="nav-item sub" data-page="it_components"><i class="ti ti-circuit-board"></i> Components <span class="nav-badge" id="nb-it_components">0</span></div>
+    <div class="nav-item sub" data-page="it_consumables"><i class="ti ti-package"></i> Consumables <span class="nav-badge" id="nb-it_consumables">0</span></div>
+    <div class="nav-item sub" data-page="it_accessories"><i class="ti ti-plug"></i> Accessories <span class="nav-badge" id="nb-it_accessories">0</span></div>
   </div>
 
-  <!-- Furniture Group -->
   <div class="sb-section">Furniture</div>
   <div class="nav-group-header" onclick="toggleGroup('grp-furniture',this)">
     <i class="ti ti-armchair grp-icon" style="color:var(--orange)"></i>
@@ -541,13 +512,12 @@ textarea.fi{resize:vertical;min-height:70px;}
     <i class="ti ti-chevron-right chev"></i>
   </div>
   <div class="nav-group-body" id="grp-furniture">
-    <div class="nav-item sub" data-page="furniture_assets" style="--active-bg:var(--orange-lt);--active-clr:var(--orange)"><i class="ti ti-armchair"></i> Assets <span class="nav-badge orange" id="nb-furniture_assets">0</span></div>
-    <div class="nav-item sub" data-page="furniture_components" style="--active-bg:var(--orange-lt);--active-clr:var(--orange)"><i class="ti ti-tool"></i> Components <span class="nav-badge orange" id="nb-furniture_components">0</span></div>
-    <div class="nav-item sub" data-page="furniture_consumables" style="--active-bg:var(--orange-lt);--active-clr:var(--orange)"><i class="ti ti-spray"></i> Consumables <span class="nav-badge orange" id="nb-furniture_consumables">0</span></div>
-    <div class="nav-item sub" data-page="furniture_accessories" style="--active-bg:var(--orange-lt);--active-clr:var(--orange)"><i class="ti ti-lamp"></i> Accessories <span class="nav-badge orange" id="nb-furniture_accessories">0</span></div>
+    <div class="nav-item sub" data-page="furniture_assets"><i class="ti ti-armchair"></i> Assets <span class="nav-badge orange" id="nb-furniture_assets">0</span></div>
+    <div class="nav-item sub" data-page="furniture_components"><i class="ti ti-tool"></i> Components <span class="nav-badge orange" id="nb-furniture_components">0</span></div>
+    <div class="nav-item sub" data-page="furniture_consumables"><i class="ti ti-spray"></i> Consumables <span class="nav-badge orange" id="nb-furniture_consumables">0</span></div>
+    <div class="nav-item sub" data-page="furniture_accessories"><i class="ti ti-lamp"></i> Accessories <span class="nav-badge orange" id="nb-furniture_accessories">0</span></div>
   </div>
 
-  <!-- Vehicles Group -->
   <div class="sb-section">Vehicles</div>
   <div class="nav-group-header" onclick="toggleGroup('grp-cars',this)">
     <i class="ti ti-car grp-icon" style="color:var(--green)"></i>
@@ -555,10 +525,10 @@ textarea.fi{resize:vertical;min-height:70px;}
     <i class="ti ti-chevron-right chev"></i>
   </div>
   <div class="nav-group-body" id="grp-cars">
-    <div class="nav-item sub" data-page="cars_assets" style="--active-bg:var(--green-lt);--active-clr:var(--green)"><i class="ti ti-car"></i> Assets <span class="nav-badge" style="background:var(--green-lt);color:var(--green);border-color:var(--green-bd)" id="nb-cars_assets">0</span></div>
-    <div class="nav-item sub" data-page="cars_components" style="--active-bg:var(--green-lt);--active-clr:var(--green)"><i class="ti ti-engine"></i> Components <span class="nav-badge" style="background:var(--green-lt);color:var(--green);border-color:var(--green-bd)" id="nb-cars_components">0</span></div>
-    <div class="nav-item sub" data-page="cars_consumables" style="--active-bg:var(--green-lt);--active-clr:var(--green)"><i class="ti ti-droplet"></i> Consumables <span class="nav-badge" style="background:var(--green-lt);color:var(--green);border-color:var(--green-bd)" id="nb-cars_consumables">0</span></div>
-    <div class="nav-item sub" data-page="cars_accessories" style="--active-bg:var(--green-lt);--active-clr:var(--green)"><i class="ti ti-steering-wheel"></i> Accessories <span class="nav-badge" style="background:var(--green-lt);color:var(--green);border-color:var(--green-bd)" id="nb-cars_accessories">0</span></div>
+    <div class="nav-item sub" data-page="cars_assets"><i class="ti ti-car"></i> Assets <span class="nav-badge" style="background:var(--green-lt);color:var(--green);border-color:var(--green-bd)" id="nb-cars_assets">0</span></div>
+    <div class="nav-item sub" data-page="cars_components"><i class="ti ti-engine"></i> Components <span class="nav-badge" style="background:var(--green-lt);color:var(--green);border-color:var(--green-bd)" id="nb-cars_components">0</span></div>
+    <div class="nav-item sub" data-page="cars_consumables"><i class="ti ti-droplet"></i> Consumables <span class="nav-badge" style="background:var(--green-lt);color:var(--green);border-color:var(--green-bd)" id="nb-cars_consumables">0</span></div>
+    <div class="nav-item sub" data-page="cars_accessories"><i class="ti ti-steering-wheel"></i> Accessories <span class="nav-badge" style="background:var(--green-lt);color:var(--green);border-color:var(--green-bd)" id="nb-cars_accessories">0</span></div>
   </div>
 
   <div class="sb-section">System</div>
@@ -607,7 +577,7 @@ textarea.fi{resize:vertical;min-height:70px;}
             <div>
               <div class="pd-name">John Mukasa</div>
               <div class="pd-role">IT Administrator</div>
-              <div class="pd-email"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="197337746c72786a785971766a69706d7875377e76376c7e">[email&#160;protected]</a></div>
+              <div class="pd-email">j.mukasa@moh.go.ug</div>
             </div>
           </div>
           <div class="dd-item" onclick="gotoPage('profile')"><i class="ti ti-user-circle"></i> My Profile</div>
@@ -776,7 +746,6 @@ textarea.fi{resize:vertical;min-height:70px;}
             <div class="setting-row"><div><div class="setting-label">Asset Maintenance Due</div><div class="setting-desc">Notify when assets require maintenance</div></div><label class="tog"><input type="checkbox" checked/><div class="tog-track"></div><div class="tog-thumb"></div></label></div>
             <div class="sf-group" style="margin-top:16px"><div class="sf-label">Alert Email</div><input type="email" class="sf-input" value="it-admin@moh.go.ug"/></div>
           </div>
-          <!-- FIXED: Data & Backup — compact export buttons -->
           <div class="settings-section" id="ss-data">
             <h3>Data &amp; Backup</h3><div class="desc">Manage data exports and backups</div>
             <div class="setting-row"><div><div class="setting-label">Auto Backup</div><div class="setting-desc">Daily automatic database backup</div></div><label class="tog"><input type="checkbox" checked/><div class="tog-track"></div><div class="tog-thumb"></div></label></div>
@@ -786,7 +755,6 @@ textarea.fi{resize:vertical;min-height:70px;}
               <button class="btn btn-ghost"><i class="ti ti-file-type-pdf"></i> Export PDF</button>
             </div>
           </div>
-          <!-- FIXED: User Access table wrapped in cfg-table-wrap for horizontal scroll -->
           <div class="settings-section" id="ss-users">
             <h3>User Access</h3><div class="desc">Manage who can access the system</div>
             <div style="display:flex;justify-content:flex-end;margin-bottom:12px">
@@ -796,13 +764,12 @@ textarea.fi{resize:vertical;min-height:70px;}
               <table class="cfg-table">
                 <thead><tr><th>User</th><th>Role</th><th>Last Login</th><th>Status</th></tr></thead>
                 <tbody>
-                  <tr><td><div class="acell"><div class="acell-ico" style="background:var(--blue-lt)"><i class="ti ti-user" style="color:var(--blue)"></i></div><div><div class="acell-name">John Mukasa</div><div class="acell-id"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="12783c7f6779736173527f7d7a3c757d3c6775">[email&#160;protected]</a></div></div></div></td><td><span class="badge b-info">Administrator</span></td><td style="font-family:var(--mono);font-size:11px;color:var(--muted)">Today</td><td><span class="badge b-active">Active</span></td></tr>
-                  <tr><td><div class="acell"><div class="acell-ico" style="background:var(--green-lt)"><i class="ti ti-user" style="color:var(--green)"></i></div><div><div class="acell-name">Sarah Nakato</div><div class="acell-id"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="2f5c01414e444e5b406f424047014840015a48">[email&#160;protected]</a></div></div></div></td><td><span class="badge b-teal">Technician</span></td><td style="font-family:var(--mono);font-size:11px;color:var(--muted)">Yesterday</td><td><span class="badge b-active">Active</span></td></tr>
+                  <tr><td><div class="acell"><div class="acell-ico" style="background:var(--blue-lt)"><i class="ti ti-user" style="color:var(--blue)"></i></div><div><div class="acell-name">John Mukasa</div><div class="acell-id">j.mukasa@moh.go.ug</div></div></div></td><td><span class="badge b-info">Administrator</span></td><td style="font-family:var(--mono);font-size:11px;color:var(--muted)">Today</td><td><span class="badge b-active">Active</span></td></tr>
+                  <tr><td><div class="acell"><div class="acell-ico" style="background:var(--green-lt)"><i class="ti ti-user" style="color:var(--green)"></i></div><div><div class="acell-name">Sarah Nakato</div><div class="acell-id">s.nakato@moh.go.ug</div></div></div></td><td><span class="badge b-teal">Technician</span></td><td style="font-family:var(--mono);font-size:11px;color:var(--muted)">Yesterday</td><td><span class="badge b-active">Active</span></td></tr>
                 </tbody>
               </table>
             </div>
           </div>
-          <!-- FIXED: Categories table — wider icon col, wrapped for scroll -->
           <div class="settings-section" id="ss-categories">
             <h3>Categories</h3><div class="desc">IT, Furniture, and Vehicles sub-type configuration</div>
             <div style="display:flex;justify-content:flex-end;margin-bottom:14px">
@@ -815,22 +782,20 @@ textarea.fi{resize:vertical;min-height:70px;}
               </table>
             </div>
           </div>
-          <!-- FIXED: Status Labels wrapped for scroll -->
           <div class="settings-section" id="ss-statuslabels">
             <h3>Status Labels</h3><div class="desc">Customise asset state labels used across the system</div>
             <div class="cfg-table-wrap">
               <table class="cfg-table">
                 <thead><tr><th>Label</th><th>Color</th><th>Type</th><th>Default</th></tr></thead>
                 <tbody>
-                  <tr><td><strong>Active</strong></td><td><span class="color-dot" style="background:#059669;width:18px;height:18px;border-radius:4px;display:inline-block"></span></td><td>Deployable</td><td><span class="badge b-active">Yes</span></td></tr>
-                  <tr><td><strong>Maintenance</strong></td><td><span class="color-dot" style="background:#d97706;width:18px;height:18px;border-radius:4px;display:inline-block"></span></td><td>Pending</td><td>—</td></tr>
-                  <tr><td><strong>Inactive</strong></td><td><span class="color-dot" style="background:#dc2626;width:18px;height:18px;border-radius:4px;display:inline-block"></span></td><td>Archived</td><td>—</td></tr>
-                  <tr><td><strong>In Storage</strong></td><td><span class="color-dot" style="background:#7c3aed;width:18px;height:18px;border-radius:4px;display:inline-block"></span></td><td>Undeployable</td><td>—</td></tr>
+                  <tr><td><strong>Active</strong></td><td><span style="background:#059669;width:18px;height:18px;border-radius:4px;display:inline-block"></span></td><td>Deployable</td><td><span class="badge b-active">Yes</span></td></tr>
+                  <tr><td><strong>Maintenance</strong></td><td><span style="background:#d97706;width:18px;height:18px;border-radius:4px;display:inline-block"></span></td><td>Pending</td><td>—</td></tr>
+                  <tr><td><strong>Inactive</strong></td><td><span style="background:#dc2626;width:18px;height:18px;border-radius:4px;display:inline-block"></span></td><td>Archived</td><td>—</td></tr>
+                  <tr><td><strong>In Storage</strong></td><td><span style="background:#7c3aed;width:18px;height:18px;border-radius:4px;display:inline-block"></span></td><td>Undeployable</td><td>—</td></tr>
                 </tbody>
               </table>
             </div>
           </div>
-          <!-- FIXED: Suppliers — wider phone + email columns, full supplier list -->
           <div class="settings-section" id="ss-suppliers">
             <h3>Suppliers</h3><div class="desc">Manage vendors from whom assets are procured</div>
             <div style="display:flex;justify-content:flex-end;margin-bottom:12px"><button class="btn btn-primary btn-sm" onclick="toast('Add supplier form coming soon.','info')"><i class="ti ti-plus"></i> Add Supplier</button></div>
@@ -838,56 +803,14 @@ textarea.fi{resize:vertical;min-height:70px;}
               <table class="cfg-table">
                 <thead><tr><th>Supplier</th><th>Category</th><th>Contact</th><th class="col-phone">Phone</th><th class="col-email">Email</th><th>Assets</th><th>Actions</th></tr></thead>
                 <tbody>
-                  <tr>
-                    <td><div class="acell"><div class="acell-ico" style="background:var(--blue-lt)"><i class="ti ti-building-store" style="color:var(--blue)"></i></div><div><div class="acell-name">Compuline Uganda Ltd</div></div></div></td>
-                    <td><span class="badge b-info">IT Equipment</span></td>
-                    <td>Mr. Robert Kato</td>
-                    <td class="col-phone" style="font-family:var(--mono);font-size:12px;white-space:nowrap">+256 414 123 456</td>
-                    <td class="col-email" style="font-family:var(--mono);font-size:12px;white-space:nowrap"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="e390828f8690a3808c8e93968f8a8d86cd808ccd9684">[email&#160;protected]</a></td>
-                    <td><span class="badge b-teal">12</span></td>
-                    <td><div class="cfg-actions"><button class="cfg-act e" title="Edit"><i class="ti ti-pencil"></i></button><button class="cfg-act d" title="Delete"><i class="ti ti-trash"></i></button></div></td>
-                  </tr>
-                  <tr>
-                    <td><div class="acell"><div class="acell-ico" style="background:var(--teal-lt)"><i class="ti ti-building-store" style="color:var(--teal)"></i></div><div><div class="acell-name">Network Solutions EA</div></div></div></td>
-                    <td><span class="badge b-teal">Networking</span></td>
-                    <td>Ms. Patricia Apio</td>
-                    <td class="col-phone" style="font-family:var(--mono);font-size:12px;white-space:nowrap">+256 772 999 000</td>
-                    <td class="col-email" style="font-family:var(--mono);font-size:12px;white-space:nowrap"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="e78e898188a789829394888b92938e888994c98488c99280">[email&#160;protected]</a></td>
-                    <td><span class="badge b-teal">8</span></td>
-                    <td><div class="cfg-actions"><button class="cfg-act e" title="Edit"><i class="ti ti-pencil"></i></button><button class="cfg-act d" title="Delete"><i class="ti ti-trash"></i></button></div></td>
-                  </tr>
-                  <tr>
-                    <td><div class="acell"><div class="acell-ico" style="background:var(--orange-lt)"><i class="ti ti-building-store" style="color:var(--orange)"></i></div><div><div class="acell-name">Kampala Furnishers Ltd</div></div></div></td>
-                    <td><span class="badge b-warning">Furniture</span></td>
-                    <td>Mr. Denis Ssebunya</td>
-                    <td class="col-phone" style="font-family:var(--mono);font-size:12px;white-space:nowrap">+256 414 567 890</td>
-                    <td class="col-email" style="font-family:var(--mono);font-size:12px;white-space:nowrap"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="bcd3ced8d9cecffcd7ddd1ccdac9ced2d5cfd492c9db">[email&#160;protected]</a></td>
-                    <td><span class="badge b-teal">15</span></td>
-                    <td><div class="cfg-actions"><button class="cfg-act e" title="Edit"><i class="ti ti-pencil"></i></button><button class="cfg-act d" title="Delete"><i class="ti ti-trash"></i></button></div></td>
-                  </tr>
-                  <tr>
-                    <td><div class="acell"><div class="acell-ico" style="background:var(--green-lt)"><i class="ti ti-building-store" style="color:var(--green)"></i></div><div><div class="acell-name">Toyota Uganda Ltd</div></div></div></td>
-                    <td><span class="badge b-active">Vehicles</span></td>
-                    <td>Mr. James Mulindwa</td>
-                    <td class="col-phone" style="font-family:var(--mono);font-size:12px;white-space:nowrap">+256 414 200 100</td>
-                    <td class="col-email" style="font-family:var(--mono);font-size:12px;white-space:nowrap"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="f1979d949485b1859e889e85908496909f9590df929edf8496">[email&#160;protected]</a></td>
-                    <td><span class="badge b-teal">4</span></td>
-                    <td><div class="cfg-actions"><button class="cfg-act e" title="Edit"><i class="ti ti-pencil"></i></button><button class="cfg-act d" title="Delete"><i class="ti ti-trash"></i></button></div></td>
-                  </tr>
-                  <tr>
-                    <td><div class="acell"><div class="acell-ico" style="background:var(--purple-lt)"><i class="ti ti-building-store" style="color:var(--purple)"></i></div><div><div class="acell-name">Total Energies Uganda</div></div></div></td>
-                    <td><span class="badge b-storage">Consumables</span></td>
-                    <td>Ms. Annet Nabukenya</td>
-                    <td class="col-phone" style="font-family:var(--mono);font-size:12px;white-space:nowrap">+256 800 100 200</td>
-                    <td class="col-email" style="font-family:var(--mono);font-size:12px;white-space:nowrap">—</td>
-                    <td><span class="badge b-teal">7</span></td>
-                    <td><div class="cfg-actions"><button class="cfg-act e" title="Edit"><i class="ti ti-pencil"></i></button><button class="cfg-act d" title="Delete"><i class="ti ti-trash"></i></button></div></td>
-                  </tr>
+                  <tr><td><div class="acell"><div class="acell-ico" style="background:var(--blue-lt)"><i class="ti ti-building-store" style="color:var(--blue)"></i></div><div><div class="acell-name">Compuline Uganda Ltd</div></div></div></td><td><span class="badge b-info">IT Equipment</span></td><td>Mr. Robert Kato</td><td class="col-phone" style="font-family:var(--mono);font-size:12px;white-space:nowrap">+256 414 123 456</td><td class="col-email" style="font-family:var(--mono);font-size:12px;white-space:nowrap">sales@compuline.co.ug</td><td><span class="badge b-teal">12</span></td><td><div class="cfg-actions"><button class="cfg-act e"><i class="ti ti-pencil"></i></button><button class="cfg-act d"><i class="ti ti-trash"></i></button></div></td></tr>
+                  <tr><td><div class="acell"><div class="acell-ico" style="background:var(--teal-lt)"><i class="ti ti-building-store" style="color:var(--teal)"></i></div><div><div class="acell-name">Network Solutions EA</div></div></div></td><td><span class="badge b-teal">Networking</span></td><td>Ms. Patricia Apio</td><td class="col-phone" style="font-family:var(--mono);font-size:12px;white-space:nowrap">+256 772 999 000</td><td class="col-email" style="font-family:var(--mono);font-size:12px;white-space:nowrap">info@netsolutions.co.ug</td><td><span class="badge b-teal">8</span></td><td><div class="cfg-actions"><button class="cfg-act e"><i class="ti ti-pencil"></i></button><button class="cfg-act d"><i class="ti ti-trash"></i></button></div></td></tr>
+                  <tr><td><div class="acell"><div class="acell-ico" style="background:var(--orange-lt)"><i class="ti ti-building-store" style="color:var(--orange)"></i></div><div><div class="acell-name">Kampala Furnishers Ltd</div></div></div></td><td><span class="badge b-warning">Furniture</span></td><td>Mr. Denis Ssebunya</td><td class="col-phone" style="font-family:var(--mono);font-size:12px;white-space:nowrap">+256 414 567 890</td><td class="col-email" style="font-family:var(--mono);font-size:12px;white-space:nowrap">orders@kplfurnish.co.ug</td><td><span class="badge b-teal">15</span></td><td><div class="cfg-actions"><button class="cfg-act e"><i class="ti ti-pencil"></i></button><button class="cfg-act d"><i class="ti ti-trash"></i></button></div></td></tr>
+                  <tr><td><div class="acell"><div class="acell-ico" style="background:var(--green-lt)"><i class="ti ti-building-store" style="color:var(--green)"></i></div><div><div class="acell-name">Toyota Uganda Ltd</div></div></div></td><td><span class="badge b-active">Vehicles</span></td><td>Mr. James Mulindwa</td><td class="col-phone" style="font-family:var(--mono);font-size:12px;white-space:nowrap">+256 414 200 100</td><td class="col-email" style="font-family:var(--mono);font-size:12px;white-space:nowrap">fleet@toyotaug.co.ug</td><td><span class="badge b-teal">4</span></td><td><div class="cfg-actions"><button class="cfg-act e"><i class="ti ti-pencil"></i></button><button class="cfg-act d"><i class="ti ti-trash"></i></button></div></td></tr>
                 </tbody>
               </table>
             </div>
           </div>
-          <!-- FIXED: Departments wrapped for scroll -->
           <div class="settings-section" id="ss-departments">
             <h3>Departments</h3><div class="desc">Define departments for asset assignment tracking</div>
             <div class="cfg-table-wrap">
@@ -920,9 +843,9 @@ textarea.fi{resize:vertical;min-height:70px;}
               <table class="cfg-table">
                 <thead><tr><th>Name</th><th>Method</th><th>Rate</th><th>Applies To</th></tr></thead>
                 <tbody>
-                  <tr><td><strong>Standard 5-Year Linear</strong></td><td><span style="color:var(--green);font-weight:600">Straight-Line</span></td><td style="font-family:var(--mono);font-size:12px;white-space:nowrap">20% / yr</td><td>All Hardware</td></tr>
-                  <tr><td><strong>Rapid Network Gear</strong></td><td><span style="color:var(--orange);font-weight:600">Declining Balance</span></td><td style="font-family:var(--mono);font-size:12px;white-space:nowrap">30% / yr</td><td>IT Assets</td></tr>
-                  <tr><td><strong>Long-Life Furniture</strong></td><td><span style="color:var(--purple);font-weight:600">Sum-of-Years</span></td><td style="font-family:var(--mono);font-size:12px;white-space:nowrap">15 years</td><td>Furniture</td></tr>
+                  <tr><td><strong>Standard 5-Year Linear</strong></td><td><span style="color:var(--green);font-weight:600">Straight-Line</span></td><td style="font-family:var(--mono);font-size:12px">20% / yr</td><td>All Hardware</td></tr>
+                  <tr><td><strong>Rapid Network Gear</strong></td><td><span style="color:var(--orange);font-weight:600">Declining Balance</span></td><td style="font-family:var(--mono);font-size:12px">30% / yr</td><td>IT Assets</td></tr>
+                  <tr><td><strong>Long-Life Furniture</strong></td><td><span style="color:var(--purple);font-weight:600">Sum-of-Years</span></td><td style="font-family:var(--mono);font-size:12px">15 years</td><td>Furniture</td></tr>
                 </tbody>
               </table>
             </div>
@@ -946,7 +869,7 @@ textarea.fi{resize:vertical;min-height:70px;}
             <div class="prof-av">JM</div>
             <div class="prof-name">John Mukasa</div>
             <div class="prof-role">IT Administrator</div>
-            <div class="prof-email"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="afc581c2dac4cedcceefc2c0c781c8c081dac8">[email&#160;protected]</a></div>
+            <div class="prof-email">j.mukasa@moh.go.ug</div>
             <button class="btn btn-ghost btn-sm" style="width:100%"><i class="ti ti-camera"></i> Change Photo</button>
             <div class="prof-stats">
               <div class="prof-stat"><div class="prof-stat-num" id="ps-total">0</div><div class="prof-stat-lbl">Total Assets</div></div>
@@ -1019,37 +942,80 @@ textarea.fi{resize:vertical;min-height:70px;}
   </div><!-- /content -->
 </div><!-- /main -->
 
-<!-- MODALS -->
+<!-- ── ADD / EDIT ASSET MODAL ── -->
 <div class="ov" id="formOv" onclick="bgClose(event,'formOv')">
   <div class="modal">
-    <div class="mhd"><div class="mhd-l"><div class="m-ico" id="fmIco"><i id="fmIcoI" class="ti ti-plus" style="color:var(--blue)"></i></div><div><div class="m-title" id="fmTitle">Add Asset</div><div class="m-sub" id="fmSub"></div></div></div><button class="close-btn" onclick="closeOv('formOv')"><i class="ti ti-x"></i></button></div>
+    <div class="mhd">
+      <div class="mhd-l">
+        <div class="m-ico" id="fmIco"><i id="fmIcoI" class="ti ti-plus" style="color:var(--blue)"></i></div>
+        <div><div class="m-title" id="fmTitle">Add Asset</div><div class="m-sub" id="fmSub"></div></div>
+      </div>
+      <button class="close-btn" onclick="closeOv('formOv')"><i class="ti ti-x"></i></button>
+    </div>
     <div class="mbody">
       <input type="hidden" id="fmEditId"/>
       <input type="hidden" id="fmPageKey"/>
       <div class="fgrid">
+        <!-- Asset identity -->
+        <div class="fg-section-label full" style="grid-column:1/-1">Asset Identity</div>
         <div class="fg full"><label>Asset Name</label><input type="text" id="fmName" placeholder="e.g. Dell Latitude 5520"/></div>
-        <div class="fg" id="fmModelWrap"><label>Model</label><input type="text" id="fmModel" placeholder="e.g. Dell Latitude 5520 i7"/></div>
-        <div class="fg"><label>Serial Number</label><input type="text" id="fmSerial" placeholder="e.g. SN-DL5520-001"/></div>
+        <div class="fg" id="fmManufacturerWrap"><label>Manufacturer</label><input type="text" id="fmManufacturer" placeholder="e.g. Dell, HP, Cisco, Logitech"/></div>
+        <div class="fg" id="fmModelWrap"><label>Model</label><input type="text" id="fmModel" placeholder="e.g. Latitude 5520, ProDesk 400 G7"/></div>
+        <div class="fg" id="fmSerialWrap"><label>Serial Number</label><input type="text" id="fmSerial" placeholder="e.g. SN-DL5520-001"/></div>
+        <div class="fg" id="fmQtyWrap"><label>Quantity</label><input type="number" id="fmQty" min="1" placeholder="e.g. 12"/></div>
+        <div class="fg" id="fmUnitWrap"><label>Unit / Description</label><input type="text" id="fmUnit" placeholder="e.g. pieces, rolls, packs, boxes"/></div>
+        <div class="fg" id="fmEngraveWrap"><label>Engraving No.</label><input type="text" id="fmEngravingNo" placeholder="e.g. MOH-KAB002"/></div>
+        <!-- Specifications -->
+        <div class="fg full" id="fmSpecsWrap"><label>Specifications</label><textarea class="fi" id="fmSpecs" placeholder="e.g. 8GB RAM, 1TB HDD, Intel Core Ultra 7 165U 2.10 GHz, 15.6&quot; FHD IPS..."></textarea></div>
+        <!-- Notes -->
+        <div class="fg full"><label>Notes / Remarks</label><textarea class="fi" id="fmNotes" placeholder="Additional remarks, maintenance notes..."></textarea></div>
+        <!-- Assignment -->
+        <hr class="fg-divider"/>
+        <div class="fg-section-label" style="grid-column:1/-1">Assignment</div>
+        <div class="fg" id="fmAssignedNameWrap"><label>Assigned To (Name)</label><input type="text" id="fmAssignedName" placeholder="e.g. Karim Ali"/></div>
+        <div class="fg" id="fmAssignedTitleWrap"><label>Title / Designation</label><input type="text" id="fmAssignedTitle" placeholder="e.g. IT Officer"/></div>
+        <div class="fg" id="fmAssignedTelWrap"><label>Tel No.</label><input type="text" id="fmAssignedTel" placeholder="e.g. 0786747390"/></div>
+        <div class="fg" id="fmAssignedWrap"><label>Assigned To</label><input type="text" id="fmAssigned" placeholder="Team or department"/></div>
+        <!-- Location & Status -->
+        <hr class="fg-divider"/>
+        <div class="fg-section-label" style="grid-column:1/-1">Location &amp; Status</div>
         <div class="fg"><label>Store (Origin)</label><select class="fi" id="fmStore"></select></div>
-        <div class="fg"><label>Assigned To</label><input type="text" id="fmAssigned" placeholder="Team or department"/></div>
-        <div class="fg"><label>Status</label><select class="fi" id="fmStatus"><option>Active</option><option>Maintenance</option><option>Inactive</option><option>In Storage</option></select></div>
+        <div class="fg"><label>Status</label>
+          <select class="fi" id="fmStatus">
+            <option>Active</option><option>Maintenance</option><option>Inactive</option><option>In Storage</option>
+          </select>
+        </div>
+        <div class="fg"><label>Condition</label>
+          <select class="fi" id="fmCond">
+            <option>New</option><option>Good</option><option>Fair</option><option>Poor</option>
+          </select>
+        </div>
         <div class="fg"><label>Date Acquired</label><input type="date" id="fmDate"/></div>
-        <div class="fg"><label>Condition</label><select class="fi" id="fmCond"><option>New</option><option>Good</option><option>Fair</option><option>Poor</option></select></div>
-        <div class="fg full"><label>Notes / Remarks</label><textarea class="fi" id="fmNotes" placeholder="Additional remarks..."></textarea></div>
       </div>
     </div>
-    <div class="mft"><button class="btn btn-ghost" onclick="closeOv('formOv')">Cancel</button><button class="btn btn-primary" id="fmSaveBtn" onclick="saveAsset()"><i class="ti ti-check"></i> Save</button></div>
+    <div class="mft">
+      <button class="btn btn-ghost" onclick="closeOv('formOv')">Cancel</button>
+      <button class="btn btn-primary" id="fmSaveBtn" onclick="saveAsset()"><i class="ti ti-check"></i> Save</button>
+    </div>
   </div>
 </div>
 
+<!-- VIEW MODAL -->
 <div class="ov" id="viewOv" onclick="bgClose(event,'viewOv')">
   <div class="modal">
-    <div class="mhd"><div class="mhd-l"><div class="m-ico" style="background:var(--blue-lt)"><i class="ti ti-eye" style="color:var(--blue)"></i></div><div><div class="m-title">Asset Details</div><div class="m-sub" id="vmSub"></div></div></div><button class="close-btn" onclick="closeOv('viewOv')"><i class="ti ti-x"></i></button></div>
+    <div class="mhd">
+      <div class="mhd-l">
+        <div class="m-ico" style="background:var(--blue-lt)"><i class="ti ti-eye" style="color:var(--blue)"></i></div>
+        <div><div class="m-title">Asset Details</div><div class="m-sub" id="vmSub"></div></div>
+      </div>
+      <button class="close-btn" onclick="closeOv('viewOv')"><i class="ti ti-x"></i></button>
+    </div>
     <div class="mbody"><div class="vg" id="vmGrid"></div></div>
     <div class="mft"><button class="btn btn-ghost" onclick="closeOv('viewOv')">Close</button></div>
   </div>
 </div>
 
+<!-- DELETE MODAL -->
 <div class="ov" id="delOv" onclick="bgClose(event,'delOv')">
   <div class="modal sm">
     <div class="mhd"><div class="mhd-l"><div class="m-ico" style="background:var(--red-lt)"><i class="ti ti-trash" style="color:var(--red)"></i></div><div><div class="m-title">Confirm Delete</div><div class="m-sub">Cannot be undone</div></div></div><button class="close-btn" onclick="closeOv('delOv')"><i class="ti ti-x"></i></button></div>
@@ -1058,16 +1024,13 @@ textarea.fi{resize:vertical;min-height:70px;}
   </div>
 </div>
 
+<!-- ADD STORE MODAL -->
 <div class="ov" id="storeOv" onclick="bgClose(event,'storeOv')">
   <div class="modal sm">
     <div class="mhd"><div class="mhd-l"><div class="m-ico" style="background:var(--teal-lt)"><i class="ti ti-building-hospital" style="color:var(--teal)"></i></div><div><div class="m-title">Add Store</div><div class="m-sub">Register a new store</div></div></div><button class="close-btn" onclick="closeOv('storeOv')"><i class="ti ti-x"></i></button></div>
     <div class="mbody">
       <div class="fg" style="margin-bottom:12px"><label>Category</label>
-        <select class="fi" id="snCat">
-          <option value="it">IT Stores</option>
-          <option value="furniture">Furniture Stores</option>
-          <option value="vehicles">Vehicle Stores</option>
-        </select>
+        <select class="fi" id="snCat"><option value="it">IT Stores</option><option value="furniture">Furniture Stores</option><option value="vehicles">Vehicle Stores</option></select>
       </div>
       <div class="fg" style="margin-bottom:12px"><label>Store Name</label><input type="text" id="snName" placeholder="e.g. Gulu Regional Hospital"/></div>
       <div class="fg" style="margin-bottom:12px"><label>Location / District</label><input type="text" id="snHosp" placeholder="e.g. Gulu City"/></div>
@@ -1078,6 +1041,7 @@ textarea.fi{resize:vertical;min-height:70px;}
   </div>
 </div>
 
+<!-- STORE ENTRY MODAL -->
 <div class="ov" id="entryOv" onclick="bgClose(event,'entryOv')">
   <div class="modal">
     <div class="mhd"><div class="mhd-l"><div class="m-ico" id="entryIco"><i id="entryIcoI" class="ti ti-arrow-down-circle" style="color:var(--green)"></i></div><div><div class="m-title" id="entryTitle">Record Received</div><div class="m-sub" id="entrySub"></div></div></div><button class="close-btn" onclick="closeOv('entryOv')"><i class="ti ti-x"></i></button></div>
@@ -1097,6 +1061,7 @@ textarea.fi{resize:vertical;min-height:70px;}
   </div>
 </div>
 
+<!-- CATEGORY SETTINGS MODAL -->
 <div class="ov" id="catOv" onclick="bgClose(event,'catOv')">
   <div class="modal sm">
     <div class="mhd"><div class="mhd-l"><div class="m-ico" style="background:var(--blue-lt)"><i class="ti ti-category" style="color:var(--blue)"></i></div><div><div class="m-title" id="cfgCatTitle">Add Category</div><div class="m-sub">Configure category details</div></div></div><button class="close-btn" onclick="closeOv('catOv')"><i class="ti ti-x"></i></button></div>
@@ -1114,6 +1079,7 @@ textarea.fi{resize:vertical;min-height:70px;}
   </div>
 </div>
 
+<!-- SIGN OUT -->
 <div class="signout-ov" id="signoutOv">
   <div class="signout-box">
     <div class="so-icon"><i class="ti ti-logout"></i></div>
@@ -1128,7 +1094,7 @@ textarea.fi{resize:vertical;min-height:70px;}
 
 <div class="toast-wrap" id="toastWrap"></div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
 /* ── TOP-LEVEL CATEGORIES ── */
 const TOP = {
   it:        { label:'IT',        icon:'ti-cpu',      color:'#2563eb', bg:'#eff6ff', clrVar:'var(--blue)',   bgVar:'var(--blue-lt)' },
@@ -1155,36 +1121,39 @@ const PREFIX = {
   cars_assets:'CRA', cars_components:'CRC', cars_consumables:'CRN', cars_accessories:'CRX',
 };
 
-const SB = {'Active':'b-active','Maintenance':'b-maint','Inactive':'b-inactive','In Storage':'b-storage'};
-const SI = {'Active':'ti-circle-check','Maintenance':'ti-tool','Inactive':'ti-alert-circle','In Storage':'ti-archive'};
+const SB  = {'Active':'b-active','Maintenance':'b-maint','Inactive':'b-inactive','In Storage':'b-storage'};
+const SI  = {'Active':'ti-circle-check','Maintenance':'ti-tool','Inactive':'ti-alert-circle','In Storage':'ti-archive'};
+const CB  = {'New':'b-cond-new','Good':'b-cond-good','Fair':'b-cond-fair','Poor':'b-cond-poor'};
+const CI  = {'New':'ti-sparkles','Good':'ti-thumb-up','Fair':'ti-minus','Poor':'ti-thumb-down'};
 
 let idCtr = 400;
 function uid(p){ return `${p}-${String(++idCtr).padStart(3,'0')}`; }
 function genSerial(topKey){ const pfx={it:'SN-NEW',furniture:'FN-NEW',cars:'VH-NEW'}; return (pfx[topKey]||'SN')+'-'+Date.now().toString(36).toUpperCase().slice(-5); }
 
+/* ── DATABASE ── */
 const DB = {
   it:{
     assets:[
-      {serial:'SN-DL5520-082A',name:'Dell Latitude 5520',model:'Dell Latitude 5520',store:'IT Store',assigned:'Finance Dept',status:'Active',date:'2025-08-10',condition:'Good',notes:'Core i7, 16GB RAM, 512GB SSD'},
-      {serial:'SN-HP400G-095B',name:'HP ProDesk 400 G7',model:'HP ProDesk 400 G7',store:'IT Store',assigned:'HR Department',status:'Active',date:'2025-09-05',condition:'New',notes:'Desktop workstation'},
-      {serial:'SN-CC296-072C',name:'Cisco Catalyst 2960',model:'Cisco Catalyst 2960-24TT',store:'Main Store',assigned:'Network Team',status:'Active',date:'2025-07-20',condition:'Good',notes:'24-port managed switch'},
-      {serial:'SN-MK750-110D',name:'MikroTik RB750Gr3',model:'MikroTik RouterBOARD 750Gr3',store:'Admin Store',assigned:'IT Admin',status:'Maintenance',date:'2025-11-01',condition:'Fair',notes:'Pending firmware update'},
-      {serial:'SN-APC15-120E',name:'APC Smart-UPS 1500VA',model:'APC Smart-UPS SMT1500I',store:'Main Store',assigned:'Server Room',status:'Active',date:'2024-12-01',condition:'Good',notes:'Battery replaced 2025'},
+      {engravingNo:'MOH-KAB001',serial:'SN-DL5520-082A',name:'Dell Latitude 5520',manufacturer:'Dell',model:'Latitude 5520',specs:'8GB RAM, 1TB HDD, Intel(R) Core(TM) Ultra 7 165U 2.10 GHz, 15.6" FHD IPS',store:'Kabong General Hospital',assignedName:'Karim Ali',assignedTitle:'IT Officer',assignedTel:'0786747390',status:'Active',date:'2025-08-10',condition:'Good',notes:''},
+      {engravingNo:'MOH-MUL002',serial:'SN-HP400G-095B',name:'HP ProDesk 400 G7',manufacturer:'HP',model:'ProDesk 400 G7 SFF',specs:'8GB RAM, 1TB HDD, Intel(R) Core(TM) i5-10500 3.10 GHz, SFF form factor',store:'Mulago National Referral',assignedName:'Sarah Nakato',assignedTitle:'Systems Administrator',assignedTel:'0701333444',status:'Active',date:'2025-09-05',condition:'New',notes:''},
+      {engravingNo:'MOH-LUW003',serial:'SN-CC296-072C',name:'Cisco Catalyst 2960',manufacturer:'Cisco',model:'Catalyst 2960-24TT',specs:'24-port 10/100 + 2x 1G uplinks, 48V PoE, managed Layer 2',store:'Luwero Hospital',assignedName:'Ronald Ssemanda',assignedTitle:'Network Engineer',assignedTel:'0701500603',status:'Active',date:'2025-07-20',condition:'Good',notes:''},
+      {engravingNo:'MOH-MBA004',serial:'SN-MK750-110D',name:'MikroTik RB750Gr3',manufacturer:'MikroTik',model:'RouterBOARD 750Gr3 (hEX)',specs:'5-port Gigabit Ethernet, 256MB RAM, 16MB NAND flash, RouterOS v6',store:'Mbarara Regional Referral',assignedName:'David Tumusiime',assignedTitle:'IT Technician',assignedTel:'0752700800',status:'Maintenance',date:'2025-11-01',condition:'Fair',notes:'Pending firmware v7.x upgrade'},
+      {engravingNo:'MOH-KAR005',serial:'SN-APC15-120E',name:'APC Smart-UPS 1500VA',manufacturer:'APC by Schneider',model:'Smart-UPS SMT1500I',specs:'1500VA / 980W, 230V, 8x IEC outlets, LCD panel, USB + serial mgmt',store:'Karenga Health Centre IV',assignedName:'Stella Akello',assignedTitle:'IT Officer',assignedTel:'0782300402',status:'Active',date:'2024-12-01',condition:'Good',notes:'Battery replaced Jan 2025, runtime ~12 min at full load'},
     ],
     components:[
-      {serial:'SN-DDR4S-011F',name:'DDR4 16GB RAM Module',model:'Samsung M471A2K43DB1',store:'IT Store',assigned:'IT Workshop',status:'In Storage',date:'2026-01-15',condition:'New',notes:'Samsung brand'},
-      {serial:'SN-SSD51-011G',name:'512GB NVMe SSD',model:'WD Blue SN570 512GB',store:'IT Store',assigned:'IT Workshop',status:'In Storage',date:'2026-01-15',condition:'New',notes:'WD Blue SN570'},
-      {serial:'SN-PSU65-101H',name:'PSU 650W Modular',model:'Corsair RM650 2021',store:'Main Store',assigned:'IT Workshop',status:'Active',date:'2025-10-10',condition:'Good',notes:'Corsair RM650'},
+      {serial:'SN-DDR4S-011F',name:'DDR4 16GB RAM Module',manufacturer:'Samsung',model:'M471A2K43DB1-CTD',specs:'16GB DDR4-2666 SODIMM, 260-pin, 1.2V, non-ECC',qty:4,unit:'pieces',store:'Kabong General Hospital',assignedName:'IT Workshop',assignedTitle:'',assignedTel:'',status:'In Storage',date:'2026-01-15',condition:'New',notes:''},
+      {serial:'SN-SSD51-011G',name:'512GB NVMe SSD',manufacturer:'Western Digital',model:'WD Blue SN570',specs:'512GB, M.2 2280, PCIe Gen3 x4 NVMe, 3500 MB/s read, 3000 MB/s write',qty:6,unit:'pieces',store:'Kabong General Hospital',assignedName:'IT Workshop',assignedTitle:'',assignedTel:'',status:'In Storage',date:'2026-01-15',condition:'New',notes:''},
+      {serial:'SN-PSU65-101H',name:'PSU 650W Modular',manufacturer:'Corsair',model:'RM650 (2021)',specs:'650W, 80+ Gold, fully modular, ATX 24-pin, 135mm fan, 10-year warranty',qty:2,unit:'pieces',store:'Mulago National Referral',assignedName:'IT Workshop',assignedTitle:'',assignedTel:'',status:'Active',date:'2025-10-10',condition:'Good',notes:''},
     ],
     consumables:[
-      {serial:'SN-TPST5-020I',name:'Thermal Paste 5g',model:'Arctic MX-4',store:'IT Store',assigned:'IT Technicians',status:'Active',date:'2026-02-01',condition:'New',notes:'Arctic MX-4'},
-      {serial:'SN-CBTIE-011J',name:'Cable Ties ×100',model:'Generic Assorted Pack',store:'Main Store',assigned:'All Depts',status:'Active',date:'2026-01-10',condition:'New',notes:'Assorted sizes'},
-      {serial:'SN-CAT6P-012K',name:'CAT6 Patch Cable 1m',model:'AMP Netconnect CAT6',store:'IT Store',assigned:'Network',status:'Active',date:'2025-12-15',condition:'New',notes:'Blue coded'},
+      {name:'Thermal Paste 5g',manufacturer:'Arctic',model:'MX-4 (2019 Edition)',specs:'4.5 W/mK thermal conductivity, carbon micro-particles, non-conductive',qty:10,unit:'tubes',store:'Kabong General Hospital',assignedName:'IT Technicians',assignedTitle:'',assignedTel:'',status:'Active',date:'2026-02-01',condition:'New',notes:''},
+      {name:'Cable Ties x100',manufacturer:'Generic',model:'Assorted Nylon Pack',specs:'Mixed sizes: 100mm x 2.5mm, 150mm x 3.5mm, 200mm x 3.5mm, natural nylon',qty:5,unit:'packs',store:'Mulago National Referral',assignedName:'All Depts',assignedTitle:'',assignedTel:'',status:'Active',date:'2026-01-10',condition:'New',notes:''},
+      {name:'CAT6 Patch Cable 1m',manufacturer:'AMP Netconnect',model:'CAT6 UTP RJ45 1m',specs:'Cat6 UTP, 550MHz, 24AWG, blue PVC jacket, snagless boot, RJ45',qty:24,unit:'pieces',store:'Kabong General Hospital',assignedName:'Network',assignedTitle:'',assignedTel:'',status:'Active',date:'2025-12-15',condition:'New',notes:''},
     ],
     accessories:[
-      {serial:'SN-LGMXK-112L',name:'Logitech MX Keys Keyboard',model:'Logitech MX Keys Advanced',store:'IT Store',assigned:'Exec Offices',status:'Active',date:'2025-11-20',condition:'New',notes:'Wireless, multi-device'},
-      {serial:'SN-DL24M-090M',name:'Dell 24" Monitor P2422H',model:'Dell P2422H 24-inch IPS',store:'IT Store',assigned:'Finance Dept',status:'Active',date:'2025-09-01',condition:'Good',notes:'IPS Panel'},
-      {serial:'SN-USBC D-021N',name:'USB-C Docking Station',model:'Dell WD19S 180W Dock',store:'Admin Store',assigned:'Laptops',status:'Active',date:'2026-02-10',condition:'New',notes:'100W PD, 3x USB-A'},
+      {engravingNo:'MOH-KAB006',serial:'SN-LGMXK-112L',name:'Logitech MX Keys Keyboard',manufacturer:'Logitech',model:'MX Keys Advanced',specs:'Wireless Bluetooth + 2.4GHz USB, multi-device (3 devices), backlighting, Windows/macOS',store:'Kabong General Hospital',assignedName:'Peter Oyet',assignedTitle:'Executive',assignedTel:'0772100201',status:'Active',date:'2025-11-20',condition:'New',notes:''},
+      {engravingNo:'MOH-MUL007',serial:'SN-DL24M-090M',name:'Dell 24" Monitor P2422H',manufacturer:'Dell',model:'P2422H',specs:'24" IPS, 1920x1080 FHD, 60Hz, HDMI + DisplayPort + VGA, height-adjustable stand',store:'Mulago National Referral',assignedName:'Finance Officer',assignedTitle:'Finance Dept',assignedTel:'',status:'Active',date:'2025-09-01',condition:'Good',notes:''},
+      {serial:'SN-USBC-021N',name:'USB-C Docking Station',manufacturer:'Dell',model:'WD19S 180W',specs:'180W, 100W PD, 3x USB-A 3.1, USB-C, HDMI 2.0, DisplayPort 1.4, Gigabit Ethernet',store:'Luwero Hospital',assignedName:'Laptops Pool',assignedTitle:'',assignedTel:'',status:'Active',date:'2026-02-10',condition:'New',notes:''},
     ],
   },
   furniture:{
@@ -1196,17 +1165,17 @@ const DB = {
       {serial:'FN-BNCH-090E',name:'Waiting Area Bench',store:'Furniture Store',assigned:'Reception',status:'Maintenance',date:'2024-09-01',condition:'Fair',notes:'Upholstery repair due'},
     ],
     components:[
-      {serial:'FN-GCYL-010F',name:'Chair Gas Cylinder',store:'Furniture Store',assigned:'Workshop',status:'In Storage',date:'2026-01-05',condition:'New',notes:'Universal size'},
-      {serial:'FN-DRWR-122G',name:'Desk Drawer Runners ×4',store:'Furniture Store',assigned:'Workshop',status:'In Storage',date:'2025-12-20',condition:'New',notes:'45cm steel'},
+      {serial:'FN-GCYL-010F',name:'Chair Gas Cylinder',qty:8,unit:'pieces',store:'Furniture Store',assigned:'Workshop',status:'In Storage',date:'2026-01-05',condition:'New',notes:'Universal size'},
+      {serial:'FN-DRWR-122G',name:'Desk Drawer Runners x4',qty:5,unit:'sets',store:'Furniture Store',assigned:'Workshop',status:'In Storage',date:'2025-12-20',condition:'New',notes:'45cm steel'},
     ],
     consumables:[
-      {serial:'FN-PLSH-020H',name:'Furniture Polish 500ml',store:'Furniture Store',assigned:'Cleaning Team',status:'Active',date:'2026-02-05',condition:'New',notes:'Pledge brand'},
-      {serial:'FN-WFLT-012I',name:'Wood Filler Putty',store:'Furniture Store',assigned:'Maintenance',status:'Active',date:'2026-01-20',condition:'New',notes:'Natural oak colour'},
+      {name:'Furniture Polish 500ml',qty:12,unit:'bottles',store:'Furniture Store',assigned:'Cleaning Team',status:'Active',date:'2026-02-05',condition:'New',notes:'Pledge brand'},
+      {name:'Wood Filler Putty',qty:6,unit:'tubes',store:'Furniture Store',assigned:'Maintenance',status:'Active',date:'2026-01-20',condition:'New',notes:'Natural oak colour'},
     ],
     accessories:[
-      {serial:'FN-MARM-011J',name:'Monitor Arm Dual',store:'IT Store',assigned:'Staff Desks',status:'Active',date:'2026-01-15',condition:'New',notes:'Full motion, VESA 75/100'},
-      {serial:'FN-DORG-101K',name:'Desk Organiser Set',store:'Admin Store',assigned:'Office Staff',status:'Active',date:'2025-10-01',condition:'Good',notes:'Bamboo material'},
-      {serial:'FN-CBMG-111L',name:'Cable Management Box',store:'IT Store',assigned:'Workstations',status:'Active',date:'2025-11-10',condition:'New',notes:''},
+      {serial:'FN-MARM-011J',name:'Monitor Arm Dual',qty:3,unit:'pieces',store:'IT Store',assigned:'Staff Desks',status:'Active',date:'2026-01-15',condition:'New',notes:'Full motion, VESA 75/100'},
+      {name:'Desk Organiser Set',qty:10,unit:'sets',store:'Admin Store',assigned:'Office Staff',status:'Active',date:'2025-10-01',condition:'Good',notes:'Bamboo material'},
+      {name:'Cable Management Box',qty:7,unit:'pieces',store:'IT Store',assigned:'Workstations',status:'Active',date:'2025-11-10',condition:'New',notes:''},
     ],
   },
   cars:{
@@ -1217,19 +1186,19 @@ const DB = {
       {serial:'VH-ISZ-MB004',name:'Isuzu Minibus 30-Seater',store:'Vehicle Bay',assigned:'Staff Transport',status:'Active',date:'2024-01-20',condition:'New',notes:''},
     ],
     components:[
-      {serial:'VH-TYR-265A',name:'Michelin Tyre 265/65R17',store:'Vehicle Bay',assigned:'Workshop',status:'In Storage',date:'2026-01-10',condition:'New',notes:'All terrain'},
-      {serial:'VH-BAT-12VB',name:'Car Battery 12V 70Ah',store:'Vehicle Bay',assigned:'Workshop',status:'In Storage',date:'2026-02-01',condition:'New',notes:'Exide brand'},
-      {serial:'VH-BRK-FRC',name:'Brake Pads Set (Front)',store:'Vehicle Bay',assigned:'Workshop',status:'Active',date:'2025-11-20',condition:'New',notes:'Toyota compatible'},
+      {serial:'VH-TYR-265A',name:'Michelin Tyre 265/65R17',qty:4,unit:'pieces',store:'Vehicle Bay',assigned:'Workshop',status:'In Storage',date:'2026-01-10',condition:'New',notes:'All terrain'},
+      {serial:'VH-BAT-12VB',name:'Car Battery 12V 70Ah',qty:2,unit:'pieces',store:'Vehicle Bay',assigned:'Workshop',status:'In Storage',date:'2026-02-01',condition:'New',notes:'Exide brand'},
+      {serial:'VH-BRK-FRC',name:'Brake Pads Set (Front)',qty:3,unit:'sets',store:'Vehicle Bay',assigned:'Workshop',status:'Active',date:'2025-11-20',condition:'New',notes:'Toyota compatible'},
     ],
     consumables:[
-      {serial:'VH-OIL-5W3A',name:'Engine Oil 5W30 4L',store:'Vehicle Bay',assigned:'Workshop',status:'Active',date:'2026-02-10',condition:'New',notes:'Castrol GTX'},
-      {serial:'VH-CLT-001B',name:'Coolant 1L',store:'Vehicle Bay',assigned:'Workshop',status:'Active',date:'2026-01-25',condition:'New',notes:''},
-      {serial:'VH-WSF-001C',name:'Windscreen Washer Fluid 1L',store:'Vehicle Bay',assigned:'Workshop',status:'Active',date:'2026-02-01',condition:'New',notes:''},
+      {name:'Engine Oil 5W30 4L',qty:20,unit:'litres',store:'Vehicle Bay',assigned:'Workshop',status:'Active',date:'2026-02-10',condition:'New',notes:'Castrol GTX'},
+      {name:'Coolant 1L',qty:8,unit:'litres',store:'Vehicle Bay',assigned:'Workshop',status:'Active',date:'2026-01-25',condition:'New',notes:''},
+      {name:'Windscreen Washer Fluid 1L',qty:6,unit:'litres',store:'Vehicle Bay',assigned:'Workshop',status:'Active',date:'2026-02-01',condition:'New',notes:''},
     ],
     accessories:[
-      {serial:'VH-FAK-001A',name:'Vehicle First Aid Kit',store:'Vehicle Bay',assigned:'All Vehicles',status:'Active',date:'2025-12-01',condition:'New',notes:'Compliant with RTA standards'},
-      {serial:'VH-GPS-001B',name:'GPS Tracking Device',store:'Vehicle Bay',assigned:'Fleet Manager',status:'Active',date:'2025-09-15',condition:'Good',notes:'Real-time tracking'},
-      {serial:'VH-TWR-005C',name:'Tow Rope 5m',store:'Vehicle Bay',assigned:'Field Vehicles',status:'In Storage',date:'2025-08-01',condition:'Good',notes:''},
+      {serial:'VH-FAK-001A',name:'Vehicle First Aid Kit',qty:5,unit:'kits',store:'Vehicle Bay',assigned:'All Vehicles',status:'Active',date:'2025-12-01',condition:'New',notes:'Compliant with RTA standards'},
+      {serial:'VH-GPS-001B',name:'GPS Tracking Device',qty:4,unit:'pieces',store:'Vehicle Bay',assigned:'Fleet Manager',status:'Active',date:'2025-09-15',condition:'Good',notes:'Real-time tracking'},
+      {name:'Tow Rope 5m',qty:3,unit:'pieces',store:'Vehicle Bay',assigned:'Field Vehicles',status:'In Storage',date:'2025-08-01',condition:'Good',notes:''},
     ],
   },
 };
@@ -1241,17 +1210,14 @@ const STORE_CATS = {
 };
 
 let STORES = [
-  /* ── IT ── */
   {id:'store-it-1', cat:'it', name:'Kabong General Hospital',      location:'Kabong District',     contact:'Mr. Peter Oyet',       phone:'+256 772 100 201', color:'#2563eb', received:[], sent:[]},
   {id:'store-it-2', cat:'it', name:'Karenga Health Centre IV',     location:'Karenga Sub-County',  contact:'Ms. Stella Akello',    phone:'+256 782 300 402', color:'#2563eb', received:[], sent:[]},
   {id:'store-it-3', cat:'it', name:'Luwero Hospital',              location:'Luwero Town',         contact:'Mr. Ronald Ssemanda',  phone:'+256 701 500 603', color:'#2563eb', received:[], sent:[]},
   {id:'store-it-4', cat:'it', name:'Mulago National Referral',     location:'Kampala',             contact:'Ms. Sarah Nakato',     phone:'+256 701 333 444', color:'#2563eb', received:[], sent:[]},
   {id:'store-it-5', cat:'it', name:'Mbarara Regional Referral',    location:'Mbarara City',        contact:'Mr. David Tumusiime',  phone:'+256 752 700 800', color:'#2563eb', received:[], sent:[]},
-  /* ── FURNITURE ── */
   {id:'store-fn-1', cat:'furniture', name:"Sam's Furniture",        location:'Kampala Industrial',  contact:'Mr. Samuel Kizito',    phone:'+256 414 600 100', color:'#d97706', received:[], sent:[]},
   {id:'store-fn-2', cat:'furniture', name:'Mirembe Beddings',       location:'Ndeeba, Kampala',     contact:'Ms. Miriam Namirembe', phone:'+256 776 200 300', color:'#d97706', received:[], sent:[]},
   {id:'store-fn-3', cat:'furniture', name:'Comfort Office Supplies', location:'Jinja Road, Kampala', contact:'Mr. Ali Mubarak',     phone:'+256 700 450 550', color:'#d97706', received:[], sent:[]},
-  /* ── VEHICLES ── */
   {id:'store-veh-1', cat:'vehicles', name:'Spear Motors Uganda',    location:'Ntinda, Kampala',     contact:'Mr. James Mulindwa',   phone:'+256 414 200 100', color:'#059669', received:[], sent:[]},
   {id:'store-veh-2', cat:'vehicles', name:'Toyota Uganda Ltd',      location:'Jinja Road, Kampala', contact:'Mr. Henry Byaruhanga', phone:'+256 414 320 456', color:'#059669', received:[], sent:[]},
   {id:'store-veh-3', cat:'vehicles', name:'Victoria Motors',        location:'Industrial Area, Kla',contact:'Ms. Joyce Atwine',     phone:'+256 752 800 900', color:'#059669', received:[], sent:[]},
@@ -1259,14 +1225,14 @@ let STORES = [
 
 let ALERTS = [
   {id:'al-1',type:'critical',title:'Ford Ranger Due for Service',desc:'Ford Ranger XLT (CRA-003) has reached service interval. Immediate service recommended.',time:'10 min ago',catKey:'cars_assets',resolved:false},
-  {id:'al-2',type:'warning',title:'MikroTik Router Needs Firmware',desc:'MikroTik RB750Gr3 (ITA-004) is marked under maintenance pending firmware update.',time:'45 min ago',catKey:'it_assets',resolved:false},
+  {id:'al-2',type:'warning',title:'MikroTik Router Needs Firmware',desc:'MikroTik RB750Gr3 (MOH-MBA004) is marked under maintenance pending firmware update.',time:'45 min ago',catKey:'it_assets',resolved:false},
   {id:'al-3',type:'warning',title:'Waiting Bench Upholstery Repair',desc:'Waiting Area Benches (FNA-005) at Reception require upholstery repair.',time:'2 hrs ago',catKey:'furniture_assets',resolved:false},
   {id:'al-4',type:'info',title:'Low Stock: Thermal Paste',desc:'Thermal Paste 5g (ITN-001) running low. Consider restocking soon.',time:'4 hrs ago',catKey:'it_consumables',resolved:false},
 ];
 
 const NOTIFS = [
   {icon:'ti-alert-circle',col:'var(--red-lt)',ic:'var(--red)',text:'Ford Ranger <strong>CRA-003</strong> flagged for service — Vehicle Bay',time:'10 min ago',unread:true},
-  {icon:'ti-tool',col:'var(--orange-lt)',ic:'var(--orange)',text:'MikroTik Router <strong>ITA-004</strong> under maintenance',time:'45 min ago',unread:true},
+  {icon:'ti-tool',col:'var(--orange-lt)',ic:'var(--orange)',text:'MikroTik Router <strong>MOH-MBA004</strong> under maintenance',time:'45 min ago',unread:true},
   {icon:'ti-armchair',col:'var(--orange-lt)',ic:'var(--orange)',text:'Waiting Bench <strong>FNA-005</strong> needs upholstery repair',time:'2 hrs ago',unread:true},
   {icon:'ti-package',col:'var(--blue-lt)',ic:'var(--blue)',text:'Low stock: Thermal Paste <strong>ITN-001</strong>',time:'4 hrs ago',unread:false},
 ];
@@ -1289,19 +1255,14 @@ function navigate(page) {
   const pel = document.getElementById('page-' + page); if (pel) pel.classList.add('active');
   const nel = document.querySelector(`.nav-item[data-page="${page}"]`); if (nel) nel.classList.add('active');
   curPage = page;
-
-  // Scroll content back to top on page change
   const content = document.querySelector('.content');
   if (content) content.scrollTop = 0;
 
   let icon = 'ti-layout-dashboard', label = 'Dashboard';
   const pmap = {
-    stores: ['ti-building-hospital','All Stores'],
-    alerts: ['ti-alert-triangle','Alerts'],
-    settings: ['ti-settings','Settings'],
-    profile: ['ti-user-circle','My Profile'],
-    'account-settings': ['ti-settings-2','Account Settings'],
-    security: ['ti-shield-lock','Security'],
+    stores:['ti-building-hospital','All Stores'],alerts:['ti-alert-triangle','Alerts'],
+    settings:['ti-settings','Settings'],profile:['ti-user-circle','My Profile'],
+    'account-settings':['ti-settings-2','Account Settings'],security:['ti-shield-lock','Security'],
   };
   if (pmap[page]) { icon = pmap[page][0]; label = pmap[page][1]; }
   else if (page.includes('_')) {
@@ -1346,55 +1307,68 @@ function allItems() {
 function renderDashboard() {
   updateBadges();
   const items = allItems();
-  const total = items.length;
-  const active = items.filter(a => a.status === 'Active').length;
-  const maint = items.filter(a => a.status === 'Maintenance').length;
-  const fault = items.filter(a => a.status === 'Inactive').length;
-  const stor = items.filter(a => a.status === 'In Storage').length;
+  const total = items.length, active = items.filter(a=>a.status==='Active').length;
+  const maint = items.filter(a=>a.status==='Maintenance').length, fault = items.filter(a=>a.status==='Inactive').length;
+  const stor  = items.filter(a=>a.status==='In Storage').length;
+  const set = (id,v) => { const el=document.getElementById(id); if(el) el.textContent=v; };
+  set('kpi-total',total); set('kpi-active',active); set('kpi-maint',maint); set('kpi-fault',fault);
 
-  const set = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
-  set('kpi-total', total); set('kpi-active', active); set('kpi-maint', maint); set('kpi-fault', fault);
-
-  document.getElementById('dash-cats').innerHTML = Object.entries(TOP).map(([k, c]) => {
-    const count = Object.values(DB[k]).reduce((s, arr) => s + arr.length, 0);
+  document.getElementById('dash-cats').innerHTML = Object.entries(TOP).map(([k,c]) => {
+    const count = Object.values(DB[k]).reduce((s,arr)=>s+arr.length,0);
     return `<div class="cat-card" onclick="navigate('${k}_assets')">
       <div class="cc-ico" style="background:${c.bg}"><i class="ti ${c.icon}" style="color:${c.color}"></i></div>
       <div><div class="cc-num" style="color:${c.color}">${count}</div><div class="cc-lbl">${c.label}</div></div>
     </div>`;
   }).join('');
 
-  const sColors = ['#2563eb','#059669','#d97706','#7c3aed','#0891b2'];
-  const storeCounts = STORES.map(s => {
-    let c = 0; allItems().forEach(a => { if (a.store === s.name) c++; }); return { ...s, count: c };
-  });
-  const mx = Math.max(...storeCounts.map(s => s.count), 1);
-  document.getElementById('dash-store-bars').innerHTML = storeCounts.map((s, i) => `
+  const sColors=['#2563eb','#059669','#d97706','#7c3aed','#0891b2'];
+  const storeCounts=STORES.map(s=>{ let c=0; allItems().forEach(a=>{if(a.store===s.name)c++;}); return{...s,count:c}; });
+  const mx=Math.max(...storeCounts.map(s=>s.count),1);
+  document.getElementById('dash-store-bars').innerHTML=storeCounts.map((s,i)=>`
     <div class="sbar-item">
       <div class="sbar-row"><div class="sbar-lbl"><i class="ti ti-building-hospital"></i>${s.name}</div><div class="sbar-cnt">${s.count}</div></div>
       <div class="bar-track"><div class="bar-fill" style="width:${Math.round(s.count/mx*100)}%;background:${sColors[i]||'#94a3b8'}"></div></div>
     </div>`).join('');
 
-  document.getElementById('dash-status').innerHTML = `
+  document.getElementById('dash-status').innerHTML=`
     <div style="display:flex;justify-content:space-between;align-items:center;padding:9px;background:var(--green-lt);border-radius:var(--rsm)"><div style="display:flex;align-items:center;gap:8px"><i class="ti ti-circle-check" style="color:var(--green)"></i><span style="font-size:13px;font-weight:600">Active</span></div><span class="badge b-active">${active}</span></div>
     <div style="display:flex;justify-content:space-between;align-items:center;padding:9px;background:var(--orange-lt);border-radius:var(--rsm)"><div style="display:flex;align-items:center;gap:8px"><i class="ti ti-tool" style="color:var(--orange)"></i><span style="font-size:13px;font-weight:600">Maintenance</span></div><span class="badge b-maint">${maint}</span></div>
     <div style="display:flex;justify-content:space-between;align-items:center;padding:9px;background:var(--purple-lt);border-radius:var(--rsm)"><div style="display:flex;align-items:center;gap:8px"><i class="ti ti-archive" style="color:var(--purple)"></i><span style="font-size:13px;font-weight:600">In Storage</span></div><span class="badge b-storage">${stor}</span></div>
     <div style="display:flex;justify-content:space-between;align-items:center;padding:9px;background:var(--red-lt);border-radius:var(--rsm)"><div style="display:flex;align-items:center;gap:8px"><i class="ti ti-alert-circle" style="color:var(--red)"></i><span style="font-size:13px;font-weight:600">Inactive</span></div><span class="badge b-inactive">${fault}</span></div>`;
 
-  const acts = [
+  const acts=[
     {ico:'ti-car',cls:'green-lt',c:'green',text:'<strong>Ford Ranger CRA-003</strong> flagged for maintenance — Vehicle Bay',time:'10 min ago'},
-    {ico:'ti-tool',cls:'orange-lt',c:'orange',text:'<strong>MikroTik ITA-004</strong> sent for firmware update',time:'45 min ago'},
+    {ico:'ti-tool',cls:'orange-lt',c:'orange',text:'<strong>MikroTik MOH-MBA004</strong> sent for firmware update',time:'45 min ago'},
     {ico:'ti-armchair',cls:'orange-lt',c:'orange',text:'Waiting bench <strong>FNA-005</strong> needs upholstery repair',time:'2 hrs ago'},
     {ico:'ti-package',cls:'blue-lt',c:'blue',text:'Low stock alert: Thermal Paste <strong>ITN-001</strong>',time:'4 hrs ago'},
-    {ico:'ti-circle-check',cls:'green-lt',c:'green',text:'<strong>Dell Latitude ITA-001</strong> assigned to Finance Dept',time:'Yesterday'},
+    {ico:'ti-circle-check',cls:'green-lt',c:'green',text:'<strong>Dell Latitude MOH-KAB001</strong> assigned to Karim Ali, IT Officer',time:'Yesterday'},
   ];
-  document.getElementById('dash-activity').innerHTML = acts.map(a => `
+  document.getElementById('dash-activity').innerHTML=acts.map(a=>`
     <div class="al-item"><div class="al-ico" style="background:var(--${a.cls})"><i class="ti ${a.ico}" style="color:var(--${a.c})"></i></div>
     <div><div class="al-text">${a.text}</div><div class="al-time">${a.time}</div></div></div>`).join('');
 
-  document.getElementById('notifList').innerHTML = NOTIFS.map(n => `
+  document.getElementById('notifList').innerHTML=NOTIFS.map(n=>`
     <div class="ni"><div class="ni-icon" style="background:${n.col}"><i class="ti ${n.icon}" style="color:${n.ic}"></i></div>
     <div class="ni-body"><div class="ni-text">${n.text}</div><div class="ni-time">${n.time}</div></div>
-    ${n.unread ? '<div class="ni-dot"></div>' : ''}</div>`).join('');
+    ${n.unread?'<div class="ni-dot"></div>':''}</div>`).join('');
+}
+
+/* ── IT-SPECIFIC TABLE HELPERS ── */
+function isIT(topKey){ return topKey === 'it'; }
+
+function assignedCell(a, topKey) {
+  if (isIT(topKey) && a.assignedName) {
+    return `<div class="person-cell">
+      <div class="person-name">${a.assignedName}</div>
+      ${a.assignedTitle ? `<div class="person-title">${a.assignedTitle}</div>` : ''}
+      ${a.assignedTel   ? `<div class="person-tel"><i class="ti ti-phone"></i>${a.assignedTel}</div>` : ''}
+    </div>`;
+  }
+  return a.assigned || a.assignedName || '—';
+}
+
+function conditionBadge(c) {
+  return `<span class="badge ${CB[c]||'b-info'}"><i class="ti ${CI[c]||'ti-minus'}"></i>${c||'—'}</span>`;
 }
 
 function renderCatPage(pageKey) {
@@ -1403,6 +1377,7 @@ function renderCatPage(pageKey) {
   const icon = CAT_ICON[pageKey];
   const clr = tc.color, bg = tc.bg;
   const addLabels = { it:'Add IT Record', furniture:'Add Furniture Record', cars:'Add Vehicle Record' };
+  const isItPage = isIT(topKey);
 
   document.getElementById('page-' + pageKey).innerHTML = `
     <div class="ph">
@@ -1414,25 +1389,39 @@ function renderCatPage(pageKey) {
     </div>
     <div class="panel">
       <div class="subtype-tabs" style="--tab-clr:${clr}">
-        ${Object.entries(SUB).map(([sk, scc]) => {
-          const si = topKey === 'it' ? scc.itIcon : topKey === 'furniture' ? scc.furIcon : scc.carIcon;
+        ${Object.entries(SUB).map(([sk,scc]) => {
+          const si = topKey==='it' ? scc.itIcon : topKey==='furniture' ? scc.furIcon : scc.carIcon;
           const cnt = DB[topKey][sk]?.length || 0;
-          return `<div class="subtype-tab${sk === subKey ? ' active' : ''}" onclick="navigate('${topKey}_${sk}')">
+          return `<div class="subtype-tab${sk===subKey?' active':''}" onclick="navigate('${topKey}_${sk}')">
             <i class="ti ${si}"></i>${scc.label} <span style="font-family:var(--mono);font-size:11px;margin-left:4px;opacity:.6">${cnt}</span>
           </div>`;
         }).join('')}
       </div>
       <div class="fbar">
-        <div class="sw"><i class="ti ti-search"></i><input type="text" id="sq-${pageKey}" placeholder="Search name, ID..." oninput="drawTable('${pageKey}')"/></div>
+        <div class="sw"><i class="ti ti-search"></i><input type="text" id="sq-${pageKey}" placeholder="Search name, serial, engraving..." oninput="drawTable('${pageKey}')"/></div>
         <select class="fsel" id="sf-store-${pageKey}" onchange="drawTable('${pageKey}')">
-          <option value="">All Stores</option>${STORES.map(s => `<option>${s.name}</option>`).join('')}
+          <option value="">All Stores</option>${STORES.map(s=>`<option>${s.name}</option>`).join('')}
         </select>
         <select class="fsel" id="sf-status-${pageKey}" onchange="drawTable('${pageKey}')">
           <option value="">All Status</option><option>Active</option><option>Maintenance</option><option>Inactive</option><option>In Storage</option>
         </select>
+        <select class="fsel" id="sf-cond-${pageKey}" onchange="drawTable('${pageKey}')">
+          <option value="">All Conditions</option><option>New</option><option>Good</option><option>Fair</option><option>Poor</option>
+        </select>
       </div>
       <div class="tw"><table>
-        <thead><tr><th>Asset</th>${topKey==='it'?'<th>Model</th>':''}<th>Serial No.</th><th>Store</th><th>Assigned To</th><th>Status</th><th>Date</th><th>Actions</th></tr></thead>
+        <thead><tr>
+          <th>Asset</th>
+          ${isItPage ? '<th>Manufacturer</th><th>Model</th><th>Specifications</th>' : ''}
+          ${subKey === 'assets' ? '<th>Serial No.</th>' : '<th>Qty / Unit</th>'}
+          ${isItPage && subKey === 'assets' ? '<th>Engraving No.</th>' : ''}
+          <th>Store</th>
+          <th>Assigned To</th>
+          <th>Status</th>
+          <th>Condition</th>
+          <th>Date</th>
+          <th>Actions</th>
+        </tr></thead>
         <tbody id="tb-${pageKey}"></tbody>
       </table></div>
       <div class="pg-bar"><div class="pg-info" id="pg-${pageKey}"></div></div>
@@ -1442,35 +1431,78 @@ function renderCatPage(pageKey) {
 
 function drawTable(pageKey) {
   const [topKey, subKey] = pageKey.split('_');
-  const q = (document.getElementById('sq-' + pageKey)?.value || '').toLowerCase();
-  const sf = document.getElementById('sf-store-' + pageKey)?.value || '';
-  const ss = document.getElementById('sf-status-' + pageKey)?.value || '';
-  const tc = TOP[topKey]; const icon = CAT_ICON[pageKey];
+  const q   = (document.getElementById('sq-'+pageKey)?.value||'').toLowerCase();
+  const sf  = document.getElementById('sf-store-'+pageKey)?.value||'';
+  const ss  = document.getElementById('sf-status-'+pageKey)?.value||'';
+  const sc  = document.getElementById('sf-cond-'+pageKey)?.value||'';
+  const tc  = TOP[topKey]; const icon = CAT_ICON[pageKey];
+  const isItPage = isIT(topKey);
+
   const rows = DB[topKey][subKey].filter(a =>
-    (!q || (a.name + (a.serial||'') + (a.model||'') + (a.assigned || '')).toLowerCase().includes(q)) &&
-    (!sf || a.store === sf) && (!ss || a.status === ss));
-  const sub = document.getElementById('cat-sub-' + pageKey); if (sub) sub.textContent = `${DB[topKey][subKey].length} records`;
-  const pg = document.getElementById('pg-' + pageKey); if (pg) pg.textContent = `Showing ${rows.length} of ${DB[topKey][subKey].length} records`;
-  document.getElementById('tb-' + pageKey).innerHTML = rows.length ? rows.map(a => `
+    (!q || (a.name+(a.serial||'')+(a.manufacturer||'')+(a.model||'')+(a.specs||'')+(a.assignedName||a.assigned||'')+(a.engravingNo||'')).toLowerCase().includes(q)) &&
+    (!sf || a.store===sf) && (!ss || a.status===ss) && (!sc || a.condition===sc));
+
+  const sub = document.getElementById('cat-sub-'+pageKey); if(sub) sub.textContent=`${DB[topKey][subKey].length} records`;
+  const pg  = document.getElementById('pg-'+pageKey); if(pg) pg.textContent=`Showing ${rows.length} of ${DB[topKey][subKey].length} records`;
+
+  const isAssets = subKey === 'assets';
+  const colSpan = isItPage && isAssets ? 12 : isItPage ? 10 : isAssets ? 8 : 7;
+  document.getElementById('tb-'+pageKey).innerHTML = rows.length ? rows.map(a => `
     <tr>
-      <td><div class="acell"><div class="acell-ico" style="background:${tc.bg}"><i class="ti ${icon}" style="color:${tc.color}"></i></div><div><div class="acell-name">${a.name}</div></div></div></td>
-      ${topKey==='it'?`<td style="font-size:12px;color:var(--muted)">${a.model||'—'}</td>`:''}
-      <td><code style="font-size:11px;background:var(--bg);padding:2px 7px;border-radius:4px;border:1px solid var(--border);white-space:nowrap">${a.serial||'—'}</code></td>
-      <td><span class="store-tag"><i class="ti ti-building-hospital"></i>${a.store}</span></td>
-      <td>${a.assigned || '—'}</td>
-      <td><span class="badge ${SB[a.status] || 'b-active'}"><i class="ti ${SI[a.status]}"></i>${a.status}</span></td>
-      <td style="font-family:var(--mono);font-size:11px;color:var(--muted)">${a.date || '—'}</td>
-      <td><div class="acts">
-        <button class="act v" onclick="openView('${pageKey}','${a.serial}')"><i class="ti ti-eye"></i></button>
-        <button class="act e" onclick="openEdit('${pageKey}','${a.serial}')"><i class="ti ti-pencil"></i></button>
-        <button class="act d" onclick="openDel('${pageKey}','${a.serial}')"><i class="ti ti-trash"></i></button>
+      <td><div class="acell">
+        <div class="acell-ico" style="background:${tc.bg}"><i class="ti ${icon}" style="color:${tc.color}"></i></div>
+        <div><div class="acell-name">${a.name}</div></div>
       </div></td>
-    </tr>`).join('') : `<tr><td colspan="8" class="empty-td"><i class="ti ti-database-off"></i>No records found</td></tr>`;
+      ${isItPage ? `
+      <td><span style="font-size:12px;font-weight:600;color:var(--text)">${a.manufacturer||'—'}</span></td>
+      <td style="font-size:12px;color:var(--muted);max-width:140px"><div style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis" title="${a.model||''}">${a.model||'—'}</div></td>
+      <td style="max-width:200px"><div style="font-size:11px;color:var(--muted);line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden" title="${a.specs||''}">${a.specs||'—'}</div></td>
+      ` : ''}
+      ${isAssets
+        ? `<td><code style="font-size:11px;background:var(--bg);padding:2px 7px;border-radius:4px;border:1px solid var(--border);white-space:nowrap">${a.serial||'—'}</code></td>`
+        : `<td><span style="font-size:13px;font-weight:600;color:var(--text)">${a.qty||'—'}</span><span style="font-size:11px;color:var(--muted);margin-left:4px">${a.unit||''}</span></td>`
+      }
+      ${isItPage && isAssets ? `<td>${a.engravingNo ? `<span class="engrave-tag"><i class="ti ti-pencil-minus"></i>${a.engravingNo}</span>` : '<span style="color:var(--light);font-size:12px">—</span>'}</td>` : ''}
+      <td><span class="store-tag"><i class="ti ti-building-hospital"></i>${a.store}</span></td>
+      <td>${assignedCell(a,topKey)}</td>
+      <td><span class="badge ${SB[a.status]||'b-active'}"><i class="ti ${SI[a.status]}"></i>${a.status}</span></td>
+      <td>${conditionBadge(a.condition)}</td>
+      <td style="font-family:var(--mono);font-size:11px;color:var(--muted)">${a.date||'—'}</td>
+      <td><div class="acts">
+        <button class="act v" onclick="openView('${pageKey}','${a.serial||a.name}')"><i class="ti ti-eye"></i></button>
+        <button class="act e" onclick="openEdit('${pageKey}','${a.serial||a.name}')"><i class="ti ti-pencil"></i></button>
+        <button class="act d" onclick="openDel('${pageKey}','${a.serial||a.name}')"><i class="ti ti-trash"></i></button>
+      </div></td>
+    </tr>`).join('') :
+    `<tr><td colspan="${colSpan}" class="empty-td"><i class="ti ti-database-off"></i>No records found</td></tr>`;
 }
 
-function buildStoreOptions(sel = '') {
-  const s = document.getElementById('fmStore'); if (!s) return;
-  s.innerHTML = STORES.map(st => `<option${st.name === sel ? ' selected' : ''}>${st.name}</option>`).join('');
+function buildStoreOptions(sel='') {
+  const s = document.getElementById('fmStore'); if(!s) return;
+  s.innerHTML = STORES.map(st=>`<option${st.name===sel?' selected':''}>${st.name}</option>`).join('');
+}
+
+/* ── FORM FIELD VISIBILITY ── */
+function setFormMode(topKey, subKey) {
+  const isItPage = isIT(topKey);
+  const isAssets = subKey === 'assets';
+  // IT-only fields
+  ['fmManufacturerWrap','fmModelWrap','fmEngraveWrap','fmSpecsWrap','fmAssignedNameWrap','fmAssignedTitleWrap','fmAssignedTelWrap'].forEach(id => {
+    const el = document.getElementById(id); if(el) el.style.display = isItPage ? '' : 'none';
+  });
+  // Engraving only for IT assets
+  const ew = document.getElementById('fmEngraveWrap');
+  if(ew) ew.style.display = (isItPage && isAssets) ? '' : 'none';
+  // Serial number only for assets
+  const sw = document.getElementById('fmSerialWrap');
+  if(sw) sw.style.display = isAssets ? '' : 'none';
+  // Qty + Unit only for non-assets
+  ['fmQtyWrap','fmUnitWrap'].forEach(id => {
+    const el = document.getElementById(id); if(el) el.style.display = isAssets ? 'none' : '';
+  });
+  // Generic assigned (non-IT)
+  const gw = document.getElementById('fmAssignedWrap');
+  if(gw) gw.style.display = isItPage ? 'none' : '';
 }
 
 function openAdd(pageKey) {
@@ -1479,138 +1511,165 @@ function openAdd(pageKey) {
   const tc = TOP[topKey];
   document.getElementById('fmPageKey').value = pageKey;
   document.getElementById('fmIco').style.background = tc.bg;
-  document.getElementById('fmIcoI').className = `ti ti-plus`;
+  document.getElementById('fmIcoI').className = 'ti ti-plus';
   document.getElementById('fmIcoI').style.color = tc.color;
   document.getElementById('fmTitle').textContent = `Add ${tc.label} ${SUB[subKey].label}`;
   document.getElementById('fmSub').textContent = `${tc.label} — ${SUB[subKey].label}`;
-  document.getElementById('fmSaveBtn').innerHTML = `<i class="ti ti-check"></i> Save`;
+  document.getElementById('fmSaveBtn').innerHTML = '<i class="ti ti-check"></i> Save';
   document.getElementById('fmEditId').value = '';
-  ['fmName','fmModel','fmSerial','fmAssigned','fmNotes'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
-  document.getElementById('fmDate').value = new Date().toISOString().slice(0, 10);
+  ['fmName','fmManufacturer','fmModel','fmSerial','fmEngravingNo','fmAssigned','fmAssignedName','fmAssignedTitle','fmAssignedTel','fmSpecs','fmNotes','fmQty','fmUnit'].forEach(id => {
+    const el = document.getElementById(id); if(el) el.value = '';
+  });
+  document.getElementById('fmDate').value = new Date().toISOString().slice(0,10);
   document.getElementById('fmStatus').value = 'Active';
   document.getElementById('fmCond').value = 'New';
-  const mw = document.getElementById('fmModelWrap');
-  if (mw) mw.style.display = topKey === 'it' ? '' : 'none';
+  setFormMode(topKey, subKey);
   buildStoreOptions();
   openOv('formOv');
 }
 
-function openEdit(pageKey, serial) {
+function openEdit(pageKey, identifier) {
   const [topKey, subKey] = pageKey.split('_');
-  const a = DB[topKey][subKey].find(x => x.serial === serial); if (!a) return;
-  editTgt = { pageKey, serial };
+  const isAssets = subKey === 'assets';
+  const a = isAssets ? DB[topKey][subKey].find(x=>x.serial===identifier) : DB[topKey][subKey].find(x=>x.name===identifier); if(!a) return;
+  editTgt = { pageKey, identifier };
   const tc = TOP[topKey];
   document.getElementById('fmPageKey').value = pageKey;
   document.getElementById('fmIco').style.background = tc.bg;
-  document.getElementById('fmIcoI').className = `ti ti-pencil`;
+  document.getElementById('fmIcoI').className = 'ti ti-pencil';
   document.getElementById('fmIcoI').style.color = tc.color;
   document.getElementById('fmTitle').textContent = `Edit — ${a.name}`;
-  document.getElementById('fmSub').textContent = `Serial: ${a.serial}`;
-  document.getElementById('fmSaveBtn').innerHTML = `<i class="ti ti-check"></i> Update`;
-  document.getElementById('fmEditId').value = a.serial;
+  document.getElementById('fmSub').textContent = isAssets ? `Serial: ${a.serial}` : `${SUB[subKey].label}`;
+  document.getElementById('fmSaveBtn').innerHTML = '<i class="ti ti-check"></i> Update';
+  document.getElementById('fmEditId').value = isAssets ? a.serial : a.name;
   document.getElementById('fmName').value = a.name;
-  document.getElementById('fmSerial').value = a.serial || '';
-  document.getElementById('fmModel').value = a.model || '';
-  document.getElementById('fmAssigned').value = a.assigned || '';
-  document.getElementById('fmNotes').value = a.notes || '';
-  document.getElementById('fmDate').value = a.date || '';
-  document.getElementById('fmStatus').value = a.status || 'Active';
-  document.getElementById('fmCond').value = a.condition || 'New';
-  const mw = document.getElementById('fmModelWrap');
-  if (mw) mw.style.display = topKey === 'it' ? '' : 'none';
+  document.getElementById('fmSerial').value = a.serial||'';
+  document.getElementById('fmManufacturer').value = a.manufacturer||'';
+  document.getElementById('fmModel').value = a.model||'';
+  document.getElementById('fmEngravingNo').value = a.engravingNo||'';
+  document.getElementById('fmAssigned').value = a.assigned||'';
+  document.getElementById('fmAssignedName').value = a.assignedName||'';
+  document.getElementById('fmAssignedTitle').value = a.assignedTitle||'';
+  document.getElementById('fmAssignedTel').value = a.assignedTel||'';
+  document.getElementById('fmSpecs').value = a.specs||'';
+  document.getElementById('fmNotes').value = a.notes||'';
+  document.getElementById('fmQty').value = a.qty||'';
+  document.getElementById('fmUnit').value = a.unit||'';
+  document.getElementById('fmDate').value = a.date||'';
+  document.getElementById('fmStatus').value = a.status||'Active';
+  document.getElementById('fmCond').value = a.condition||'New';
+  setFormMode(topKey, subKey);
   buildStoreOptions(a.store);
   openOv('formOv');
 }
 
 function saveAsset() {
   const name = document.getElementById('fmName').value.trim();
-  if (!name) { toast('Please enter an asset name.', 'error'); return; }
+  if(!name){ toast('Please enter an asset name.','error'); return; }
   const pageKey = document.getElementById('fmPageKey').value;
   const [topKey, subKey] = pageKey.split('_');
+  const isAssets = subKey === 'assets';
   const serialVal = document.getElementById('fmSerial').value.trim() || genSerial(topKey);
+  const isItPage = isIT(topKey);
   const data = {
     name,
-    serial: serialVal,
-    model: topKey === 'it' ? (document.getElementById('fmModel').value.trim() || name) : undefined,
+    serial: isAssets ? serialVal : undefined,
+    qty: !isAssets ? (parseInt(document.getElementById('fmQty').value)||1) : undefined,
+    unit: !isAssets ? document.getElementById('fmUnit').value.trim() : undefined,
+    manufacturer: isItPage ? document.getElementById('fmManufacturer').value.trim() : undefined,
+    model: isItPage ? document.getElementById('fmModel').value.trim() : undefined,
+    specs: isItPage ? document.getElementById('fmSpecs').value.trim() : undefined,
+    engravingNo: (isItPage && isAssets) ? document.getElementById('fmEngravingNo').value.trim() : undefined,
     store: document.getElementById('fmStore').value,
-    assigned: document.getElementById('fmAssigned').value,
+    assignedName: isItPage ? document.getElementById('fmAssignedName').value.trim() : undefined,
+    assignedTitle: isItPage ? document.getElementById('fmAssignedTitle').value.trim() : undefined,
+    assignedTel: isItPage ? document.getElementById('fmAssignedTel').value.trim() : undefined,
+    assigned: !isItPage ? document.getElementById('fmAssigned').value.trim() : undefined,
     status: document.getElementById('fmStatus').value,
-    date: document.getElementById('fmDate').value,
     condition: document.getElementById('fmCond').value,
-    notes: document.getElementById('fmNotes').value
+    date: document.getElementById('fmDate').value,
+    notes: document.getElementById('fmNotes').value,
   };
-  if (editTgt) {
-    const i = DB[topKey][subKey].findIndex(x => x.serial === editTgt.serial);
-    if (i > -1) DB[topKey][subKey][i] = { ...DB[topKey][subKey][i], ...data };
+  if(editTgt) {
+    const i = isAssets
+      ? DB[topKey][subKey].findIndex(x=>x.serial===editTgt.identifier)
+      : DB[topKey][subKey].findIndex(x=>x.name===editTgt.identifier);
+    if(i>-1) DB[topKey][subKey][i] = { ...DB[topKey][subKey][i], ...data };
   } else {
     DB[topKey][subKey].unshift(data);
   }
-  closeOv('formOv'); refresh(pageKey); toast(`Asset ${editTgt ? 'updated' : 'added'} successfully.`, 'success');
+  closeOv('formOv'); refresh(pageKey); toast(`Asset ${editTgt?'updated':'added'} successfully.`,'success');
 }
 
-function openView(pageKey, serial) {
+function openView(pageKey, identifier) {
   const [topKey, subKey] = pageKey.split('_');
-  const a = DB[topKey][subKey].find(x => x.serial === serial); if (!a) return;
-  viewTgt = { pageKey, serial };
+  const isAssets = subKey === 'assets';
+  const a = isAssets ? DB[topKey][subKey].find(x=>x.serial===identifier) : DB[topKey][subKey].find(x=>x.name===identifier); if(!a) return;
+  viewTgt = { pageKey, identifier };
   const tc = TOP[topKey];
-  document.getElementById('vmSub').textContent = `${tc.label} ${SUB[subKey].label} · ${a.serial}`;
+  const isItPage = isIT(topKey);
+  document.getElementById('vmSub').textContent = `${tc.label} ${SUB[subKey].label}${isAssets ? ' · '+a.serial : ''}`;
   document.getElementById('vmGrid').innerHTML = `
     <div class="vi full"><div class="vi-lbl">Asset Name</div><div class="vi-val" style="font-size:15px;font-weight:700">${a.name}</div></div>
-    <div class="vi"><div class="vi-lbl">Serial Number</div><div class="vi-val" style="font-family:var(--mono);font-weight:600">${a.serial}</div></div>
-    ${topKey==='it' ? `<div class="vi"><div class="vi-lbl">Model</div><div class="vi-val">${a.model||'—'}</div></div>` : ''}
+    ${isAssets ? `<div class="vi"><div class="vi-lbl">Serial Number</div><div class="vi-val mono">${a.serial}</div></div>` : `<div class="vi"><div class="vi-lbl">Quantity</div><div class="vi-val"><strong>${a.qty||'—'}</strong> <span style="color:var(--muted);font-size:12px">${a.unit||''}</span></div></div>`}
+    ${isItPage && isAssets && a.engravingNo ? `<div class="vi"><div class="vi-lbl">Engraving No.</div><div class="vi-val"><span class="engrave-tag"><i class="ti ti-pencil-minus"></i>${a.engravingNo}</span></div></div>` : ''}
+    ${isItPage ? `<div class="vi"><div class="vi-lbl">Manufacturer</div><div class="vi-val" style="font-weight:700">${a.manufacturer||'—'}</div></div>` : ''}
+    ${isItPage ? `<div class="vi"><div class="vi-lbl">Model</div><div class="vi-val">${a.model||'—'}</div></div>` : ''}
+    ${isItPage ? `<div class="vi full"><div class="vi-lbl">Specifications</div><div class="vi-val" style="line-height:1.6">${a.specs||'—'}</div></div>` : ''}
     <div class="vi"><div class="vi-lbl">Category</div><div class="vi-val">${tc.label} — ${SUB[subKey].label}</div></div>
     <div class="vi"><div class="vi-lbl">Store</div><div class="vi-val">${a.store}</div></div>
-    <div class="vi"><div class="vi-lbl">Assigned To</div><div class="vi-val">${a.assigned || '—'}</div></div>
+    ${isItPage ? `
+    <div class="vi"><div class="vi-lbl">Assigned To</div><div class="vi-val">${a.assignedName||'—'}</div></div>
+    <div class="vi"><div class="vi-lbl">Title / Designation</div><div class="vi-val">${a.assignedTitle||'—'}</div></div>
+    <div class="vi"><div class="vi-lbl">Tel No.</div><div class="vi-val mono">${a.assignedTel||'—'}</div></div>
+    ` : `<div class="vi"><div class="vi-lbl">Assigned To</div><div class="vi-val">${a.assigned||'—'}</div></div>`}
     <div class="vi"><div class="vi-lbl">Status</div><div class="vi-val"><span class="badge ${SB[a.status]}">${a.status}</span></div></div>
-    <div class="vi"><div class="vi-lbl">Condition</div><div class="vi-val">${a.condition || '—'}</div></div>
-    <div class="vi"><div class="vi-lbl">Date Acquired</div><div class="vi-val" style="font-family:var(--mono)">${a.date || '—'}</div></div>
-    <div class="vi full"><div class="vi-lbl">Notes</div><div class="vi-val">${a.notes || 'No notes added.'}</div></div>`;
+    <div class="vi"><div class="vi-lbl">Condition</div><div class="vi-val">${conditionBadge(a.condition)}</div></div>
+    <div class="vi"><div class="vi-lbl">Date Acquired</div><div class="vi-val mono">${a.date||'—'}</div></div>
+    ${a.notes ? `<div class="vi full"><div class="vi-lbl">Notes / Remarks</div><div class="vi-val">${a.notes}</div></div>` : ''}`;
+
   openOv('viewOv');
 }
 
-function switchToEdit() { if (!viewTgt) return; closeOv('viewOv'); setTimeout(() => openEdit(viewTgt.pageKey, viewTgt.serial), 150); }
+function switchToEdit() { if(!viewTgt) return; closeOv('viewOv'); setTimeout(()=>openEdit(viewTgt.pageKey,viewTgt.identifier),150); }
 
-function openDel(pageKey, serial) {
+function openDel(pageKey, identifier) {
   const [topKey, subKey] = pageKey.split('_');
-  const a = DB[topKey][subKey].find(x => x.serial === serial); if (!a) return;
-  editTgt = { pageKey, serial };
-  document.getElementById('delName').textContent = `"${a.name}" (${a.serial})`;
+  const isAssets = subKey === 'assets';
+  const a = isAssets ? DB[topKey][subKey].find(x=>x.serial===identifier) : DB[topKey][subKey].find(x=>x.name===identifier); if(!a) return;
+  editTgt = { pageKey, identifier };
+  document.getElementById('delName').textContent = `"${a.name}"${isAssets ? ' ('+a.serial+')' : ''}`;
   openOv('delOv');
 }
 
 function confirmDelete() {
-  if (!editTgt) return;
+  if(!editTgt) return;
   const [topKey, subKey] = editTgt.pageKey.split('_');
-  DB[topKey][subKey] = DB[topKey][subKey].filter(x => x.serial !== editTgt.serial);
-  closeOv('delOv'); refresh(editTgt.pageKey); toast('Asset deleted.', 'info');
+  const isAssets = subKey === 'assets';
+  DB[topKey][subKey] = isAssets
+    ? DB[topKey][subKey].filter(x=>x.serial!==editTgt.identifier)
+    : DB[topKey][subKey].filter(x=>x.name!==editTgt.identifier);
+  closeOv('delOv'); refresh(editTgt.pageKey); toast('Asset deleted.','info');
 }
 
 function refresh(pageKey) {
-  if (pageKey && pageKey.includes('_')) renderCatPage(pageKey);
-  renderDashboard();
-  updateBadges();
+  if(pageKey && pageKey.includes('_')) renderCatPage(pageKey);
+  renderDashboard(); updateBadges();
 }
 
+/* ── STORES ── */
 function renderStores() {
-  const total = STORES.length;
-  document.getElementById('stores-sub').textContent = `${total} stores across ${Object.keys(STORE_CATS).length} categories`;
-
-  const html = Object.entries(STORE_CATS).map(([catKey, catCfg]) => {
-    const catStores = STORES.filter(s => s.cat === catKey);
-    const catTotal = catStores.reduce((sum, s) => {
-      let inv = 0; allItems().forEach(a => { if (a.store === s.name) inv++; }); return sum + inv;
-    }, 0);
-
-    const cards = catStores.map(s => {
-      let inv = 0; allItems().forEach(a => { if (a.store === s.name) inv++; });
+  document.getElementById('stores-sub').textContent = `${STORES.length} stores across ${Object.keys(STORE_CATS).length} categories`;
+  const html = Object.entries(STORE_CATS).map(([catKey,catCfg]) => {
+    const catStores = STORES.filter(s=>s.cat===catKey);
+    const catTotal = catStores.reduce((sum,s)=>{ let inv=0; allItems().forEach(a=>{if(a.store===s.name)inv++;}); return sum+inv; },0);
+    const cards = catStores.map(s=>{
+      let inv=0; allItems().forEach(a=>{if(a.store===s.name)inv++;});
       return `<div class="store-card" onclick="openStoreDetail('${s.id}')">
         <div class="store-card-hd">
           <div class="store-card-left">
             <div class="store-ico" style="background:${catCfg.color}18"><i class="ti ${catCfg.icon}" style="color:${catCfg.color}"></i></div>
-            <div>
-              <div class="store-name">${s.name}</div>
-              <div class="store-location"><i class="ti ti-map-pin" style="font-size:11px;margin-right:3px;color:var(--muted)"></i>${s.location}</div>
-            </div>
+            <div><div class="store-name">${s.name}</div><div class="store-location"><i class="ti ti-map-pin" style="font-size:11px;margin-right:3px;color:var(--muted)"></i>${s.location}</div></div>
           </div>
           <div style="text-align:right;flex-shrink:0">
             <div style="font-size:11px;color:var(--muted);white-space:nowrap">${s.contact}</div>
@@ -1624,33 +1683,26 @@ function renderStores() {
         </div>
       </div>`;
     }).join('');
-
-    return `
-      <div class="store-cat-group" id="stgrp-${catKey}">
-        <div class="store-cat-header" onclick="toggleStoreGroup('${catKey}')">
-          <div class="store-cat-header-left">
-            <div class="store-cat-icon" style="background:${catCfg.bg}"><i class="ti ${catCfg.icon}" style="color:${catCfg.color}"></i></div>
-            <div>
-              <div class="store-cat-label">${catCfg.label}</div>
-              <div class="store-cat-meta">${catStores.length} stores · ${catTotal} assets</div>
-            </div>
-          </div>
-          <div style="display:flex;align-items:center;gap:10px">
-            <span class="badge" style="background:${catCfg.bg};color:${catCfg.color};border:1px solid ${catCfg.color}30">${catStores.length}</span>
-            <i class="ti ti-chevron-down store-cat-chev" id="stchev-${catKey}" style="color:var(--muted);font-size:16px;transition:transform .2s"></i>
-          </div>
+    return `<div class="store-cat-group" id="stgrp-${catKey}">
+      <div class="store-cat-header" onclick="toggleStoreGroup('${catKey}')">
+        <div class="store-cat-header-left">
+          <div class="store-cat-icon" style="background:${catCfg.bg}"><i class="ti ${catCfg.icon}" style="color:${catCfg.color}"></i></div>
+          <div><div class="store-cat-label">${catCfg.label}</div><div class="store-cat-meta">${catStores.length} stores · ${catTotal} assets</div></div>
         </div>
-        <div class="stores-grid" id="stgrid-${catKey}">${cards}</div>
-      </div>`;
+        <div style="display:flex;align-items:center;gap:10px">
+          <span class="badge" style="background:${catCfg.bg};color:${catCfg.color};border:1px solid ${catCfg.color}30">${catStores.length}</span>
+          <i class="ti ti-chevron-down store-cat-chev" id="stchev-${catKey}" style="color:var(--muted);font-size:16px;transition:transform .2s"></i>
+        </div>
+      </div>
+      <div class="stores-grid" id="stgrid-${catKey}">${cards}</div>
+    </div>`;
   }).join('');
-
   document.getElementById('stores-grid').innerHTML = html;
   closeStoreDetail();
 }
 
 function toggleStoreGroup(catKey) {
-  const grid = document.getElementById('stgrid-' + catKey);
-  const chev = document.getElementById('stchev-' + catKey);
+  const grid=document.getElementById('stgrid-'+catKey), chev=document.getElementById('stchev-'+catKey);
   const isOpen = grid.style.display !== 'none';
   grid.style.display = isOpen ? 'none' : 'grid';
   chev.style.transform = isOpen ? 'rotate(-90deg)' : 'rotate(0deg)';
@@ -1658,7 +1710,7 @@ function toggleStoreGroup(catKey) {
 
 function openStoreDetail(id) {
   openStoreId = id;
-  const s = STORES.find(x => x.id === id); if (!s) return;
+  const s = STORES.find(x=>x.id===id); if(!s) return;
   const catCfg = STORE_CATS[s.cat];
   document.getElementById('store-detail-title').textContent = `${s.name} — ${s.location}`;
   renderStoreTabPanes(id);
@@ -1672,108 +1724,107 @@ function closeStoreDetail() {
   document.getElementById('store-detail').classList.remove('open');
   document.getElementById('stores-grid').style.display = 'block';
   document.getElementById('stores-sub').textContent = `${STORES.length} stores across ${Object.keys(STORE_CATS).length} categories`;
-  document.querySelectorAll('.tab').forEach((t, i) => t.classList.toggle('active', i === 0));
-  document.querySelectorAll('.tab-pane').forEach((t, i) => t.classList.toggle('active', i === 0));
+  document.querySelectorAll('.tab').forEach((t,i)=>t.classList.toggle('active',i===0));
+  document.querySelectorAll('.tab-pane').forEach((t,i)=>t.classList.toggle('active',i===0));
 }
 
 function renderStoreTabPanes(id) {
-  const s = STORES.find(x => x.id === id);  const entryTable = (rows, type) => {
-    if (!rows.length) return `<div style="text-align:center;padding:32px;color:var(--muted)"><i class="ti ti-inbox" style="font-size:36px;display:block;margin-bottom:10px;opacity:.2"></i>No records yet</div>`;
+  const s = STORES.find(x=>x.id===id);
+  const entryTable = (rows,type) => {
+    if(!rows.length) return `<div style="text-align:center;padding:32px;color:var(--muted)"><i class="ti ti-inbox" style="font-size:36px;display:block;margin-bottom:10px;opacity:.2"></i>No records yet</div>`;
     return `<div class="tw"><table>
-      <thead><tr><th>Item</th><th>Category</th><th>Qty</th><th>Condition</th><th>${type === 'received' ? 'From' : 'To'}</th><th>Date</th><th>Notes</th></tr></thead>
-      <tbody>${rows.map(r => `<tr>
+      <thead><tr><th>Item</th><th>Category</th><th>Qty</th><th>Condition</th><th>${type==='received'?'From':'To'}</th><th>Date</th><th>Notes</th></tr></thead>
+      <tbody>${rows.map(r=>`<tr>
         <td style="font-weight:600">${r.item}</td>
         <td><span class="badge b-info">${r.cat}</span></td>
         <td style="font-family:var(--mono);font-size:12px">${r.qty}</td>
-        <td><span class="badge ${r.cond === 'New' || r.cond === 'Good' ? 'b-active' : r.cond === 'Fair' ? 'b-maint' : 'b-inactive'}">${r.cond}</span></td>
-        <td>${r.party || '—'}</td>
-        <td style="font-family:var(--mono);font-size:11px;color:var(--muted)">${r.date || '—'}</td>
-        <td style="color:var(--muted);font-size:12px">${r.notes || '—'}</td>
+        <td>${conditionBadge(r.cond)}</td>
+        <td>${r.party||'—'}</td>
+        <td style="font-family:var(--mono);font-size:11px;color:var(--muted)">${r.date||'—'}</td>
+        <td style="color:var(--muted);font-size:12px">${r.notes||'—'}</td>
       </tr>`).join('')}</tbody></table></div>`;
   };
-  let invRows = [];
-  Object.entries(DB).forEach(([topKey, topVal]) => {
-    Object.entries(topVal).forEach(([subKey, arr]) => {
-      arr.filter(a => a.store === s.name).forEach(a => invRows.push({ ...a, _topKey: topKey, _subKey: subKey }));
+  let invRows=[];
+  Object.entries(DB).forEach(([topKey,topVal])=>{
+    Object.entries(topVal).forEach(([subKey,arr])=>{
+      arr.filter(a=>a.store===s.name).forEach(a=>invRows.push({...a,_topKey:topKey,_subKey:subKey}));
     });
   });
   const invHtml = invRows.length ? `<div class="tw"><table>
-    <thead><tr><th>Asset</th><th>Category</th><th>Assigned To</th><th>Status</th></tr></thead>
-    <tbody>${invRows.map(a => {
-      const tc = TOP[a._topKey]; const icon = CAT_ICON[`${a._topKey}_${a._subKey}`];
+    <thead><tr><th>Asset</th><th>Category</th><th>Assigned To</th><th>Status</th><th>Condition</th></tr></thead>
+    <tbody>${invRows.map(a=>{
+      const tc=TOP[a._topKey]; const icon=CAT_ICON[`${a._topKey}_${a._subKey}`];
       return `<tr>
         <td><div class="acell"><div class="acell-ico" style="background:${tc.bg}"><i class="ti ${icon}" style="color:${tc.color}"></i></div><div><div class="acell-name">${a.name}</div><div class="acell-id">${a.serial||''}</div></div></div></td>
         <td style="color:var(--muted);font-size:12px">${tc.label} — ${SUB[a._subKey].label}</td>
-        <td>${a.assigned || '—'}</td>
+        <td>${assignedCell(a,a._topKey)}</td>
         <td><span class="badge ${SB[a.status]}">${a.status}</span></td>
+        <td>${conditionBadge(a.condition)}</td>
       </tr>`;
     }).join('')}</tbody></table></div>` :
     `<div style="text-align:center;padding:32px;color:var(--muted)"><i class="ti ti-box" style="font-size:36px;display:block;margin-bottom:10px;opacity:.2"></i>No inventory recorded</div>`;
-  document.getElementById('tp-received').innerHTML = entryTable(s.received, 'received');
-  document.getElementById('tp-sent').innerHTML = entryTable(s.sent, 'sent');
+  document.getElementById('tp-received').innerHTML = entryTable(s.received,'received');
+  document.getElementById('tp-sent').innerHTML = entryTable(s.sent,'sent');
   document.getElementById('tp-inventory').innerHTML = invHtml;
 }
 
 function switchTab(tab, el) {
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  document.querySelectorAll('.tab-pane').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.tab-pane').forEach(t=>t.classList.remove('active'));
   el.classList.add('active');
-  document.getElementById('tp-' + tab).classList.add('active');
+  document.getElementById('tp-'+tab).classList.add('active');
 }
 
 function openAddStore() {
-  ['snName','snHosp','snContact','snPhone'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+  ['snName','snHosp','snContact','snPhone'].forEach(id=>{ const el=document.getElementById(id); if(el) el.value=''; });
   openOv('storeOv');
 }
 
 function saveStore() {
-  const name = document.getElementById('snName').value.trim();
-  const loc  = document.getElementById('snHosp').value.trim();
-  const cat  = document.getElementById('snCat').value;
-  if (!name || !loc) { toast('Please fill in store name and location.', 'error'); return; }
-  const catColors = { it:'#2563eb', furniture:'#d97706', vehicles:'#059669' };
-  STORES.push({ id:'store-'+Date.now(), cat, name, location:loc, contact:document.getElementById('snContact').value||'—', phone:document.getElementById('snPhone').value||'—', color:catColors[cat]||'#2563eb', received:[], sent:[] });
-  closeOv('storeOv'); renderStores(); renderDashboard();
-  toast(`Store "${name}" added successfully.`, 'success');
+  const name=document.getElementById('snName').value.trim(), loc=document.getElementById('snHosp').value.trim();
+  const cat=document.getElementById('snCat').value;
+  if(!name||!loc){ toast('Please fill in store name and location.','error'); return; }
+  const catColors={it:'#2563eb',furniture:'#d97706',vehicles:'#059669'};
+  STORES.push({id:'store-'+Date.now(),cat,name,location:loc,contact:document.getElementById('snContact').value||'—',phone:document.getElementById('snPhone').value||'—',color:catColors[cat]||'#2563eb',received:[],sent:[]});
+  closeOv('storeOv'); renderStores(); renderDashboard(); toast(`Store "${name}" added successfully.`,'success');
 }
 
 function openStoreEntry(type) {
-  if (!openStoreId) return;
-  const s = STORES.find(x => x.id === openStoreId);
+  if(!openStoreId) return;
+  const s = STORES.find(x=>x.id===openStoreId);
   document.getElementById('entryType').value = type;
-  document.getElementById('entryTitle').textContent = type === 'received' ? 'Record Received' : 'Record Sent Out';
-  document.getElementById('entrySub').textContent = `${s.name} — ${type === 'received' ? 'Item received into' : 'Item sent from'} this store`;
-  document.getElementById('entryIco').style.background = type === 'received' ? 'var(--green-lt)' : 'var(--orange-lt)';
-  document.getElementById('entryIcoI').className = `ti ${type === 'received' ? 'ti-arrow-down-circle' : 'ti-arrow-up-circle'}`;
-  document.getElementById('entryIcoI').style.color = type === 'received' ? 'var(--green)' : 'var(--orange)';
-  document.getElementById('enDate').value = new Date().toISOString().slice(0, 10);
-  ['enItem','enNotes','enParty'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+  document.getElementById('entryTitle').textContent = type==='received'?'Record Received':'Record Sent Out';
+  document.getElementById('entrySub').textContent = `${s.name} — ${type==='received'?'Item received into':'Item sent from'} this store`;
+  document.getElementById('entryIco').style.background = type==='received'?'var(--green-lt)':'var(--orange-lt)';
+  document.getElementById('entryIcoI').className = `ti ${type==='received'?'ti-arrow-down-circle':'ti-arrow-up-circle'}`;
+  document.getElementById('entryIcoI').style.color = type==='received'?'var(--green)':'var(--orange)';
+  document.getElementById('enDate').value = new Date().toISOString().slice(0,10);
+  ['enItem','enNotes','enParty'].forEach(id=>{ const el=document.getElementById(id); if(el) el.value=''; });
   document.getElementById('enQty').value = 1;
   openOv('entryOv');
 }
 
 function saveEntry() {
   const item = document.getElementById('enItem').value.trim();
-  if (!item) { toast('Please enter item name.', 'error'); return; }
-  const s = STORES.find(x => x.id === openStoreId);
-  const type = document.getElementById('entryType').value;
-  s[type].push({ item, cat:document.getElementById('enCat').value, qty:parseInt(document.getElementById('enQty').value)||1, cond:document.getElementById('enCond').value, date:document.getElementById('enDate').value, party:document.getElementById('enParty').value, notes:document.getElementById('enNotes').value });
-  closeOv('entryOv'); renderStoreTabPanes(openStoreId);
-  toast(`Record saved to ${type === 'received' ? 'Received' : 'Sent'} log.`, 'success');
+  if(!item){ toast('Please enter item name.','error'); return; }
+  const s=STORES.find(x=>x.id===openStoreId), type=document.getElementById('entryType').value;
+  s[type].push({item,cat:document.getElementById('enCat').value,qty:parseInt(document.getElementById('enQty').value)||1,cond:document.getElementById('enCond').value,date:document.getElementById('enDate').value,party:document.getElementById('enParty').value,notes:document.getElementById('enNotes').value});
+  closeOv('entryOv'); renderStoreTabPanes(openStoreId); toast(`Record saved to ${type==='received'?'Received':'Sent'} log.`,'success');
 }
 
+/* ── ALERTS ── */
 function renderAlerts() {
-  const unresolved = ALERTS.filter(a => !a.resolved);
-  document.getElementById('alerts-sub').textContent = `${unresolved.length} active alert${unresolved.length !== 1 ? 's' : ''} requiring attention`;
-  const na = document.getElementById('nb-alerts'); if (na) na.textContent = unresolved.length;
-  const typeMap = {
-    critical:{ badge:'b-critical', icon:'ti-alert-octagon', sidec:'var(--red)' },
-    warning: { badge:'b-warning',  icon:'ti-alert-triangle', sidec:'var(--orange)' },
-    info:    { badge:'b-low',      icon:'ti-info-circle',    sidec:'var(--blue)' }
+  const unresolved = ALERTS.filter(a=>!a.resolved);
+  document.getElementById('alerts-sub').textContent = `${unresolved.length} active alert${unresolved.length!==1?'s':''} requiring attention`;
+  const na=document.getElementById('nb-alerts'); if(na) na.textContent=unresolved.length;
+  const typeMap={
+    critical:{badge:'b-critical',icon:'ti-alert-octagon',sidec:'var(--red)'},
+    warning: {badge:'b-warning', icon:'ti-alert-triangle',sidec:'var(--orange)'},
+    info:    {badge:'b-low',     icon:'ti-info-circle',   sidec:'var(--blue)'}
   };
-  let filtered = ALERTS.filter(a => !a.resolved && (alertFilter === 'all' || a.type === alertFilter));
-  document.getElementById('alerts-list').innerHTML = filtered.length ? filtered.map(a => {
-    const t = typeMap[a.type];
+  const filtered = ALERTS.filter(a=>!a.resolved&&(alertFilter==='all'||a.type===alertFilter));
+  document.getElementById('alerts-list').innerHTML = filtered.length ? filtered.map(a=>{
+    const t=typeMap[a.type];
     return `<div class="alert-item" id="alert-${a.id}">
       <div class="alert-side" style="background:${t.sidec}"></div>
       <div class="alert-icon-wrap" style="background:${t.sidec}18"><i class="ti ${t.icon}" style="color:${t.sidec}"></i></div>
@@ -1790,21 +1841,20 @@ function renderAlerts() {
         <button class="btn btn-success btn-xs" onclick="resolveAlert('${a.id}')"><i class="ti ti-check"></i> Resolve</button>
       </div>
     </div>`;
-  }).join('') : `<div style="text-align:center;padding:48px;color:var(--muted)"><i class="ti ti-circle-check" style="font-size:44px;display:block;margin-bottom:12px;color:var(--green);opacity:.5"></i><div style="font-weight:600">All clear!</div><div style="font-size:13px;margin-top:4px">No ${alertFilter === 'all' ? '' : alertFilter + ' '}alerts.</div></div>`;
+  }).join('') :
+  `<div style="text-align:center;padding:48px;color:var(--muted)"><i class="ti ti-circle-check" style="font-size:44px;display:block;margin-bottom:12px;color:var(--green);opacity:.5"></i><div style="font-weight:600">All clear!</div><div style="font-size:13px;margin-top:4px">No ${alertFilter==='all'?'':alertFilter+' '}alerts.</div></div>`;
 }
 
-function filterAlerts(type, el) { alertFilter = type; document.querySelectorAll('.af-pill').forEach(p => p.classList.remove('active')); el.classList.add('active'); renderAlerts(); }
-function resolveAlert(id) { ALERTS = ALERTS.map(a => a.id === id ? { ...a, resolved:true } : a); renderAlerts(); renderDashboard(); toast('Alert resolved.', 'success'); }
-function resolveAll() { ALERTS = ALERTS.map(a => ({ ...a, resolved:true })); renderAlerts(); renderDashboard(); toast('All alerts resolved.', 'success'); }
+function filterAlerts(type,el){ alertFilter=type; document.querySelectorAll('.af-pill').forEach(p=>p.classList.remove('active')); el.classList.add('active'); renderAlerts(); }
+function resolveAlert(id){ ALERTS=ALERTS.map(a=>a.id===id?{...a,resolved:true}:a); renderAlerts(); renderDashboard(); toast('Alert resolved.','success'); }
+function resolveAll(){ ALERTS=ALERTS.map(a=>({...a,resolved:true})); renderAlerts(); renderDashboard(); toast('All alerts resolved.','success'); }
 
+/* ── SETTINGS ── */
 function renderCatSettings() {
-  const tbody = document.getElementById('cat-settings-body'); if (!tbody) return;
-  tbody.innerHTML = Object.entries(TOP).flatMap(([topKey, tc]) =>
-    Object.entries(SUB).map(([subKey, sc]) => {
-      const pageKey = `${topKey}_${subKey}`;
-      const icon = CAT_ICON[pageKey];
-      const prefix = PREFIX[pageKey];
-      const count = DB[topKey][subKey]?.length || 0;
+  const tbody = document.getElementById('cat-settings-body'); if(!tbody) return;
+  tbody.innerHTML = Object.entries(TOP).flatMap(([topKey,tc])=>
+    Object.entries(SUB).map(([subKey,sc])=>{
+      const pageKey=`${topKey}_${subKey}`, icon=CAT_ICON[pageKey], prefix=PREFIX[pageKey], count=DB[topKey][subKey]?.length||0;
       return `<tr>
         <td><div style="display:flex;align-items:center;gap:8px"><div style="width:28px;height:28px;border-radius:6px;background:${tc.bg};display:grid;place-items:center"><i class="ti ${tc.icon}" style="color:${tc.color};font-size:14px"></i></div><strong>${tc.label}</strong></div></td>
         <td><div style="display:flex;align-items:center;gap:6px"><i class="ti ${icon}" style="color:${tc.color}"></i>${sc.label}</div></td>
@@ -1812,8 +1862,8 @@ function renderCatSettings() {
         <td class="col-prefix"><span class="badge b-info" style="font-family:var(--mono)">${prefix}</span></td>
         <td><span class="badge b-teal">${count}</span></td>
         <td class="col-actions"><div class="cfg-actions">
-          <button class="cfg-act e" onclick="editCategory('${topKey}','${subKey}')" title="Edit"><i class="ti ti-pencil"></i></button>
-          <button class="cfg-act d" onclick="deleteCategory('${topKey}','${subKey}')" title="Delete"><i class="ti ti-trash"></i></button>
+          <button class="cfg-act e" onclick="editCategory('${topKey}','${subKey}')"><i class="ti ti-pencil"></i></button>
+          <button class="cfg-act d" onclick="deleteCategory('${topKey}','${subKey}')"><i class="ti ti-trash"></i></button>
         </div></td>
       </tr>`;
     })
@@ -1822,121 +1872,108 @@ function renderCatSettings() {
 
 function openAddCategory() {
   document.getElementById('cfgCatTitle').textContent = 'Add Category';
-  document.getElementById('cfgCatTopKey').value = '';
-  document.getElementById('cfgCatSubKey').value = '';
-  document.getElementById('cfgCatName').value = '';
-  document.getElementById('cfgCatPrefix').value = '';
-  document.getElementById('cfgCatIcon').value = '';
+  ['cfgCatTopKey','cfgCatSubKey','cfgCatName','cfgCatPrefix','cfgCatIcon'].forEach(id=>{ const el=document.getElementById(id); if(el) el.value=''; });
   openOv('catOv');
 }
-
-function editCategory(topKey, subKey) {
-  const pageKey = `${topKey}_${subKey}`;
+function editCategory(topKey,subKey) {
+  const pageKey=`${topKey}_${subKey}`;
   document.getElementById('cfgCatTitle').textContent = 'Edit Category';
   document.getElementById('cfgCatTopKey').value = topKey;
   document.getElementById('cfgCatSubKey').value = subKey;
   document.getElementById('cfgCatName').value = `${TOP[topKey].label} — ${SUB[subKey].label}`;
-  document.getElementById('cfgCatPrefix').value = PREFIX[pageKey] || '';
-  document.getElementById('cfgCatIcon').value = CAT_ICON[pageKey] || '';
+  document.getElementById('cfgCatPrefix').value = PREFIX[pageKey]||'';
+  document.getElementById('cfgCatIcon').value = CAT_ICON[pageKey]||'';
   openOv('catOv');
 }
-
 function saveCategoryForm() {
-  const name = document.getElementById('cfgCatName').value.trim();
-  if (!name) { toast('Please enter a category name.', 'error'); return; }
-  toast(`Category "${name}" saved successfully.`, 'success');
-  closeOv('catOv');
-  renderCatSettings();
+  const name=document.getElementById('cfgCatName').value.trim();
+  if(!name){ toast('Please enter a category name.','error'); return; }
+  toast(`Category "${name}" saved successfully.`,'success'); closeOv('catOv'); renderCatSettings();
 }
-
-function deleteCategory(topKey, subKey) {
-  const count = DB[topKey][subKey]?.length || 0;
-  if (count > 0) {
-    toast(`Cannot delete — ${count} asset(s) exist in ${TOP[topKey].label} ${SUB[subKey].label}.`, 'error');
-    return;
-  }
-  toast(`Category deleted.`, 'info');
-  renderCatSettings();
+function deleteCategory(topKey,subKey) {
+  const count=DB[topKey][subKey]?.length||0;
+  if(count>0){ toast(`Cannot delete — ${count} asset(s) exist in ${TOP[topKey].label} ${SUB[subKey].label}.`,'error'); return; }
+  toast('Category deleted.','info'); renderCatSettings();
 }
-
-function switchSettings(sec, el) {
-  document.querySelectorAll('.sn-item').forEach(x => x.classList.remove('active'));
-  document.querySelectorAll('.settings-section').forEach(x => x.classList.remove('active'));
+function switchSettings(sec,el) {
+  document.querySelectorAll('.sn-item').forEach(x=>x.classList.remove('active'));
+  document.querySelectorAll('.settings-section').forEach(x=>x.classList.remove('active'));
   el.classList.add('active');
-  document.getElementById('ss-' + sec).classList.add('active');
-  if (sec === 'categories') renderCatSettings();
+  document.getElementById('ss-'+sec).classList.add('active');
+  if(sec==='categories') renderCatSettings();
 }
-function saveSettings() { toast('Settings saved successfully.', 'success'); }
+function saveSettings(){ toast('Settings saved successfully.','success'); }
 
+/* ── DARK MODE ── */
 let darkMode = false;
 function toggleDark() {
   darkMode = !darkMode;
-  document.body.classList.toggle('dark', darkMode);
-  const i = document.getElementById('darkIcon'); if (i) i.className = darkMode ? 'ti ti-sun' : 'ti ti-moon';
-  const dt = document.getElementById('darkToggle'); if (dt) dt.checked = darkMode;
+  document.body.classList.toggle('dark',darkMode);
+  const i=document.getElementById('darkIcon'); if(i) i.className=darkMode?'ti ti-sun':'ti ti-moon';
+  const dt=document.getElementById('darkToggle'); if(dt) dt.checked=darkMode;
   closeAllDD();
 }
 
+/* ── DROPDOWNS ── */
 function toggleDD(id) {
-  const all = ['notifDD','profileDD'];
-  all.forEach(d => { if (d !== id) { const m = document.getElementById(d)?.querySelector('.dd-menu'); if (m) m.classList.remove('open'); } });
+  const all=['notifDD','profileDD'];
+  all.forEach(d=>{ if(d!==id){ const m=document.getElementById(d)?.querySelector('.dd-menu'); if(m) m.classList.remove('open'); } });
   document.getElementById(id)?.querySelector('.dd-menu').classList.toggle('open');
 }
-function closeAllDD() { document.querySelectorAll('.dd-menu').forEach(m => m.classList.remove('open')); }
-document.addEventListener('click', e => { if (!e.target.closest('.dd')) closeAllDD(); });
+function closeAllDD(){ document.querySelectorAll('.dd-menu').forEach(m=>m.classList.remove('open')); }
+document.addEventListener('click',e=>{ if(!e.target.closest('.dd')) closeAllDD(); });
 function markRead() {
-  document.querySelectorAll('.ni-dot').forEach(d => d.remove());
-  const b = document.getElementById('nBadge'); if (b) b.remove();
-  const d = document.getElementById('ndot'); if (d) d.style.display = 'none';
-  NOTIFS.forEach(n => n.unread = false);
-  toast('All notifications marked as read.', 'info');
+  document.querySelectorAll('.ni-dot').forEach(d=>d.remove());
+  const b=document.getElementById('nBadge'); if(b) b.remove();
+  const d=document.getElementById('ndot'); if(d) d.style.display='none';
+  NOTIFS.forEach(n=>n.unread=false);
+  toast('All notifications marked as read.','info');
 }
 
-function openOv(id) { document.getElementById(id).classList.add('open'); }
-function closeOv(id) { document.getElementById(id).classList.remove('open'); }
-function bgClose(e, id) { if (e.target === document.getElementById(id)) closeOv(id); }
+/* ── MODALS ── */
+function openOv(id){ document.getElementById(id).classList.add('open'); }
+function closeOv(id){ document.getElementById(id).classList.remove('open'); }
+function bgClose(e,id){ if(e.target===document.getElementById(id)) closeOv(id); }
 
-function openSignOut() { closeAllDD(); document.getElementById('signoutOv').classList.add('open'); }
+/* ── SIGN OUT ── */
+function openSignOut(){ closeAllDD(); document.getElementById('signoutOv').classList.add('open'); }
 function doSignOut() {
   document.getElementById('signoutOv').classList.remove('open');
-  document.body.innerHTML = `<div style="min-height:100vh;display:grid;place-items:center;background:var(--bg);font-family:'DM Sans',sans-serif">
+  document.body.innerHTML=`<div style="min-height:100vh;display:grid;place-items:center;background:var(--bg);font-family:'DM Sans',sans-serif">
     <div style="text-align:center;padding:40px">
-      <div style="width:70px;height:70px;background:var(--blue-lt);border-radius:50%;display:grid;place-items:center;margin:0 auto 18px">
-        <i class="ti ti-packages" style="font-size:32px;color:var(--blue)"></i>
-      </div>
+      <div style="width:70px;height:70px;background:var(--blue-lt);border-radius:50%;display:grid;place-items:center;margin:0 auto 18px"><i class="ti ti-packages" style="font-size:32px;color:var(--blue)"></i></div>
       <div style="font-size:22px;font-weight:800;margin-bottom:8px">Signed Out</div>
-      <div style="font-size:13px;color:var(--muted);font-size:14px;margin-bottom:24px">You have been signed out of ResourceHub.</div>
+      <div style="font-size:14px;color:var(--muted);margin-bottom:24px">You have been signed out of ResourceHub.</div>
       <button onclick="location.reload()" style="background:var(--blue);color:#fff;border:none;padding:10px 24px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif">Sign Back In</button>
     </div>
   </div>`;
 }
 
-function toast(msg, type = 'info') {
-  const icons = { success:'ti-circle-check', error:'ti-alert-circle', info:'ti-info-circle' };
-  const wrap = document.getElementById('toastWrap');
-  const t = document.createElement('div');
-  t.className = `toast ${type}`;
-  t.innerHTML = `<i class="ti ${icons[type]||icons.info}"></i><span>${msg}</span>`;
+/* ── TOAST ── */
+function toast(msg,type='info') {
+  const icons={success:'ti-circle-check',error:'ti-alert-circle',info:'ti-info-circle'};
+  const wrap=document.getElementById('toastWrap');
+  const t=document.createElement('div');
+  t.className=`toast ${type}`;
+  t.innerHTML=`<i class="ti ${icons[type]||icons.info}"></i><span>${msg}</span>`;
   wrap.appendChild(t);
-  setTimeout(() => t.remove(), 3800);
+  setTimeout(()=>t.remove(),3800);
 }
 
+/* ── MOBILE SIDEBAR ── */
 function toggleSidebar() {
-  const sb = document.getElementById('sidebar');
-  const ov = document.getElementById('sbOverlay');
-  const ic = document.getElementById('menuIcon');
-  const open = sb.classList.toggle('open');
-  ov.classList.toggle('open', open);
-  if (ic) ic.className = open ? 'ti ti-x' : 'ti ti-menu-2';
+  const sb=document.getElementById('sidebar'), ov=document.getElementById('sbOverlay'), ic=document.getElementById('menuIcon');
+  const open=sb.classList.toggle('open');
+  ov.classList.toggle('open',open);
+  if(ic) ic.className=open?'ti ti-x':'ti ti-menu-2';
 }
 function closeSidebar() {
   document.getElementById('sidebar').classList.remove('open');
   document.getElementById('sbOverlay').classList.remove('open');
-  const ic = document.getElementById('menuIcon');
-  if (ic) ic.className = 'ti ti-menu-2';
+  const ic=document.getElementById('menuIcon'); if(ic) ic.className='ti ti-menu-2';
 }
 
-// Init
+/* ── INIT ── */
 renderDashboard();
 navigate('dashboard');
 </script>
