@@ -334,9 +334,10 @@ tbody tr:hover{background:var(--bg);}
 .sf-label{font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;}
 .sf-input,.sf-select{background:var(--bg);border:1px solid var(--border);border-radius:var(--rsm);padding:9px 12px;color:var(--text);font-size:13px;font-family:var(--sans);outline:none;transition:border .15s;}
 .sf-input:focus,.sf-select:focus{border-color:var(--blue);background:var(--surface);}
-/* FIXED: cfg-table wrapper must allow scroll; remove overflow:hidden from settings-panel */
+/* cfg-table: always scrollable, section/panel must not clip */
 .settings-panel{overflow:visible;}
-.cfg-table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;width:100%;}
+.settings-section{overflow:visible;}
+.cfg-table-wrap{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch;width:100%;max-width:100%;}
 .cfg-table-wrap::-webkit-scrollbar{height:4px;}
 .cfg-table-wrap::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px;}
 .cfg-table{width:100%;border-collapse:collapse;font-size:13px;}
@@ -456,9 +457,11 @@ textarea.fi{resize:vertical;min-height:70px;}
   .sn-item{white-space:nowrap;flex-shrink:0;}
   .sn-group-label{display:none;}
   .profile-layout{grid-template-columns:1fr;}
-  /* all tables scroll sideways */
-  .tw,.cfg-table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+  /* all tables scroll sideways on mobile */
+  .tw,.cfg-table-wrap{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch;width:100%;}
   table,.cfg-table{min-width:520px;}
+  /* settings sections must never clip their scrollable table children */
+  .settings-section,.settings-panel{overflow:visible !important;}
   .modal{width:calc(100vw - 28px);max-width:540px;}
   .modal.sm{width:calc(100vw - 28px);max-width:400px;}
   .fgrid{grid-template-columns:1fr;}
@@ -481,9 +484,7 @@ textarea.fi{resize:vertical;min-height:70px;}
     min-width:unset;
   }
   #notifDD .dd-menu.open{transform:translateX(-50%);}
-  /* FIXED: settings sections must not clip table wrappers */
-  .settings-section,.settings-panel{overflow:visible;}
-  .cfg-table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;display:block;width:100%;}
+  /* ensure cfg-table min-width on mobile */
   .cfg-table{min-width:520px;}
 }
 @media(max-width:420px){.kpi-row{grid-template-columns:1fr;}.cat-cards{grid-template-columns:1fr 1fr;}}
@@ -582,7 +583,7 @@ textarea.fi{resize:vertical;min-height:70px;}
             <span class="dd-link" onclick="markRead()">Mark all read</span>
           </div>
           <div class="notif-list" id="notifList"></div>
-          <div class="dd-footer"><a href="#">View all notifications</a></div>
+          <div class="dd-footer"><a href="#" onclick="closeAllDD();navigate('alerts');return false;">View all notifications</a></div>
         </div>
       </div>
       <div class="dd" id="profileDD">
