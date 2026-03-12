@@ -192,15 +192,16 @@ tbody tr:hover{background:var(--bg);}
 .acell-ico i{font-size:16px;}
 .acell-name{font-weight:600;font-size:13px;}
 .acell-id{font-size:11px;color:var(--muted);font-family:var(--mono);}
-/* Person cell for Assigned To */
 .person-cell{display:flex;flex-direction:column;gap:1px;}
 .person-name{font-size:12px;font-weight:700;color:var(--text);}
 .person-title{font-size:11px;color:var(--muted);}
 .person-tel{font-size:10px;font-family:var(--mono);color:var(--light);display:flex;align-items:center;gap:3px;}
 .person-tel i{font-size:10px;}
-/* Engraving badge */
 .engrave-tag{display:inline-flex;align-items:center;gap:4px;padding:3px 8px;background:var(--purple-lt);color:var(--purple);border:1px solid var(--purple-bd);border-radius:var(--rsm);font-size:11px;font-family:var(--mono);font-weight:600;white-space:nowrap;}
 .engrave-tag i{font-size:11px;}
+/* Device sub-type badge */
+.devtype-tag{display:inline-flex;align-items:center;gap:4px;padding:3px 8px;background:var(--teal-lt);color:var(--teal);border:1px solid var(--teal-bd);border-radius:var(--rsm);font-size:11px;font-family:var(--mono);font-weight:600;white-space:nowrap;}
+.devtype-tag i{font-size:11px;}
 .badge{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:600;font-family:var(--mono);}
 .badge i{font-size:11px;}
 .b-active  {background:var(--green-lt); color:var(--green);  border:1px solid var(--green-bd);}
@@ -212,7 +213,6 @@ tbody tr:hover{background:var(--bg);}
 .b-critical{background:var(--red-lt);   color:var(--red);    border:1px solid var(--red-bd);}
 .b-warning {background:var(--orange-lt);color:var(--orange); border:1px solid var(--orange-bd);}
 .b-low     {background:var(--blue-lt);  color:var(--blue);   border:1px solid var(--blue-bd);}
-/* Condition badge variants */
 .b-cond-new  {background:#f0fdf4;color:#166534;border:1px solid #bbf7d0;font-weight:700;}
 .b-cond-good {background:var(--teal-lt);color:var(--teal);border:1px solid var(--teal-bd);}
 .b-cond-fair {background:var(--orange-lt);color:var(--orange);border:1px solid var(--orange-bd);}
@@ -330,29 +330,21 @@ tbody tr:hover{background:var(--bg);}
 .tog input:checked + .tog-track + .tog-thumb{transform:translateX(18px);}
 .sf-group{display:flex;flex-direction:column;gap:6px;margin-bottom:14px;}
 .sf-label{font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;}
-.sf-input,.sf-select{background:var(--bg);border:1px solid var(--border);border-radius:var(--rsm);padding:9px 12px;color:var(--text);font-size:13px;font-family:var(--sans);outline:none;transition:border .15s;}
+.sf-input,.sf-select{background:var(--bg);border:1px solid var(--border);border-radius:var(--rsm);padding:9px 12px;color:var(--text);font-size:13px;font-family:var(--sans);outline:none;transition:border .15px;}
 .sf-input:focus,.sf-select:focus{border-color:var(--blue);background:var(--surface);}
 .settings-panel{overflow:visible;}
 .settings-section{overflow:visible;}
 .cfg-table-wrap{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch;width:100%;max-width:100%;}
-.cfg-table-wrap::-webkit-scrollbar{height:4px;}
-.cfg-table-wrap::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px;}
 .cfg-table{width:100%;min-width:600px;border-collapse:collapse;font-size:13px;}
 .cfg-table th{padding:9px 14px;text-align:left;font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;border-bottom:1px solid var(--border);background:var(--border-light);white-space:nowrap;}
 .cfg-table td{padding:11px 14px;border-bottom:1px solid var(--border-light);vertical-align:middle;}
 .cfg-table tbody tr:last-child td{border-bottom:none;}
 .cfg-table tbody tr:hover{background:var(--bg);}
-.cfg-table .col-phone{min-width:180px;}
-.cfg-table .col-email{min-width:220px;}
-.cfg-table .col-icon{min-width:200px;}
-.cfg-table .col-prefix{min-width:90px;}
-.cfg-table .col-actions{min-width:80px;}
 .cfg-actions{display:flex;gap:4px;}
-.cfg-act{width:28px;height:28px;border-radius:var(--rsm);border:1px solid var(--border);background:transparent;display:grid;place-items:center;color:var(--muted);cursor:pointer;transition:all .12s;}
+.cfg-act{width:28px;height:28px;border-radius:var(--rsm);border:1px solid var(--border);background:transparent;display:grid;place-items:center;color:var(--muted);cursor:pointer;transition:all .12px;}
 .cfg-act.e:hover{background:var(--orange-lt);border-color:var(--orange-bd);color:var(--orange);}
 .cfg-act.d:hover{background:var(--red-lt);border-color:var(--red-bd);color:var(--red);}
 .cfg-act i{font-size:13px;}
-.color-dot{width:14px;height:14px;border-radius:50%;display:inline-block;flex-shrink:0;}
 .cfg-empty{text-align:center;padding:36px;color:var(--muted);}
 .cfg-empty i{font-size:32px;display:block;margin-bottom:8px;opacity:.2;}
 .profile-layout{display:grid;grid-template-columns:280px 1fr;gap:20px;}
@@ -396,10 +388,12 @@ label{font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase
 input[type=text],input[type=date],input[type=number],input[type=password],input[type=email],.fi,textarea.fi{background:var(--bg);border:1px solid var(--border);border-radius:var(--rsm);padding:8px 11px;color:var(--text);font-size:13px;font-family:var(--sans);outline:none;transition:border .15s;width:100%;}
 input:focus,.fi:focus,textarea.fi:focus{border-color:var(--blue);background:var(--surface);}
 textarea.fi{resize:vertical;min-height:70px;}
-/* Fieldset group divider in modal */
 .fg-divider{grid-column:1/-1;border:none;border-top:1px solid var(--border-light);margin:4px 0;}
 .fg-section-label{grid-column:1/-1;font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1px;padding:2px 0 0;display:flex;align-items:center;gap:8px;}
 .fg-section-label::after{content:'';flex:1;height:1px;background:var(--border-light);}
+/* Device type hint box */
+.devtype-hint{grid-column:1/-1;display:flex;align-items:center;gap:8px;padding:10px 12px;background:var(--teal-lt);border:1px solid var(--teal-bd);border-radius:var(--rsm);font-size:12px;color:var(--teal);margin-top:-4px;}
+.devtype-hint i{font-size:15px;flex-shrink:0;}
 .vg{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
 .vi{display:flex;flex-direction:column;gap:4px;padding:11px;background:var(--bg);border-radius:var(--rsm);}
 .vi.full{grid-column:1/-1;}
@@ -436,7 +430,23 @@ textarea.fi{resize:vertical;min-height:70px;}
 .sb-overlay.open{display:block;}
 .export-btns{display:flex;gap:8px;margin-top:16px;flex-wrap:wrap;}
 .export-btns .btn{padding:6px 12px;font-size:12px;}
+/* Device subtype settings card grid */
+.dst-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:4px;}
+.dst-card{background:var(--bg);border:1px solid var(--border);border-radius:var(--rlg);padding:16px;}
+.dst-card-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+.dst-card-title{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700;}
+.dst-card-title i{font-size:16px;}
+.dst-pills{display:flex;flex-wrap:wrap;gap:6px;}
+.dst-pill{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:20px;font-size:11px;font-family:var(--mono);font-weight:600;background:var(--surface);border:1px solid var(--border);color:var(--text);}
+.dst-pill button{background:none;border:none;color:var(--muted);cursor:pointer;font-size:12px;line-height:1;padding:0;margin-left:2px;display:flex;align-items:center;}
+.dst-pill button:hover{color:var(--red);}
+.dst-add-row{display:flex;gap:6px;margin-top:10px;}
+.dst-add-row input{flex:1;background:var(--surface);border:1px solid var(--border);border-radius:var(--rsm);padding:6px 10px;font-size:12px;font-family:var(--sans);color:var(--text);outline:none;}
+.dst-add-row input:focus{border-color:var(--blue);}
+.dst-add-row button{padding:6px 10px;font-size:12px;border-radius:var(--rsm);background:var(--blue);color:#fff;border:none;font-family:var(--sans);font-weight:600;cursor:pointer;white-space:nowrap;}
+.dst-add-row button:hover{background:#1d4ed8;}
 @media(max-width:768px){
+  .dst-grid{grid-template-columns:1fr;}
   .mob-menu-btn{display:grid;}
   .sidebar{transform:translateX(-100%);transition:transform .25s ease;box-shadow:none;z-index:50;}
   .sidebar.open{transform:translateX(0);box-shadow:var(--sh4);}
@@ -451,10 +461,8 @@ textarea.fi{resize:vertical;min-height:70px;}
   .settings-panel{min-width:0;overflow:visible;}
   .settings-section{min-width:0;overflow:visible;padding:16px;}
   .cfg-table-wrap{display:block;width:100%;max-width:100%;overflow-x:scroll;-webkit-overflow-scrolling:touch;scrollbar-width:none;-ms-overflow-style:none;}
-  .cfg-table-wrap::-webkit-scrollbar{display:none;}
   .cfg-table{min-width:600px;width:max-content;}
   .tw{display:block;width:100%;overflow-x:scroll;-webkit-overflow-scrolling:touch;scrollbar-width:none;-ms-overflow-style:none;}
-  .tw::-webkit-scrollbar{display:none;}
   table{min-width:520px;width:max-content;}
   .settings-nav{flex-direction:row;overflow-x:auto;-webkit-overflow-scrolling:touch;gap:4px;padding-bottom:6px;border-bottom:1px solid var(--border);margin-bottom:4px;}
   .sn-item{white-space:nowrap;flex-shrink:0;}
@@ -720,6 +728,7 @@ textarea.fi{resize:vertical;min-height:70px;}
           <div class="sn-item" onclick="switchSettings('users',this)"><i class="ti ti-users"></i> User Access</div>
           <div class="sn-group-label">Asset Config</div>
           <div class="sn-item" onclick="switchSettings('categories',this)"><i class="ti ti-category"></i> Categories</div>
+          <div class="sn-item" onclick="switchSettings('devicesubtypes',this)"><i class="ti ti-topology-star"></i> Device Sub-Types</div>
           <div class="sn-item" onclick="switchSettings('statuslabels',this)"><i class="ti ti-tags"></i> Status Labels</div>
           <div class="sn-item" onclick="switchSettings('suppliers',this)"><i class="ti ti-truck-delivery"></i> Suppliers</div>
           <div class="sn-item" onclick="switchSettings('departments',this)"><i class="ti ti-sitemap"></i> Departments</div>
@@ -777,11 +786,19 @@ textarea.fi{resize:vertical;min-height:70px;}
             </div>
             <div class="cfg-table-wrap">
               <table class="cfg-table">
-                <thead><tr><th>Category</th><th>Sub-type</th><th class="col-icon">Icon Class</th><th class="col-prefix">ID Prefix</th><th>Count</th><th class="col-actions">Actions</th></tr></thead>
+                <thead><tr><th>Category</th><th>Sub-type</th><th>Icon Class</th><th>ID Prefix</th><th>Count</th><th>Actions</th></tr></thead>
                 <tbody id="cat-settings-body"></tbody>
               </table>
             </div>
           </div>
+
+          <!-- DEVICE SUB-TYPES SETTINGS SECTION -->
+          <div class="settings-section" id="ss-devicesubtypes">
+            <h3>Device Sub-Types</h3>
+            <div class="desc">Configure selectable sub-types for specific IT asset categories. These appear as a dropdown when adding or editing IT Assets.</div>
+            <div class="dst-grid" id="dst-grid"></div>
+          </div>
+
           <div class="settings-section" id="ss-statuslabels">
             <h3>Status Labels</h3><div class="desc">Customise asset state labels used across the system</div>
             <div class="cfg-table-wrap">
@@ -801,12 +818,11 @@ textarea.fi{resize:vertical;min-height:70px;}
             <div style="display:flex;justify-content:flex-end;margin-bottom:12px"><button class="btn btn-primary btn-sm" onclick="toast('Add supplier form coming soon.','info')"><i class="ti ti-plus"></i> Add Supplier</button></div>
             <div class="cfg-table-wrap">
               <table class="cfg-table">
-                <thead><tr><th>Supplier</th><th>Category</th><th>Contact</th><th class="col-phone">Phone</th><th class="col-email">Email</th><th>Assets</th><th>Actions</th></tr></thead>
+                <thead><tr><th>Supplier</th><th>Category</th><th>Contact</th><th>Phone</th><th>Email</th><th>Assets</th><th>Actions</th></tr></thead>
                 <tbody>
-                  <tr><td><div class="acell"><div class="acell-ico" style="background:var(--blue-lt)"><i class="ti ti-building-store" style="color:var(--blue)"></i></div><div><div class="acell-name">Compuline Uganda Ltd</div></div></div></td><td><span class="badge b-info">IT Equipment</span></td><td>Mr. Robert Kato</td><td class="col-phone" style="font-family:var(--mono);font-size:12px;white-space:nowrap">+256 414 123 456</td><td class="col-email" style="font-family:var(--mono);font-size:12px;white-space:nowrap">sales@compuline.co.ug</td><td><span class="badge b-teal">12</span></td><td><div class="cfg-actions"><button class="cfg-act e"><i class="ti ti-pencil"></i></button><button class="cfg-act d"><i class="ti ti-trash"></i></button></div></td></tr>
-                  <tr><td><div class="acell"><div class="acell-ico" style="background:var(--teal-lt)"><i class="ti ti-building-store" style="color:var(--teal)"></i></div><div><div class="acell-name">Network Solutions EA</div></div></div></td><td><span class="badge b-teal">Networking</span></td><td>Ms. Patricia Apio</td><td class="col-phone" style="font-family:var(--mono);font-size:12px;white-space:nowrap">+256 772 999 000</td><td class="col-email" style="font-family:var(--mono);font-size:12px;white-space:nowrap">info@netsolutions.co.ug</td><td><span class="badge b-teal">8</span></td><td><div class="cfg-actions"><button class="cfg-act e"><i class="ti ti-pencil"></i></button><button class="cfg-act d"><i class="ti ti-trash"></i></button></div></td></tr>
-                  <tr><td><div class="acell"><div class="acell-ico" style="background:var(--orange-lt)"><i class="ti ti-building-store" style="color:var(--orange)"></i></div><div><div class="acell-name">Kampala Furnishers Ltd</div></div></div></td><td><span class="badge b-warning">Furniture</span></td><td>Mr. Denis Ssebunya</td><td class="col-phone" style="font-family:var(--mono);font-size:12px;white-space:nowrap">+256 414 567 890</td><td class="col-email" style="font-family:var(--mono);font-size:12px;white-space:nowrap">orders@kplfurnish.co.ug</td><td><span class="badge b-teal">15</span></td><td><div class="cfg-actions"><button class="cfg-act e"><i class="ti ti-pencil"></i></button><button class="cfg-act d"><i class="ti ti-trash"></i></button></div></td></tr>
-                  <tr><td><div class="acell"><div class="acell-ico" style="background:var(--green-lt)"><i class="ti ti-building-store" style="color:var(--green)"></i></div><div><div class="acell-name">Toyota Uganda Ltd</div></div></div></td><td><span class="badge b-active">Vehicles</span></td><td>Mr. James Mulindwa</td><td class="col-phone" style="font-family:var(--mono);font-size:12px;white-space:nowrap">+256 414 200 100</td><td class="col-email" style="font-family:var(--mono);font-size:12px;white-space:nowrap">fleet@toyotaug.co.ug</td><td><span class="badge b-teal">4</span></td><td><div class="cfg-actions"><button class="cfg-act e"><i class="ti ti-pencil"></i></button><button class="cfg-act d"><i class="ti ti-trash"></i></button></div></td></tr>
+                  <tr><td><div class="acell"><div class="acell-ico" style="background:var(--blue-lt)"><i class="ti ti-building-store" style="color:var(--blue)"></i></div><div><div class="acell-name">Compuline Uganda Ltd</div></div></div></td><td><span class="badge b-info">IT Equipment</span></td><td>Mr. Robert Kato</td><td style="font-family:var(--mono);font-size:12px">+256 414 123 456</td><td style="font-family:var(--mono);font-size:12px">sales@compuline.co.ug</td><td><span class="badge b-teal">12</span></td><td><div class="cfg-actions"><button class="cfg-act e"><i class="ti ti-pencil"></i></button><button class="cfg-act d"><i class="ti ti-trash"></i></button></div></td></tr>
+                  <tr><td><div class="acell"><div class="acell-ico" style="background:var(--orange-lt)"><i class="ti ti-building-store" style="color:var(--orange)"></i></div><div><div class="acell-name">Kampala Furnishers Ltd</div></div></div></td><td><span class="badge b-warning">Furniture</span></td><td>Mr. Denis Ssebunya</td><td style="font-family:var(--mono);font-size:12px">+256 414 567 890</td><td style="font-family:var(--mono);font-size:12px">orders@kplfurnish.co.ug</td><td><span class="badge b-teal">15</span></td><td><div class="cfg-actions"><button class="cfg-act e"><i class="ti ti-pencil"></i></button><button class="cfg-act d"><i class="ti ti-trash"></i></button></div></td></tr>
+                  <tr><td><div class="acell"><div class="acell-ico" style="background:var(--green-lt)"><i class="ti ti-building-store" style="color:var(--green)"></i></div><div><div class="acell-name">Toyota Uganda Ltd</div></div></div></td><td><span class="badge b-active">Vehicles</span></td><td>Mr. James Mulindwa</td><td style="font-family:var(--mono);font-size:12px">+256 414 200 100</td><td style="font-family:var(--mono);font-size:12px">fleet@toyotaug.co.ug</td><td><span class="badge b-teal">4</span></td><td><div class="cfg-actions"><button class="cfg-act e"><i class="ti ti-pencil"></i></button><button class="cfg-act d"><i class="ti ti-trash"></i></button></div></td></tr>
                 </tbody>
               </table>
             </div>
@@ -893,50 +909,17 @@ textarea.fi{resize:vertical;min-height:70px;}
       </div>
     </div>
 
-    <!-- ACCOUNT SETTINGS -->
+    <!-- ACCOUNT SETTINGS & SECURITY (unchanged) -->
     <div class="page" id="page-account-settings">
-      <div class="ph">
-        <div class="ph-left">
-          <div class="ph-icon" style="background:var(--blue-lt)"><i class="ti ti-settings-2" style="color:var(--blue)"></i></div>
-          <div><div class="ph-title">Account Settings</div><div class="ph-sub">Manage your account preferences</div></div>
-        </div>
-        <button class="btn btn-primary" onclick="toast('Account settings saved.','success')"><i class="ti ti-device-floppy"></i> Save</button>
-      </div>
+      <div class="ph"><div class="ph-left"><div class="ph-icon" style="background:var(--blue-lt)"><i class="ti ti-settings-2" style="color:var(--blue)"></i></div><div><div class="ph-title">Account Settings</div><div class="ph-sub">Manage your account preferences</div></div></div><button class="btn btn-primary" onclick="toast('Account settings saved.','success')"><i class="ti ti-device-floppy"></i> Save</button></div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px">
-        <div class="panel">
-          <div class="panel-hd"><div class="panel-title">Change Password</div></div>
-          <div class="panel-body">
-            <div class="fg" style="margin-bottom:12px"><label>Current Password</label><input type="password" placeholder="••••••••"/></div>
-            <div class="fg" style="margin-bottom:12px"><label>New Password</label><input type="password" placeholder="••••••••"/></div>
-            <div class="fg" style="margin-bottom:16px"><label>Confirm Password</label><input type="password" placeholder="••••••••"/></div>
-            <button class="btn btn-primary btn-sm" onclick="toast('Password changed successfully.','success')"><i class="ti ti-lock-check"></i> Update Password</button>
-          </div>
-        </div>
-        <div class="panel">
-          <div class="panel-hd"><div class="panel-title">Preferences</div></div>
-          <div class="panel-body">
-            <div class="setting-row"><div><div class="setting-label">Email Digest</div><div class="setting-desc">Receive weekly activity summary</div></div><label class="tog"><input type="checkbox" checked/><div class="tog-track"></div><div class="tog-thumb"></div></label></div>
-            <div class="setting-row"><div><div class="setting-label">Login Alerts</div><div class="setting-desc">Alert on new device login</div></div><label class="tog"><input type="checkbox" checked/><div class="tog-track"></div><div class="tog-thumb"></div></label></div>
-          </div>
-        </div>
+        <div class="panel"><div class="panel-hd"><div class="panel-title">Change Password</div></div><div class="panel-body"><div class="fg" style="margin-bottom:12px"><label>Current Password</label><input type="password" placeholder="••••••••"/></div><div class="fg" style="margin-bottom:12px"><label>New Password</label><input type="password" placeholder="••••••••"/></div><div class="fg" style="margin-bottom:16px"><label>Confirm Password</label><input type="password" placeholder="••••••••"/></div><button class="btn btn-primary btn-sm" onclick="toast('Password changed successfully.','success')"><i class="ti ti-lock-check"></i> Update Password</button></div></div>
+        <div class="panel"><div class="panel-hd"><div class="panel-title">Preferences</div></div><div class="panel-body"><div class="setting-row"><div><div class="setting-label">Email Digest</div><div class="setting-desc">Receive weekly activity summary</div></div><label class="tog"><input type="checkbox" checked/><div class="tog-track"></div><div class="tog-thumb"></div></label></div><div class="setting-row"><div><div class="setting-label">Login Alerts</div><div class="setting-desc">Alert on new device login</div></div><label class="tog"><input type="checkbox" checked/><div class="tog-track"></div><div class="tog-thumb"></div></label></div></div></div>
       </div>
     </div>
-
-    <!-- SECURITY -->
     <div class="page" id="page-security">
-      <div class="ph">
-        <div class="ph-left">
-          <div class="ph-icon" style="background:var(--green-lt)"><i class="ti ti-shield-lock" style="color:var(--green)"></i></div>
-          <div><div class="ph-title">Security</div><div class="ph-sub">Protect your account and data</div></div>
-        </div>
-      </div>
-      <div class="panel">
-        <div class="panel-hd"><div class="panel-title">Security Settings</div></div>
-        <div class="panel-body">
-          <div class="sec-item"><div class="sec-left"><div class="sec-icon" style="background:var(--green-lt)"><i class="ti ti-shield-check" style="color:var(--green)"></i></div><div><div class="sec-label">Two-Factor Auth (2FA)</div><div class="sec-desc">Protect with an OTP code</div></div></div><label class="tog"><input type="checkbox"/><div class="tog-track"></div><div class="tog-thumb"></div></label></div>
-          <div class="sec-item"><div class="sec-left"><div class="sec-icon" style="background:var(--blue-lt)"><i class="ti ti-lock" style="color:var(--blue)"></i></div><div><div class="sec-label">Auto Lock (15 min)</div><div class="sec-desc">Lock session after inactivity</div></div></div><label class="tog"><input type="checkbox" checked/><div class="tog-track"></div><div class="tog-thumb"></div></label></div>
-        </div>
-      </div>
+      <div class="ph"><div class="ph-left"><div class="ph-icon" style="background:var(--green-lt)"><i class="ti ti-shield-lock" style="color:var(--green)"></i></div><div><div class="ph-title">Security</div><div class="ph-sub">Protect your account and data</div></div></div></div>
+      <div class="panel"><div class="panel-hd"><div class="panel-title">Security Settings</div></div><div class="panel-body"><div class="sec-item"><div class="sec-left"><div class="sec-icon" style="background:var(--green-lt)"><i class="ti ti-shield-check" style="color:var(--green)"></i></div><div><div class="sec-label">Two-Factor Auth (2FA)</div><div class="sec-desc">Protect with an OTP code</div></div></div><label class="tog"><input type="checkbox"/><div class="tog-track"></div><div class="tog-thumb"></div></label></div><div class="sec-item"><div class="sec-left"><div class="sec-icon" style="background:var(--blue-lt)"><i class="ti ti-lock" style="color:var(--blue)"></i></div><div><div class="sec-label">Auto Lock (15 min)</div><div class="sec-desc">Lock session after inactivity</div></div></div><label class="tog"><input type="checkbox" checked/><div class="tog-track"></div><div class="tog-thumb"></div></label></div></div></div>
     </div>
 
   </div><!-- /content -->
@@ -957,28 +940,49 @@ textarea.fi{resize:vertical;min-height:70px;}
       <input type="hidden" id="fmPageKey"/>
       <div class="fgrid">
         <!-- Asset identity -->
-        <div class="fg-section-label full" style="grid-column:1/-1">Asset Identity</div>
+        <div class="fg-section-label full">Asset Identity</div>
         <div class="fg full"><label>Asset Name</label><input type="text" id="fmName" placeholder="e.g. Dell Latitude 5520"/></div>
         <div class="fg" id="fmManufacturerWrap"><label>Manufacturer</label><input type="text" id="fmManufacturer" placeholder="e.g. Dell, HP, Cisco, Logitech"/></div>
-        <div class="fg" id="fmModelWrap"><label>Model</label><input type="text" id="fmModel" placeholder="e.g. Latitude 5520, ProDesk 400 G7"/></div>
+        <div class="fg" id="fmModelWrap"><label>Model</label><input type="text" id="fmModel" placeholder="e.g. Latitude 5520"/></div>
         <div class="fg" id="fmSerialWrap"><label>Serial Number</label><input type="text" id="fmSerial" placeholder="e.g. SN-DL5520-001"/></div>
         <div class="fg" id="fmQtyWrap"><label>Quantity</label><input type="number" id="fmQty" min="1" placeholder="e.g. 12"/></div>
-        <div class="fg" id="fmUnitWrap"><label>Unit / Description</label><input type="text" id="fmUnit" placeholder="e.g. pieces, rolls, packs, boxes"/></div>
+        <div class="fg" id="fmUnitWrap"><label>Unit / Description</label><input type="text" id="fmUnit" placeholder="e.g. pieces, rolls, packs"/></div>
         <div class="fg" id="fmEngraveWrap"><label>Engraving No.</label><input type="text" id="fmEngravingNo" placeholder="e.g. MOH-KAB002"/></div>
+
+        <!-- DEVICE TYPE SECTION (IT Assets only) -->
+        <div class="fg-divider" id="fmDevTypeDivider"></div>
+        <div class="fg-section-label" id="fmDevTypeSection">Device Classification</div>
+        <div class="fg" id="fmDeviceTypeWrap">
+          <label>Device Type</label>
+          <select class="fi" id="fmDeviceType" onchange="onDeviceTypeChange()">
+            <option value="">— Select device type —</option>
+          </select>
+        </div>
+        <div class="fg" id="fmDeviceSubTypeWrap" style="display:none">
+          <label id="fmDeviceSubTypeLabel">Sub-Type</label>
+          <select class="fi" id="fmDeviceSubType">
+            <option value="">— Select sub-type —</option>
+          </select>
+        </div>
+        <div class="devtype-hint" id="fmDevTypeHint" style="display:none">
+          <i class="ti ti-info-circle"></i>
+          <span id="fmDevTypeHintText">Select a device type to see available sub-types.</span>
+        </div>
+
         <!-- Specifications -->
         <div class="fg full" id="fmSpecsWrap"><label>Specifications</label><textarea class="fi" id="fmSpecs" placeholder="e.g. 8GB RAM, 1TB HDD, Intel Core Ultra 7 165U 2.10 GHz, 15.6&quot; FHD IPS..."></textarea></div>
         <!-- Notes -->
         <div class="fg full"><label>Notes / Remarks</label><textarea class="fi" id="fmNotes" placeholder="Additional remarks, maintenance notes..."></textarea></div>
         <!-- Assignment -->
         <hr class="fg-divider"/>
-        <div class="fg-section-label" style="grid-column:1/-1">Assignment</div>
+        <div class="fg-section-label">Assignment</div>
         <div class="fg" id="fmAssignedNameWrap"><label>Assigned To (Name)</label><input type="text" id="fmAssignedName" placeholder="e.g. Karim Ali"/></div>
         <div class="fg" id="fmAssignedTitleWrap"><label>Title / Designation</label><input type="text" id="fmAssignedTitle" placeholder="e.g. IT Officer"/></div>
         <div class="fg" id="fmAssignedTelWrap"><label>Tel No.</label><input type="text" id="fmAssignedTel" placeholder="e.g. 0786747390"/></div>
         <div class="fg" id="fmAssignedWrap"><label>Assigned To</label><input type="text" id="fmAssigned" placeholder="Team or department"/></div>
         <!-- Location & Status -->
         <hr class="fg-divider"/>
-        <div class="fg-section-label" style="grid-column:1/-1">Location &amp; Status</div>
+        <div class="fg-section-label">Location &amp; Status</div>
         <div class="fg"><label>Store (Origin)</label><select class="fi" id="fmStore"></select></div>
         <div class="fg"><label>Status</label>
           <select class="fi" id="fmStatus">
@@ -1029,9 +1033,7 @@ textarea.fi{resize:vertical;min-height:70px;}
   <div class="modal sm">
     <div class="mhd"><div class="mhd-l"><div class="m-ico" style="background:var(--teal-lt)"><i class="ti ti-building-hospital" style="color:var(--teal)"></i></div><div><div class="m-title">Add Store</div><div class="m-sub">Register a new store</div></div></div><button class="close-btn" onclick="closeOv('storeOv')"><i class="ti ti-x"></i></button></div>
     <div class="mbody">
-      <div class="fg" style="margin-bottom:12px"><label>Category</label>
-        <select class="fi" id="snCat"><option value="it">IT Stores</option><option value="furniture">Furniture Stores</option><option value="vehicles">Vehicle Stores</option></select>
-      </div>
+      <div class="fg" style="margin-bottom:12px"><label>Category</label><select class="fi" id="snCat"><option value="it">IT Stores</option><option value="furniture">Furniture Stores</option><option value="vehicles">Vehicle Stores</option></select></div>
       <div class="fg" style="margin-bottom:12px"><label>Store Name</label><input type="text" id="snName" placeholder="e.g. Gulu Regional Hospital"/></div>
       <div class="fg" style="margin-bottom:12px"><label>Location / District</label><input type="text" id="snHosp" placeholder="e.g. Gulu City"/></div>
       <div class="fg" style="margin-bottom:12px"><label>Contact Person</label><input type="text" id="snContact" placeholder="Store manager name"/></div>
@@ -1095,6 +1097,60 @@ textarea.fi{resize:vertical;min-height:70px;}
 <div class="toast-wrap" id="toastWrap"></div>
 
 <script>
+/* ══════════════════════════════════════════
+   DEVICE SUB-TYPES CONFIG
+   Each key = the device category name (shown in dropdown)
+   subTypeLabel = label for the sub-type dropdown
+   subTypes = array of available sub-type options
+   icon = tabler icon for this device type
+   color = accent color
+   Editable via Settings > Device Sub-Types
+══════════════════════════════════════════ */
+let DEVICE_SUBTYPES = {
+  'Computer': {
+    icon: 'ti-device-desktop',
+    color: 'var(--blue)',
+    bg: 'var(--blue-lt)',
+    subTypeLabel: 'Computer Type',
+    subTypes: ['Laptop', 'All-in-One Desktop', 'Desktop', 'Server', 'Thin Client'],
+  },
+  'Access Point': {
+    icon: 'ti-wifi',
+    color: 'var(--teal)',
+    bg: 'var(--teal-lt)',
+    subTypeLabel: 'AP Type',
+    subTypes: ['Indoor', 'Outdoor', 'Point-to-Point'],
+  },
+  'Switch': {
+    icon: 'ti-switch',
+    color: 'var(--purple)',
+    bg: 'var(--purple-lt)',
+    subTypeLabel: 'Switch Type',
+    subTypes: ['4-Port Switch', '8-Port Switch', '16-Port Switch', '24-Port Switch', '48-Port Switch'],
+  },
+  'Router': {
+    icon: 'ti-router',
+    color: 'var(--green)',
+    bg: 'var(--green-lt)',
+    subTypeLabel: 'Router Type',
+    subTypes: ['Core Router', 'Edge Router', 'Wireless Router', 'VPN Router'],
+  },
+  'UPS': {
+    icon: 'ti-bolt',
+    color: 'var(--orange)',
+    bg: 'var(--orange-lt)',
+    subTypeLabel: 'UPS Type',
+    subTypes: ['Line-Interactive', 'Online Double-Conversion', 'Standby/Offline'],
+  },
+  'Printer': {
+    icon: 'ti-printer',
+    color: 'var(--pink)',
+    bg: 'var(--pink-lt)',
+    subTypeLabel: 'Printer Type',
+    subTypes: ['Inkjet', 'Laser', 'Dot Matrix', 'Label Printer', 'Plotter'],
+  },
+};
+
 /* ── TOP-LEVEL CATEGORIES ── */
 const TOP = {
   it:        { label:'IT',        icon:'ti-cpu',      color:'#2563eb', bg:'#eff6ff', clrVar:'var(--blue)',   bgVar:'var(--blue-lt)' },
@@ -1134,26 +1190,26 @@ function genSerial(topKey){ const pfx={it:'SN-NEW',furniture:'FN-NEW',cars:'VH-N
 const DB = {
   it:{
     assets:[
-      {engravingNo:'MOH-KAB001',serial:'SN-DL5520-082A',name:'Dell Latitude 5520',manufacturer:'Dell',model:'Latitude 5520',specs:'8GB RAM, 1TB HDD, Intel(R) Core(TM) Ultra 7 165U 2.10 GHz, 15.6" FHD IPS',store:'Kabong General Hospital',assignedName:'Karim Ali',assignedTitle:'IT Officer',assignedTel:'0786747390',status:'Active',date:'2025-08-10',condition:'Good',notes:''},
-      {engravingNo:'MOH-MUL002',serial:'SN-HP400G-095B',name:'HP ProDesk 400 G7',manufacturer:'HP',model:'ProDesk 400 G7 SFF',specs:'8GB RAM, 1TB HDD, Intel(R) Core(TM) i5-10500 3.10 GHz, SFF form factor',store:'Mulago National Referral',assignedName:'Sarah Nakato',assignedTitle:'Systems Administrator',assignedTel:'0701333444',status:'Active',date:'2025-09-05',condition:'New',notes:''},
-      {engravingNo:'MOH-LUW003',serial:'SN-CC296-072C',name:'Cisco Catalyst 2960',manufacturer:'Cisco',model:'Catalyst 2960-24TT',specs:'24-port 10/100 + 2x 1G uplinks, 48V PoE, managed Layer 2',store:'Luwero Hospital',assignedName:'Ronald Ssemanda',assignedTitle:'Network Engineer',assignedTel:'0701500603',status:'Active',date:'2025-07-20',condition:'Good',notes:''},
-      {engravingNo:'MOH-MBA004',serial:'SN-MK750-110D',name:'MikroTik RB750Gr3',manufacturer:'MikroTik',model:'RouterBOARD 750Gr3 (hEX)',specs:'5-port Gigabit Ethernet, 256MB RAM, 16MB NAND flash, RouterOS v6',store:'Mbarara Regional Referral',assignedName:'David Tumusiime',assignedTitle:'IT Technician',assignedTel:'0752700800',status:'Maintenance',date:'2025-11-01',condition:'Fair',notes:'Pending firmware v7.x upgrade'},
-      {engravingNo:'MOH-KAR005',serial:'SN-APC15-120E',name:'APC Smart-UPS 1500VA',manufacturer:'APC by Schneider',model:'Smart-UPS SMT1500I',specs:'1500VA / 980W, 230V, 8x IEC outlets, LCD panel, USB + serial mgmt',store:'Karenga Health Centre IV',assignedName:'Stella Akello',assignedTitle:'IT Officer',assignedTel:'0782300402',status:'Active',date:'2024-12-01',condition:'Good',notes:'Battery replaced Jan 2025, runtime ~12 min at full load'},
+      {engravingNo:'MOH-KAB001',serial:'SN-DL5520-082A',name:'Dell Latitude 5520',manufacturer:'Dell',model:'Latitude 5520',deviceType:'Computer',deviceSubType:'Laptop',specs:'8GB RAM, 1TB HDD, Intel(R) Core(TM) Ultra 7 165U 2.10 GHz, 15.6" FHD IPS',store:'Kabong General Hospital',assignedName:'Karim Ali',assignedTitle:'IT Officer',assignedTel:'0786747390',status:'Active',date:'2025-08-10',condition:'Good',notes:''},
+      {engravingNo:'MOH-MUL002',serial:'SN-HP400G-095B',name:'HP ProDesk 400 G7',manufacturer:'HP',model:'ProDesk 400 G7 SFF',deviceType:'Computer',deviceSubType:'Desktop',specs:'8GB RAM, 1TB HDD, Intel(R) Core(TM) i5-10500 3.10 GHz, SFF form factor',store:'Mulago National Referral',assignedName:'Sarah Nakato',assignedTitle:'Systems Administrator',assignedTel:'0701333444',status:'Active',date:'2025-09-05',condition:'New',notes:''},
+      {engravingNo:'MOH-LUW003',serial:'SN-CC296-072C',name:'Cisco Catalyst 2960',manufacturer:'Cisco',model:'Catalyst 2960-24TT',deviceType:'Switch',deviceSubType:'24-Port Switch',specs:'24-port 10/100 + 2x 1G uplinks, 48V PoE, managed Layer 2',store:'Luwero Hospital',assignedName:'Ronald Ssemanda',assignedTitle:'Network Engineer',assignedTel:'0701500603',status:'Active',date:'2025-07-20',condition:'Good',notes:''},
+      {engravingNo:'MOH-MBA004',serial:'SN-MK750-110D',name:'MikroTik RB750Gr3',manufacturer:'MikroTik',model:'RouterBOARD 750Gr3 (hEX)',deviceType:'Router',deviceSubType:'Edge Router',specs:'5-port Gigabit Ethernet, 256MB RAM, 16MB NAND flash, RouterOS v6',store:'Mbarara Regional Referral',assignedName:'David Tumusiime',assignedTitle:'IT Technician',assignedTel:'0752700800',status:'Maintenance',date:'2025-11-01',condition:'Fair',notes:'Pending firmware v7.x upgrade'},
+      {engravingNo:'MOH-KAR005',serial:'SN-APC15-120E',name:'APC Smart-UPS 1500VA',manufacturer:'APC by Schneider',model:'Smart-UPS SMT1500I',deviceType:'UPS',deviceSubType:'Line-Interactive',specs:'1500VA / 980W, 230V, 8x IEC outlets, LCD panel, USB + serial mgmt',store:'Karenga Health Centre IV',assignedName:'Stella Akello',assignedTitle:'IT Officer',assignedTel:'0782300402',status:'Active',date:'2024-12-01',condition:'Good',notes:'Battery replaced Jan 2025'},
     ],
     components:[
       {serial:'SN-DDR4S-011F',name:'DDR4 16GB RAM Module',manufacturer:'Samsung',model:'M471A2K43DB1-CTD',specs:'16GB DDR4-2666 SODIMM, 260-pin, 1.2V, non-ECC',qty:4,unit:'pieces',store:'Kabong General Hospital',assignedName:'IT Workshop',assignedTitle:'',assignedTel:'',status:'In Storage',date:'2026-01-15',condition:'New',notes:''},
-      {serial:'SN-SSD51-011G',name:'512GB NVMe SSD',manufacturer:'Western Digital',model:'WD Blue SN570',specs:'512GB, M.2 2280, PCIe Gen3 x4 NVMe, 3500 MB/s read, 3000 MB/s write',qty:6,unit:'pieces',store:'Kabong General Hospital',assignedName:'IT Workshop',assignedTitle:'',assignedTel:'',status:'In Storage',date:'2026-01-15',condition:'New',notes:''},
-      {serial:'SN-PSU65-101H',name:'PSU 650W Modular',manufacturer:'Corsair',model:'RM650 (2021)',specs:'650W, 80+ Gold, fully modular, ATX 24-pin, 135mm fan, 10-year warranty',qty:2,unit:'pieces',store:'Mulago National Referral',assignedName:'IT Workshop',assignedTitle:'',assignedTel:'',status:'Active',date:'2025-10-10',condition:'Good',notes:''},
+      {serial:'SN-SSD51-011G',name:'512GB NVMe SSD',manufacturer:'Western Digital',model:'WD Blue SN570',specs:'512GB, M.2 2280, PCIe Gen3 x4 NVMe, 3500 MB/s read',qty:6,unit:'pieces',store:'Kabong General Hospital',assignedName:'IT Workshop',assignedTitle:'',assignedTel:'',status:'In Storage',date:'2026-01-15',condition:'New',notes:''},
+      {serial:'SN-PSU65-101H',name:'PSU 650W Modular',manufacturer:'Corsair',model:'RM650 (2021)',specs:'650W, 80+ Gold, fully modular, ATX 24-pin',qty:2,unit:'pieces',store:'Mulago National Referral',assignedName:'IT Workshop',assignedTitle:'',assignedTel:'',status:'Active',date:'2025-10-10',condition:'Good',notes:''},
     ],
     consumables:[
-      {name:'Thermal Paste 5g',manufacturer:'Arctic',model:'MX-4 (2019 Edition)',specs:'4.5 W/mK thermal conductivity, carbon micro-particles, non-conductive',qty:10,unit:'tubes',store:'Kabong General Hospital',assignedName:'IT Technicians',assignedTitle:'',assignedTel:'',status:'Active',date:'2026-02-01',condition:'New',notes:''},
-      {name:'Cable Ties x100',manufacturer:'Generic',model:'Assorted Nylon Pack',specs:'Mixed sizes: 100mm x 2.5mm, 150mm x 3.5mm, 200mm x 3.5mm, natural nylon',qty:5,unit:'packs',store:'Mulago National Referral',assignedName:'All Depts',assignedTitle:'',assignedTel:'',status:'Active',date:'2026-01-10',condition:'New',notes:''},
-      {name:'CAT6 Patch Cable 1m',manufacturer:'AMP Netconnect',model:'CAT6 UTP RJ45 1m',specs:'Cat6 UTP, 550MHz, 24AWG, blue PVC jacket, snagless boot, RJ45',qty:24,unit:'pieces',store:'Kabong General Hospital',assignedName:'Network',assignedTitle:'',assignedTel:'',status:'Active',date:'2025-12-15',condition:'New',notes:''},
+      {name:'Thermal Paste 5g',manufacturer:'Arctic',model:'MX-4',specs:'4.5 W/mK thermal conductivity, carbon micro-particles',qty:10,unit:'tubes',store:'Kabong General Hospital',assignedName:'IT Technicians',assignedTitle:'',assignedTel:'',status:'Active',date:'2026-02-01',condition:'New',notes:''},
+      {name:'Cable Ties x100',manufacturer:'Generic',model:'Assorted Nylon Pack',specs:'Mixed sizes: 100mm, 150mm, 200mm, natural nylon',qty:5,unit:'packs',store:'Mulago National Referral',assignedName:'All Depts',assignedTitle:'',assignedTel:'',status:'Active',date:'2026-01-10',condition:'New',notes:''},
+      {name:'CAT6 Patch Cable 1m',manufacturer:'AMP Netconnect',model:'CAT6 UTP RJ45 1m',specs:'Cat6 UTP, 550MHz, 24AWG, blue PVC jacket',qty:24,unit:'pieces',store:'Kabong General Hospital',assignedName:'Network',assignedTitle:'',assignedTel:'',status:'Active',date:'2025-12-15',condition:'New',notes:''},
     ],
     accessories:[
-      {engravingNo:'MOH-KAB006',serial:'SN-LGMXK-112L',name:'Logitech MX Keys Keyboard',manufacturer:'Logitech',model:'MX Keys Advanced',specs:'Wireless Bluetooth + 2.4GHz USB, multi-device (3 devices), backlighting, Windows/macOS',store:'Kabong General Hospital',assignedName:'Peter Oyet',assignedTitle:'Executive',assignedTel:'0772100201',status:'Active',date:'2025-11-20',condition:'New',notes:''},
-      {engravingNo:'MOH-MUL007',serial:'SN-DL24M-090M',name:'Dell 24" Monitor P2422H',manufacturer:'Dell',model:'P2422H',specs:'24" IPS, 1920x1080 FHD, 60Hz, HDMI + DisplayPort + VGA, height-adjustable stand',store:'Mulago National Referral',assignedName:'Finance Officer',assignedTitle:'Finance Dept',assignedTel:'',status:'Active',date:'2025-09-01',condition:'Good',notes:''},
-      {serial:'SN-USBC-021N',name:'USB-C Docking Station',manufacturer:'Dell',model:'WD19S 180W',specs:'180W, 100W PD, 3x USB-A 3.1, USB-C, HDMI 2.0, DisplayPort 1.4, Gigabit Ethernet',store:'Luwero Hospital',assignedName:'Laptops Pool',assignedTitle:'',assignedTel:'',status:'Active',date:'2026-02-10',condition:'New',notes:''},
+      {engravingNo:'MOH-KAB006',serial:'SN-LGMXK-112L',name:'Logitech MX Keys Keyboard',manufacturer:'Logitech',model:'MX Keys Advanced',specs:'Wireless Bluetooth + 2.4GHz USB, multi-device (3 devices), backlighting',store:'Kabong General Hospital',assignedName:'Peter Oyet',assignedTitle:'Executive',assignedTel:'0772100201',status:'Active',date:'2025-11-20',condition:'New',notes:''},
+      {engravingNo:'MOH-MUL007',serial:'SN-DL24M-090M',name:'Dell 24" Monitor P2422H',manufacturer:'Dell',model:'P2422H',specs:'24" IPS, 1920x1080 FHD, 60Hz, HDMI + DisplayPort + VGA',store:'Mulago National Referral',assignedName:'Finance Officer',assignedTitle:'Finance Dept',assignedTel:'',status:'Active',date:'2025-09-01',condition:'Good',notes:''},
+      {serial:'SN-USBC-021N',name:'USB-C Docking Station',manufacturer:'Dell',model:'WD19S 180W',specs:'180W, 100W PD, 3x USB-A 3.1, USB-C, HDMI 2.0, DisplayPort 1.4',store:'Luwero Hospital',assignedName:'Laptops Pool',assignedTitle:'',assignedTel:'',status:'Active',date:'2026-02-10',condition:'New',notes:''},
     ],
   },
   furniture:{
@@ -1210,17 +1266,17 @@ const STORE_CATS = {
 };
 
 let STORES = [
-  {id:'store-it-1', cat:'it', name:'Kabong General Hospital',      location:'Kabong District',     contact:'Mr. Peter Oyet',       phone:'+256 772 100 201', color:'#2563eb', received:[], sent:[]},
-  {id:'store-it-2', cat:'it', name:'Karenga Health Centre IV',     location:'Karenga Sub-County',  contact:'Ms. Stella Akello',    phone:'+256 782 300 402', color:'#2563eb', received:[], sent:[]},
-  {id:'store-it-3', cat:'it', name:'Luwero Hospital',              location:'Luwero Town',         contact:'Mr. Ronald Ssemanda',  phone:'+256 701 500 603', color:'#2563eb', received:[], sent:[]},
-  {id:'store-it-4', cat:'it', name:'Mulago National Referral',     location:'Kampala',             contact:'Ms. Sarah Nakato',     phone:'+256 701 333 444', color:'#2563eb', received:[], sent:[]},
-  {id:'store-it-5', cat:'it', name:'Mbarara Regional Referral',    location:'Mbarara City',        contact:'Mr. David Tumusiime',  phone:'+256 752 700 800', color:'#2563eb', received:[], sent:[]},
-  {id:'store-fn-1', cat:'furniture', name:"Sam's Furniture",        location:'Kampala Industrial',  contact:'Mr. Samuel Kizito',    phone:'+256 414 600 100', color:'#d97706', received:[], sent:[]},
-  {id:'store-fn-2', cat:'furniture', name:'Mirembe Beddings',       location:'Ndeeba, Kampala',     contact:'Ms. Miriam Namirembe', phone:'+256 776 200 300', color:'#d97706', received:[], sent:[]},
-  {id:'store-fn-3', cat:'furniture', name:'Comfort Office Supplies', location:'Jinja Road, Kampala', contact:'Mr. Ali Mubarak',     phone:'+256 700 450 550', color:'#d97706', received:[], sent:[]},
-  {id:'store-veh-1', cat:'vehicles', name:'Spear Motors Uganda',    location:'Ntinda, Kampala',     contact:'Mr. James Mulindwa',   phone:'+256 414 200 100', color:'#059669', received:[], sent:[]},
-  {id:'store-veh-2', cat:'vehicles', name:'Toyota Uganda Ltd',      location:'Jinja Road, Kampala', contact:'Mr. Henry Byaruhanga', phone:'+256 414 320 456', color:'#059669', received:[], sent:[]},
-  {id:'store-veh-3', cat:'vehicles', name:'Victoria Motors',        location:'Industrial Area, Kla',contact:'Ms. Joyce Atwine',     phone:'+256 752 800 900', color:'#059669', received:[], sent:[]},
+  {id:'store-it-1', cat:'it', name:'Kabong General Hospital',   location:'Kabong District',    contact:'Mr. Peter Oyet',       phone:'+256 772 100 201', color:'#2563eb', received:[], sent:[]},
+  {id:'store-it-2', cat:'it', name:'Karenga Health Centre IV',  location:'Karenga Sub-County', contact:'Ms. Stella Akello',    phone:'+256 782 300 402', color:'#2563eb', received:[], sent:[]},
+  {id:'store-it-3', cat:'it', name:'Luwero Hospital',           location:'Luwero Town',        contact:'Mr. Ronald Ssemanda',  phone:'+256 701 500 603', color:'#2563eb', received:[], sent:[]},
+  {id:'store-it-4', cat:'it', name:'Mulago National Referral',  location:'Kampala',            contact:'Ms. Sarah Nakato',     phone:'+256 701 333 444', color:'#2563eb', received:[], sent:[]},
+  {id:'store-it-5', cat:'it', name:'Mbarara Regional Referral', location:'Mbarara City',       contact:'Mr. David Tumusiime',  phone:'+256 752 700 800', color:'#2563eb', received:[], sent:[]},
+  {id:'store-fn-1', cat:'furniture', name:"Sam's Furniture",     location:'Kampala Industrial', contact:'Mr. Samuel Kizito',    phone:'+256 414 600 100', color:'#d97706', received:[], sent:[]},
+  {id:'store-fn-2', cat:'furniture', name:'Mirembe Beddings',    location:'Ndeeba, Kampala',    contact:'Ms. Miriam Namirembe', phone:'+256 776 200 300', color:'#d97706', received:[], sent:[]},
+  {id:'store-fn-3', cat:'furniture', name:'Comfort Office Supplies',location:'Jinja Road',     contact:'Mr. Ali Mubarak',      phone:'+256 700 450 550', color:'#d97706', received:[], sent:[]},
+  {id:'store-veh-1', cat:'vehicles', name:'Spear Motors Uganda',  location:'Ntinda, Kampala',   contact:'Mr. James Mulindwa',   phone:'+256 414 200 100', color:'#059669', received:[], sent:[]},
+  {id:'store-veh-2', cat:'vehicles', name:'Toyota Uganda Ltd',    location:'Jinja Road, Kla',   contact:'Mr. Henry Byaruhanga', phone:'+256 414 320 456', color:'#059669', received:[], sent:[]},
+  {id:'store-veh-3', cat:'vehicles', name:'Victoria Motors',      location:'Industrial Area',   contact:'Ms. Joyce Atwine',     phone:'+256 752 800 900', color:'#059669', received:[], sent:[]},
 ];
 
 let ALERTS = [
@@ -1242,6 +1298,128 @@ let editTgt = null, viewTgt = null;
 let openStoreId = null;
 let alertFilter = 'all';
 
+/* ══════════════════════════════════════
+   DEVICE TYPE FORM LOGIC
+══════════════════════════════════════ */
+function populateDeviceTypeDropdown(selectedType) {
+  const sel = document.getElementById('fmDeviceType');
+  sel.innerHTML = '<option value="">— Select device type —</option>';
+  Object.keys(DEVICE_SUBTYPES).forEach(dtype => {
+    const opt = document.createElement('option');
+    opt.value = dtype;
+    opt.textContent = dtype;
+    if (dtype === selectedType) opt.selected = true;
+    sel.appendChild(opt);
+  });
+}
+
+function onDeviceTypeChange() {
+  const dtype = document.getElementById('fmDeviceType').value;
+  const wrapSub = document.getElementById('fmDeviceSubTypeWrap');
+  const hint = document.getElementById('fmDevTypeHint');
+  const hintText = document.getElementById('fmDevTypeHintText');
+
+  if (!dtype) {
+    wrapSub.style.display = 'none';
+    hint.style.display = 'none';
+    return;
+  }
+
+  const cfg = DEVICE_SUBTYPES[dtype];
+  if (!cfg || !cfg.subTypes.length) {
+    wrapSub.style.display = 'none';
+    hint.style.display = 'none';
+    return;
+  }
+
+  // Populate sub-type
+  const subSel = document.getElementById('fmDeviceSubType');
+  document.getElementById('fmDeviceSubTypeLabel').textContent = cfg.subTypeLabel;
+  subSel.innerHTML = `<option value="">— Select ${cfg.subTypeLabel} —</option>`;
+  cfg.subTypes.forEach(st => {
+    const opt = document.createElement('option');
+    opt.value = st;
+    opt.textContent = st;
+    subSel.appendChild(opt);
+  });
+
+  wrapSub.style.display = '';
+  hint.style.display = 'flex';
+  hintText.textContent = `${cfg.subTypeLabel}: ${cfg.subTypes.join(', ')}`;
+}
+
+function setDeviceTypeValue(deviceType, deviceSubType) {
+  populateDeviceTypeDropdown(deviceType || '');
+  onDeviceTypeChange();
+  if (deviceSubType) {
+    const sub = document.getElementById('fmDeviceSubType');
+    if (sub) sub.value = deviceSubType;
+  }
+}
+
+/* ══════════════════════════════════════
+   DEVICE SUB-TYPES SETTINGS
+══════════════════════════════════════ */
+function renderDeviceSubTypesSettings() {
+  const grid = document.getElementById('dst-grid');
+  if (!grid) return;
+  const dtColors = {
+    'Computer':'var(--blue)','Access Point':'var(--teal)','Switch':'var(--purple)',
+    'Router':'var(--green)','UPS':'var(--orange)','Printer':'var(--pink)',
+  };
+  grid.innerHTML = Object.entries(DEVICE_SUBTYPES).map(([dtype, cfg]) => `
+    <div class="dst-card">
+      <div class="dst-card-hd">
+        <div class="dst-card-title">
+          <i class="ti ${cfg.icon}" style="color:${cfg.color}"></i>
+          <span>${dtype}</span>
+        </div>
+        <button class="btn btn-ghost btn-sm" onclick="addDeviceSubTypePrompt('${dtype}')" title="Add sub-type" style="padding:4px 8px;font-size:12px">
+          <i class="ti ti-plus" style="font-size:13px"></i>
+        </button>
+      </div>
+      <div style="font-size:11px;color:var(--muted);margin-bottom:8px;font-weight:600;text-transform:uppercase;letter-spacing:.5px">${cfg.subTypeLabel}</div>
+      <div class="dst-pills">
+        ${cfg.subTypes.map((st,i) => `
+          <span class="dst-pill" style="border-color:${cfg.color}40;background:${cfg.bg}">
+            ${st}
+            <button onclick="removeDeviceSubType('${dtype}',${i})" title="Remove"><i class="ti ti-x"></i></button>
+          </span>`).join('')}
+      </div>
+      <div class="dst-add-row">
+        <input type="text" id="dst-input-${dtype.replace(/\s+/g,'_')}" placeholder="Add new sub-type..." onkeydown="if(event.key==='Enter') addDeviceSubType('${dtype}')"/>
+        <button onclick="addDeviceSubType('${dtype}')">Add</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function addDeviceSubType(dtype) {
+  const safeId = dtype.replace(/\s+/g,'_');
+  const input = document.getElementById('dst-input-' + safeId);
+  const val = input?.value.trim();
+  if (!val) return;
+  if (DEVICE_SUBTYPES[dtype].subTypes.includes(val)) { toast(`"${val}" already exists.`,'error'); return; }
+  DEVICE_SUBTYPES[dtype].subTypes.push(val);
+  input.value = '';
+  renderDeviceSubTypesSettings();
+  toast(`Sub-type "${val}" added to ${dtype}.`,'success');
+}
+
+function addDeviceSubTypePrompt(dtype) {
+  const safeId = dtype.replace(/\s+/g,'_');
+  const input = document.getElementById('dst-input-' + safeId);
+  if (input) input.focus();
+}
+
+function removeDeviceSubType(dtype, idx) {
+  const removed = DEVICE_SUBTYPES[dtype].subTypes[idx];
+  DEVICE_SUBTYPES[dtype].subTypes.splice(idx, 1);
+  renderDeviceSubTypesSettings();
+  toast(`"${removed}" removed from ${dtype}.`,'info');
+}
+
+/* ── NAV / PAGE ── */
 function toggleGroup(id, header) {
   const body = document.getElementById(id);
   const isOpen = body.classList.contains('open');
@@ -1327,7 +1505,7 @@ function renderDashboard() {
   document.getElementById('dash-store-bars').innerHTML=storeCounts.map((s,i)=>`
     <div class="sbar-item">
       <div class="sbar-row"><div class="sbar-lbl"><i class="ti ti-building-hospital"></i>${s.name}</div><div class="sbar-cnt">${s.count}</div></div>
-      <div class="bar-track"><div class="bar-fill" style="width:${Math.round(s.count/mx*100)}%;background:${sColors[i]||'#94a3b8'}"></div></div>
+      <div class="bar-track"><div class="bar-fill" style="width:${Math.round(s.count/mx*100)}%;background:${sColors[i%sColors.length]}"></div></div>
     </div>`).join('');
 
   document.getElementById('dash-status').innerHTML=`
@@ -1371,6 +1549,20 @@ function conditionBadge(c) {
   return `<span class="badge ${CB[c]||'b-info'}"><i class="ti ${CI[c]||'ti-minus'}"></i>${c||'—'}</span>`;
 }
 
+function deviceTypeBadge(deviceType, deviceSubType) {
+  if (!deviceType) return '';
+  const cfg = DEVICE_SUBTYPES[deviceType];
+  const icon = cfg?.icon || 'ti-device-desktop';
+  const color = cfg?.color || 'var(--teal)';
+  const bg = cfg?.bg || 'var(--teal-lt)';
+  const borderColor = (cfg?.color || 'var(--teal)') + '33';
+  let html = `<span class="devtype-tag" style="color:${color};background:${bg};border-color:${borderColor}"><i class="ti ${icon}"></i>${deviceType}</span>`;
+  if (deviceSubType) {
+    html += `<br><span style="font-size:10px;color:var(--muted);font-family:var(--mono);margin-top:2px;display:inline-block">${deviceSubType}</span>`;
+  }
+  return html;
+}
+
 function renderCatPage(pageKey) {
   const [topKey, subKey] = pageKey.split('_');
   const tc = TOP[topKey], sc = SUB[subKey];
@@ -1378,6 +1570,10 @@ function renderCatPage(pageKey) {
   const clr = tc.color, bg = tc.bg;
   const addLabels = { it:'Add IT Record', furniture:'Add Furniture Record', cars:'Add Vehicle Record' };
   const isItPage = isIT(topKey);
+  const isAssets = subKey === 'assets';
+
+  // Only show Device Type column for IT assets
+  const showDevType = isItPage && isAssets;
 
   document.getElementById('page-' + pageKey).innerHTML = `
     <div class="ph">
@@ -1398,23 +1594,27 @@ function renderCatPage(pageKey) {
         }).join('')}
       </div>
       <div class="fbar">
-        <div class="sw"><i class="ti ti-search"></i><input type="text" id="sq-${pageKey}" placeholder="Search name, serial, engraving..." oninput="drawTable('${pageKey}')"/></div>
+        <div class="sw"><i class="ti ti-search"></i><input type="text" id="sq-${pageKey}" placeholder="Search name, serial, engraving, type..." oninput="drawTable('${pageKey}')"/></div>
         <select class="fsel" id="sf-store-${pageKey}" onchange="drawTable('${pageKey}')">
           <option value="">All Stores</option>${STORES.map(s=>`<option>${s.name}</option>`).join('')}
         </select>
         <select class="fsel" id="sf-status-${pageKey}" onchange="drawTable('${pageKey}')">
           <option value="">All Status</option><option>Active</option><option>Maintenance</option><option>Inactive</option><option>In Storage</option>
         </select>
-        <select class="fsel" id="sf-cond-${pageKey}" onchange="drawTable('${pageKey}')">
+        ${showDevType ? `<select class="fsel" id="sf-devtype-${pageKey}" onchange="drawTable('${pageKey}')">
+          <option value="">All Device Types</option>${Object.keys(DEVICE_SUBTYPES).map(dt=>`<option>${dt}</option>`).join('')}
+        </select>` : `<select class="fsel" id="sf-cond-${pageKey}" onchange="drawTable('${pageKey}')">
           <option value="">All Conditions</option><option>New</option><option>Good</option><option>Fair</option><option>Poor</option>
-        </select>
+        </select>`}
       </div>
       <div class="tw"><table>
         <thead><tr>
           <th>Asset</th>
-          ${isItPage ? '<th>Manufacturer</th><th>Model</th><th>Specifications</th>' : ''}
-          ${subKey === 'assets' ? '<th>Serial No.</th>' : '<th>Qty / Unit</th>'}
-          ${isItPage && subKey === 'assets' ? '<th>Engraving No.</th>' : ''}
+          ${isItPage ? '<th>Manufacturer</th><th>Model</th>' : ''}
+          ${showDevType ? '<th>Device Type</th>' : ''}
+          ${isItPage && !showDevType ? '<th>Specifications</th>' : ''}
+          ${isAssets ? '<th>Serial No.</th>' : '<th>Qty / Unit</th>'}
+          ${isItPage && isAssets ? '<th>Engraving No.</th>' : ''}
           <th>Store</th>
           <th>Assigned To</th>
           <th>Status</th>
@@ -1431,22 +1631,24 @@ function renderCatPage(pageKey) {
 
 function drawTable(pageKey) {
   const [topKey, subKey] = pageKey.split('_');
-  const q   = (document.getElementById('sq-'+pageKey)?.value||'').toLowerCase();
-  const sf  = document.getElementById('sf-store-'+pageKey)?.value||'';
-  const ss  = document.getElementById('sf-status-'+pageKey)?.value||'';
-  const sc  = document.getElementById('sf-cond-'+pageKey)?.value||'';
-  const tc  = TOP[topKey]; const icon = CAT_ICON[pageKey];
+  const q      = (document.getElementById('sq-'+pageKey)?.value||'').toLowerCase();
+  const sf     = document.getElementById('sf-store-'+pageKey)?.value||'';
+  const ss     = document.getElementById('sf-status-'+pageKey)?.value||'';
+  const sc     = document.getElementById('sf-cond-'+pageKey)?.value||'';
+  const sdt    = document.getElementById('sf-devtype-'+pageKey)?.value||'';
+  const tc     = TOP[topKey]; const icon = CAT_ICON[pageKey];
   const isItPage = isIT(topKey);
+  const isAssets = subKey === 'assets';
+  const showDevType = isItPage && isAssets;
 
   const rows = DB[topKey][subKey].filter(a =>
-    (!q || (a.name+(a.serial||'')+(a.manufacturer||'')+(a.model||'')+(a.specs||'')+(a.assignedName||a.assigned||'')+(a.engravingNo||'')).toLowerCase().includes(q)) &&
-    (!sf || a.store===sf) && (!ss || a.status===ss) && (!sc || a.condition===sc));
+    (!q || (a.name+(a.serial||'')+(a.manufacturer||'')+(a.model||'')+(a.specs||'')+(a.assignedName||a.assigned||'')+(a.engravingNo||'')+(a.deviceType||'')+(a.deviceSubType||'')).toLowerCase().includes(q)) &&
+    (!sf || a.store===sf) && (!ss || a.status===ss) && (!sc || a.condition===sc) &&
+    (!sdt || a.deviceType===sdt));
 
   const sub = document.getElementById('cat-sub-'+pageKey); if(sub) sub.textContent=`${DB[topKey][subKey].length} records`;
   const pg  = document.getElementById('pg-'+pageKey); if(pg) pg.textContent=`Showing ${rows.length} of ${DB[topKey][subKey].length} records`;
 
-  const isAssets = subKey === 'assets';
-  const colSpan = isItPage && isAssets ? 12 : isItPage ? 10 : isAssets ? 8 : 7;
   document.getElementById('tb-'+pageKey).innerHTML = rows.length ? rows.map(a => `
     <tr>
       <td><div class="acell">
@@ -1455,9 +1657,10 @@ function drawTable(pageKey) {
       </div></td>
       ${isItPage ? `
       <td><span style="font-size:12px;font-weight:600;color:var(--text)">${a.manufacturer||'—'}</span></td>
-      <td style="font-size:12px;color:var(--muted);max-width:140px"><div style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis" title="${a.model||''}">${a.model||'—'}</div></td>
-      <td style="max-width:200px"><div style="font-size:11px;color:var(--muted);line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden" title="${a.specs||''}">${a.specs||'—'}</div></td>
+      <td style="font-size:12px;color:var(--muted);max-width:120px"><div style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis" title="${a.model||''}">${a.model||'—'}</div></td>
       ` : ''}
+      ${showDevType ? `<td>${deviceTypeBadge(a.deviceType, a.deviceSubType) || '<span style="color:var(--light);font-size:12px">—</span>'}</td>` : ''}
+      ${isItPage && !showDevType ? `<td style="max-width:200px"><div style="font-size:11px;color:var(--muted);line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">${a.specs||'—'}</div></td>` : ''}
       ${isAssets
         ? `<td><code style="font-size:11px;background:var(--bg);padding:2px 7px;border-radius:4px;border:1px solid var(--border);white-space:nowrap">${a.serial||'—'}</code></td>`
         : `<td><span style="font-size:13px;font-weight:600;color:var(--text)">${a.qty||'—'}</span><span style="font-size:11px;color:var(--muted);margin-left:4px">${a.unit||''}</span></td>`
@@ -1469,12 +1672,12 @@ function drawTable(pageKey) {
       <td>${conditionBadge(a.condition)}</td>
       <td style="font-family:var(--mono);font-size:11px;color:var(--muted)">${a.date||'—'}</td>
       <td><div class="acts">
-        <button class="act v" onclick="openView('${pageKey}','${a.serial||a.name}')"><i class="ti ti-eye"></i></button>
-        <button class="act e" onclick="openEdit('${pageKey}','${a.serial||a.name}')"><i class="ti ti-pencil"></i></button>
-        <button class="act d" onclick="openDel('${pageKey}','${a.serial||a.name}')"><i class="ti ti-trash"></i></button>
+        <button class="act v" onclick="openView('${pageKey}','${(a.serial||a.name).replace(/'/g,"\\'")}')"><i class="ti ti-eye"></i></button>
+        <button class="act e" onclick="openEdit('${pageKey}','${(a.serial||a.name).replace(/'/g,"\\'")}')"><i class="ti ti-pencil"></i></button>
+        <button class="act d" onclick="openDel('${pageKey}','${(a.serial||a.name).replace(/'/g,"\\'")}')"><i class="ti ti-trash"></i></button>
       </div></td>
     </tr>`).join('') :
-    `<tr><td colspan="${colSpan}" class="empty-td"><i class="ti ti-database-off"></i>No records found</td></tr>`;
+    `<tr><td colspan="12" class="empty-td"><i class="ti ti-database-off"></i>No records found</td></tr>`;
 }
 
 function buildStoreOptions(sel='') {
@@ -1486,6 +1689,8 @@ function buildStoreOptions(sel='') {
 function setFormMode(topKey, subKey) {
   const isItPage = isIT(topKey);
   const isAssets = subKey === 'assets';
+  const showDevType = isItPage && isAssets;
+
   // IT-only fields
   ['fmManufacturerWrap','fmModelWrap','fmEngraveWrap','fmSpecsWrap','fmAssignedNameWrap','fmAssignedTitleWrap','fmAssignedTelWrap'].forEach(id => {
     const el = document.getElementById(id); if(el) el.style.display = isItPage ? '' : 'none';
@@ -1503,6 +1708,16 @@ function setFormMode(topKey, subKey) {
   // Generic assigned (non-IT)
   const gw = document.getElementById('fmAssignedWrap');
   if(gw) gw.style.display = isItPage ? 'none' : '';
+
+  // Device type fields — only for IT Assets
+  ['fmDevTypeDivider','fmDevTypeSection','fmDeviceTypeWrap'].forEach(id => {
+    const el = document.getElementById(id); if(el) el.style.display = showDevType ? '' : 'none';
+  });
+  // Sub-type + hint are shown dynamically by onDeviceTypeChange
+  if (!showDevType) {
+    const st = document.getElementById('fmDeviceSubTypeWrap'); if(st) st.style.display = 'none';
+    const ht = document.getElementById('fmDevTypeHint'); if(ht) ht.style.display = 'none';
+  }
 }
 
 function openAdd(pageKey) {
@@ -1524,6 +1739,11 @@ function openAdd(pageKey) {
   document.getElementById('fmStatus').value = 'Active';
   document.getElementById('fmCond').value = 'New';
   setFormMode(topKey, subKey);
+  if (isIT(topKey) && subKey === 'assets') {
+    populateDeviceTypeDropdown('');
+    const st = document.getElementById('fmDeviceSubTypeWrap'); if(st) st.style.display='none';
+    const ht = document.getElementById('fmDevTypeHint'); if(ht) ht.style.display='none';
+  }
   buildStoreOptions();
   openOv('formOv');
 }
@@ -1559,6 +1779,9 @@ function openEdit(pageKey, identifier) {
   document.getElementById('fmStatus').value = a.status||'Active';
   document.getElementById('fmCond').value = a.condition||'New';
   setFormMode(topKey, subKey);
+  if (isIT(topKey) && isAssets) {
+    setDeviceTypeValue(a.deviceType||'', a.deviceSubType||'');
+  }
   buildStoreOptions(a.store);
   openOv('formOv');
 }
@@ -1571,6 +1794,8 @@ function saveAsset() {
   const isAssets = subKey === 'assets';
   const serialVal = document.getElementById('fmSerial').value.trim() || genSerial(topKey);
   const isItPage = isIT(topKey);
+  const showDevType = isItPage && isAssets;
+
   const data = {
     name,
     serial: isAssets ? serialVal : undefined,
@@ -1580,6 +1805,8 @@ function saveAsset() {
     model: isItPage ? document.getElementById('fmModel').value.trim() : undefined,
     specs: isItPage ? document.getElementById('fmSpecs').value.trim() : undefined,
     engravingNo: (isItPage && isAssets) ? document.getElementById('fmEngravingNo').value.trim() : undefined,
+    deviceType: showDevType ? document.getElementById('fmDeviceType').value : undefined,
+    deviceSubType: showDevType ? document.getElementById('fmDeviceSubType').value : undefined,
     store: document.getElementById('fmStore').value,
     assignedName: isItPage ? document.getElementById('fmAssignedName').value.trim() : undefined,
     assignedTitle: isItPage ? document.getElementById('fmAssignedTitle').value.trim() : undefined,
@@ -1608,11 +1835,14 @@ function openView(pageKey, identifier) {
   viewTgt = { pageKey, identifier };
   const tc = TOP[topKey];
   const isItPage = isIT(topKey);
+  const showDevType = isItPage && isAssets;
   document.getElementById('vmSub').textContent = `${tc.label} ${SUB[subKey].label}${isAssets ? ' · '+a.serial : ''}`;
   document.getElementById('vmGrid').innerHTML = `
     <div class="vi full"><div class="vi-lbl">Asset Name</div><div class="vi-val" style="font-size:15px;font-weight:700">${a.name}</div></div>
     ${isAssets ? `<div class="vi"><div class="vi-lbl">Serial Number</div><div class="vi-val mono">${a.serial}</div></div>` : `<div class="vi"><div class="vi-lbl">Quantity</div><div class="vi-val"><strong>${a.qty||'—'}</strong> <span style="color:var(--muted);font-size:12px">${a.unit||''}</span></div></div>`}
     ${isItPage && isAssets && a.engravingNo ? `<div class="vi"><div class="vi-lbl">Engraving No.</div><div class="vi-val"><span class="engrave-tag"><i class="ti ti-pencil-minus"></i>${a.engravingNo}</span></div></div>` : ''}
+    ${showDevType && a.deviceType ? `<div class="vi"><div class="vi-lbl">Device Type</div><div class="vi-val">${deviceTypeBadge(a.deviceType, a.deviceSubType)}</div></div>` : ''}
+    ${showDevType && a.deviceSubType ? `<div class="vi"><div class="vi-lbl">${DEVICE_SUBTYPES[a.deviceType]?.subTypeLabel||'Sub-Type'}</div><div class="vi-val"><span class="badge b-teal">${a.deviceSubType}</span></div></div>` : ''}
     ${isItPage ? `<div class="vi"><div class="vi-lbl">Manufacturer</div><div class="vi-val" style="font-weight:700">${a.manufacturer||'—'}</div></div>` : ''}
     ${isItPage ? `<div class="vi"><div class="vi-lbl">Model</div><div class="vi-val">${a.model||'—'}</div></div>` : ''}
     ${isItPage ? `<div class="vi full"><div class="vi-lbl">Specifications</div><div class="vi-val" style="line-height:1.6">${a.specs||'—'}</div></div>` : ''}
@@ -1627,11 +1857,8 @@ function openView(pageKey, identifier) {
     <div class="vi"><div class="vi-lbl">Condition</div><div class="vi-val">${conditionBadge(a.condition)}</div></div>
     <div class="vi"><div class="vi-lbl">Date Acquired</div><div class="vi-val mono">${a.date||'—'}</div></div>
     ${a.notes ? `<div class="vi full"><div class="vi-lbl">Notes / Remarks</div><div class="vi-val">${a.notes}</div></div>` : ''}`;
-
   openOv('viewOv');
 }
-
-function switchToEdit() { if(!viewTgt) return; closeOv('viewOv'); setTimeout(()=>openEdit(viewTgt.pageKey,viewTgt.identifier),150); }
 
 function openDel(pageKey, identifier) {
   const [topKey, subKey] = pageKey.split('_');
@@ -1858,10 +2085,10 @@ function renderCatSettings() {
       return `<tr>
         <td><div style="display:flex;align-items:center;gap:8px"><div style="width:28px;height:28px;border-radius:6px;background:${tc.bg};display:grid;place-items:center"><i class="ti ${tc.icon}" style="color:${tc.color};font-size:14px"></i></div><strong>${tc.label}</strong></div></td>
         <td><div style="display:flex;align-items:center;gap:6px"><i class="ti ${icon}" style="color:${tc.color}"></i>${sc.label}</div></td>
-        <td class="col-icon"><code style="font-size:11px;background:var(--bg);padding:2px 7px;border-radius:4px;border:1px solid var(--border);white-space:nowrap">${icon}</code></td>
-        <td class="col-prefix"><span class="badge b-info" style="font-family:var(--mono)">${prefix}</span></td>
+        <td><code style="font-size:11px;background:var(--bg);padding:2px 7px;border-radius:4px;border:1px solid var(--border);white-space:nowrap">${icon}</code></td>
+        <td><span class="badge b-info" style="font-family:var(--mono)">${prefix}</span></td>
         <td><span class="badge b-teal">${count}</span></td>
-        <td class="col-actions"><div class="cfg-actions">
+        <td><div class="cfg-actions">
           <button class="cfg-act e" onclick="editCategory('${topKey}','${subKey}')"><i class="ti ti-pencil"></i></button>
           <button class="cfg-act d" onclick="deleteCategory('${topKey}','${subKey}')"><i class="ti ti-trash"></i></button>
         </div></td>
@@ -1901,6 +2128,7 @@ function switchSettings(sec,el) {
   el.classList.add('active');
   document.getElementById('ss-'+sec).classList.add('active');
   if(sec==='categories') renderCatSettings();
+  if(sec==='devicesubtypes') renderDeviceSubTypesSettings();
 }
 function saveSettings(){ toast('Settings saved successfully.','success'); }
 
