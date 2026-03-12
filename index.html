@@ -316,7 +316,6 @@ tbody tr:hover{background:var(--bg);}
 .cfg-table tbody tr:hover{background:var(--bg);}
 .cfg-actions{display:flex;gap:4px;}
 .cfg-act{width:28px;height:28px;border-radius:var(--rsm);border:1px solid var(--border);background:transparent;display:grid;place-items:center;color:var(--muted);cursor:pointer;transition:all .12s;}
-.cfg-act.v:hover{background:var(--blue-lt);border-color:var(--blue-bd);color:var(--blue);}
 .cfg-act.e:hover{background:var(--orange-lt);border-color:var(--orange-bd);color:var(--orange);}
 .cfg-act.d:hover{background:var(--red-lt);border-color:var(--red-bd);color:var(--red);}
 .cfg-act i{font-size:13px;}
@@ -734,48 +733,49 @@ textarea.fi{resize:vertical;min-height:70px;}
           </div>
           <div class="settings-section" id="ss-statuslabels">
             <h3>Status Labels</h3><div class="desc">Customise asset state labels used across the system</div>
-            <div style="display:flex;justify-content:flex-end;margin-bottom:14px">
-              <button class="btn btn-primary btn-sm" onclick="openCfgModal('statuslabel')"><i class="ti ti-plus"></i> Add Status Label</button>
-            </div>
-            <table class="cfg-table"><thead><tr><th>Label</th><th>Color</th><th>Type</th><th>Default</th><th>Actions</th></tr></thead>
+            <table class="cfg-table"><thead><tr><th>Label</th><th>Color</th><th>Type</th><th>Default</th></tr></thead>
             <tbody>
-              <tr><td><strong>Active</strong></td><td><span style="display:inline-flex;align-items:center;gap:6px"><span style="background:#059669;width:14px;height:14px;border-radius:3px;display:inline-block"></span>#059669</span></td><td>Deployable</td><td><span class="badge b-active">Yes</span></td><td><div class="cfg-actions"><button class="cfg-act v" title="View" onclick="toast('Viewing Active label.','info')"><i class="ti ti-eye"></i></button><button class="cfg-act e" title="Edit" onclick="openCfgModal('statuslabel','Active')"><i class="ti ti-pencil"></i></button><button class="cfg-act d" title="Delete" onclick="cfgDelete('status label','Active')"><i class="ti ti-trash"></i></button></div></td></tr>
-              <tr><td><strong>Maintenance</strong></td><td><span style="display:inline-flex;align-items:center;gap:6px"><span style="background:#d97706;width:14px;height:14px;border-radius:3px;display:inline-block"></span>#d97706</span></td><td>Pending</td><td>—</td><td><div class="cfg-actions"><button class="cfg-act v" title="View" onclick="toast('Viewing Maintenance label.','info')"><i class="ti ti-eye"></i></button><button class="cfg-act e" title="Edit" onclick="openCfgModal('statuslabel','Maintenance')"><i class="ti ti-pencil"></i></button><button class="cfg-act d" title="Delete" onclick="cfgDelete('status label','Maintenance')"><i class="ti ti-trash"></i></button></div></td></tr>
-              <tr><td><strong>Inactive</strong></td><td><span style="display:inline-flex;align-items:center;gap:6px"><span style="background:#dc2626;width:14px;height:14px;border-radius:3px;display:inline-block"></span>#dc2626</span></td><td>Archived</td><td>—</td><td><div class="cfg-actions"><button class="cfg-act v" title="View" onclick="toast('Viewing Inactive label.','info')"><i class="ti ti-eye"></i></button><button class="cfg-act e" title="Edit" onclick="openCfgModal('statuslabel','Inactive')"><i class="ti ti-pencil"></i></button><button class="cfg-act d" title="Delete" onclick="cfgDelete('status label','Inactive')"><i class="ti ti-trash"></i></button></div></td></tr>
-              <tr><td><strong>In Storage</strong></td><td><span style="display:inline-flex;align-items:center;gap:6px"><span style="background:#7c3aed;width:14px;height:14px;border-radius:3px;display:inline-block"></span>#7c3aed</span></td><td>Undeployable</td><td>—</td><td><div class="cfg-actions"><button class="cfg-act v" title="View" onclick="toast('Viewing In Storage label.','info')"><i class="ti ti-eye"></i></button><button class="cfg-act e" title="Edit" onclick="openCfgModal('statuslabel','In Storage')"><i class="ti ti-pencil"></i></button><button class="cfg-act d" title="Delete" onclick="cfgDelete('status label','In Storage')"><i class="ti ti-trash"></i></button></div></td></tr>
+              <tr><td><strong>Active</strong></td><td><span class="color-dot" style="background:#059669;width:18px;height:18px;border-radius:4px;display:inline-block"></span></td><td>Deployable</td><td><span class="badge b-active">Yes</span></td></tr>
+              <tr><td><strong>Maintenance</strong></td><td><span class="color-dot" style="background:#d97706;width:18px;height:18px;border-radius:4px;display:inline-block"></span></td><td>Pending</td><td>—</td></tr>
+              <tr><td><strong>Inactive</strong></td><td><span class="color-dot" style="background:#dc2626;width:18px;height:18px;border-radius:4px;display:inline-block"></span></td><td>Archived</td><td>—</td></tr>
+              <tr><td><strong>In Storage</strong></td><td><span class="color-dot" style="background:#7c3aed;width:18px;height:18px;border-radius:4px;display:inline-block"></span></td><td>Undeployable</td><td>—</td></tr>
             </tbody></table>
           </div>
           <div class="settings-section" id="ss-suppliers">
             <h3>Suppliers</h3><div class="desc">Manage vendors from whom assets are procured</div>
-            <div style="display:flex;justify-content:flex-end;margin-bottom:14px">
-              <button class="btn btn-primary btn-sm" onclick="openCfgModal('supplier')"><i class="ti ti-plus"></i> Add Supplier</button>
-            </div>
-            <table class="cfg-table" id="suppliers-table"><thead><tr><th>Supplier</th><th>Contact</th><th>Phone</th><th>Email</th><th>Assets</th><th>Actions</th></tr></thead>
-            <tbody id="suppliers-tbody"></tbody></table>
+            <div style="display:flex;justify-content:flex-end;margin-bottom:12px"><button class="btn btn-primary btn-sm" onclick="toast('Add supplier form coming soon.','info')"><i class="ti ti-plus"></i> Add Supplier</button></div>
+            <table class="cfg-table"><thead><tr><th>Supplier</th><th>Contact</th><th>Phone</th><th>Assets Supplied</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Compuline Uganda Ltd</strong></td><td>Mr. Kato</td><td style="font-family:var(--mono);font-size:11px">+256 414 123 456</td><td><span class="badge b-teal">12</span></td></tr>
+              <tr><td><strong>Network Solutions EA</strong></td><td>Ms. Apio</td><td style="font-family:var(--mono);font-size:11px">+256 772 999 000</td><td><span class="badge b-teal">8</span></td></tr>
+            </tbody></table>
           </div>
           <div class="settings-section" id="ss-departments">
             <h3>Departments</h3><div class="desc">Define departments for asset assignment tracking</div>
-            <div style="display:flex;justify-content:flex-end;margin-bottom:14px">
-              <button class="btn btn-primary btn-sm" onclick="openCfgModal('department')"><i class="ti ti-plus"></i> Add Department</button>
-            </div>
-            <table class="cfg-table"><thead><tr><th>Department</th><th>Manager</th><th>Assets</th><th>Actions</th></tr></thead>
-            <tbody id="departments-tbody"></tbody></table>
+            <table class="cfg-table"><thead><tr><th>Department</th><th>Manager</th><th>Assets</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Information Technology</strong></td><td>John Mukasa</td><td><span class="badge b-teal">12</span></td></tr>
+              <tr><td><strong>Intensive Care Unit</strong></td><td>Dr. Peter Okello</td><td><span class="badge b-teal">6</span></td></tr>
+              <tr><td><strong>Administration</strong></td><td>Sarah Nakato</td><td><span class="badge b-teal">10</span></td></tr>
+            </tbody></table>
           </div>
           <div class="settings-section" id="ss-locations">
             <h3>Locations</h3><div class="desc">Map physical locations where assets are deployed</div>
-            <div style="display:flex;justify-content:flex-end;margin-bottom:14px">
-              <button class="btn btn-primary btn-sm" onclick="openCfgModal('location')"><i class="ti ti-plus"></i> Add Location</button>
-            </div>
-            <table class="cfg-table"><thead><tr><th>Location</th><th>Parent</th><th>Assets</th><th>Actions</th></tr></thead>
-            <tbody id="locations-tbody"></tbody></table>
+            <table class="cfg-table"><thead><tr><th>Location</th><th>Parent</th><th>Assets</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Main Campus</strong></td><td>—</td><td><span class="badge b-teal">30</span></td></tr>
+              <tr><td><strong>Block C – IT</strong></td><td>Main Campus</td><td><span class="badge b-teal">12</span></td></tr>
+              <tr><td><strong>Vehicle Bay</strong></td><td>Main Campus</td><td><span class="badge b-teal">9</span></td></tr>
+            </tbody></table>
           </div>
           <div class="settings-section" id="ss-depreciation">
             <h3>Depreciation</h3><div class="desc">Configure depreciation methods applied per asset category</div>
-            <div style="display:flex;justify-content:flex-end;margin-bottom:14px">
-              <button class="btn btn-primary btn-sm" onclick="openCfgModal('depreciation')"><i class="ti ti-plus"></i> Add Method</button>
-            </div>
-            <table class="cfg-table"><thead><tr><th>Name</th><th>Method</th><th>Rate</th><th>Applies To</th><th>Actions</th></tr></thead>
-            <tbody id="depreciation-tbody"></tbody></table>
+            <table class="cfg-table"><thead><tr><th>Name</th><th>Method</th><th>Rate</th><th>Applies To</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Standard 5-Year Linear</strong></td><td><span style="color:var(--green);font-weight:600">Straight-Line</span></td><td style="font-family:var(--mono);font-size:12px">20% / yr</td><td>All Hardware</td></tr>
+              <tr><td><strong>Rapid Network Gear</strong></td><td><span style="color:var(--orange);font-weight:600">Declining Balance</span></td><td style="font-family:var(--mono);font-size:12px">30% / yr</td><td>IT Assets</td></tr>
+              <tr><td><strong>Long-Life Furniture</strong></td><td><span style="color:var(--purple);font-weight:600">Sum-of-Years</span></td><td style="font-family:var(--mono);font-size:12px">15 years</td><td>Furniture</td></tr>
+            </tbody></table>
           </div>
         </div>
       </div>
@@ -879,13 +879,13 @@ textarea.fi{resize:vertical;min-height:70px;}
       <div class="fgrid">
         <div class="fg full"><label>Asset Name / Model</label><input type="text" id="fmName" placeholder="e.g. Dell Latitude 5520"/></div>
         <div class="fg"><label>Asset ID</label><input type="text" id="fmId" placeholder="Auto-generated"/></div>
-        <div class="fg"><label>Serial Number</label><input type="text" id="fmSerial" placeholder="e.g. SN-29384XAB"/></div>
+        <div class="fg"><label>Quantity</label><input type="number" id="fmQty" value="1" min="1"/></div>
         <div class="fg"><label>Store (Origin)</label><select class="fi" id="fmStore"></select></div>
         <div class="fg"><label>Assigned To</label><input type="text" id="fmAssigned" placeholder="Team or department"/></div>
         <div class="fg"><label>Status</label><select class="fi" id="fmStatus"><option>Active</option><option>Maintenance</option><option>Inactive</option><option>In Storage</option></select></div>
         <div class="fg"><label>Date Acquired</label><input type="date" id="fmDate"/></div>
         <div class="fg"><label>Condition</label><select class="fi" id="fmCond"><option>New</option><option>Good</option><option>Fair</option><option>Poor</option></select></div>
-        <div class="fg full"><label>Notes / Remarks</label><textarea class="fi" id="fmNotes" placeholder="Additional remarks, warranty info..."></textarea></div>
+        <div class="fg full"><label>Notes / Serial No.</label><textarea class="fi" id="fmNotes" placeholder="Serial number, remarks..."></textarea></div>
       </div>
     </div>
     <div class="mft"><button class="btn btn-ghost" onclick="closeOv('formOv')">Cancel</button><button class="btn btn-primary" id="fmSaveBtn" onclick="saveAsset()"><i class="ti ti-check"></i> Save</button></div>
@@ -937,30 +937,6 @@ textarea.fi{resize:vertical;min-height:70px;}
       </div>
     </div>
     <div class="mft"><button class="btn btn-ghost" onclick="closeOv('entryOv')">Cancel</button><button class="btn btn-primary" onclick="saveEntry()"><i class="ti ti-check"></i> Save Record</button></div>
-  </div>
-</div>
-
-<!-- GENERIC CONFIG MODAL -->
-<div class="ov" id="cfgOv" onclick="bgClose(event,'cfgOv')">
-  <div class="modal sm">
-    <div class="mhd">
-      <div class="mhd-l"><div class="m-ico" id="cfgOvIco" style="background:var(--blue-lt)"><i class="ti ti-settings" id="cfgOvIcoI" style="color:var(--blue)"></i></div><div><div class="m-title" id="cfgOvTitle">Add Item</div><div class="m-sub" id="cfgOvSub"></div></div></div>
-      <button class="close-btn" onclick="closeOv('cfgOv')"><i class="ti ti-x"></i></button>
-    </div>
-    <div class="mbody" id="cfgOvBody"></div>
-    <div class="mft"><button class="btn btn-ghost" onclick="closeOv('cfgOv')">Cancel</button><button class="btn btn-primary" onclick="saveCfgModal()"><i class="ti ti-check"></i> Save</button></div>
-  </div>
-</div>
-
-<!-- GENERIC CONFIG VIEW MODAL -->
-<div class="ov" id="cfgViewOv" onclick="bgClose(event,'cfgViewOv')">
-  <div class="modal sm">
-    <div class="mhd">
-      <div class="mhd-l"><div class="m-ico" style="background:var(--blue-lt)"><i class="ti ti-eye" style="color:var(--blue)"></i></div><div><div class="m-title" id="cfgViewTitle">Details</div><div class="m-sub" id="cfgViewSub"></div></div></div>
-      <button class="close-btn" onclick="closeOv('cfgViewOv')"><i class="ti ti-x"></i></button>
-    </div>
-    <div class="mbody"><div class="vg" id="cfgViewGrid"></div></div>
-    <div class="mft"><button class="btn btn-ghost" onclick="closeOv('cfgViewOv')">Close</button></div>
   </div>
 </div>
 
@@ -1106,55 +1082,11 @@ const DB = {
 };
 
 let STORES = [
-  {id:'store-1',name:'IT Store',hospital:'Main Campus',contact:'John Mukasa',phone:'+256 700 111 222',color:'#2563eb',
-   received:[
-     {item:'Dell Latitude 5520',cat:'IT Asset',qty:5,cond:'New',date:'2025-08-10',party:'Compuline Uganda Ltd',notes:'PO-2025-081 — 5 units, includes warranty cards'},
-     {item:'DDR4 16GB RAM Modules',cat:'IT Component',qty:10,cond:'New',date:'2026-01-15',party:'Network Solutions EA',notes:'Delivery note DN-1042'},
-     {item:'USB-C Docking Stations',cat:'IT Accessory',qty:4,cond:'New',date:'2026-02-10',party:'Central Procurement',notes:'Ref: CPO-2026-019'},
-   ],
-   sent:[
-     {item:'Dell Latitude 5520 ×2',cat:'IT Asset',qty:2,cond:'Good',date:'2025-08-12',party:'Finance Dept',notes:'Assigned to Finance — SN: DL001, DL002'},
-     {item:'Logitech MX Keys ×3',cat:'IT Accessory',qty:3,cond:'New',date:'2025-11-22',party:'Exec Offices',notes:'Issued to Directors'},
-   ]},
-  {id:'store-2',name:'Main Store',hospital:'Main Campus',contact:'Sarah Nakato',phone:'+256 701 333 444',color:'#059669',
-   received:[
-     {item:'APC Smart-UPS 1500VA',cat:'IT Asset',qty:2,cond:'New',date:'2024-12-01',party:'APC Distributor EA',notes:'Battery included, 2yr warranty'},
-     {item:'CAT6 Patch Cables 1m ×50',cat:'IT Consumable',qty:50,cond:'New',date:'2025-12-15',party:'Compuline Uganda Ltd',notes:'Blue coded, bulk pack'},
-     {item:'Conference Table',cat:'Furniture Asset',qty:1,cond:'New',date:'2025-03-20',party:'Office Supplies Ltd',notes:'Board Room — glass top oval'},
-   ],
-   sent:[
-     {item:'APC Smart-UPS 1500VA',cat:'IT Asset',qty:2,cond:'New',date:'2024-12-03',party:'Server Room',notes:'Deployed to DC Floor 1'},
-     {item:'Cisco Catalyst 2960',cat:'IT Asset',qty:1,cond:'Good',date:'2025-07-22',party:'Network Team',notes:'Rack-mounted in Server Room'},
-   ]},
-  {id:'store-3',name:'Admin Store',hospital:'Main Campus',contact:'David Ochen',phone:'+256 702 555 666',color:'#d97706',
-   received:[
-     {item:'Ergonomic Office Chairs ×5',cat:'Furniture Asset',qty:5,cond:'New',date:'2025-08-15',party:'Office Supplies Ltd',notes:'Adjustable lumbar support'},
-     {item:'USB-C Docking Station',cat:'IT Accessory',qty:2,cond:'New',date:'2026-02-10',party:'IT Store',notes:'Transfer from IT Store'},
-   ],
-   sent:[
-     {item:'4-Drawer Filing Cabinet',cat:'Furniture Asset',qty:3,cond:'Good',date:'2024-11-15',party:'Records Room',notes:'Deployed to Records Archive'},
-     {item:'Desk Organiser Set ×10',cat:'Furniture Accessory',qty:10,cond:'Good',date:'2025-10-05',party:'Office Staff',notes:'Distributed to all desks'},
-   ]},
-  {id:'store-4',name:'Furniture Store',hospital:'Main Campus',contact:'Grace Atim',phone:'+256 703 777 888',color:'#7c3aed',
-   received:[
-     {item:'Executive Office Desks',cat:'Furniture Asset',qty:2,cond:'New',date:'2025-06-01',party:'Kampala Furnishers',notes:'L-shaped mahogany — Directors'},
-     {item:'Chair Gas Cylinders ×15',cat:'Furniture Component',qty:15,cond:'New',date:'2026-01-05',party:'Parts Depot Uganda',notes:'Universal fit, batch #GC-15'},
-     {item:'Furniture Polish 500ml ×12',cat:'Furniture Consumable',qty:12,cond:'New',date:'2026-02-05',party:'Cleaning Supplies Co.',notes:'Pledge brand'},
-   ],
-   sent:[
-     {item:'Waiting Area Bench ×2',cat:'Furniture Asset',qty:2,cond:'Good',date:'2024-09-05',party:'Reception Area',notes:'Deployed to main reception'},
-     {item:'Ergonomic Chair ×5',cat:'Furniture Asset',qty:5,cond:'New',date:'2025-08-18',party:'Finance Dept',notes:'Issued to Finance floor'},
-   ]},
-  {id:'store-5',name:'Vehicle Bay',hospital:'Transport Yard',contact:'Ivan Twinamasiko',phone:'+256 704 999 000',color:'#0891b2',
-   received:[
-     {item:'Toyota HiLux Double Cab',cat:'Vehicle Asset',qty:1,cond:'New',date:'2022-11-15',party:'Toyota Uganda Ltd',notes:'Reg: UG 234B — white 4WD'},
-     {item:'Michelin Tyres 265/65R17 ×8',cat:'Vehicle Component',qty:8,cond:'New',date:'2026-01-10',party:'Tyre Centre Uganda',notes:'All terrain — stock for 2 vehicles'},
-     {item:'Engine Oil 5W30 4L ×20',cat:'Vehicle Consumable',qty:20,cond:'New',date:'2026-02-10',party:'Total Energies Uganda',notes:'Castrol GTX — scheduled service stock'},
-   ],
-   sent:[
-     {item:'Toyota Land Cruiser Prado',cat:'Vehicle Asset',qty:1,cond:'Good',date:'2023-05-05',party:'Executive Transport',notes:'Assigned: UG 001A — Silver'},
-     {item:'Vehicle First Aid Kits ×3',cat:'Vehicle Accessory',qty:3,cond:'New',date:'2025-12-05',party:'Field Vehicles',notes:'Issued to HiLux fleet'},
-   ]},
+  {id:'store-1',name:'IT Store',hospital:'Main Campus',contact:'John Mukasa',phone:'+256 700 111 222',color:'#2563eb',received:[],sent:[]},
+  {id:'store-2',name:'Main Store',hospital:'Main Campus',contact:'Sarah Nakato',phone:'+256 701 333 444',color:'#059669',received:[],sent:[]},
+  {id:'store-3',name:'Admin Store',hospital:'Main Campus',contact:'David Ochen',phone:'+256 702 555 666',color:'#d97706',received:[],sent:[]},
+  {id:'store-4',name:'Furniture Store',hospital:'Main Campus',contact:'Grace Atim',phone:'+256 703 777 888',color:'#7c3aed',received:[],sent:[]},
+  {id:'store-5',name:'Vehicle Bay',hospital:'Transport Yard',contact:'Ivan Twinamasiko',phone:'+256 704 999 000',color:'#0891b2',received:[],sent:[]},
 ];
 
 let ALERTS = [
@@ -1337,7 +1269,7 @@ function renderCatPage(pageKey) {
         </select>
       </div>
       <div class="tw"><table>
-        <thead><tr><th>Asset</th><th>Serial No.</th><th>Store</th><th>Assigned To</th><th>Status</th><th>Date</th><th>Actions</th></tr></thead>
+        <thead><tr><th>Asset</th><th>Store</th><th>Assigned To</th><th>Qty</th><th>Status</th><th>Date</th><th>Actions</th></tr></thead>
         <tbody id="tb-${pageKey}"></tbody>
       </table></div>
       <div class="pg-bar"><div class="pg-info" id="pg-${pageKey}"></div></div>
@@ -1359,9 +1291,9 @@ function drawTable(pageKey) {
   document.getElementById('tb-' + pageKey).innerHTML = rows.length ? rows.map(a => `
     <tr>
       <td><div class="acell"><div class="acell-ico" style="background:${tc.bg}"><i class="ti ${icon}" style="color:${tc.color}"></i></div><div><div class="acell-name">${a.name}</div><div class="acell-id">${a.id}</div></div></div></td>
-      <td style="font-family:var(--mono);font-size:11px;color:var(--muted)">${a.serial || '—'}</td>
       <td><span class="store-tag"><i class="ti ti-building-hospital"></i>${a.store}</span></td>
       <td>${a.assigned || '—'}</td>
+      <td style="font-family:var(--mono);font-size:12px">${a.qty || 1}</td>
       <td><span class="badge ${SB[a.status] || 'b-active'}"><i class="ti ${SI[a.status]}"></i>${a.status}</span></td>
       <td style="font-family:var(--mono);font-size:11px;color:var(--muted)">${a.date || '—'}</td>
       <td><div class="acts">
@@ -1390,7 +1322,8 @@ function openAdd(pageKey) {
   document.getElementById('fmSub').textContent = `ID prefix: ${PREFIX[pageKey]}`;
   document.getElementById('fmSaveBtn').innerHTML = `<i class="ti ti-check"></i> Save`;
   document.getElementById('fmEditId').value = '';
-  ['fmName','fmAssigned','fmNotes','fmSerial'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+  ['fmName','fmAssigned','fmNotes'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+  document.getElementById('fmQty').value = 1;
   document.getElementById('fmDate').value = new Date().toISOString().slice(0, 10);
   document.getElementById('fmStatus').value = 'Active';
   document.getElementById('fmCond').value = 'New';
@@ -1412,7 +1345,7 @@ function openEdit(pageKey, id) {
   document.getElementById('fmSaveBtn').innerHTML = `<i class="ti ti-check"></i> Update`;
   document.getElementById('fmEditId').value = a.id;
   document.getElementById('fmName').value = a.name;
-  document.getElementById('fmSerial').value = a.serial || '';
+  document.getElementById('fmQty').value = a.qty || 1;
   document.getElementById('fmAssigned').value = a.assigned || '';
   document.getElementById('fmNotes').value = a.notes || '';
   document.getElementById('fmDate').value = a.date || '';
@@ -1429,9 +1362,9 @@ function saveAsset() {
   const [topKey, subKey] = pageKey.split('_');
   const data = {
     name,
-    serial: document.getElementById('fmSerial').value.trim(),
     store: document.getElementById('fmStore').value,
     assigned: document.getElementById('fmAssigned').value,
+    qty: parseInt(document.getElementById('fmQty').value) || 1,
     status: document.getElementById('fmStatus').value,
     date: document.getElementById('fmDate').value,
     condition: document.getElementById('fmCond').value,
@@ -1456,10 +1389,10 @@ function openView(pageKey, id) {
   document.getElementById('vmGrid').innerHTML = `
     <div class="vi full"><div class="vi-lbl">Asset Name</div><div class="vi-val" style="font-size:15px;font-weight:700">${a.name}</div></div>
     <div class="vi"><div class="vi-lbl">Asset ID</div><div class="vi-val" style="font-family:var(--mono)">${a.id}</div></div>
-    <div class="vi"><div class="vi-lbl">Serial Number</div><div class="vi-val" style="font-family:var(--mono)">${a.serial || '—'}</div></div>
     <div class="vi"><div class="vi-lbl">Category</div><div class="vi-val">${tc.label} — ${SUB[subKey].label}</div></div>
     <div class="vi"><div class="vi-lbl">Store</div><div class="vi-val">${a.store}</div></div>
     <div class="vi"><div class="vi-lbl">Assigned To</div><div class="vi-val">${a.assigned || '—'}</div></div>
+    <div class="vi"><div class="vi-lbl">Quantity</div><div class="vi-val" style="font-family:var(--mono)">${a.qty || 1}</div></div>
     <div class="vi"><div class="vi-lbl">Status</div><div class="vi-val"><span class="badge ${SB[a.status]}">${a.status}</span></div></div>
     <div class="vi"><div class="vi-lbl">Condition</div><div class="vi-val">${a.condition || '—'}</div></div>
     <div class="vi"><div class="vi-lbl">Date Acquired</div><div class="vi-val" style="font-family:var(--mono)">${a.date || '—'}</div></div>
@@ -1670,252 +1603,12 @@ function renderCatSettings() {
         <td><span class="badge b-info" style="font-family:var(--mono)">${prefix}</span></td>
         <td><span class="badge b-teal">${count}</span></td>
         <td><div class="cfg-actions">
-          <button class="cfg-act v" onclick="viewCategory('${topKey}','${subKey}')" title="View"><i class="ti ti-eye"></i></button>
           <button class="cfg-act e" onclick="editCategory('${topKey}','${subKey}')" title="Edit"><i class="ti ti-pencil"></i></button>
           <button class="cfg-act d" onclick="deleteCategory('${topKey}','${subKey}')" title="Delete"><i class="ti ti-trash"></i></button>
         </div></td>
       </tr>`;
     })
   ).join('');
-}
-
-function viewCategory(topKey, subKey) {
-  const pageKey = `${topKey}_${subKey}`;
-  const tc = TOP[topKey]; const sc = SUB[subKey];
-  document.getElementById('cfgViewTitle').textContent = `${tc.label} — ${sc.label}`;
-  document.getElementById('cfgViewSub').textContent = 'Category details';
-  document.getElementById('cfgViewGrid').innerHTML = `
-    <div class="vi"><div class="vi-lbl">Top Category</div><div class="vi-val">${tc.label}</div></div>
-    <div class="vi"><div class="vi-lbl">Sub-type</div><div class="vi-val">${sc.label}</div></div>
-    <div class="vi"><div class="vi-lbl">ID Prefix</div><div class="vi-val" style="font-family:var(--mono)">${PREFIX[pageKey]}</div></div>
-    <div class="vi"><div class="vi-lbl">Icon</div><div class="vi-val"><i class="ti ${CAT_ICON[pageKey]}" style="color:${tc.color}"></i> ${CAT_ICON[pageKey]}</div></div>
-    <div class="vi"><div class="vi-lbl">Record Count</div><div class="vi-val">${DB[topKey][subKey]?.length || 0}</div></div>
-    <div class="vi"><div class="vi-lbl">Color</div><div class="vi-val"><span style="display:inline-block;width:14px;height:14px;border-radius:3px;background:${tc.color};vertical-align:middle;margin-right:6px"></span>${tc.color}</div></div>`;
-  openOv('cfgViewOv');
-}
-
-/* ── CONFIG DATA STORES ── */
-let SUPPLIERS = [
-  {id:'sup-1',name:'Compuline Uganda Ltd',contact:'Mr. Robert Kato',phone:'+256 414 123 456',email:'sales@compuline.co.ug',assets:12,category:'IT Equipment',notes:'Primary IT hardware supplier since 2022'},
-  {id:'sup-2',name:'Network Solutions EA',contact:'Ms. Patricia Apio',phone:'+256 772 999 000',email:'info@netsolutions.co.ug',assets:8,category:'Networking',notes:'Cisco and MikroTik certified partner'},
-  {id:'sup-3',name:'Kampala Furnishers Ltd',contact:'Mr. Denis Ssebunya',phone:'+256 414 567 890',email:'orders@kampfurnish.ug',assets:15,category:'Furniture',notes:'Preferred furniture supplier — MOH contract 2024'},
-  {id:'sup-4',name:'Toyota Uganda Ltd',contact:'Mr. James Mulindwa',phone:'+256 414 200 100',email:'fleet@toyotauganda.co.ug',assets:4,category:'Vehicles',notes:'Official Toyota dealer — Fleet management'},
-  {id:'sup-5',name:'Total Energies Uganda',contact:'Ms. Annet Nabukenya',phone:'+256 800 100 200',email:'commercial@total.co.ug',assets:0,category:'Consumables',notes:'Vehicle fuel and lubricants supply'},
-];
-
-let DEPARTMENTS = [
-  {id:'dept-1',name:'Information Technology',manager:'John Mukasa',assets:12,email:'it@moh.go.ug',phone:'+256 700 111 222'},
-  {id:'dept-2',name:'Intensive Care Unit',manager:'Dr. Peter Okello',assets:6,email:'icu@moh.go.ug',phone:'+256 700 333 444'},
-  {id:'dept-3',name:'Administration',manager:'Sarah Nakato',assets:10,email:'admin@moh.go.ug',phone:'+256 700 555 666'},
-  {id:'dept-4',name:'Finance',manager:'Grace Atim',assets:8,email:'finance@moh.go.ug',phone:'+256 700 777 888'},
-  {id:'dept-5',name:'Logistics & Transport',manager:'Ivan Twinamasiko',assets:9,email:'logistics@moh.go.ug',phone:'+256 700 999 000'},
-];
-
-let LOCATIONS = [
-  {id:'loc-1',name:'Main Campus',parent:'—',assets:30,address:'Plot 6 Lourdel Road, Nakasero, Kampala'},
-  {id:'loc-2',name:'Block C – IT',parent:'Main Campus',assets:12,address:'Block C, Floor 2, Main Campus'},
-  {id:'loc-3',name:'Vehicle Bay',parent:'Main Campus',assets:9,address:'Transport Yard, Rear Compound'},
-  {id:'loc-4',name:'Board Room',parent:'Main Campus',assets:5,address:'Block A, Floor 3'},
-  {id:'loc-5',name:'Server Room',parent:'Block C – IT',assets:6,address:'Block C, Floor 2, Room 201'},
-];
-
-let DEPRECIATION_METHODS = [
-  {id:'dep-1',name:'Standard 5-Year Linear',method:'Straight-Line',rate:'20% / yr',appliesTo:'All Hardware',notes:'Default for general IT and furniture assets'},
-  {id:'dep-2',name:'Rapid Network Gear',method:'Declining Balance',rate:'30% / yr',appliesTo:'IT Assets',notes:'Applied to switches, routers, access points'},
-  {id:'dep-3',name:'Long-Life Furniture',method:'Sum-of-Years',rate:'15 years',appliesTo:'Furniture',notes:'Conference tables and executive furniture'},
-  {id:'dep-4',name:'Vehicle Fleet',method:'Straight-Line',rate:'25% / yr',appliesTo:'Vehicles',notes:'All registered fleet vehicles'},
-];
-
-/* ── RENDER CONFIG TABLES ── */
-function renderSuppliers() {
-  const tbody = document.getElementById('suppliers-tbody'); if (!tbody) return;
-  tbody.innerHTML = SUPPLIERS.map(s => `<tr>
-    <td><div class="acell"><div class="acell-ico" style="background:var(--purple-lt)"><i class="ti ti-truck-delivery" style="color:var(--purple)"></i></div><div><div class="acell-name">${s.name}</div><div class="acell-id">${s.category}</div></div></div></td>
-    <td>${s.contact}</td>
-    <td style="font-family:var(--mono);font-size:11px">${s.phone}</td>
-    <td style="font-size:12px;color:var(--muted)">${s.email}</td>
-    <td><span class="badge b-teal">${s.assets}</span></td>
-    <td><div class="cfg-actions">
-      <button class="cfg-act v" title="View" onclick="viewCfgItem('supplier','${s.id}')"><i class="ti ti-eye"></i></button>
-      <button class="cfg-act e" title="Edit" onclick="openCfgModal('supplier','${s.id}')"><i class="ti ti-pencil"></i></button>
-      <button class="cfg-act d" title="Delete" onclick="cfgDelete('supplier','${s.id}','suppliers')"><i class="ti ti-trash"></i></button>
-    </div></td>
-  </tr>`).join('');
-}
-
-function renderDepartments() {
-  const tbody = document.getElementById('departments-tbody'); if (!tbody) return;
-  tbody.innerHTML = DEPARTMENTS.map(d => `<tr>
-    <td><div class="acell"><div class="acell-ico" style="background:var(--teal-lt)"><i class="ti ti-sitemap" style="color:var(--teal)"></i></div><div><div class="acell-name">${d.name}</div><div class="acell-id">${d.email}</div></div></div></td>
-    <td>${d.manager}</td>
-    <td><span class="badge b-teal">${d.assets}</span></td>
-    <td><div class="cfg-actions">
-      <button class="cfg-act v" title="View" onclick="viewCfgItem('department','${d.id}')"><i class="ti ti-eye"></i></button>
-      <button class="cfg-act e" title="Edit" onclick="openCfgModal('department','${d.id}')"><i class="ti ti-pencil"></i></button>
-      <button class="cfg-act d" title="Delete" onclick="cfgDelete('department','${d.id}','departments')"><i class="ti ti-trash"></i></button>
-    </div></td>
-  </tr>`).join('');
-}
-
-function renderLocations() {
-  const tbody = document.getElementById('locations-tbody'); if (!tbody) return;
-  tbody.innerHTML = LOCATIONS.map(l => `<tr>
-    <td><div class="acell"><div class="acell-ico" style="background:var(--green-lt)"><i class="ti ti-map-pin" style="color:var(--green)"></i></div><div><div class="acell-name">${l.name}</div><div class="acell-id">${l.address}</div></div></div></td>
-    <td>${l.parent}</td>
-    <td><span class="badge b-teal">${l.assets}</span></td>
-    <td><div class="cfg-actions">
-      <button class="cfg-act v" title="View" onclick="viewCfgItem('location','${l.id}')"><i class="ti ti-eye"></i></button>
-      <button class="cfg-act e" title="Edit" onclick="openCfgModal('location','${l.id}')"><i class="ti ti-pencil"></i></button>
-      <button class="cfg-act d" title="Delete" onclick="cfgDelete('location','${l.id}','locations')"><i class="ti ti-trash"></i></button>
-    </div></td>
-  </tr>`).join('');
-}
-
-function renderDepreciation() {
-  const tbody = document.getElementById('depreciation-tbody'); if (!tbody) return;
-  const mColors = {'Straight-Line':'var(--green)','Declining Balance':'var(--orange)','Sum-of-Years':'var(--purple)'};
-  tbody.innerHTML = DEPRECIATION_METHODS.map(d => `<tr>
-    <td><strong>${d.name}</strong></td>
-    <td><span style="color:${mColors[d.method]||'var(--blue)'};font-weight:600">${d.method}</span></td>
-    <td style="font-family:var(--mono);font-size:12px">${d.rate}</td>
-    <td>${d.appliesTo}</td>
-    <td><div class="cfg-actions">
-      <button class="cfg-act v" title="View" onclick="viewCfgItem('depreciation','${d.id}')"><i class="ti ti-eye"></i></button>
-      <button class="cfg-act e" title="Edit" onclick="openCfgModal('depreciation','${d.id}')"><i class="ti ti-pencil"></i></button>
-      <button class="cfg-act d" title="Delete" onclick="cfgDelete('depreciation','${d.id}','depreciation_methods')"><i class="ti ti-trash"></i></button>
-    </div></td>
-  </tr>`).join('');
-}
-
-/* ── GENERIC CFG MODAL ── */
-let cfgContext = { type: '', id: '' };
-
-const CFG_FORMS = {
-  supplier: (d={}) => `
-    <div class="fgrid">
-      <div class="fg full"><label>Supplier Name</label><input type="text" id="cf-name" value="${d.name||''}" placeholder="e.g. Compuline Uganda Ltd"/></div>
-      <div class="fg"><label>Contact Person</label><input type="text" id="cf-contact" value="${d.contact||''}" placeholder="Full name"/></div>
-      <div class="fg"><label>Phone</label><input type="text" id="cf-phone" value="${d.phone||''}" placeholder="+256 ..."/></div>
-      <div class="fg"><label>Email</label><input type="text" id="cf-email" value="${d.email||''}" placeholder="email@example.com"/></div>
-      <div class="fg"><label>Category</label><input type="text" id="cf-category" value="${d.category||''}" placeholder="e.g. IT Equipment"/></div>
-      <div class="fg full"><label>Notes</label><textarea class="fi" id="cf-notes" placeholder="Additional notes...">${d.notes||''}</textarea></div>
-    </div>`,
-  department: (d={}) => `
-    <div class="fgrid">
-      <div class="fg full"><label>Department Name</label><input type="text" id="cf-name" value="${d.name||''}" placeholder="e.g. Information Technology"/></div>
-      <div class="fg"><label>Manager</label><input type="text" id="cf-manager" value="${d.manager||''}" placeholder="Full name"/></div>
-      <div class="fg"><label>Phone</label><input type="text" id="cf-phone" value="${d.phone||''}" placeholder="+256 ..."/></div>
-      <div class="fg full"><label>Email</label><input type="text" id="cf-email" value="${d.email||''}" placeholder="dept@moh.go.ug"/></div>
-    </div>`,
-  location: (d={}) => `
-    <div class="fgrid">
-      <div class="fg full"><label>Location Name</label><input type="text" id="cf-name" value="${d.name||''}" placeholder="e.g. Block C – IT"/></div>
-      <div class="fg"><label>Parent Location</label><input type="text" id="cf-parent" value="${d.parent||''}" placeholder="e.g. Main Campus or —"/></div>
-      <div class="fg full"><label>Address / Description</label><input type="text" id="cf-address" value="${d.address||''}" placeholder="Physical address or room number"/></div>
-    </div>`,
-  depreciation: (d={}) => `
-    <div class="fgrid">
-      <div class="fg full"><label>Method Name</label><input type="text" id="cf-name" value="${d.name||''}" placeholder="e.g. Standard 5-Year Linear"/></div>
-      <div class="fg"><label>Method</label><select class="fi" id="cf-method"><option${d.method==='Straight-Line'?' selected':''}>Straight-Line</option><option${d.method==='Declining Balance'?' selected':''}>Declining Balance</option><option${d.method==='Sum-of-Years'?' selected':''}>Sum-of-Years</option></select></div>
-      <div class="fg"><label>Rate</label><input type="text" id="cf-rate" value="${d.rate||''}" placeholder="e.g. 20% / yr"/></div>
-      <div class="fg full"><label>Applies To</label><input type="text" id="cf-applies" value="${d.appliesTo||''}" placeholder="e.g. All Hardware"/></div>
-      <div class="fg full"><label>Notes</label><textarea class="fi" id="cf-notes" placeholder="Additional notes...">${d.notes||''}</textarea></div>
-    </div>`,
-  statuslabel: (d={}) => `
-    <div class="fgrid">
-      <div class="fg full"><label>Label Name</label><input type="text" id="cf-name" value="${d.name||''}" placeholder="e.g. Active"/></div>
-      <div class="fg"><label>Color (hex)</label><input type="text" id="cf-color" value="${d.color||'#059669'}" placeholder="#059669"/></div>
-      <div class="fg"><label>Type</label><select class="fi" id="cf-type"><option>Deployable</option><option>Pending</option><option>Archived</option><option>Undeployable</option></select></div>
-    </div>`,
-};
-
-const CFG_META = {
-  supplier:    { title:'Supplier',         icon:'ti-truck-delivery', bg:'var(--purple-lt)', clr:'var(--purple)' },
-  department:  { title:'Department',       icon:'ti-sitemap',        bg:'var(--teal-lt)',   clr:'var(--teal)'   },
-  location:    { title:'Location',         icon:'ti-map-pin',        bg:'var(--green-lt)',  clr:'var(--green)'  },
-  depreciation:{ title:'Depreciation',     icon:'ti-chart-line-down',bg:'var(--orange-lt)',clr:'var(--orange)' },
-  statuslabel: { title:'Status Label',     icon:'ti-tag',            bg:'var(--blue-lt)',   clr:'var(--blue)'   },
-};
-
-function getDataStore(type) {
-  if (type === 'supplier') return SUPPLIERS;
-  if (type === 'department') return DEPARTMENTS;
-  if (type === 'location') return LOCATIONS;
-  if (type === 'depreciation') return DEPRECIATION_METHODS;
-  return [];
-}
-
-function openCfgModal(type, id = '') {
-  cfgContext = { type, id };
-  const meta = CFG_META[type];
-  const store = getDataStore(type);
-  const data = id ? store.find(x => x.id === id) : {};
-  const isEdit = !!id && !!data;
-  document.getElementById('cfgOvIco').style.background = meta.bg;
-  document.getElementById('cfgOvIcoI').className = `ti ${meta.icon}`;
-  document.getElementById('cfgOvIcoI').style.color = meta.clr;
-  document.getElementById('cfgOvTitle').textContent = `${isEdit ? 'Edit' : 'Add'} ${meta.title}`;
-  document.getElementById('cfgOvSub').textContent = isEdit ? `Editing: ${data.name}` : `Fill in the details below`;
-  document.getElementById('cfgOvBody').innerHTML = CFG_FORMS[type](data || {});
-  openOv('cfgOv');
-}
-
-function saveCfgModal() {
-  const { type, id } = cfgContext;
-  const nameEl = document.getElementById('cf-name');
-  if (!nameEl || !nameEl.value.trim()) { toast('Please enter a name.', 'error'); return; }
-  const store = getDataStore(type);
-  if (id) {
-    const idx = store.findIndex(x => x.id === id);
-    if (idx > -1) {
-      if (type === 'supplier') store[idx] = { ...store[idx], name:nameEl.value.trim(), contact:document.getElementById('cf-contact').value, phone:document.getElementById('cf-phone').value, email:document.getElementById('cf-email').value, category:document.getElementById('cf-category').value, notes:document.getElementById('cf-notes').value };
-      else if (type === 'department') store[idx] = { ...store[idx], name:nameEl.value.trim(), manager:document.getElementById('cf-manager').value, phone:document.getElementById('cf-phone').value, email:document.getElementById('cf-email').value };
-      else if (type === 'location') store[idx] = { ...store[idx], name:nameEl.value.trim(), parent:document.getElementById('cf-parent').value, address:document.getElementById('cf-address').value };
-      else if (type === 'depreciation') store[idx] = { ...store[idx], name:nameEl.value.trim(), method:document.getElementById('cf-method').value, rate:document.getElementById('cf-rate').value, appliesTo:document.getElementById('cf-applies').value, notes:document.getElementById('cf-notes').value };
-    }
-  } else {
-    const nid = `${type}-${Date.now()}`;
-    if (type === 'supplier') SUPPLIERS.push({ id:nid, name:nameEl.value.trim(), contact:document.getElementById('cf-contact').value, phone:document.getElementById('cf-phone').value, email:document.getElementById('cf-email').value, category:document.getElementById('cf-category').value, assets:0, notes:document.getElementById('cf-notes').value });
-    else if (type === 'department') DEPARTMENTS.push({ id:nid, name:nameEl.value.trim(), manager:document.getElementById('cf-manager').value, phone:document.getElementById('cf-phone').value, email:document.getElementById('cf-email').value, assets:0 });
-    else if (type === 'location') LOCATIONS.push({ id:nid, name:nameEl.value.trim(), parent:document.getElementById('cf-parent').value, address:document.getElementById('cf-address').value, assets:0 });
-    else if (type === 'depreciation') DEPRECIATION_METHODS.push({ id:nid, name:nameEl.value.trim(), method:document.getElementById('cf-method').value, rate:document.getElementById('cf-rate').value, appliesTo:document.getElementById('cf-applies').value, notes:document.getElementById('cf-notes').value });
-  }
-  closeOv('cfgOv');
-  refreshCfgTable(type);
-  toast(`${CFG_META[type].title} ${id ? 'updated' : 'added'} successfully.`, 'success');
-}
-
-function viewCfgItem(type, id) {
-  const store = getDataStore(type);
-  const d = store.find(x => x.id === id); if (!d) return;
-  const meta = CFG_META[type];
-  document.getElementById('cfgViewTitle').textContent = d.name;
-  document.getElementById('cfgViewSub').textContent = `${meta.title} details`;
-  let fields = [];
-  if (type === 'supplier') fields = [['Name',d.name],['Contact',d.contact],['Phone',d.phone],['Email',d.email],['Category',d.category],['Assets Supplied',d.assets],['Notes',d.notes||'—']];
-  else if (type === 'department') fields = [['Department',d.name],['Manager',d.manager],['Phone',d.phone],['Email',d.email],['Assets',d.assets]];
-  else if (type === 'location') fields = [['Location',d.name],['Parent',d.parent],['Address',d.address],['Assets',d.assets]];
-  else if (type === 'depreciation') fields = [['Name',d.name],['Method',d.method],['Rate',d.rate],['Applies To',d.appliesTo],['Notes',d.notes||'—']];
-  document.getElementById('cfgViewGrid').innerHTML = fields.map(([lbl,val]) =>
-    `<div class="vi"><div class="vi-lbl">${lbl}</div><div class="vi-val">${val}</div></div>`).join('');
-  openOv('cfgViewOv');
-}
-
-function cfgDelete(type, id, storeKey) {
-  const store = getDataStore(type);
-  const d = store.find(x => x.id === id); if (!d) return;
-  if (d.assets > 0) { toast(`Cannot delete — ${d.assets} asset(s) linked to this ${type}.`, 'error'); return; }
-  const idx = store.findIndex(x => x.id === id);
-  if (idx > -1) store.splice(idx, 1);
-  refreshCfgTable(type);
-  toast(`${CFG_META[type]?.title || type} deleted.`, 'info');
-}
-
-function refreshCfgTable(type) {
-  if (type === 'supplier') renderSuppliers();
-  else if (type === 'department') renderDepartments();
-  else if (type === 'location') renderLocations();
-  else if (type === 'depreciation') renderDepreciation();
 }
 
 function openAddCategory() {
@@ -1963,10 +1656,6 @@ function switchSettings(sec, el) {
   el.classList.add('active');
   document.getElementById('ss-' + sec).classList.add('active');
   if (sec === 'categories') renderCatSettings();
-  if (sec === 'suppliers') renderSuppliers();
-  if (sec === 'departments') renderDepartments();
-  if (sec === 'locations') renderLocations();
-  if (sec === 'depreciation') renderDepreciation();
 }
 function saveSettings() { toast('Settings saved successfully.', 'success'); }
 
