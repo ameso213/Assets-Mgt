@@ -1027,15 +1027,15 @@ textarea.fi{resize:vertical;min-height:70px;}
       <input type="hidden" id="fmEditId"/>
       <input type="hidden" id="fmPageKey"/>
       <div class="fgrid">
-        <div class="fg full"><label>Asset Name / Model</label><input type="text" id="fmName" placeholder="e.g. Dell Latitude 5520"/></div>
-        <div class="fg"><label>Asset ID</label><input type="text" id="fmId" placeholder="Auto-generated"/></div>
-        <div class="fg"><label>Quantity</label><input type="number" id="fmQty" value="1" min="1"/></div>
+        <div class="fg full"><label>Asset Name</label><input type="text" id="fmName" placeholder="e.g. Dell Latitude 5520"/></div>
+        <div class="fg" id="fmModelWrap"><label>Model</label><input type="text" id="fmModel" placeholder="e.g. Dell Latitude 5520 i7"/></div>
+        <div class="fg"><label>Serial Number</label><input type="text" id="fmSerial" placeholder="e.g. SN-DL5520-001"/></div>
         <div class="fg"><label>Store (Origin)</label><select class="fi" id="fmStore"></select></div>
         <div class="fg"><label>Assigned To</label><input type="text" id="fmAssigned" placeholder="Team or department"/></div>
         <div class="fg"><label>Status</label><select class="fi" id="fmStatus"><option>Active</option><option>Maintenance</option><option>Inactive</option><option>In Storage</option></select></div>
         <div class="fg"><label>Date Acquired</label><input type="date" id="fmDate"/></div>
         <div class="fg"><label>Condition</label><select class="fi" id="fmCond"><option>New</option><option>Good</option><option>Fair</option><option>Poor</option></select></div>
-        <div class="fg full"><label>Notes / Serial No.</label><textarea class="fi" id="fmNotes" placeholder="Serial number, remarks..."></textarea></div>
+        <div class="fg full"><label>Notes / Remarks</label><textarea class="fi" id="fmNotes" placeholder="Additional remarks..."></textarea></div>
       </div>
     </div>
     <div class="mft"><button class="btn btn-ghost" onclick="closeOv('formOv')">Cancel</button><button class="btn btn-primary" id="fmSaveBtn" onclick="saveAsset()"><i class="ti ti-check"></i> Save</button></div>
@@ -1160,75 +1160,76 @@ const SI = {'Active':'ti-circle-check','Maintenance':'ti-tool','Inactive':'ti-al
 
 let idCtr = 400;
 function uid(p){ return `${p}-${String(++idCtr).padStart(3,'0')}`; }
+function genSerial(topKey){ const pfx={it:'SN-NEW',furniture:'FN-NEW',cars:'VH-NEW'}; return (pfx[topKey]||'SN')+'-'+Date.now().toString(36).toUpperCase().slice(-5); }
 
 const DB = {
   it:{
     assets:[
-      {id:'ITA-001',name:'Dell Latitude 5520',store:'IT Store',assigned:'Finance Dept',status:'Active',date:'2025-08-10',qty:5,condition:'Good',notes:'Core i7, 16GB RAM, 512GB SSD'},
-      {id:'ITA-002',name:'HP ProDesk 400 G7',store:'IT Store',assigned:'HR Department',status:'Active',date:'2025-09-05',qty:3,condition:'New',notes:'Desktop workstations'},
-      {id:'ITA-003',name:'Cisco Catalyst 2960',store:'Main Store',assigned:'Network Team',status:'Active',date:'2025-07-20',qty:2,condition:'Good',notes:'24-port managed switch'},
-      {id:'ITA-004',name:'MikroTik RB750Gr3',store:'Admin Store',assigned:'IT Admin',status:'Maintenance',date:'2025-11-01',qty:1,condition:'Fair',notes:'Pending firmware update'},
-      {id:'ITA-005',name:'APC Smart-UPS 1500VA',store:'Main Store',assigned:'Server Room',status:'Active',date:'2024-12-01',qty:2,condition:'Good',notes:'Battery replaced 2025'},
+      {serial:'SN-DL5520-082A',name:'Dell Latitude 5520',model:'Dell Latitude 5520',store:'IT Store',assigned:'Finance Dept',status:'Active',date:'2025-08-10',condition:'Good',notes:'Core i7, 16GB RAM, 512GB SSD'},
+      {serial:'SN-HP400G-095B',name:'HP ProDesk 400 G7',model:'HP ProDesk 400 G7',store:'IT Store',assigned:'HR Department',status:'Active',date:'2025-09-05',condition:'New',notes:'Desktop workstation'},
+      {serial:'SN-CC296-072C',name:'Cisco Catalyst 2960',model:'Cisco Catalyst 2960-24TT',store:'Main Store',assigned:'Network Team',status:'Active',date:'2025-07-20',condition:'Good',notes:'24-port managed switch'},
+      {serial:'SN-MK750-110D',name:'MikroTik RB750Gr3',model:'MikroTik RouterBOARD 750Gr3',store:'Admin Store',assigned:'IT Admin',status:'Maintenance',date:'2025-11-01',condition:'Fair',notes:'Pending firmware update'},
+      {serial:'SN-APC15-120E',name:'APC Smart-UPS 1500VA',model:'APC Smart-UPS SMT1500I',store:'Main Store',assigned:'Server Room',status:'Active',date:'2024-12-01',condition:'Good',notes:'Battery replaced 2025'},
     ],
     components:[
-      {id:'ITC-001',name:'DDR4 16GB RAM Module',store:'IT Store',assigned:'IT Workshop',status:'In Storage',date:'2026-01-15',qty:10,condition:'New',notes:'Samsung brand'},
-      {id:'ITC-002',name:'512GB NVMe SSD',store:'IT Store',assigned:'IT Workshop',status:'In Storage',date:'2026-01-15',qty:8,condition:'New',notes:'WD Blue SN570'},
-      {id:'ITC-003',name:'PSU 650W Modular',store:'Main Store',assigned:'IT Workshop',status:'Active',date:'2025-10-10',qty:4,condition:'Good',notes:'Corsair RM650'},
+      {serial:'SN-DDR4S-011F',name:'DDR4 16GB RAM Module',model:'Samsung M471A2K43DB1',store:'IT Store',assigned:'IT Workshop',status:'In Storage',date:'2026-01-15',condition:'New',notes:'Samsung brand'},
+      {serial:'SN-SSD51-011G',name:'512GB NVMe SSD',model:'WD Blue SN570 512GB',store:'IT Store',assigned:'IT Workshop',status:'In Storage',date:'2026-01-15',condition:'New',notes:'WD Blue SN570'},
+      {serial:'SN-PSU65-101H',name:'PSU 650W Modular',model:'Corsair RM650 2021',store:'Main Store',assigned:'IT Workshop',status:'Active',date:'2025-10-10',condition:'Good',notes:'Corsair RM650'},
     ],
     consumables:[
-      {id:'ITN-001',name:'Thermal Paste 5g',store:'IT Store',assigned:'IT Technicians',status:'Active',date:'2026-02-01',qty:20,condition:'New',notes:'Arctic MX-4'},
-      {id:'ITN-002',name:'Cable Ties ×100',store:'Main Store',assigned:'All Depts',status:'Active',date:'2026-01-10',qty:5,condition:'New',notes:'Assorted sizes'},
-      {id:'ITN-003',name:'CAT6 Patch Cable 1m',store:'IT Store',assigned:'Network',status:'Active',date:'2025-12-15',qty:50,condition:'New',notes:'Blue coded'},
+      {serial:'SN-TPST5-020I',name:'Thermal Paste 5g',model:'Arctic MX-4',store:'IT Store',assigned:'IT Technicians',status:'Active',date:'2026-02-01',condition:'New',notes:'Arctic MX-4'},
+      {serial:'SN-CBTIE-011J',name:'Cable Ties ×100',model:'Generic Assorted Pack',store:'Main Store',assigned:'All Depts',status:'Active',date:'2026-01-10',condition:'New',notes:'Assorted sizes'},
+      {serial:'SN-CAT6P-012K',name:'CAT6 Patch Cable 1m',model:'AMP Netconnect CAT6',store:'IT Store',assigned:'Network',status:'Active',date:'2025-12-15',condition:'New',notes:'Blue coded'},
     ],
     accessories:[
-      {id:'ITX-001',name:'Logitech MX Keys Keyboard',store:'IT Store',assigned:'Exec Offices',status:'Active',date:'2025-11-20',qty:8,condition:'New',notes:'Wireless, multi-device'},
-      {id:'ITX-002',name:'Dell 24" Monitor P2422H',store:'IT Store',assigned:'Finance Dept',status:'Active',date:'2025-09-01',qty:6,condition:'Good',notes:'IPS Panel'},
-      {id:'ITX-003',name:'USB-C Docking Station',store:'Admin Store',assigned:'Laptops',status:'Active',date:'2026-02-10',qty:4,condition:'New',notes:'100W PD, 3x USB-A'},
+      {serial:'SN-LGMXK-112L',name:'Logitech MX Keys Keyboard',model:'Logitech MX Keys Advanced',store:'IT Store',assigned:'Exec Offices',status:'Active',date:'2025-11-20',condition:'New',notes:'Wireless, multi-device'},
+      {serial:'SN-DL24M-090M',name:'Dell 24" Monitor P2422H',model:'Dell P2422H 24-inch IPS',store:'IT Store',assigned:'Finance Dept',status:'Active',date:'2025-09-01',condition:'Good',notes:'IPS Panel'},
+      {serial:'SN-USBC D-021N',name:'USB-C Docking Station',model:'Dell WD19S 180W Dock',store:'Admin Store',assigned:'Laptops',status:'Active',date:'2026-02-10',condition:'New',notes:'100W PD, 3x USB-A'},
     ],
   },
   furniture:{
     assets:[
-      {id:'FNA-001',name:'Executive Office Desk',store:'Furniture Store',assigned:'Director Office',status:'Active',date:'2025-06-01',qty:2,condition:'Good',notes:'L-shaped, mahogany'},
-      {id:'FNA-002',name:'Ergonomic Office Chair',store:'Furniture Store',assigned:'Finance Dept',status:'Active',date:'2025-08-15',qty:10,condition:'New',notes:'Adjustable lumbar'},
-      {id:'FNA-003',name:'4-Drawer Filing Cabinet',store:'Admin Store',assigned:'Records Room',status:'Active',date:'2024-11-10',qty:5,condition:'Good',notes:'Metal, lockable'},
-      {id:'FNA-004',name:'Conference Table 10-Seat',store:'Main Store',assigned:'Board Room',status:'Active',date:'2025-03-20',qty:1,condition:'Good',notes:'Oval, glass top'},
-      {id:'FNA-005',name:'Waiting Area Bench',store:'Furniture Store',assigned:'Reception',status:'Maintenance',date:'2024-09-01',qty:4,condition:'Fair',notes:'Upholstery repair due'},
+      {serial:'FN-DESK-060A',name:'Executive Office Desk',store:'Furniture Store',assigned:'Director Office',status:'Active',date:'2025-06-01',condition:'Good',notes:'L-shaped, mahogany'},
+      {serial:'FN-CHRE-082B',name:'Ergonomic Office Chair',store:'Furniture Store',assigned:'Finance Dept',status:'Active',date:'2025-08-15',condition:'New',notes:'Adjustable lumbar'},
+      {serial:'FN-FCLB-114C',name:'4-Drawer Filing Cabinet',store:'Admin Store',assigned:'Records Room',status:'Active',date:'2024-11-10',condition:'Good',notes:'Metal, lockable'},
+      {serial:'FN-CTBL-032D',name:'Conference Table 10-Seat',store:'Main Store',assigned:'Board Room',status:'Active',date:'2025-03-20',condition:'Good',notes:'Oval, glass top'},
+      {serial:'FN-BNCH-090E',name:'Waiting Area Bench',store:'Furniture Store',assigned:'Reception',status:'Maintenance',date:'2024-09-01',condition:'Fair',notes:'Upholstery repair due'},
     ],
     components:[
-      {id:'FNC-001',name:'Chair Gas Cylinder',store:'Furniture Store',assigned:'Workshop',status:'In Storage',date:'2026-01-05',qty:15,condition:'New',notes:'Universal size'},
-      {id:'FNC-002',name:'Desk Drawer Runners ×4',store:'Furniture Store',assigned:'Workshop',status:'In Storage',date:'2025-12-20',qty:20,condition:'New',notes:'45cm steel'},
+      {serial:'FN-GCYL-010F',name:'Chair Gas Cylinder',store:'Furniture Store',assigned:'Workshop',status:'In Storage',date:'2026-01-05',condition:'New',notes:'Universal size'},
+      {serial:'FN-DRWR-122G',name:'Desk Drawer Runners ×4',store:'Furniture Store',assigned:'Workshop',status:'In Storage',date:'2025-12-20',condition:'New',notes:'45cm steel'},
     ],
     consumables:[
-      {id:'FNN-001',name:'Furniture Polish 500ml',store:'Furniture Store',assigned:'Cleaning Team',status:'Active',date:'2026-02-05',qty:12,condition:'New',notes:'Pledge brand'},
-      {id:'FNN-002',name:'Wood Filler Putty',store:'Furniture Store',assigned:'Maintenance',status:'Active',date:'2026-01-20',qty:6,condition:'New',notes:'Natural oak colour'},
+      {serial:'FN-PLSH-020H',name:'Furniture Polish 500ml',store:'Furniture Store',assigned:'Cleaning Team',status:'Active',date:'2026-02-05',condition:'New',notes:'Pledge brand'},
+      {serial:'FN-WFLT-012I',name:'Wood Filler Putty',store:'Furniture Store',assigned:'Maintenance',status:'Active',date:'2026-01-20',condition:'New',notes:'Natural oak colour'},
     ],
     accessories:[
-      {id:'FNX-001',name:'Monitor Arm Dual',store:'IT Store',assigned:'Staff Desks',status:'Active',date:'2026-01-15',qty:8,condition:'New',notes:'Full motion, VESA 75/100'},
-      {id:'FNX-002',name:'Desk Organiser Set',store:'Admin Store',assigned:'Office Staff',status:'Active',date:'2025-10-01',qty:20,condition:'Good',notes:'Bamboo material'},
-      {id:'FNX-003',name:'Cable Management Box',store:'IT Store',assigned:'Workstations',status:'Active',date:'2025-11-10',qty:15,condition:'New',notes:''},
+      {serial:'FN-MARM-011J',name:'Monitor Arm Dual',store:'IT Store',assigned:'Staff Desks',status:'Active',date:'2026-01-15',condition:'New',notes:'Full motion, VESA 75/100'},
+      {serial:'FN-DORG-101K',name:'Desk Organiser Set',store:'Admin Store',assigned:'Office Staff',status:'Active',date:'2025-10-01',condition:'Good',notes:'Bamboo material'},
+      {serial:'FN-CBMG-111L',name:'Cable Management Box',store:'IT Store',assigned:'Workstations',status:'Active',date:'2025-11-10',condition:'New',notes:''},
     ],
   },
   cars:{
     assets:[
-      {id:'CRA-001',name:'Toyota Land Cruiser Prado',store:'Vehicle Bay',assigned:'Executive Transport',status:'Active',date:'2023-05-01',qty:1,condition:'Good',notes:'Reg: UG 001A, Silver'},
-      {id:'CRA-002',name:'Toyota HiLux Double Cab',store:'Vehicle Bay',assigned:'Field Operations',status:'Active',date:'2022-11-15',qty:2,condition:'Good',notes:'White, 4WD'},
-      {id:'CRA-003',name:'Ford Ranger XLT',store:'Vehicle Bay',assigned:'Logistics',status:'Maintenance',date:'2021-08-10',qty:1,condition:'Fair',notes:'Due for service 50k km'},
-      {id:'CRA-004',name:'Isuzu Minibus 30-Seater',store:'Vehicle Bay',assigned:'Staff Transport',status:'Active',date:'2024-01-20',qty:1,condition:'New',notes:''},
+      {serial:'VH-TLC-PR001',name:'Toyota Land Cruiser Prado',store:'Vehicle Bay',assigned:'Executive Transport',status:'Active',date:'2023-05-01',condition:'Good',notes:'Reg: UG 001A, Silver'},
+      {serial:'VH-THL-DC002',name:'Toyota HiLux Double Cab',store:'Vehicle Bay',assigned:'Field Operations',status:'Active',date:'2022-11-15',condition:'Good',notes:'White, 4WD'},
+      {serial:'VH-FRD-RX003',name:'Ford Ranger XLT',store:'Vehicle Bay',assigned:'Logistics',status:'Maintenance',date:'2021-08-10',condition:'Fair',notes:'Due for service 50k km'},
+      {serial:'VH-ISZ-MB004',name:'Isuzu Minibus 30-Seater',store:'Vehicle Bay',assigned:'Staff Transport',status:'Active',date:'2024-01-20',condition:'New',notes:''},
     ],
     components:[
-      {id:'CRC-001',name:'Michelin Tyre 265/65R17',store:'Vehicle Bay',assigned:'Workshop',status:'In Storage',date:'2026-01-10',qty:8,condition:'New',notes:'All terrain'},
-      {id:'CRC-002',name:'Car Battery 12V 70Ah',store:'Vehicle Bay',assigned:'Workshop',status:'In Storage',date:'2026-02-01',qty:4,condition:'New',notes:'Exide brand'},
-      {id:'CRC-003',name:'Brake Pads Set (Front)',store:'Vehicle Bay',assigned:'Workshop',status:'Active',date:'2025-11-20',qty:6,condition:'New',notes:'Toyota compatible'},
+      {serial:'VH-TYR-265A',name:'Michelin Tyre 265/65R17',store:'Vehicle Bay',assigned:'Workshop',status:'In Storage',date:'2026-01-10',condition:'New',notes:'All terrain'},
+      {serial:'VH-BAT-12VB',name:'Car Battery 12V 70Ah',store:'Vehicle Bay',assigned:'Workshop',status:'In Storage',date:'2026-02-01',condition:'New',notes:'Exide brand'},
+      {serial:'VH-BRK-FRC',name:'Brake Pads Set (Front)',store:'Vehicle Bay',assigned:'Workshop',status:'Active',date:'2025-11-20',condition:'New',notes:'Toyota compatible'},
     ],
     consumables:[
-      {id:'CRN-001',name:'Engine Oil 5W30 4L',store:'Vehicle Bay',assigned:'Workshop',status:'Active',date:'2026-02-10',qty:20,condition:'New',notes:'Castrol GTX'},
-      {id:'CRN-002',name:'Coolant 1L',store:'Vehicle Bay',assigned:'Workshop',status:'Active',date:'2026-01-25',qty:10,condition:'New',notes:''},
-      {id:'CRN-003',name:'Windscreen Washer Fluid 1L',store:'Vehicle Bay',assigned:'Workshop',status:'Active',date:'2026-02-01',qty:15,condition:'New',notes:''},
+      {serial:'VH-OIL-5W3A',name:'Engine Oil 5W30 4L',store:'Vehicle Bay',assigned:'Workshop',status:'Active',date:'2026-02-10',condition:'New',notes:'Castrol GTX'},
+      {serial:'VH-CLT-001B',name:'Coolant 1L',store:'Vehicle Bay',assigned:'Workshop',status:'Active',date:'2026-01-25',condition:'New',notes:''},
+      {serial:'VH-WSF-001C',name:'Windscreen Washer Fluid 1L',store:'Vehicle Bay',assigned:'Workshop',status:'Active',date:'2026-02-01',condition:'New',notes:''},
     ],
     accessories:[
-      {id:'CRX-001',name:'Vehicle First Aid Kit',store:'Vehicle Bay',assigned:'All Vehicles',status:'Active',date:'2025-12-01',qty:5,condition:'New',notes:'Compliant with RTA standards'},
-      {id:'CRX-002',name:'GPS Tracking Device',store:'Vehicle Bay',assigned:'Fleet Manager',status:'Active',date:'2025-09-15',qty:4,condition:'Good',notes:'Real-time tracking'},
-      {id:'CRX-003',name:'Tow Rope 5m',store:'Vehicle Bay',assigned:'Field Vehicles',status:'In Storage',date:'2025-08-01',qty:3,condition:'Good',notes:''},
+      {serial:'VH-FAK-001A',name:'Vehicle First Aid Kit',store:'Vehicle Bay',assigned:'All Vehicles',status:'Active',date:'2025-12-01',condition:'New',notes:'Compliant with RTA standards'},
+      {serial:'VH-GPS-001B',name:'GPS Tracking Device',store:'Vehicle Bay',assigned:'Fleet Manager',status:'Active',date:'2025-09-15',condition:'Good',notes:'Real-time tracking'},
+      {serial:'VH-TWR-005C',name:'Tow Rope 5m',store:'Vehicle Bay',assigned:'Field Vehicles',status:'In Storage',date:'2025-08-01',condition:'Good',notes:''},
     ],
   },
 };
@@ -1431,7 +1432,7 @@ function renderCatPage(pageKey) {
         </select>
       </div>
       <div class="tw"><table>
-        <thead><tr><th>Asset</th><th>Store</th><th>Assigned To</th><th>Qty</th><th>Status</th><th>Date</th><th>Actions</th></tr></thead>
+        <thead><tr><th>Asset</th>${topKey==='it'?'<th>Model</th>':''}<th>Serial No.</th><th>Store</th><th>Assigned To</th><th>Status</th><th>Date</th><th>Actions</th></tr></thead>
         <tbody id="tb-${pageKey}"></tbody>
       </table></div>
       <div class="pg-bar"><div class="pg-info" id="pg-${pageKey}"></div></div>
@@ -1446,24 +1447,25 @@ function drawTable(pageKey) {
   const ss = document.getElementById('sf-status-' + pageKey)?.value || '';
   const tc = TOP[topKey]; const icon = CAT_ICON[pageKey];
   const rows = DB[topKey][subKey].filter(a =>
-    (!q || (a.name + a.id + (a.assigned || '')).toLowerCase().includes(q)) &&
+    (!q || (a.name + (a.serial||'') + (a.model||'') + (a.assigned || '')).toLowerCase().includes(q)) &&
     (!sf || a.store === sf) && (!ss || a.status === ss));
   const sub = document.getElementById('cat-sub-' + pageKey); if (sub) sub.textContent = `${DB[topKey][subKey].length} records`;
   const pg = document.getElementById('pg-' + pageKey); if (pg) pg.textContent = `Showing ${rows.length} of ${DB[topKey][subKey].length} records`;
   document.getElementById('tb-' + pageKey).innerHTML = rows.length ? rows.map(a => `
     <tr>
-      <td><div class="acell"><div class="acell-ico" style="background:${tc.bg}"><i class="ti ${icon}" style="color:${tc.color}"></i></div><div><div class="acell-name">${a.name}</div><div class="acell-id">${a.id}</div></div></div></td>
+      <td><div class="acell"><div class="acell-ico" style="background:${tc.bg}"><i class="ti ${icon}" style="color:${tc.color}"></i></div><div><div class="acell-name">${a.name}</div></div></div></td>
+      ${topKey==='it'?`<td style="font-size:12px;color:var(--muted)">${a.model||'—'}</td>`:''}
+      <td><code style="font-size:11px;background:var(--bg);padding:2px 7px;border-radius:4px;border:1px solid var(--border);white-space:nowrap">${a.serial||'—'}</code></td>
       <td><span class="store-tag"><i class="ti ti-building-hospital"></i>${a.store}</span></td>
       <td>${a.assigned || '—'}</td>
-      <td style="font-family:var(--mono);font-size:12px">${a.qty || 1}</td>
       <td><span class="badge ${SB[a.status] || 'b-active'}"><i class="ti ${SI[a.status]}"></i>${a.status}</span></td>
       <td style="font-family:var(--mono);font-size:11px;color:var(--muted)">${a.date || '—'}</td>
       <td><div class="acts">
-        <button class="act v" onclick="openView('${pageKey}','${a.id}')"><i class="ti ti-eye"></i></button>
-        <button class="act e" onclick="openEdit('${pageKey}','${a.id}')"><i class="ti ti-pencil"></i></button>
-        <button class="act d" onclick="openDel('${pageKey}','${a.id}')"><i class="ti ti-trash"></i></button>
+        <button class="act v" onclick="openView('${pageKey}','${a.serial}')"><i class="ti ti-eye"></i></button>
+        <button class="act e" onclick="openEdit('${pageKey}','${a.serial}')"><i class="ti ti-pencil"></i></button>
+        <button class="act d" onclick="openDel('${pageKey}','${a.serial}')"><i class="ti ti-trash"></i></button>
       </div></td>
-    </tr>`).join('') : `<tr><td colspan="7" class="empty-td"><i class="ti ti-database-off"></i>No records found</td></tr>`;
+    </tr>`).join('') : `<tr><td colspan="8" class="empty-td"><i class="ti ti-database-off"></i>No records found</td></tr>`;
 }
 
 function buildStoreOptions(sel = '') {
@@ -1480,38 +1482,42 @@ function openAdd(pageKey) {
   document.getElementById('fmIcoI').className = `ti ti-plus`;
   document.getElementById('fmIcoI').style.color = tc.color;
   document.getElementById('fmTitle').textContent = `Add ${tc.label} ${SUB[subKey].label}`;
-  document.getElementById('fmSub').textContent = `ID prefix: ${PREFIX[pageKey]}`;
+  document.getElementById('fmSub').textContent = `${tc.label} — ${SUB[subKey].label}`;
   document.getElementById('fmSaveBtn').innerHTML = `<i class="ti ti-check"></i> Save`;
   document.getElementById('fmEditId').value = '';
-  ['fmName','fmAssigned','fmNotes'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
-  document.getElementById('fmQty').value = 1;
+  ['fmName','fmModel','fmSerial','fmAssigned','fmNotes'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
   document.getElementById('fmDate').value = new Date().toISOString().slice(0, 10);
   document.getElementById('fmStatus').value = 'Active';
   document.getElementById('fmCond').value = 'New';
+  const mw = document.getElementById('fmModelWrap');
+  if (mw) mw.style.display = topKey === 'it' ? '' : 'none';
   buildStoreOptions();
   openOv('formOv');
 }
 
-function openEdit(pageKey, id) {
+function openEdit(pageKey, serial) {
   const [topKey, subKey] = pageKey.split('_');
-  const a = DB[topKey][subKey].find(x => x.id === id); if (!a) return;
-  editTgt = { pageKey, id };
+  const a = DB[topKey][subKey].find(x => x.serial === serial); if (!a) return;
+  editTgt = { pageKey, serial };
   const tc = TOP[topKey];
   document.getElementById('fmPageKey').value = pageKey;
   document.getElementById('fmIco').style.background = tc.bg;
   document.getElementById('fmIcoI').className = `ti ti-pencil`;
   document.getElementById('fmIcoI').style.color = tc.color;
   document.getElementById('fmTitle').textContent = `Edit — ${a.name}`;
-  document.getElementById('fmSub').textContent = `ID: ${a.id}`;
+  document.getElementById('fmSub').textContent = `Serial: ${a.serial}`;
   document.getElementById('fmSaveBtn').innerHTML = `<i class="ti ti-check"></i> Update`;
-  document.getElementById('fmEditId').value = a.id;
+  document.getElementById('fmEditId').value = a.serial;
   document.getElementById('fmName').value = a.name;
-  document.getElementById('fmQty').value = a.qty || 1;
+  document.getElementById('fmSerial').value = a.serial || '';
+  document.getElementById('fmModel').value = a.model || '';
   document.getElementById('fmAssigned').value = a.assigned || '';
   document.getElementById('fmNotes').value = a.notes || '';
   document.getElementById('fmDate').value = a.date || '';
   document.getElementById('fmStatus').value = a.status || 'Active';
   document.getElementById('fmCond').value = a.condition || 'New';
+  const mw = document.getElementById('fmModelWrap');
+  if (mw) mw.style.display = topKey === 'it' ? '' : 'none';
   buildStoreOptions(a.store);
   openOv('formOv');
 }
@@ -1521,39 +1527,40 @@ function saveAsset() {
   if (!name) { toast('Please enter an asset name.', 'error'); return; }
   const pageKey = document.getElementById('fmPageKey').value;
   const [topKey, subKey] = pageKey.split('_');
+  const serialVal = document.getElementById('fmSerial').value.trim() || genSerial(topKey);
   const data = {
     name,
+    serial: serialVal,
+    model: topKey === 'it' ? (document.getElementById('fmModel').value.trim() || name) : undefined,
     store: document.getElementById('fmStore').value,
     assigned: document.getElementById('fmAssigned').value,
-    qty: parseInt(document.getElementById('fmQty').value) || 1,
     status: document.getElementById('fmStatus').value,
     date: document.getElementById('fmDate').value,
     condition: document.getElementById('fmCond').value,
     notes: document.getElementById('fmNotes').value
   };
   if (editTgt) {
-    const i = DB[topKey][subKey].findIndex(x => x.id === editTgt.id);
+    const i = DB[topKey][subKey].findIndex(x => x.serial === editTgt.serial);
     if (i > -1) DB[topKey][subKey][i] = { ...DB[topKey][subKey][i], ...data };
   } else {
-    const nid = uid(PREFIX[pageKey]);
-    DB[topKey][subKey].unshift({ id: nid, ...data });
+    DB[topKey][subKey].unshift(data);
   }
   closeOv('formOv'); refresh(pageKey); toast(`Asset ${editTgt ? 'updated' : 'added'} successfully.`, 'success');
 }
 
-function openView(pageKey, id) {
+function openView(pageKey, serial) {
   const [topKey, subKey] = pageKey.split('_');
-  const a = DB[topKey][subKey].find(x => x.id === id); if (!a) return;
-  viewTgt = { pageKey, id };
+  const a = DB[topKey][subKey].find(x => x.serial === serial); if (!a) return;
+  viewTgt = { pageKey, serial };
   const tc = TOP[topKey];
-  document.getElementById('vmSub').textContent = `${tc.label} ${SUB[subKey].label} · ${a.id}`;
+  document.getElementById('vmSub').textContent = `${tc.label} ${SUB[subKey].label} · ${a.serial}`;
   document.getElementById('vmGrid').innerHTML = `
     <div class="vi full"><div class="vi-lbl">Asset Name</div><div class="vi-val" style="font-size:15px;font-weight:700">${a.name}</div></div>
-    <div class="vi"><div class="vi-lbl">Asset ID</div><div class="vi-val" style="font-family:var(--mono)">${a.id}</div></div>
+    <div class="vi"><div class="vi-lbl">Serial Number</div><div class="vi-val" style="font-family:var(--mono);font-weight:600">${a.serial}</div></div>
+    ${topKey==='it' ? `<div class="vi"><div class="vi-lbl">Model</div><div class="vi-val">${a.model||'—'}</div></div>` : ''}
     <div class="vi"><div class="vi-lbl">Category</div><div class="vi-val">${tc.label} — ${SUB[subKey].label}</div></div>
     <div class="vi"><div class="vi-lbl">Store</div><div class="vi-val">${a.store}</div></div>
     <div class="vi"><div class="vi-lbl">Assigned To</div><div class="vi-val">${a.assigned || '—'}</div></div>
-    <div class="vi"><div class="vi-lbl">Quantity</div><div class="vi-val" style="font-family:var(--mono)">${a.qty || 1}</div></div>
     <div class="vi"><div class="vi-lbl">Status</div><div class="vi-val"><span class="badge ${SB[a.status]}">${a.status}</span></div></div>
     <div class="vi"><div class="vi-lbl">Condition</div><div class="vi-val">${a.condition || '—'}</div></div>
     <div class="vi"><div class="vi-lbl">Date Acquired</div><div class="vi-val" style="font-family:var(--mono)">${a.date || '—'}</div></div>
@@ -1561,20 +1568,20 @@ function openView(pageKey, id) {
   openOv('viewOv');
 }
 
-function switchToEdit() { if (!viewTgt) return; closeOv('viewOv'); setTimeout(() => openEdit(viewTgt.pageKey, viewTgt.id), 150); }
+function switchToEdit() { if (!viewTgt) return; closeOv('viewOv'); setTimeout(() => openEdit(viewTgt.pageKey, viewTgt.serial), 150); }
 
-function openDel(pageKey, id) {
+function openDel(pageKey, serial) {
   const [topKey, subKey] = pageKey.split('_');
-  const a = DB[topKey][subKey].find(x => x.id === id); if (!a) return;
-  editTgt = { pageKey, id };
-  document.getElementById('delName').textContent = `"${a.name}" (${a.id})`;
+  const a = DB[topKey][subKey].find(x => x.serial === serial); if (!a) return;
+  editTgt = { pageKey, serial };
+  document.getElementById('delName').textContent = `"${a.name}" (${a.serial})`;
   openOv('delOv');
 }
 
 function confirmDelete() {
   if (!editTgt) return;
   const [topKey, subKey] = editTgt.pageKey.split('_');
-  DB[topKey][subKey] = DB[topKey][subKey].filter(x => x.id !== editTgt.id);
+  DB[topKey][subKey] = DB[topKey][subKey].filter(x => x.serial !== editTgt.serial);
   closeOv('delOv'); refresh(editTgt.pageKey); toast('Asset deleted.', 'info');
 }
 
@@ -1695,7 +1702,7 @@ function renderStoreTabPanes(id) {
     <tbody>${invRows.map(a => {
       const tc = TOP[a._topKey]; const icon = CAT_ICON[`${a._topKey}_${a._subKey}`];
       return `<tr>
-        <td><div class="acell"><div class="acell-ico" style="background:${tc.bg}"><i class="ti ${icon}" style="color:${tc.color}"></i></div><div><div class="acell-name">${a.name}</div><div class="acell-id">${a.id}</div></div></div></td>
+        <td><div class="acell"><div class="acell-ico" style="background:${tc.bg}"><i class="ti ${icon}" style="color:${tc.color}"></i></div><div><div class="acell-name">${a.name}</div><div class="acell-id">${a.serial||''}</div></div></div></td>
         <td style="color:var(--muted);font-size:12px">${tc.label} — ${SUB[a._subKey].label}</td>
         <td>${a.assigned || '—'}</td>
         <td><span class="badge ${SB[a.status]}">${a.status}</span></td>
