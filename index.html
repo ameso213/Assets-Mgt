@@ -462,14 +462,18 @@ textarea.fi{resize:vertical;min-height:70px;}
     max-width:100%;
     overflow-x:scroll;
     -webkit-overflow-scrolling:touch;
+    scrollbar-width:none;
+    -ms-overflow-style:none;
   }
+  .cfg-table-wrap::-webkit-scrollbar{display:none;}
   /* tables inside must have a real min-width to force overflow */
   .cfg-table{
     min-width:600px;
     width:max-content;
   }
   /* regular asset tables */
-  .tw{display:block;width:100%;overflow-x:scroll;-webkit-overflow-scrolling:touch;}
+  .tw{display:block;width:100%;overflow-x:scroll;-webkit-overflow-scrolling:touch;scrollbar-width:none;-ms-overflow-style:none;}
+  .tw::-webkit-scrollbar{display:none;}
   table{min-width:520px;width:max-content;}
   .settings-nav{flex-direction:row;overflow-x:auto;-webkit-overflow-scrolling:touch;gap:4px;padding-bottom:6px;border-bottom:1px solid var(--border);margin-bottom:4px;}
   .sn-item{white-space:nowrap;flex-shrink:0;}
