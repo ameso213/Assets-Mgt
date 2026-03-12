@@ -315,7 +315,7 @@ tbody tr:hover{background:var(--bg);}
 .sn-item.active{background:var(--blue-lt);color:var(--blue);font-weight:600;}
 .sn-item i{font-size:16px;}
 .sn-group-label{font-size:10px;font-family:var(--mono);color:var(--sb-section);letter-spacing:1.5px;text-transform:uppercase;padding:12px 12px 4px;margin-top:4px;}
-.settings-panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--rlg);overflow:hidden;}
+.settings-panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--rlg);overflow:visible;}
 .settings-section{display:none;padding:24px;}
 .settings-section.active{display:block;}
 .settings-section h3{font-size:16px;font-weight:700;margin-bottom:4px;}
@@ -471,6 +471,20 @@ textarea.fi{resize:vertical;min-height:70px;}
   .export-btns .btn{padding:5px 10px;font-size:11px;}
   /* alert actions stack on very small screens */
   .alert-item{flex-wrap:wrap;}
+  /* FIXED: notification dropdown centred on mobile */
+  #notifDD .dd-menu{
+    right:auto;
+    left:50%;
+    transform:translateX(-50%);
+    width:calc(100vw - 28px);
+    max-width:360px;
+    min-width:unset;
+  }
+  #notifDD .dd-menu.open{transform:translateX(-50%);}
+  /* FIXED: settings sections must not clip table wrappers */
+  .settings-section,.settings-panel{overflow:visible;}
+  .cfg-table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;display:block;width:100%;}
+  .cfg-table{min-width:520px;}
 }
 @media(max-width:420px){.kpi-row{grid-template-columns:1fr;}.cat-cards{grid-template-columns:1fr 1fr;}}
 </style>
