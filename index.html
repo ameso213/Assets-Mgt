@@ -269,12 +269,11 @@ tbody tr:hover{background:var(--bg);}
 .store-card-left{display:flex;align-items:center;gap:10px;}
 .store-ico{width:38px;height:38px;border-radius:var(--rsm);display:grid;place-items:center;flex-shrink:0;}
 .store-ico i{font-size:19px;}
-/* Add to your existing CSS */
+/* Enhanced Stores Table */
 .stores-table {
   width: 100%;
   border-collapse: collapse;
 }
-
 .stores-table th {
   padding: 12px 16px;
   text-align: left;
@@ -286,28 +285,23 @@ tbody tr:hover{background:var(--bg);}
   border-bottom: 1px solid var(--border);
   background: var(--border-light);
 }
-
 .stores-table td {
   padding: 14px 16px;
   border-bottom: 1px solid var(--border-light);
   vertical-align: middle;
 }
-
 .stores-table tbody tr {
   transition: background 0.1s;
   cursor: pointer;
 }
-
 .stores-table tbody tr:hover {
   background: var(--bg);
 }
-
 .stores-table .acell {
   display: flex;
   align-items: center;
   gap: 10px;
 }
-
 .stores-table .acell-ico {
   width: 36px;
   height: 36px;
@@ -316,43 +310,37 @@ tbody tr:hover{background:var(--bg);}
   place-items: center;
   flex-shrink: 0;
 }
-
 .stores-table .acell-ico i {
   font-size: 18px;
 }
-
 .stores-table .acell-name {
   font-weight: 600;
   font-size: 13px;
   color: var(--text);
 }
-
 .stores-table .acell-id {
   font-size: 10px;
   color: var(--muted);
   font-family: var(--mono);
 }
-
-/* Category badge styling */
-.stores-table .badge {
-  display: inline-flex;
-  align-items: center;
-  padding: 4px 10px;
-  border-radius: 20px;
-  font-size: 11px;
-  font-weight: 600;
-  font-family: var(--mono);
+/* Store name column - increased width */
+.stores-table td:first-child {
+  min-width: 240px;
 }
-
-/* Action buttons */
+/* Phone column - increased width */
+.stores-table td:nth-child(5) {
+  min-width: 160px;
+  font-family: var(--mono);
+  font-size: 12px;
+}
+/* Items column buttons - reduced height, increased width */
 .stores-table .acts {
   display: flex;
   gap: 4px;
 }
-
 .stores-table .act {
-  width: 30px;
-  height: 30px;
+  width: 32px;
+  height: 26px; /* Reduced height from 30px to 26px */
   border-radius: var(--rsm);
   border: 1px solid var(--border);
   background: transparent;
@@ -362,19 +350,16 @@ tbody tr:hover{background:var(--bg);}
   transition: all 0.12s;
   cursor: pointer;
 }
-
 .stores-table .act.v:hover {
   background: var(--blue-lt);
   border-color: var(--blue-bd);
   color: var(--blue);
 }
-
 .stores-table .act.e:hover {
   background: var(--orange-lt);
   border-color: var(--orange-bd);
   color: var(--orange);
 }
-
 .stores-table .act.d:hover {
   background: var(--red-lt);
   border-color: var(--red-bd);
@@ -538,6 +523,26 @@ textarea.fi{resize:vertical;min-height:70px;}
 .col-vis-btn:hover{background:var(--surface);color:var(--text);}
 .col-vis-dropdown{position:absolute;top:calc(100% + 6px);right:0;background:var(--surface);border:1px solid var(--border);border-radius:var(--rlg);box-shadow:var(--sh3);padding:12px;min-width:200px;z-index:200;display:none;}
 .col-vis-dropdown.open{display:block;}
+/* Center column visibility dropdown on mobile */
+@media (max-width: 768px) {
+  .col-vis-panel {
+    width: 100%;
+  }
+  .col-vis-btn {
+    width: 100%;
+    justify-content: center;
+  }
+  .col-vis-dropdown {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    right: auto;
+    width: 90%;
+    max-width: 300px;
+    z-index: 1000;
+  }
+}
 .col-vis-item{display:flex;align-items:center;gap:8px;padding:6px 0;font-size:13px;border-bottom:1px solid var(--border-light);}
 .col-vis-item:last-child{border-bottom:none;}
 .col-vis-item input[type="checkbox"]{width:16px;height:16px;accent-color:var(--blue);cursor:pointer;}
@@ -627,6 +632,13 @@ textarea.fi{resize:vertical;min-height:70px;}
   .alert-item{flex-wrap:wrap;}
   #notifDD .dd-menu{right:auto;left:50%;transform:translateX(-50%);width:calc(100vw - 28px);max-width:360px;min-width:unset;}
   #notifDD .dd-menu.open{transform:translateX(-50%);}
+  /* Account settings mobile layout */
+  #page-account-settings > div:first-child {
+    display: block !important;
+  }
+  #page-account-settings > div:first-child > div {
+    margin-bottom: 16px;
+  }
 }
 @media(max-width:420px){.kpi-row{grid-template-columns:1fr;}.cat-cards{grid-template-columns:1fr 1fr;}}
 </style>
@@ -751,10 +763,7 @@ textarea.fi{resize:vertical;min-height:70px;}
         <div class="kpi"><div class="kpi-icon" style="background:var(--orange-lt)"><i class="ti ti-tool" style="color:var(--orange)"></i></div><div><div class="kpi-val" style="color:var(--orange)" id="kpi-maint">0</div><div class="kpi-lbl">Maintenance</div><div class="kpi-note warn">Needs service</div></div></div>
         <div class="kpi"><div class="kpi-icon" style="background:var(--red-lt)"><i class="ti ti-alert-circle" style="color:var(--red)"></i></div><div><div class="kpi-val" style="color:var(--red)" id="kpi-fault">0</div><div class="kpi-lbl">Inactive/Faulty</div><div class="kpi-note bad">Attention needed</div></div></div>
       </div>
-      <div class="panel" style="margin-bottom:18px">
-        <div class="panel-hd"><div class="panel-title">Assets by Top-Level Category</div><span style="font-size:12px;color:var(--muted)">Click a card to manage</span></div>
-        <div class="panel-body"><div class="cat-cards" id="dash-cats"></div></div>
-      </div>
+     
       <div class="dash-grid">
         <div class="panel">
           <div class="panel-hd"><div class="panel-title">Recent Activity</div><button class="btn btn-ghost btn-sm">View All</button></div>
