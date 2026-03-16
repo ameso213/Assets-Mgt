@@ -1078,55 +1078,77 @@ textarea.fi{resize:vertical;min-height:70px;}
       <input type="hidden" id="fmEditId"/>
       <input type="hidden" id="fmPageKey"/>
       <input type="hidden" id="fmTopKey"/>
-      <div class="fgrid">
-        <div class="fg-section-label full">Asset Identity</div>
-        <div class="fg full"><label>Asset Name</label><input type="text" id="fmName" placeholder="e.g. Dell Latitude 5520"/></div>
-        <div class="fg" id="fmManufacturerWrap"><label>Manufacturer</label><input type="text" id="fmManufacturer" placeholder="e.g. Dell, HP, Cisco"/></div>
-        <div class="fg" id="fmModelWrap"><label>Model</label><input type="text" id="fmModel" placeholder="e.g. Latitude 5520"/></div>
-        <div class="fg" id="fmSerialWrap"><label>Serial Number</label><input type="text" id="fmSerial" placeholder="e.g. SN-DL5520-001"/></div>
-        <div class="fg" id="fmQtyWrap"><label>Quantity</label><input type="number" id="fmQty" min="1" placeholder="e.g. 12"/></div>
-        <div class="fg" id="fmUnitWrap"><label>Unit / Description</label><input type="text" id="fmUnit" placeholder="e.g. pieces, rolls, packs"/></div>
-        <div class="fg" id="fmEngraveWrap"><label>Engraving No.</label><input type="text" id="fmEngravingNo" placeholder="e.g. MOH-KAB002"/></div>
-        <div class="fg-divider" id="fmDevTypeDivider"></div>
-        <div class="fg-section-label" id="fmDevTypeSection">Device Classification</div>
-        <div class="fg" id="fmDeviceTypeWrap">
-          <label>Device Type</label>
-          <select class="fi" id="fmDeviceType" onchange="onDeviceTypeChange()">
-            <option value="">— Select device type —</option>
-          </select>
+      
+      <!-- Category selector that appears first -->
+      <div id="categorySelector" style="margin-bottom:20px;padding:10px;background:var(--bg);border-radius:var(--rlg);border:1px solid var(--border);">
+        <div style="font-size:12px;font-weight:600;margin-bottom:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px">Select Category</div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <div class="category-option" onclick="selectAddCategory('it')" style="flex:1;padding:12px;background:var(--blue-lt);border-radius:var(--r);border:2px solid var(--blue-bd);color:var(--blue);text-align:center;cursor:pointer;min-width:100px">
+            <i class="ti ti-cpu" style="font-size:20px;display:block;margin-bottom:5px"></i>
+            <span style="font-weight:600">IT</span>
+          </div>
+          <div class="category-option" onclick="selectAddCategory('furniture')" style="flex:1;padding:12px;background:var(--orange-lt);border-radius:var(--r);border:2px solid var(--orange-bd);color:var(--orange);text-align:center;cursor:pointer;min-width:100px">
+            <i class="ti ti-armchair" style="font-size:20px;display:block;margin-bottom:5px"></i>
+            <span style="font-weight:600">Furniture</span>
+          </div>
+          <div class="category-option" onclick="selectAddCategory('cars')" style="flex:1;padding:12px;background:var(--green-lt);border-radius:var(--r);border:2px solid var(--green-bd);color:var(--green);text-align:center;cursor:pointer;min-width:100px">
+            <i class="ti ti-car" style="font-size:20px;display:block;margin-bottom:5px"></i>
+            <span style="font-weight:600">Vehicles</span>
+          </div>
         </div>
-        <div class="fg" id="fmDeviceSubTypeWrap" style="display:none">
-          <label id="fmDeviceSubTypeLabel">Sub-Type</label>
-          <select class="fi" id="fmDeviceSubType">
-            <option value="">— Select sub-type —</option>
-          </select>
+      </div>
+
+      <!-- Fields container that will be populated based on category -->
+      <div id="formFieldsContainer" style="display:none">
+        <div class="fgrid">
+          <div class="fg-section-label full">Asset Identity</div>
+          <div class="fg full"><label>Asset Name</label><input type="text" id="fmName" placeholder="e.g. Dell Latitude 5520"/></div>
+          <div class="fg" id="fmManufacturerWrap"><label>Manufacturer</label><input type="text" id="fmManufacturer" placeholder="e.g. Dell, HP, Cisco"/></div>
+          <div class="fg" id="fmModelWrap"><label>Model</label><input type="text" id="fmModel" placeholder="e.g. Latitude 5520"/></div>
+          <div class="fg" id="fmSerialWrap"><label>Serial Number</label><input type="text" id="fmSerial" placeholder="e.g. SN-DL5520-001"/></div>
+          <div class="fg" id="fmQtyWrap"><label>Quantity</label><input type="number" id="fmQty" min="1" placeholder="e.g. 12"/></div>
+          <div class="fg" id="fmUnitWrap"><label>Unit / Description</label><input type="text" id="fmUnit" placeholder="e.g. pieces, rolls, packs"/></div>
+          <div class="fg" id="fmEngraveWrap"><label>Engraving No.</label><input type="text" id="fmEngravingNo" placeholder="e.g. MOH-KAB002"/></div>
+          <div class="fg-divider" id="fmDevTypeDivider"></div>
+          <div class="fg-section-label" id="fmDevTypeSection">Device Classification</div>
+          <div class="fg" id="fmDeviceTypeWrap">
+            <label>Device Type</label>
+            <select class="fi" id="fmDeviceType" onchange="onDeviceTypeChange()">
+              <option value="">— Select device type —</option>
+            </select>
+          </div>
+          <div class="fg" id="fmDeviceSubTypeWrap" style="display:none">
+            <label id="fmDeviceSubTypeLabel">Sub-Type</label>
+            <select class="fi" id="fmDeviceSubType">
+              <option value="">— Select sub-type —</option>
+            </select>
+          </div>
+          <div class="devtype-hint" id="fmDevTypeHint" style="display:none">
+            <i class="ti ti-info-circle"></i>
+            <span id="fmDevTypeHintText">Select a device type to see available sub-types.</span>
+          </div>
+          <div class="fg full" id="fmSpecsWrap"><label>Specifications</label><textarea class="fi" id="fmSpecs" placeholder="e.g. 8GB RAM, 1TB HDD..."></textarea></div>
+          <div class="fg full"><label>Notes / Remarks</label><textarea class="fi" id="fmNotes" placeholder="Additional remarks..."></textarea></div>
+          <hr class="fg-divider"/>
+          <div class="fg-section-label">Assignment</div>
+          <div class="fg" id="fmAssignedNameWrap"><label>Assigned To (Name)</label><input type="text" id="fmAssignedName" placeholder="e.g. Karim Ali"/></div>
+          <div class="fg" id="fmAssignedTitleWrap"><label>Title / Designation</label><input type="text" id="fmAssignedTitle" placeholder="e.g. IT Officer"/></div>
+          <div class="fg" id="fmAssignedTelWrap"><label>Tel No.</label><input type="text" id="fmAssignedTel" placeholder="e.g. 0786747390"/></div>
+          <hr class="fg-divider"/>
+          <div class="fg-section-label">Location &amp; Status</div>
+          <div class="fg"><label>Store (Origin)</label><select class="fi" id="fmStore"></select></div>
+          <div class="fg"><label>Status</label>
+            <select class="fi" id="fmStatus">
+              <option>Active</option><option>Maintenance</option><option>Inactive</option><option>In Storage</option>
+            </select>
+          </div>
+          <div class="fg"><label>Condition</label>
+            <select class="fi" id="fmCond">
+              <option>New</option><option>Good</option><option>Fair</option><option>Poor</option>
+            </select>
+          </div>
+          <div class="fg"><label>Date Acquired</label><input type="date" id="fmDate"/></div>
         </div>
-        <div class="devtype-hint" id="fmDevTypeHint" style="display:none">
-          <i class="ti ti-info-circle"></i>
-          <span id="fmDevTypeHintText">Select a device type to see available sub-types.</span>
-        </div>
-        <div class="fg full" id="fmSpecsWrap"><label>Specifications</label><textarea class="fi" id="fmSpecs" placeholder="e.g. 8GB RAM, 1TB HDD..."></textarea></div>
-        <div class="fg full"><label>Notes / Remarks</label><textarea class="fi" id="fmNotes" placeholder="Additional remarks..."></textarea></div>
-        <hr class="fg-divider"/>
-        <div class="fg-section-label">Assignment</div>
-        <div class="fg" id="fmAssignedNameWrap"><label>Assigned To (Name)</label><input type="text" id="fmAssignedName" placeholder="e.g. Karim Ali"/></div>
-        <div class="fg" id="fmAssignedTitleWrap"><label>Title / Designation</label><input type="text" id="fmAssignedTitle" placeholder="e.g. IT Officer"/></div>
-        <div class="fg" id="fmAssignedTelWrap"><label>Tel No.</label><input type="text" id="fmAssignedTel" placeholder="e.g. 0786747390"/></div>
-        <div class="fg" id="fmAssignedWrap" style="display:none"><label>Assigned To</label><input type="text" id="fmAssigned" placeholder="Team or department"/></div>
-        <hr class="fg-divider"/>
-        <div class="fg-section-label">Location &amp; Status</div>
-        <div class="fg"><label>Store (Origin)</label><select class="fi" id="fmStore"></select></div>
-        <div class="fg"><label>Status</label>
-          <select class="fi" id="fmStatus">
-            <option>Active</option><option>Maintenance</option><option>Inactive</option><option>In Storage</option>
-          </select>
-        </div>
-        <div class="fg"><label>Condition</label>
-          <select class="fi" id="fmCond">
-            <option>New</option><option>Good</option><option>Fair</option><option>Poor</option>
-          </select>
-        </div>
-        <div class="fg"><label>Date Acquired</label><input type="date" id="fmDate"/></div>
       </div>
     </div>
     <div class="mft">
@@ -1135,8 +1157,6 @@ textarea.fi{resize:vertical;min-height:70px;}
     </div>
   </div>
 </div>
-
-
 
 <div class="ov" id="viewOv" onclick="bgClose(event,'viewOv')">
   <div class="modal">
@@ -1255,7 +1275,7 @@ textarea.fi{resize:vertical;min-height:70px;}
     <div class="mhd">
       <div class="mhd-l">
         <div class="m-ico" style="background:var(--green-lt)"><i class="ti ti-scan" style="color:var(--green)"></i></div>
-        <div><div class="m-title" id="scanModalTitle">Verify Asset</div><div class="m-sub" id="scanModalSub">Type serial number — details appear automatically</div></div>
+        <div><div class="m-title" id="scanModalTitle">Verify Asset</div><div class="m-sub" id="scanModalSub">Enter serial number then click Lookup</div></div>
       </div>
       <button class="close-btn" onclick="stopScan()"><i class="ti ti-x"></i></button>
     </div>
@@ -1946,6 +1966,11 @@ function openEditItem(tk, sk, eng) {
     const dtSel = document.getElementById('fmDeviceType');
     if(dtSel){ dtSel.value = item.deviceType||''; onDeviceTypeChange(); if(item.deviceSubType) document.getElementById('fmDeviceSubType').value=item.deviceSubType; }
   }
+
+  // Show form fields and hide category selector
+  document.getElementById('categorySelector').style.display = 'none';
+  document.getElementById('formFieldsContainer').style.display = 'block';
+  
   openOv('formOv');
 }
 
@@ -1981,10 +2006,15 @@ function openAdd(sk) {
   document.getElementById('fmIco').style.background  = 'var(--blue-lt)';
   document.getElementById('fmIcoI').className        = 'ti ti-plus';
   document.getElementById('fmIcoI').style.color      = 'var(--blue)';
-  _prepareForm(sk, 'it');
+  
+  // Show category selector, hide form fields initially
+  document.getElementById('categorySelector').style.display = 'block';
+  document.getElementById('formFieldsContainer').style.display = 'none';
+  
+  // Reset form fields
   ['fmName','fmManufacturer','fmModel','fmSpecs','fmNotes','fmAssignedName','fmAssignedTitle','fmAssignedTel'].forEach(id=>{ const e=document.getElementById(id); if(e) e.value=''; });
-  document.getElementById('fmSerial').value      = genSerial('it');
-  document.getElementById('fmEngravingNo').value = uid(PREFIX[`it_${sk}`]||'AST');
+  document.getElementById('fmSerial').value      = '';
+  document.getElementById('fmEngravingNo').value = '';
   document.getElementById('fmQty').value         = 1;
   document.getElementById('fmUnit').value        = 'pieces';
   document.getElementById('fmStatus').value      = 'Active';
@@ -1992,6 +2022,7 @@ function openAdd(sk) {
   document.getElementById('fmDate').value        = new Date().toISOString().slice(0,10);
   const ss = document.getElementById('fmStore');
   if(ss) ss.innerHTML = STORES.map(s=>`<option value="${s.name}">${s.name}</option>`).join('');
+  
   openOv('formOv');
 }
 
@@ -2014,6 +2045,10 @@ function selectAddCategory(tk) {
   document.getElementById('fmDate').value        = new Date().toISOString().slice(0,10);
   const ss = document.getElementById('fmStore');
   if(ss) ss.innerHTML = STORES.map(s=>`<option value="${s.name}">${s.name}</option>`).join('');
+
+  // Hide category selector, show form fields
+  document.getElementById('categorySelector').style.display = 'none';
+  document.getElementById('formFieldsContainer').style.display = 'block';
 }
 
 function _prepareForm(sk, tk) {
@@ -2220,6 +2255,11 @@ function openAddAsset(pageId) {
   document.getElementById('fmDate').value        = new Date().toISOString().slice(0,10);
   const ss = document.getElementById('fmStore');
   if(ss) ss.innerHTML = STORES.map(s=>`<option value="${s.name}">${s.name}</option>`).join('');
+
+  // Show form fields, hide category selector
+  document.getElementById('categorySelector').style.display = 'none';
+  document.getElementById('formFieldsContainer').style.display = 'block';
+
   openOv('formOv');
 }
 
@@ -2398,7 +2438,7 @@ function _resetVerifyModal() {
   const im = document.getElementById('verifyInitMsg');     if(im) im.style.display='block';
   const cb = document.getElementById('verifyConfirmBtn');  if(cb) cb.style.display='none';
   const mt = document.getElementById('scanModalTitle');    if(mt) mt.textContent='Verify Asset';
-  const ms2= document.getElementById('scanModalSub');      if(ms2)ms2.textContent='Type serial number — details appear automatically';
+  const ms2= document.getElementById('scanModalSub');      if(ms2)ms2.textContent='Enter serial number then click Lookup';
   if(_qrInstance){ try{_qrInstance.clear();}catch(e){} _qrInstance=null; }
   const qb = document.getElementById('qrCodeBox'); if(qb) qb.innerHTML='';
   const ql = document.getElementById('qrSerial');  if(ql) ql.textContent='';
@@ -2417,7 +2457,7 @@ function clearVerifyResult() {
   const im = document.getElementById('verifyInitMsg');    if(im) im.style.display='block';
   const cb = document.getElementById('verifyConfirmBtn'); if(cb) cb.style.display='none';
   const mt = document.getElementById('scanModalTitle');   if(mt) mt.textContent='Verify Asset';
-  const ms = document.getElementById('scanModalSub');     if(ms) ms.textContent='Type serial number — details appear automatically';
+  const ms = document.getElementById('scanModalSub');     if(ms) ms.textContent='Enter serial number then click Lookup';
   _verifyCurrentSerial = null;
 }
 
@@ -3268,4 +3308,4 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 </script>
 </body>
-</html>   
+</html>
