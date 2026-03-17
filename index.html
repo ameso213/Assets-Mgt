@@ -602,6 +602,11 @@ textarea.fi{resize:vertical;min-height:70px;}
 .linked-row-serial{font-size:11px;color:var(--muted);font-family:var(--mono);}
 .unlink-btn{width:26px;height:26px;border-radius:var(--rsm);border:1px solid var(--border);background:transparent;display:grid;place-items:center;color:var(--muted);cursor:pointer;}
 .unlink-btn:hover{background:var(--red-lt);border-color:var(--red-bd);color:var(--red);}
+/* Warranty badges */
+.b-warranty-active { background: var(--green-lt); color: var(--green); border: 1px solid var(--green-bd); }
+.b-warranty-expiring { background: var(--orange-lt); color: var(--orange); border: 1px solid var(--orange-bd); }
+.b-warranty-expired { background: var(--red-lt); color: var(--red); border: 1px solid var(--red-bd); }
+.b-warranty-none { background: var(--border-light); color: var(--muted); border: 1px solid var(--border); }
 @keyframes scanLine{0%{top:12px}100%{top:calc(100% - 12px)}}
 @keyframes toastIn{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:translateX(0)}}
 .mob-menu-btn{display:none;width:36px;height:36px;border-radius:var(--rsm);background:transparent;border:1px solid var(--border);place-items:center;color:var(--muted);cursor:pointer;transition:all .15s;flex-shrink:0;}
@@ -1488,14 +1493,14 @@ function genSerial(tk) { const pfx={it:'SN',furniture:'FN',cars:'VH'}; return (p
 const DB = {
   it: {
     assets: [
-      { engravingNo:'MOH-KAB001', serial:'SN-DL5520-082A', name:'Dell Latitude 5520', manufacturer:'Dell', model:'Latitude 5520', deviceType:'Computer', deviceSubType:'Laptop', specs:'8GB RAM, 1TB HDD, Intel Core Ultra 7 165U 2.10 GHz, 15.6" FHD IPS', store:'Kabong General Hospital', assignedName:'Karim Ali', assignedTitle:'IT Officer', assignedTel:'0786747390', status:'Active', date:'2025-08-10', condition:'Good', notes:'' },
-      { engravingNo:'MOH-MUL002', serial:'SN-HP400G-095B', name:'HP ProDesk 400 G7', manufacturer:'HP', model:'ProDesk 400 G7 SFF', deviceType:'Computer', deviceSubType:'Desktop', specs:'8GB RAM, 1TB HDD, Intel Core i5-10500 3.10 GHz, SFF form factor', store:'Mulago National Referral', assignedName:'Sarah Nakato', assignedTitle:'Systems Administrator', assignedTel:'0701333444', status:'Active', date:'2025-09-05', condition:'New', notes:'' },
-      { engravingNo:'MOH-LUW003', serial:'SN-CC296-072C', name:'Cisco Catalyst 2960', manufacturer:'Cisco', model:'Catalyst 2960-24TT', deviceType:'Switch', deviceSubType:'24-Port Switch', specs:'24-port 10/100 + 2x 1G uplinks, 48V PoE, managed Layer 2', store:'Luwero Hospital', assignedName:'Ronald Ssemanda', assignedTitle:'Network Engineer', assignedTel:'0701500603', status:'Active', date:'2025-07-20', condition:'Good', notes:'' },
-      { engravingNo:'MOH-MBA004', serial:'SN-MK750-110D', name:'MikroTik RB750Gr3', manufacturer:'MikroTik', model:'RouterBOARD 750Gr3 (hEX)', deviceType:'Router', deviceSubType:'Edge Router', specs:'5-port Gigabit Ethernet, 256MB RAM, 16MB NAND flash, RouterOS v6', store:'Mbarara Regional Referral', assignedName:'David Tumusiime', assignedTitle:'IT Technician', assignedTel:'0752700800', status:'Maintenance', date:'2025-11-01', condition:'Fair', notes:'Pending firmware v7.x upgrade' },
-      { engravingNo:'MOH-KAR005', serial:'SN-APC15-120E', name:'APC Smart-UPS 1500VA', manufacturer:'APC by Schneider', model:'Smart-UPS SMT1500I', deviceType:'UPS', deviceSubType:'Line-Interactive', specs:'1500VA / 980W, 230V, 8x IEC outlets, LCD panel, USB + serial mgmt', store:'Karenga Health Centre IV', assignedName:'Stella Akello', assignedTitle:'IT Officer', assignedTel:'0782300402', status:'Active', date:'2024-12-01', condition:'Good', notes:'Battery replaced Jan 2025' },
-      { engravingNo:'MOH-MUL006', serial:'SN-HP404-086F', name:'HP LaserJet Pro M404dn', manufacturer:'HP', model:'LaserJet Pro M404dn', deviceType:'Printer', deviceSubType:'Laser', specs:'38ppm mono laser, duplex, Gigabit LAN, USB', store:'Mulago National Referral', assignedName:'Sarah Nakato', assignedTitle:'Systems Administrator', assignedTel:'0701333444', status:'Maintenance', date:'2024-11-15', condition:'Fair', notes:'Drum replacement needed' },
-      { engravingNo:'MOH-KAB007', serial:'SN-UB001-091G', name:'Ubiquiti UAP-AC-Pro', manufacturer:'Ubiquiti', model:'UAP-AC-Pro', deviceType:'Access Point', deviceSubType:'Indoor', specs:'2.4GHz 450Mbps / 5GHz 1300Mbps, PoE powered, indoor', store:'Kabong General Hospital', assignedName:'Karim Ali', assignedTitle:'IT Officer', assignedTel:'0786747390', status:'Active', date:'2025-01-20', condition:'New', notes:'' },
-      { engravingNo:'MOH-LUW008', serial:'SN-DL540-103H', name:'Dell PowerEdge R540', manufacturer:'Dell', model:'PowerEdge R540', deviceType:'Computer', deviceSubType:'Server', specs:'Xeon Silver 4210, 32GB RAM, 2x 1TB SAS, 2U rackmount', store:'Luwero Hospital', assignedName:'Ronald Ssemanda', assignedTitle:'Network Engineer', assignedTel:'0701500603', status:'Active', date:'2025-03-01', condition:'New', notes:'' },
+      { engravingNo:'MOH-KAB001', serial:'SN-DL5520-082A', name:'Dell Latitude 5520', manufacturer:'Dell', model:'Latitude 5520', deviceType:'Computer', deviceSubType:'Laptop', specs:'8GB RAM, 1TB HDD, Intel Core Ultra 7 165U 2.10 GHz, 15.6" FHD IPS', store:'Kabong General Hospital', assignedName:'Karim Ali', assignedTitle:'IT Officer', assignedTel:'0786747390', status:'Active', date:'2025-08-10', condition:'Good', notes:'', warrantyStart:'2025-08-10', warrantyEnd:'2028-08-09', warrantyProvider:'Dell ProSupport', warrantyTerms:'3-year Next Business Day On-site' },
+      { engravingNo:'MOH-MUL002', serial:'SN-HP400G-095B', name:'HP ProDesk 400 G7', manufacturer:'HP', model:'ProDesk 400 G7 SFF', deviceType:'Computer', deviceSubType:'Desktop', specs:'8GB RAM, 1TB HDD, Intel Core i5-10500 3.10 GHz, SFF form factor', store:'Mulago National Referral', assignedName:'Sarah Nakato', assignedTitle:'Systems Administrator', assignedTel:'0701333444', status:'Active', date:'2025-09-05', condition:'New', notes:'', warrantyStart:'2025-09-05', warrantyEnd:'2028-09-04', warrantyProvider:'HP Care Pack', warrantyTerms:'3-year Parts & Labor' },
+      { engravingNo:'MOH-LUW003', serial:'SN-CC296-072C', name:'Cisco Catalyst 2960', manufacturer:'Cisco', model:'Catalyst 2960-24TT', deviceType:'Switch', deviceSubType:'24-Port Switch', specs:'24-port 10/100 + 2x 1G uplinks, 48V PoE, managed Layer 2', store:'Luwero Hospital', assignedName:'Ronald Ssemanda', assignedTitle:'Network Engineer', assignedTel:'0701500603', status:'Active', date:'2025-07-20', condition:'Good', notes:'', warrantyStart:'2025-07-20', warrantyEnd:'2028-07-19', warrantyProvider:'Cisco SMARTnet', warrantyTerms:'3-year 8x5 NBD' },
+      { engravingNo:'MOH-MBA004', serial:'SN-MK750-110D', name:'MikroTik RB750Gr3', manufacturer:'MikroTik', model:'RouterBOARD 750Gr3 (hEX)', deviceType:'Router', deviceSubType:'Edge Router', specs:'5-port Gigabit Ethernet, 256MB RAM, 16MB NAND flash, RouterOS v6', store:'Mbarara Regional Referral', assignedName:'David Tumusiime', assignedTitle:'IT Technician', assignedTel:'0752700800', status:'Maintenance', date:'2025-11-01', condition:'Fair', notes:'Pending firmware v7.x upgrade', warrantyStart:'2025-11-01', warrantyEnd:'2026-11-01', warrantyProvider:'MikroTik', warrantyTerms:'1-year limited' },
+      { engravingNo:'MOH-KAR005', serial:'SN-APC15-120E', name:'APC Smart-UPS 1500VA', manufacturer:'APC by Schneider', model:'Smart-UPS SMT1500I', deviceType:'UPS', deviceSubType:'Line-Interactive', specs:'1500VA / 980W, 230V, 8x IEC outlets, LCD panel, USB + serial mgmt', store:'Karenga Health Centre IV', assignedName:'Stella Akello', assignedTitle:'IT Officer', assignedTel:'0782300402', status:'Active', date:'2024-12-01', condition:'Good', notes:'Battery replaced Jan 2025', warrantyStart:'2024-12-01', warrantyEnd:'2027-12-01', warrantyProvider:'APC', warrantyTerms:'3-year electronics, 2-year battery' },
+      { engravingNo:'MOH-MUL006', serial:'SN-HP404-086F', name:'HP LaserJet Pro M404dn', manufacturer:'HP', model:'LaserJet Pro M404dn', deviceType:'Printer', deviceSubType:'Laser', specs:'38ppm mono laser, duplex, Gigabit LAN, USB', store:'Mulago National Referral', assignedName:'Sarah Nakato', assignedTitle:'Systems Administrator', assignedTel:'0701333444', status:'Maintenance', date:'2024-11-15', condition:'Fair', notes:'Drum replacement needed', warrantyStart:'2024-11-15', warrantyEnd:'2027-11-15', warrantyProvider:'HP', warrantyTerms:'3-year warranty' },
+      { engravingNo:'MOH-KAB007', serial:'SN-UB001-091G', name:'Ubiquiti UAP-AC-Pro', manufacturer:'Ubiquiti', model:'UAP-AC-Pro', deviceType:'Access Point', deviceSubType:'Indoor', specs:'2.4GHz 450Mbps / 5GHz 1300Mbps, PoE powered, indoor', store:'Kabong General Hospital', assignedName:'Karim Ali', assignedTitle:'IT Officer', assignedTel:'0786747390', status:'Active', date:'2025-01-20', condition:'New', notes:'', warrantyStart:'2025-01-20', warrantyEnd:'2028-01-20', warrantyProvider:'Ubiquiti', warrantyTerms:'2-year warranty' },
+      { engravingNo:'MOH-LUW008', serial:'SN-DL540-103H', name:'Dell PowerEdge R540', manufacturer:'Dell', model:'PowerEdge R540', deviceType:'Computer', deviceSubType:'Server', specs:'Xeon Silver 4210, 32GB RAM, 2x 1TB SAS, 2U rackmount', store:'Luwero Hospital', assignedName:'Ronald Ssemanda', assignedTitle:'Network Engineer', assignedTel:'0701500603', status:'Active', date:'2025-03-01', condition:'New', notes:'', warrantyStart:'2025-03-01', warrantyEnd:'2028-03-01', warrantyProvider:'Dell ProSupport Plus', warrantyTerms:'3-year 24x7 mission critical' },
     ],
     components: [
       { engravingNo:'ITC-KAB001', name:'DDR4 8GB RAM Module', manufacturer:'Kingston', model:'KVR32N22S8/8', specs:'DDR4 3200MHz 8GB SODIMM', qty:20, unit:'pieces', store:'Kabong General Hospital', assignedName:'Karim Ali', assignedTitle:'IT Officer', assignedTel:'0786747390', status:'In Storage', date:'2024-01-10', condition:'New' },
@@ -1521,12 +1526,12 @@ const DB = {
   },
   furniture: {
     assets: [
-      { engravingNo:'FNA-ADM001', serial:'FN-EOD-001', name:'Executive Office Desk', manufacturer:'Oakcraft Uganda', model:'Executive Pro 1800', store:"Sam's Furniture", assignedName:'Margaret Nakato', assignedTitle:'Office Manager', assignedTel:'+256 708 001001', status:'Active', date:'2021-06-15', condition:'Good', notes:'' },
-      { engravingNo:'FNA-ADM002', serial:'FN-EOC-002', name:'Ergonomic Office Chair', manufacturer:'Ergoseat Ltd', model:'E500 Pro', store:"Sam's Furniture", assignedName:'Margaret Nakato', assignedTitle:'Office Manager', assignedTel:'+256 708 001001', status:'Active', date:'2021-06-15', condition:'Good', notes:'' },
-      { engravingNo:'FNA-REC003', serial:'FN-4DF-003', name:'4-Drawer Filing Cabinet', manufacturer:'Steelco', model:'4DF-A4 Classic', store:'Comfort Office Supplies', assignedName:'Alice Zawedde', assignedTitle:'Receptionist', assignedTel:'+256 708 002002', status:'Active', date:'2020-03-10', condition:'Good', notes:'' },
-      { engravingNo:'FNA-CNF004', serial:'FN-CT0-004', name:'Conference Table 12-Seater', manufacturer:'Woodmaster Uganda', model:'CT-12 Executive', store:"Sam's Furniture", assignedName:'John Mukasa', assignedTitle:'Administrator', assignedTel:'+256 700 123456', status:'Active', date:'2023-11-01', condition:'New', notes:'' },
-      { engravingNo:'FNA-WRD005', serial:'FN-WB3-005', name:'Waiting Bench 3-Seater', manufacturer:'Steelco', model:'WB-3 Steel Frame', store:'Mirembe Beddings', assignedName:'Florence Akello', assignedTitle:'Housekeeping Supervisor', assignedTel:'+256 708 003003', status:'Maintenance', date:'2020-01-20', condition:'Fair', notes:'Upholstery repair needed' },
-      { engravingNo:'FNA-STR006', serial:'FN-SSL-006', name:'Steel Storage Shelving', manufacturer:'Metalline Industries', model:'SSL-5T Heavy', store:'Comfort Office Supplies', assignedName:'David Ssempa', assignedTitle:'Maintenance Officer', assignedTel:'+256 708 004004', status:'Active', date:'2019-09-22', condition:'Fair', notes:'' },
+      { engravingNo:'FNA-ADM001', serial:'FN-EOD-001', name:'Executive Office Desk', manufacturer:'Oakcraft Uganda', model:'Executive Pro 1800', store:"Sam's Furniture", assignedName:'Margaret Nakato', assignedTitle:'Office Manager', assignedTel:'+256 708 001001', status:'Active', date:'2021-06-15', condition:'Good', notes:'', warrantyStart:'2021-06-15', warrantyEnd:'2026-06-15', warrantyProvider:'Oakcraft', warrantyTerms:'5-year warranty' },
+      { engravingNo:'FNA-ADM002', serial:'FN-EOC-002', name:'Ergonomic Office Chair', manufacturer:'Ergoseat Ltd', model:'E500 Pro', store:"Sam's Furniture", assignedName:'Margaret Nakato', assignedTitle:'Office Manager', assignedTel:'+256 708 001001', status:'Active', date:'2021-06-15', condition:'Good', notes:'', warrantyStart:'2021-06-15', warrantyEnd:'2026-06-15', warrantyProvider:'Ergoseat', warrantyTerms:'5-year warranty on mechanism' },
+      { engravingNo:'FNA-REC003', serial:'FN-4DF-003', name:'4-Drawer Filing Cabinet', manufacturer:'Steelco', model:'4DF-A4 Classic', store:'Comfort Office Supplies', assignedName:'Alice Zawedde', assignedTitle:'Receptionist', assignedTel:'+256 708 002002', status:'Active', date:'2020-03-10', condition:'Good', notes:'', warrantyStart:'2020-03-10', warrantyEnd:'2025-03-10', warrantyProvider:'Steelco', warrantyTerms:'5-year warranty' },
+      { engravingNo:'FNA-CNF004', serial:'FN-CT0-004', name:'Conference Table 12-Seater', manufacturer:'Woodmaster Uganda', model:'CT-12 Executive', store:"Sam's Furniture", assignedName:'John Mukasa', assignedTitle:'Administrator', assignedTel:'+256 700 123456', status:'Active', date:'2023-11-01', condition:'New', notes:'', warrantyStart:'2023-11-01', warrantyEnd:'2028-11-01', warrantyProvider:'Woodmaster', warrantyTerms:'5-year warranty' },
+      { engravingNo:'FNA-WRD005', serial:'FN-WB3-005', name:'Waiting Bench 3-Seater', manufacturer:'Steelco', model:'WB-3 Steel Frame', store:'Mirembe Beddings', assignedName:'Florence Akello', assignedTitle:'Housekeeping Supervisor', assignedTel:'+256 708 003003', status:'Maintenance', date:'2020-01-20', condition:'Fair', notes:'Upholstery repair needed', warrantyStart:'2020-01-20', warrantyEnd:'2025-01-20', warrantyProvider:'Steelco', warrantyTerms:'5-year frame warranty' },
+      { engravingNo:'FNA-STR006', serial:'FN-SSL-006', name:'Steel Storage Shelving', manufacturer:'Metalline Industries', model:'SSL-5T Heavy', store:'Comfort Office Supplies', assignedName:'David Ssempa', assignedTitle:'Maintenance Officer', assignedTel:'+256 708 004004', status:'Active', date:'2019-09-22', condition:'Fair', notes:'', warrantyStart:'2019-09-22', warrantyEnd:'2024-09-22', warrantyProvider:'Metalline', warrantyTerms:'5-year warranty' },
     ],
     components: [
       { engravingNo:'FNC-001', name:'Chair Gas Lift Cylinder', manufacturer:'Generic', model:'GLC-50 Standard', specs:'50mm standard office chair gas lift cylinder', qty:10, unit:'pieces', store:"Sam's Furniture", assignedName:'David Ssempa', assignedTitle:'Maintenance Officer', assignedTel:'+256 708 004004', status:'In Storage', date:'2024-01-08', condition:'New' },
@@ -1548,14 +1553,14 @@ const DB = {
   },
   cars: {
     assets: [
-      { engravingNo:'CRA-VYD001', serial:'VH-UG0001A', name:'Toyota Land Cruiser V8 200', manufacturer:'Toyota', model:'Land Cruiser 200 Series', store:'Spear Motors Uganda', assignedName:'Dr. Samuel Okullo', assignedTitle:'Executive Director', assignedTel:'+256 700 010001', status:'Active', date:'2020-06-01', condition:'Good', notes:'' },
-      { engravingNo:'CRA-VYD002', serial:'VH-UG0002B', name:'Toyota Hilux Double Cab', manufacturer:'Toyota', model:'Hilux Revo GD-6', store:'Toyota Uganda Ltd', assignedName:'Michael Obwoya', assignedTitle:'Field Operations Manager', assignedTel:'+256 700 010002', status:'Active', date:'2021-03-14', condition:'Good', notes:'' },
-      { engravingNo:'CRA-VYD003', serial:'VH-UG0003C', name:'Isuzu NQR 33L Truck', manufacturer:'Isuzu', model:'NQR 33L 4×2', store:'Victoria Motors', assignedName:'Isaac Tumwine', assignedTitle:'Logistics Officer', assignedTel:'+256 700 010003', status:'Active', date:'2019-08-22', condition:'Fair', notes:'' },
-      { engravingNo:'CRA-VYD004', serial:'VH-UG0004D', name:'Toyota HiAce Ambulance', manufacturer:'Toyota', model:'HiAce Commuter 3L', store:'Toyota Uganda Ltd', assignedName:'Dr. Alice Aber', assignedTitle:'Emergency Medical Officer', assignedTel:'+256 700 010004', status:'Active', date:'2022-07-19', condition:'Good', notes:'' },
-      { engravingNo:'CRA-VYD005', serial:'VH-UG0005E', name:'Ford Ranger XLS 4x4', manufacturer:'Ford', model:'Ranger XLS T6 4WD', store:'Victoria Motors', assignedName:'Patricia Amoding', assignedTitle:'District Coordinator', assignedTel:'+256 700 010005', status:'Maintenance', date:'2020-11-30', condition:'Fair', notes:'50,000km service overdue' },
-      { engravingNo:'CRA-VYD006', serial:'VH-UG0006F', name:'Honda CG125 Motorcycle', manufacturer:'Honda', model:'CG 125 ES', store:'Spear Motors Uganda', assignedName:'James Okello', assignedTitle:'Community Health Officer', assignedTel:'+256 700 010006', status:'Active', date:'2022-01-10', condition:'Good', notes:'' },
-      { engravingNo:'CRA-VYD007', serial:'VH-UG0007G', name:'Bajaj Boxer BM100 Motorcycle', manufacturer:'Bajaj', model:'Boxer BM100 CT', store:'Spear Motors Uganda', assignedName:'Beatrice Nabirye', assignedTitle:'VHT Coordinator', assignedTel:'+256 700 010007', status:'Active', date:'2022-01-10', condition:'Good', notes:'' },
-      { engravingNo:'CRA-VYD008', serial:'VH-UG0008H', name:'Toyota Prado TX 150', manufacturer:'Toyota', model:'Prado 150 TX-L', store:'Toyota Uganda Ltd', assignedName:'Dr. Samuel Okullo', assignedTitle:'Executive Director', assignedTel:'+256 700 010001', status:'Active', date:'2024-01-08', condition:'New', notes:'' },
+      { engravingNo:'CRA-VYD001', serial:'VH-UG0001A', name:'Toyota Land Cruiser V8 200', manufacturer:'Toyota', model:'Land Cruiser 200 Series', store:'Spear Motors Uganda', assignedName:'Dr. Samuel Okullo', assignedTitle:'Executive Director', assignedTel:'+256 700 010001', status:'Active', date:'2020-06-01', condition:'Good', notes:'', warrantyStart:'2020-06-01', warrantyEnd:'2025-06-01', warrantyProvider:'Toyota Uganda', warrantyTerms:'5-year/100,000km warranty' },
+      { engravingNo:'CRA-VYD002', serial:'VH-UG0002B', name:'Toyota Hilux Double Cab', manufacturer:'Toyota', model:'Hilux Revo GD-6', store:'Toyota Uganda Ltd', assignedName:'Michael Obwoya', assignedTitle:'Field Operations Manager', assignedTel:'+256 700 010002', status:'Active', date:'2021-03-14', condition:'Good', notes:'', warrantyStart:'2021-03-14', warrantyEnd:'2026-03-14', warrantyProvider:'Toyota Uganda', warrantyTerms:'5-year/100,000km warranty' },
+      { engravingNo:'CRA-VYD003', serial:'VH-UG0003C', name:'Isuzu NQR 33L Truck', manufacturer:'Isuzu', model:'NQR 33L 4×2', store:'Victoria Motors', assignedName:'Isaac Tumwine', assignedTitle:'Logistics Officer', assignedTel:'+256 700 010003', status:'Active', date:'2019-08-22', condition:'Fair', notes:'', warrantyStart:'2019-08-22', warrantyEnd:'2024-08-22', warrantyProvider:'Isuzu Uganda', warrantyTerms:'5-year/150,000km warranty' },
+      { engravingNo:'CRA-VYD004', serial:'VH-UG0004D', name:'Toyota HiAce Ambulance', manufacturer:'Toyota', model:'HiAce Commuter 3L', store:'Toyota Uganda Ltd', assignedName:'Dr. Alice Aber', assignedTitle:'Emergency Medical Officer', assignedTel:'+256 700 010004', status:'Active', date:'2022-07-19', condition:'Good', notes:'', warrantyStart:'2022-07-19', warrantyEnd:'2027-07-19', warrantyProvider:'Toyota Uganda', warrantyTerms:'5-year/100,000km warranty' },
+      { engravingNo:'CRA-VYD005', serial:'VH-UG0005E', name:'Ford Ranger XLS 4x4', manufacturer:'Ford', model:'Ranger XLS T6 4WD', store:'Victoria Motors', assignedName:'Patricia Amoding', assignedTitle:'District Coordinator', assignedTel:'+256 700 010005', status:'Maintenance', date:'2020-11-30', condition:'Fair', notes:'50,000km service overdue', warrantyStart:'2020-11-30', warrantyEnd:'2025-11-30', warrantyProvider:'Ford Uganda', warrantyTerms:'5-year/120,000km warranty' },
+      { engravingNo:'CRA-VYD006', serial:'VH-UG0006F', name:'Honda CG125 Motorcycle', manufacturer:'Honda', model:'CG 125 ES', store:'Spear Motors Uganda', assignedName:'James Okello', assignedTitle:'Community Health Officer', assignedTel:'+256 700 010006', status:'Active', date:'2022-01-10', condition:'Good', notes:'', warrantyStart:'2022-01-10', warrantyEnd:'2025-01-10', warrantyProvider:'Honda Uganda', warrantyTerms:'3-year/unlimited km' },
+      { engravingNo:'CRA-VYD007', serial:'VH-UG0007G', name:'Bajaj Boxer BM100 Motorcycle', manufacturer:'Bajaj', model:'Boxer BM100 CT', store:'Spear Motors Uganda', assignedName:'Beatrice Nabirye', assignedTitle:'VHT Coordinator', assignedTel:'+256 700 010007', status:'Active', date:'2022-01-10', condition:'Good', notes:'', warrantyStart:'2022-01-10', warrantyEnd:'2025-01-10', warrantyProvider:'Bajaj', warrantyTerms:'3-year/50,000km warranty' },
+      { engravingNo:'CRA-VYD008', serial:'VH-UG0008H', name:'Toyota Prado TX 150', manufacturer:'Toyota', model:'Prado 150 TX-L', store:'Toyota Uganda Ltd', assignedName:'Dr. Samuel Okullo', assignedTitle:'Executive Director', assignedTel:'+256 700 010001', status:'Active', date:'2024-01-08', condition:'New', notes:'', warrantyStart:'2024-01-08', warrantyEnd:'2029-01-08', warrantyProvider:'Toyota Uganda', warrantyTerms:'5-year/100,000km warranty' },
     ],
     components: [
       { engravingNo:'CRC-001', name:'Toyota LC V8 Oil Filter', manufacturer:'Toyota', model:'90915-YZZD2 Genuine', specs:'Genuine oil filter for LC V8 4.5L diesel engine', qty:4, unit:'pieces', store:'Spear Motors Uganda', assignedName:'Eng. Robert Ayume', assignedTitle:'Vehicle Mechanic', assignedTel:'+256 700 020001', status:'In Storage', date:'2024-02-10', condition:'New' },
@@ -1987,6 +1992,42 @@ function openViewItem(tk, sk, eng) {
     const lbl = key.replace(/([A-Z])/g,' $1').replace(/^./,s=>s.toUpperCase());
     html += `<div class="vi full"><div class="vi-lbl">${lbl}</div><div class="vi-val ${key==='serial'||key==='engravingNo'?'mono':''}">${v||'—'}</div></div>`;
   }
+  if(sk === 'assets' && (item.warrantyStart || item.warrantyEnd)) {
+    const today = new Date();
+    const warrantyEnd = item.warrantyEnd ? new Date(item.warrantyEnd) : null;
+    let warrantyStatus = '';
+    let statusClass = '';
+    if(warrantyEnd) {
+      const daysLeft = Math.ceil((warrantyEnd - today) / (1000 * 60 * 60 * 24));
+      if(daysLeft > 30) {
+        warrantyStatus = 'Active';
+        statusClass = 'b-warranty-active';
+      } else if(daysLeft > 0) {
+        warrantyStatus = `Expiring in ${daysLeft} days`;
+        statusClass = 'b-warranty-expiring';
+      } else if(daysLeft <= 0) {
+        warrantyStatus = 'Expired';
+        statusClass = 'b-warranty-expired';
+      }
+    }
+    html += `<div class="fg-divider full" style="margin:10px 0"></div>`;
+    html += `<div class="vi full"><div class="vi-lbl" style="font-size:12px;color:var(--blue)">WARRANTY INFORMATION</div><div></div></div>`;
+    if(item.warrantyStart) {
+      html += `<div class="vi"><div class="vi-lbl">Start Date</div><div class="vi-val mono">${item.warrantyStart}</div></div>`;
+    }
+    if(item.warrantyEnd) {
+      html += `<div class="vi"><div class="vi-lbl">End Date</div><div class="vi-val mono">${item.warrantyEnd}</div></div>`;
+      if(warrantyStatus) {
+        html += `<div class="vi"><div class="vi-lbl">Status</div><div class="vi-val"><span class="badge ${statusClass}">${warrantyStatus}</span></div></div>`;
+      }
+    }
+    if(item.warrantyProvider) {
+      html += `<div class="vi full"><div class="vi-lbl">Provider</div><div class="vi-val">${item.warrantyProvider}</div></div>`;
+    }
+    if(item.warrantyTerms) {
+      html += `<div class="vi full"><div class="vi-lbl">Terms</div><div class="vi-val">${item.warrantyTerms}</div></div>`;
+    }
+  }
   document.getElementById('vmGrid').innerHTML = html;
   document.getElementById('vmSub').textContent = `${item.name} · ${eng}`;
   openOv('viewOv');
@@ -2290,8 +2331,8 @@ function openAddAsset(pageId) {
 function exportAssetPage(pageId) {
   const parts = pageId.split('_');
   const data = DB[parts[0]]?.[parts[1]]||[];
-  const csv = ['Asset Name,Engraving No,Serial,Manufacturer,Model,Store,Assigned To,Status,Condition,Date'];
-  data.forEach(a => csv.push(`${a.name||''},${a.engravingNo||''},${a.serial||''},${a.manufacturer||''},${a.model||''},${a.store||''},${a.assignedName||a.assigned||''},${a.status||''},${a.condition||''},${a.date||''}`));
+  const csv = ['Asset Name,Engraving No,Serial,Manufacturer,Model,Store,Assigned To,Status,Condition,Date,Warranty Start,Warranty End,Warranty Provider,Warranty Terms'];
+  data.forEach(a => csv.push(`${a.name||''},${a.engravingNo||''},${a.serial||''},${a.manufacturer||''},${a.model||''},${a.store||''},${a.assignedName||a.assigned||''},${a.status||''},${a.condition||''},${a.date||''},${a.warrantyStart||''},${a.warrantyEnd||''},${a.warrantyProvider||''},${a.warrantyTerms||''}`));
   downloadFile(csv.join('\n'), `${pageId}_${new Date().toISOString().slice(0,10)}.csv`,'text/csv');
   toast('Export started','success');
 }
@@ -3593,7 +3634,7 @@ function renderAnalysisReports() {
 }
 function exportReport(type) {
   let data = [];
-  if(type==='inventory') data = getAllForSub('assets').map(a=>`${a.name},${a.serial},${a.store},${a.status}`);
+  if(type==='inventory') data = getAllForSub('assets').map(a=>`${a.name},${a.serial},${a.store},${a.status},${a.warrantyStart||''},${a.warrantyEnd||''},${a.warrantyProvider||''}`);
   else if(type==='depreciation') data = ['Category,Value,Depreciation', 'IT Equipment,1850000,23.2%', 'Vehicles,2100000,27.1%', 'Furniture,420000,26.2%'];
   else if(type==='utilization') data = ['Department,Utilization', 'IT Dept,94%', 'Admin,78%', 'Clinical,82%'];
   else if(type==='maintenance') data = maintenanceData.history.map(h=>`${h.date},${h.asset},${h.service},${h.cost}`);
