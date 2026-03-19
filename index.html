@@ -8,7 +8,8 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jsqr/1.4.0/dist/jsQR.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <style>
 :root {
   --sb-bg:#ffffff; --sb-border:#e8edf3; --sb-text:#5a6a7e;
@@ -602,7 +603,6 @@ textarea.fi{resize:vertical;min-height:70px;}
 .linked-row-serial{font-size:11px;color:var(--muted);font-family:var(--mono);}
 .unlink-btn{width:26px;height:26px;border-radius:var(--rsm);border:1px solid var(--border);background:transparent;display:grid;place-items:center;color:var(--muted);cursor:pointer;}
 .unlink-btn:hover{background:var(--red-lt);border-color:var(--red-bd);color:var(--red);}
-/* Warranty badges */
 .b-warranty-active { background: var(--green-lt); color: var(--green); border: 1px solid var(--green-bd); }
 .b-warranty-expiring { background: var(--orange-lt); color: var(--orange); border: 1px solid var(--orange-bd); }
 .b-warranty-expired { background: var(--red-lt); color: var(--red); border: 1px solid var(--red-bd); }
@@ -1095,6 +1095,7 @@ textarea.fi{resize:vertical;min-height:70px;}
     <div class="page" id="page-analysis_reports"></div>
   </div>
 </div>
+<!-- ADD / EDIT ASSET MODAL with accessory dropdown & new+link button -->
 <div class="ov" id="formOv" onclick="bgClose(event,'formOv')">
   <div class="modal">
     <div class="mhd">
@@ -1154,6 +1155,17 @@ textarea.fi{resize:vertical;min-height:70px;}
             <span id="fmDevTypeHintText">Select a device type to see available sub-types.</span>
           </div>
           <div class="fg full" id="fmSpecsWrap"><label>Specifications</label><textarea class="fi" id="fmSpecs" placeholder="e.g. 8GB RAM, 1TB HDD..."></textarea></div>
+          <!-- NEW: accessory dropdown for linking (only visible for assets) -->
+          <div class="fg full" id="fmAccessoryLinkWrap" style="display:none">
+            <label>Link Accessory (optional)</label>
+            <div style="display:flex; gap:6px; align-items:center">
+              <select class="fi" id="fmLinkAccessory" style="flex:1">
+                <option value="">— Select existing accessory —</option>
+              </select>
+              <button type="button" class="btn btn-primary btn-sm" onclick="openQuickAddAccessory()" style="white-space:nowrap"><i class="ti ti-plus"></i> New + link</button>
+            </div>
+            <div style="font-size:11px; color:var(--muted); margin-top:4px">Choose an accessory to link immediately after saving.</div>
+          </div>
           <div class="fg full"><label>Notes / Remarks</label><textarea class="fi" id="fmNotes" placeholder="Additional remarks..."></textarea></div>
           <hr class="fg-divider"/>
           <div class="fg-section-label">Assignment</div>
@@ -1183,6 +1195,35 @@ textarea.fi{resize:vertical;min-height:70px;}
     </div>
   </div>
 </div>
+<!-- QUICK ADD ACCESSORY MODAL (for new+link) -->
+<div class="ov" id="quickAccOv" onclick="bgClose(event,'quickAccOv')">
+  <div class="modal sm">
+    <div class="mhd">
+      <div class="mhd-l">
+        <div class="m-ico" style="background:var(--pink-lt)"><i class="ti ti-plug" style="color:var(--pink)"></i></div>
+        <div><div class="m-title">New Accessory</div><div class="m-sub">Add and link to current asset</div></div>
+      </div>
+      <button class="close-btn" onclick="closeOv('quickAccOv')"><i class="ti ti-x"></i></button>
+    </div>
+    <div class="mbody">
+      <input type="hidden" id="quickAccTopKey" value="it"/>
+      <div class="fg" style="margin-bottom:12px"><label>Accessory Name</label><input type="text" id="quickAccName" placeholder="e.g. Dell wireless mouse"/></div>
+      <div class="fg" style="margin-bottom:12px"><label>Manufacturer</label><input type="text" id="quickAccManufacturer" placeholder="e.g. Dell"/></div>
+      <div class="fg" style="margin-bottom:12px"><label>Model</label><input type="text" id="quickAccModel" placeholder="e.g. MS3320W"/></div>
+      <div class="fg" style="margin-bottom:12px"><label>Serial No.</label><input type="text" id="quickAccSerial" placeholder="auto-generated if blank"/></div>
+      <div class="fg" style="margin-bottom:12px"><label>Store</label><select class="fi" id="quickAccStore"></select></div>
+      <div class="fg" style="margin-bottom:12px"><label>Condition</label>
+        <select class="fi" id="quickAccCond"><option>New</option><option>Good</option><option>Fair</option><option>Poor</option></select>
+      </div>
+      <div class="fg" style="margin-bottom:12px"><label>Engraving No.</label><input type="text" id="quickAccEngraving" placeholder="optional"/></div>
+    </div>
+    <div class="mft">
+      <button class="btn btn-ghost" onclick="closeOv('quickAccOv')">Cancel</button>
+      <button class="btn btn-primary" onclick="saveQuickAccessoryAndLink()"><i class="ti ti-link"></i> Add & Link</button>
+    </div>
+  </div>
+</div>
+<!-- USER MODAL -->
 <div class="ov" id="userOv" onclick="bgClose(event,'userOv')">
   <div class="modal sm">
     <div class="mhd">
@@ -1218,6 +1259,8 @@ textarea.fi{resize:vertical;min-height:70px;}
     </div>
   </div>
 </div>
+
+<!-- SUPPLIER MODAL -->
 <div class="ov" id="supplierOv" onclick="bgClose(event,'supplierOv')">
   <div class="modal sm">
     <div class="mhd">
@@ -1249,6 +1292,8 @@ textarea.fi{resize:vertical;min-height:70px;}
     </div>
   </div>
 </div>
+
+<!-- VIEW MODAL -->
 <div class="ov" id="viewOv" onclick="bgClose(event,'viewOv')">
   <div class="modal">
     <div class="mhd">
@@ -1262,47 +1307,105 @@ textarea.fi{resize:vertical;min-height:70px;}
     <div class="mft"><button class="btn btn-ghost" onclick="closeOv('viewOv')">Close</button></div>
   </div>
 </div>
+
+<!-- DELETE MODAL -->
 <div class="ov" id="delOv" onclick="bgClose(event,'delOv')">
   <div class="modal sm">
-    <div class="mhd"><div class="mhd-l"><div class="m-ico" style="background:var(--red-lt)"><i class="ti ti-trash" style="color:var(--red)"></i></div><div><div class="m-title">Confirm Delete</div><div class="m-sub">Cannot be undone</div></div></div><button class="close-btn" onclick="closeOv('delOv')"><i class="ti ti-x"></i></button></div>
-    <div class="del-body"><div class="del-ico"><i class="ti ti-trash-x"></i></div><div class="del-title">Delete Item?</div><div class="del-msg">Permanently removing <span id="delName" style="font-weight:700;color:var(--text)"></span> from the system.</div></div>
-    <div class="mft"><button class="btn btn-ghost" onclick="closeOv('delOv')">Cancel</button><button class="btn btn-danger" onclick="confirmDelete()"><i class="ti ti-trash"></i> Delete</button></div>
+    <div class="mhd">
+      <div class="mhd-l">
+        <div class="m-ico" style="background:var(--red-lt)"><i class="ti ti-trash" style="color:var(--red)"></i></div>
+        <div><div class="m-title">Confirm Delete</div><div class="m-sub">Cannot be undone</div></div>
+      </div>
+      <button class="close-btn" onclick="closeOv('delOv')"><i class="ti ti-x"></i></button>
+    </div>
+    <div class="del-body">
+      <div class="del-ico"><i class="ti ti-trash-x"></i></div>
+      <div class="del-title">Delete Item?</div>
+      <div class="del-msg">Permanently removing <span id="delName" style="font-weight:700;color:var(--text)"></span> from the system.</div>
+    </div>
+    <div class="mft">
+      <button class="btn btn-ghost" onclick="closeOv('delOv')">Cancel</button>
+      <button class="btn btn-danger" onclick="confirmDelete()"><i class="ti ti-trash"></i> Delete</button>
+    </div>
   </div>
 </div>
+
+<!-- STORE MODAL -->
 <div class="ov" id="storeOv" onclick="bgClose(event,'storeOv')">
   <div class="modal sm">
-    <div class="mhd"><div class="mhd-l"><div class="m-ico" style="background:var(--teal-lt)"><i class="ti ti-building-hospital" style="color:var(--teal)"></i></div><div><div class="m-title">Add Store</div><div class="m-sub">Register a new store</div></div></div><button class="close-btn" onclick="closeOv('storeOv')"><i class="ti ti-x"></i></button></div>
+    <div class="mhd">
+      <div class="mhd-l">
+        <div class="m-ico" style="background:var(--teal-lt)"><i class="ti ti-building-hospital" style="color:var(--teal)"></i></div>
+        <div><div class="m-title">Add Store</div><div class="m-sub">Register a new store</div></div>
+      </div>
+      <button class="close-btn" onclick="closeOv('storeOv')"><i class="ti ti-x"></i></button>
+    </div>
     <div class="mbody">
-      <div class="fg" style="margin-bottom:12px"><label>Category</label><select class="fi" id="snCat"><option value="it">IT Stores</option><option value="furniture">Furniture Stores</option><option value="vehicles">Vehicle Stores</option></select></div>
+      <div class="fg" style="margin-bottom:12px"><label>Category</label>
+        <select class="fi" id="snCat">
+          <option value="it">IT Stores</option>
+          <option value="furniture">Furniture Stores</option>
+          <option value="vehicles">Vehicle Stores</option>
+        </select>
+      </div>
       <div class="fg" style="margin-bottom:12px"><label>Store Name</label><input type="text" id="snName" placeholder="e.g. Gulu Regional Hospital"/></div>
       <div class="fg" style="margin-bottom:12px"><label>Location / District</label><input type="text" id="snHosp" placeholder="e.g. Gulu City"/></div>
       <div class="fg" style="margin-bottom:12px"><label>Contact Person</label><input type="text" id="snContact" placeholder="Store manager name"/></div>
       <div class="fg"><label>Phone</label><input type="text" id="snPhone" placeholder="+256 ..."/></div>
     </div>
-    <div class="mft"><button class="btn btn-ghost" onclick="closeOv('storeOv')">Cancel</button><button class="btn btn-primary" onclick="saveStore()"><i class="ti ti-check"></i> Add Store</button></div>
+    <div class="mft">
+      <button class="btn btn-ghost" onclick="closeOv('storeOv')">Cancel</button>
+      <button class="btn btn-primary" onclick="saveStore()"><i class="ti ti-check"></i> Add Store</button>
+    </div>
   </div>
 </div>
+
+<!-- ENTRY MODAL (received/sent) -->
 <div class="ov" id="entryOv" onclick="bgClose(event,'entryOv')">
   <div class="modal">
-    <div class="mhd"><div class="mhd-l"><div class="m-ico" id="entryIco"><i id="entryIcoI" class="ti ti-arrow-down-circle" style="color:var(--green)"></i></div><div><div class="m-title" id="entryTitle">Record Received</div><div class="m-sub" id="entrySub"></div></div></div><button class="close-btn" onclick="closeOv('entryOv')"><i class="ti ti-x"></i></button></div>
+    <div class="mhd">
+      <div class="mhd-l">
+        <div class="m-ico" id="entryIco"><i id="entryIcoI" class="ti ti-arrow-down-circle" style="color:var(--green)"></i></div>
+        <div><div class="m-title" id="entryTitle">Record Received</div><div class="m-sub" id="entrySub"></div></div>
+      </div>
+      <button class="close-btn" onclick="closeOv('entryOv')"><i class="ti ti-x"></i></button>
+    </div>
     <div class="mbody">
       <input type="hidden" id="entryType"/>
       <div class="fgrid">
         <div class="fg full"><label>Item / Asset Name</label><input type="text" id="enItem" placeholder="e.g. Dell Laptop"/></div>
-        <div class="fg"><label>Category</label><select class="fi" id="enCat"><option>IT Asset</option><option>IT Component</option><option>IT Consumable</option><option>IT Accessory</option><option>Furniture Asset</option><option>Furniture Component</option><option>Vehicle Asset</option><option>Vehicle Component</option><option>Other</option></select></div>
+        <div class="fg"><label>Category</label>
+          <select class="fi" id="enCat">
+            <option>IT Asset</option><option>IT Component</option><option>IT Consumable</option><option>IT Accessory</option>
+            <option>Furniture Asset</option><option>Furniture Component</option><option>Vehicle Asset</option><option>Vehicle Component</option><option>Other</option>
+          </select>
+        </div>
         <div class="fg"><label>Quantity</label><input type="number" id="enQty" value="1" min="1"/></div>
-        <div class="fg"><label>Condition</label><select class="fi" id="enCond"><option>New</option><option>Good</option><option>Fair</option><option>Poor</option></select></div>
+        <div class="fg"><label>Condition</label>
+          <select class="fi" id="enCond"><option>New</option><option>Good</option><option>Fair</option><option>Poor</option></select>
+        </div>
         <div class="fg"><label>Date</label><input type="date" id="enDate"/></div>
         <div class="fg"><label>Received From / Sent To</label><input type="text" id="enParty" placeholder="Source or destination"/></div>
         <div class="fg full"><label>Notes / Reference</label><textarea class="fi" id="enNotes" placeholder="Delivery note, reference number..."></textarea></div>
       </div>
     </div>
-    <div class="mft"><button class="btn btn-ghost" onclick="closeOv('entryOv')">Cancel</button><button class="btn btn-primary" onclick="saveEntry()"><i class="ti ti-check"></i> Save Record</button></div>
+    <div class="mft">
+      <button class="btn btn-ghost" onclick="closeOv('entryOv')">Cancel</button>
+      <button class="btn btn-primary" onclick="saveEntry()"><i class="ti ti-check"></i> Save Record</button>
+    </div>
   </div>
 </div>
+
+<!-- CATEGORY MODAL -->
 <div class="ov" id="catOv" onclick="bgClose(event,'catOv')">
   <div class="modal sm">
-    <div class="mhd"><div class="mhd-l"><div class="m-ico" style="background:var(--blue-lt)"><i class="ti ti-category" style="color:var(--blue)"></i></div><div><div class="m-title" id="cfgCatTitle">Add Category</div><div class="m-sub">Configure category details</div></div></div><button class="close-btn" onclick="closeOv('catOv')"><i class="ti ti-x"></i></button></div>
+    <div class="mhd">
+      <div class="mhd-l">
+        <div class="m-ico" style="background:var(--blue-lt)"><i class="ti ti-category" style="color:var(--blue)"></i></div>
+        <div><div class="m-title" id="cfgCatTitle">Add Category</div><div class="m-sub">Configure category details</div></div>
+      </div>
+      <button class="close-btn" onclick="closeOv('catOv')"><i class="ti ti-x"></i></button>
+    </div>
     <div class="mbody">
       <input type="hidden" id="cfgCatTopKey"/>
       <input type="hidden" id="cfgCatSubKey"/>
@@ -1313,9 +1416,14 @@ textarea.fi{resize:vertical;min-height:70px;}
         <i class="ti ti-info-circle" style="margin-right:5px"></i>Use any icon name from <strong>Tabler Icons</strong>
       </div>
     </div>
-    <div class="mft"><button class="btn btn-ghost" onclick="closeOv('catOv')">Cancel</button><button class="btn btn-primary" onclick="saveCategoryForm()"><i class="ti ti-check"></i> Save</button></div>
+    <div class="mft">
+      <button class="btn btn-ghost" onclick="closeOv('catOv')">Cancel</button>
+      <button class="btn btn-primary" onclick="saveCategoryForm()"><i class="ti ti-check"></i> Save</button>
+    </div>
   </div>
 </div>
+
+<!-- LINK MODAL (accessories) -->
 <div class="ov" id="linkOv" onclick="bgClose(event,'linkOv')">
   <div class="modal">
     <div class="mhd">
@@ -1343,6 +1451,8 @@ textarea.fi{resize:vertical;min-height:70px;}
     </div>
   </div>
 </div>
+
+<!-- MAINTENANCE MODAL -->
 <div class="ov" id="maintOv" onclick="bgClose(event,'maintOv')">
   <div class="modal">
     <div class="mhd">
@@ -1381,6 +1491,8 @@ textarea.fi{resize:vertical;min-height:70px;}
     </div>
   </div>
 </div>
+
+<!-- SCAN MODAL -->
 <div class="ov" id="scanOv" onclick="bgClose(event,'scanOv')">
   <div class="modal" style="width:720px;max-width:96vw">
     <div class="mhd">
@@ -1434,6 +1546,8 @@ textarea.fi{resize:vertical;min-height:70px;}
     </div>
   </div>
 </div>
+
+<!-- SIGNOUT OVERLAY -->
 <div class="signout-ov" id="signoutOv">
   <div class="signout-box">
     <div class="so-icon"><i class="ti ti-logout"></i></div>
@@ -1445,6 +1559,8 @@ textarea.fi{resize:vertical;min-height:70px;}
     </div>
   </div>
 </div>
+
+<!-- TOAST CONTAINER -->
 <div class="toast-wrap" id="toastWrap"></div>
 <script>
 let DEVICE_SUBTYPES = {
@@ -1455,41 +1571,50 @@ let DEVICE_SUBTYPES = {
   'UPS':          { icon:'ti-bolt',           color:'var(--orange)', bg:'var(--orange-lt)', subTypeLabel:'UPS Type',      subTypes:['Line-Interactive','Online Double-Conversion','Standby/Offline'] },
   'Printer':      { icon:'ti-printer',        color:'var(--pink)',   bg:'var(--pink-lt)',   subTypeLabel:'Printer Type',  subTypes:['Inkjet','Laser','Dot Matrix','Label Printer','Plotter'] },
 };
+
 const TOP = {
   it:        { label:'IT',        icon:'ti-cpu',      color:'#2563eb', bg:'#eff6ff', clrVar:'var(--blue)',   bgVar:'var(--blue-lt)'   },
   furniture: { label:'Furniture', icon:'ti-armchair', color:'#d97706', bg:'#fffbeb', clrVar:'var(--orange)', bgVar:'var(--orange-lt)' },
   cars:      { label:'Vehicles',  icon:'ti-car',      color:'#059669', bg:'#ecfdf5', clrVar:'var(--green)',  bgVar:'var(--green-lt)'  },
 };
+
 const SUB = {
   assets:      { label:'Assets',      itIcon:'ti-device-laptop', furIcon:'ti-armchair',        carIcon:'ti-car',            prefix:'A' },
   components:  { label:'Components',  itIcon:'ti-circuit-board', furIcon:'ti-tool',             carIcon:'ti-engine',         prefix:'C' },
   consumables: { label:'Consumables', itIcon:'ti-package',       furIcon:'ti-spray',            carIcon:'ti-droplet',        prefix:'N' },
   accessories: { label:'Accessories', itIcon:'ti-plug',          furIcon:'ti-lamp',             carIcon:'ti-steering-wheel', prefix:'X' },
 };
+
 const CAT_ICON = {
   it_assets:'ti-device-laptop',  it_components:'ti-circuit-board',  it_consumables:'ti-package',  it_accessories:'ti-plug',
   furniture_assets:'ti-armchair', furniture_components:'ti-tool',    furniture_consumables:'ti-spray', furniture_accessories:'ti-lamp',
   cars_assets:'ti-car',           cars_components:'ti-engine',       cars_consumables:'ti-droplet',    cars_accessories:'ti-steering-wheel',
 };
+
 const SUB_ICONS = {
   it:        { assets:'ti-device-laptop', components:'ti-circuit-board', consumables:'ti-package',  accessories:'ti-plug'           },
   furniture: { assets:'ti-armchair',      components:'ti-tool',          consumables:'ti-spray',    accessories:'ti-lamp'           },
   cars:      { assets:'ti-car',           components:'ti-engine',        consumables:'ti-droplet',  accessories:'ti-steering-wheel' },
 };
+
 const PREFIX = {
   it_assets:'ITA', it_components:'ITC', it_consumables:'ITN', it_accessories:'ITX',
   furniture_assets:'FNA', furniture_components:'FNC', furniture_consumables:'FNN', furniture_accessories:'FNX',
   cars_assets:'CRA', cars_components:'CRC', cars_consumables:'CRN', cars_accessories:'CRX',
 };
+
 const SB  = { 'Active':'b-active','Maintenance':'b-maint','Inactive':'b-inactive','In Storage':'b-storage' };
 const SI  = { 'Active':'ti-circle-check','Maintenance':'ti-tool','Inactive':'ti-alert-circle','In Storage':'ti-archive' };
 const CB  = { 'New':'b-cond-new','Good':'b-cond-good','Fair':'b-cond-fair','Poor':'b-cond-poor' };
 const CI  = { 'New':'ti-sparkles','Good':'ti-thumb-up','Fair':'ti-minus','Poor':'ti-thumb-down' };
+
 const sBadge = s => `<span class="badge ${SB[s]||'b-info'}"><i class="ti ${SI[s]||'ti-info-circle'}"></i>${s}</span>`;
 const cBadge = c => `<span class="badge ${CB[c]||'b-info'}"><i class="ti ${CI[c]||'ti-info-circle'}"></i>${c||'—'}</span>`;
+
 let idCtr = 400;
 function uid(p) { return `${p}-${String(++idCtr).padStart(3,'0')}`; }
 function genSerial(tk) { const pfx={it:'SN',furniture:'FN',cars:'VH'}; return (pfx[tk]||'SN')+'-'+Date.now().toString(36).toUpperCase().slice(-6); }
+
 const DB = {
   it: {
     assets: [
@@ -1586,12 +1711,14 @@ const DB = {
     ],
   },
 };
+
 const ASSET_LINKS = {
   'SN-DL5520-082A': ['ACC-DM24-KAB01','ACC-LH39-MUL02'],
   'SN-MK750-110D':  ['ACC-TP50-LUW03'],
   'SN-APC15-120E':  ['ACC-BK60-KAR04'],
   'SN-HP400G-095B': ['ACC-HP70-MBA05'],
 };
+
 const VERIFIED = new Set();
 const PAGE_SIZE = 8;
 const PAGE_SIZE_SMALL = 6;
@@ -1601,6 +1728,7 @@ const STORE_PAGE = { stores:1 };
 let VERIFY_PAGE = 1;
 let USER_PAGE = 1;
 let SUPPLIER_PAGE = 1;
+
 let COL_VIS = {
   assets: { category:true, manufacturer:true, model:true, serial:true, engraving:true, deviceType:true, store:true, assigned:true, status:true, condition:true, date:true },
   components: { category:true, manufacturer:true, model:true, specs:true, qty:true, store:true, assigned:true, status:true, condition:true, date:true },
@@ -1612,17 +1740,20 @@ let COL_VIS = {
   maintenanceHistory: { date:true, asset:true, service:true, technician:true, cost:true, notes:true, actions:true },
   maintenanceRequests: { id:true, asset:true, reporter:true, issue:true, priority:true, status:true, reported:true, actions:true },
 };
+
 let MAINT_COL_VIS = {
   overview: { asset:true, issue:true, priority:true, startDate:true, technician:true, status:true, actions:true },
   scheduled: { asset:true, service:true, date:true, assigned:true, duration:true, status:true, priority:true, actions:true },
   history: { date:true, asset:true, service:true, technician:true, cost:true, notes:true, actions:true },
   requests: { id:true, asset:true, reporter:true, issue:true, priority:true, status:true, reported:true, actions:true },
 };
+
 const STORE_CATS = {
   it: { label:'IT Stores', icon:'ti-cpu', color:'#2563eb', bg:'#eff6ff' },
   furniture:{ label:'Furniture Stores', icon:'ti-armchair', color:'#d97706', bg:'#fffbeb' },
   vehicles: { label:'Vehicle Stores', icon:'ti-car', color:'#059669', bg:'#ecfdf5' },
 };
+
 let STORES = [
   { id:'store-it-1', cat:'it', name:'Kabong General Hospital', location:'Kabong District', contact:'Mr. Peter Oyet', phone:'+256 772 100 201', color:'#2563eb', received:[], sent:[] },
   { id:'store-it-2', cat:'it', name:'Karenga Health Centre IV', location:'Karenga Sub-County', contact:'Ms. Stella Akello', phone:'+256 782 300 402', color:'#2563eb', received:[], sent:[] },
@@ -1636,11 +1767,13 @@ let STORES = [
   { id:'store-veh-2', cat:'vehicles', name:'Toyota Uganda Ltd', location:'Jinja Road, Kla', contact:'Mr. Henry Byaruhanga', phone:'+256 414 320 456', color:'#059669', received:[], sent:[] },
   { id:'store-veh-3', cat:'vehicles', name:'Victoria Motors', location:'Industrial Area', contact:'Ms. Joyce Atwine', phone:'+256 752 800 900', color:'#059669', received:[], sent:[] },
 ];
+
 let USERS = [
   { id:'user-1', email:'j.mukasa@moh.go.ug', role:'Administrator', permissions:{view:true,edit:true,delete:true,all:true}, lastLogin:'Today', status:'Active' },
   { id:'user-2', email:'s.nakato@moh.go.ug', role:'Technician', permissions:{view:true,edit:true,delete:false,all:false}, lastLogin:'Yesterday', status:'Active' },
   { id:'user-3', email:'p.okello@moh.go.ug', role:'Viewer', permissions:{view:true,edit:false,delete:false,all:false}, lastLogin:'3 days ago', status:'Active' },
 ];
+
 let SUPPLIERS = [
   { id:'sup-1', name:'Compuline Uganda Ltd', category:'IT Equipment', contact:'Mr. Robert Kato', phone:'+256 414 123 456', email:'sales@compuline.co.ug', assets:12 },
   { id:'sup-2', name:'Kampala Furnishers Ltd', category:'Furniture', contact:'Mr. Denis Ssebunya', phone:'+256 414 567 890', email:'orders@kplfurnish.co.ug', assets:15 },
@@ -1648,18 +1781,21 @@ let SUPPLIERS = [
   { id:'sup-4', name:'Medical Supplies Ltd', category:'Medical Equipment', contact:'Dr. Sarah Kyomuhendo', phone:'+256 414 345 678', email:'info@medical.co.ug', assets:8 },
   { id:'sup-5', name:'Office Essentials Ltd', category:'Office Supplies', contact:'Ms. Grace Achieng', phone:'+256 414 234 567', email:'sales@office.co.ug', assets:22 },
 ];
+
 let ALERTS = [
   { id:'al-1', type:'critical', title:'Ford Ranger Due for Service', desc:'Ford Ranger XLS (CRA-VYD005) has reached service interval. Immediate service recommended.', time:'10 min ago', catKey:'cars_assets', resolved:false },
   { id:'al-2', type:'warning', title:'MikroTik Router Needs Firmware', desc:'MikroTik RB750Gr3 (MOH-MBA004) is marked under maintenance pending firmware update.', time:'45 min ago', catKey:'it_assets', resolved:false },
   { id:'al-3', type:'warning', title:'Waiting Bench Upholstery Repair', desc:'Waiting Area Bench (FNA-WRD005) requires upholstery repair.', time:'2 hrs ago', catKey:'furniture_assets', resolved:false },
   { id:'al-4', type:'info', title:'Low Stock: Thermal Paste', desc:'IPA Wipes (ITN-KAR004) running low. Consider restocking soon.', time:'4 hrs ago', catKey:'it_consumables', resolved:false },
 ];
+
 const NOTIFS = [
   { icon:'ti-alert-circle', col:'var(--red-lt)', ic:'var(--red)', text:'Ford Ranger <strong>CRA-VYD005</strong> flagged for service — Vehicle Yard', time:'10 min ago', unread:true },
   { icon:'ti-tool', col:'var(--orange-lt)', ic:'var(--orange)', text:'MikroTik Router <strong>MOH-MBA004</strong> under maintenance', time:'45 min ago', unread:true },
   { icon:'ti-armchair', col:'var(--orange-lt)', ic:'var(--orange)', text:'Waiting Bench <strong>FNA-WRD005</strong> needs upholstery repair', time:'2 hrs ago', unread:true },
   { icon:'ti-package', col:'var(--blue-lt)', ic:'var(--blue)', text:'Low stock alert: IPA Wipes <strong>ITN-KAR004</strong>', time:'4 hrs ago', unread:false },
 ];
+
 let curPage = 'dashboard';
 let editTgt = null;
 let viewTgt = null;
@@ -1674,6 +1810,8 @@ let _cameraStream = null;
 let _cameraRAF = null;
 let _cameraActive = false;
 let _delTgt = null;
+let pendingLinkSerial = null;
+
 let maintenanceData = {
   active: [
     { id:'ACT-001', asset:'Ford Ranger CRA-VYD005', issue:'50,000km service', priority:'Critical', startDate:'2025-10-15', technician:'David T.', status:'In Progress' },
@@ -1703,13 +1841,21 @@ let maintenanceData = {
     { id:'SR-022', asset:'Office Chair FNA-ADM002', reporter:'John Mukasa', issue:'Gas lift not holding', priority:'Low', status:'Open', reported:'2025-10-29' },
   ],
 };
+
 function getAllForSub(sk) {
   let arr = [];
   Object.keys(TOP).forEach(tk => { (DB[tk][sk]||[]).forEach(item => arr.push({...item, _topKey:tk, _subKey:sk})); });
   return arr;
 }
-const getLinkCount = s => (ASSET_LINKS[s]||[]).length;
-const getAccParent = s => Object.keys(ASSET_LINKS).find(k => ASSET_LINKS[k].includes(s)) || null;
+
+function getLinkCount(s) {
+  return (ASSET_LINKS[s]||[]).length;
+}
+
+function getAccParent(s) {
+  return Object.keys(ASSET_LINKS).find(k => ASSET_LINKS[k].includes(s)) || null;
+}
+
 function timeAgo(dateStr) {
   const d = new Date(dateStr), now = new Date();
   const sec = Math.floor((now-d)/1000);
@@ -1722,6 +1868,7 @@ function timeAgo(dateStr) {
   if(day < 7) return `${day}d ago`;
   return dateStr;
 }
+
 function downloadFile(content, filename, mime) {
   const blob = new Blob([content], {type: mime});
   const a = document.createElement('a');
@@ -1730,6 +1877,7 @@ function downloadFile(content, filename, mime) {
   a.click();
   URL.revokeObjectURL(a.href);
 }
+
 function toast(msg, type='info') {
   const wrap = document.getElementById('toastWrap');
   const t = document.createElement('div');
@@ -1739,6 +1887,7 @@ function toast(msg, type='info') {
   wrap.appendChild(t);
   setTimeout(() => t.remove(), 4000);
 }
+
 function navigate(page) {
   if(curPage === page) return;
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -1781,6 +1930,7 @@ function navigate(page) {
   closeSidebar();
   closeAllDD();
 }
+
 function updateNavBadges() {
   ['assets','components','consumables','accessories'].forEach(sk => {
     const el = document.getElementById('nb-'+sk);
@@ -1801,6 +1951,7 @@ function updateNavBadges() {
   const mb = document.getElementById('nb-maint-requests');
   if(mb) mb.textContent = maintenanceData.requests.length;
 }
+
 function renderSubPage(sk) {
   const el = document.getElementById('page-'+sk);
   if(!el) return;
@@ -1838,6 +1989,7 @@ function renderSubPage(sk) {
       </div>
       <div class="ph-actions">
         <button class="btn btn-ghost" onclick="exportSubPage('${sk}')"><i class="ti ti-download"></i> Export</button>
+        ${sk === 'assets' ? `<button class="btn btn-ghost" onclick="importAssetsFromFile()"><i class="ti ti-file-import"></i> Import</button>` : ''}
         <button class="btn btn-primary" onclick="openAdd('${sk}')"><i class="ti ti-plus"></i> ${lbl}</button>
       </div>
     </div>
@@ -1869,10 +2021,12 @@ function renderSubPage(sk) {
   PAGE_STATE[sk] = 1;
   drawSubTable(sk);
 }
+
 function changePage(sk, dir) {
   PAGE_STATE[sk] = (PAGE_STATE[sk]||1) + dir;
   drawSubTable(sk);
 }
+
 function drawSubTable(sk) {
   const q = (document.getElementById('sq-'+sk)?.value||'').toLowerCase();
   const cf = document.getElementById('sf-cat-'+sk)?.value||'';
@@ -1977,9 +2131,11 @@ function drawSubTable(sk) {
   const tbEl = document.getElementById('tb-'+sk);
   if(tbEl) tbEl.innerHTML = body;
 }
+
 function toggleColVis(sk) { document.getElementById('colVis-'+sk).classList.toggle('open'); }
 function closeColVis(sk) { document.getElementById('colVis-'+sk).classList.remove('open'); }
 function toggleColumn(sk, col) { COL_VIS[sk][col] = document.getElementById('vis-'+sk+'-'+col).checked; drawSubTable(sk); }
+
 function openViewItem(tk, sk, eng) {
   const item = DB[tk]?.[sk]?.find(i => i.engravingNo===eng);
   if(!item) return;
@@ -2032,6 +2188,7 @@ function openViewItem(tk, sk, eng) {
   document.getElementById('vmSub').textContent = `${item.name} · ${eng}`;
   openOv('viewOv');
 }
+
 function openEditItem(tk, sk, eng) {
   const item = DB[tk]?.[sk]?.find(i => i.engravingNo===eng);
   if(!item) return;
@@ -2068,6 +2225,7 @@ function openEditItem(tk, sk, eng) {
   document.getElementById('formFieldsContainer').style.display = 'block';
   openOv('formOv');
 }
+
 function openDelItem(tk, sk, eng) {
   const item = DB[tk]?.[sk]?.find(i => i.engravingNo===eng);
   if(!item) return;
@@ -2075,6 +2233,7 @@ function openDelItem(tk, sk, eng) {
   _delTgt = {tk, sk, eng};
   openOv('delOv');
 }
+
 function confirmDelete() {
   if(!_delTgt) return;
   const {tk, sk, eng} = _delTgt;
@@ -2088,6 +2247,7 @@ function confirmDelete() {
   toast('Deleted successfully','success');
   _delTgt = null;
 }
+
 function openAdd(sk) {
   document.getElementById('fmEditId').value = '';
   document.getElementById('fmPageKey').value = sk;
@@ -2111,6 +2271,7 @@ function openAdd(sk) {
   if(ss) ss.innerHTML = STORES.map(s=>`<option value="${s.name}">${s.name}</option>`).join('');
   openOv('formOv');
 }
+
 function selectAddCategory(tk) {
   const sk = document.getElementById('fmPageKey').value;
   document.getElementById('fmTopKey').value = tk;
@@ -2133,6 +2294,7 @@ function selectAddCategory(tk) {
   document.getElementById('categorySelector').style.display = 'none';
   document.getElementById('formFieldsContainer').style.display = 'block';
 }
+
 function _prepareForm(sk, tk) {
   const isA = sk==='assets';
   const isCs = sk==='consumables';
@@ -2152,7 +2314,6 @@ function _prepareForm(sk, tk) {
   show('fmAssignedNameWrap', true);
   show('fmAssignedTitleWrap', true);
   show('fmAssignedTelWrap', true);
-  show('fmAssignedWrap', false);
   const showDT = isA && tk === 'it';
   show('fmDeviceTypeWrap', showDT);
   const dtDiv = document.getElementById('fmDevTypeDivider');
@@ -2167,7 +2328,51 @@ function _prepareForm(sk, tk) {
     const stSel = document.getElementById('fmDeviceSubType');
     if(stSel) stSel.innerHTML = '<option value="">— Select sub-type —</option>';
   }
+  const linkWrap = document.getElementById('fmAccessoryLinkWrap');
+  if (linkWrap) linkWrap.style.display = isA ? 'block' : 'none';
+  if (isA) refreshAccessoryDropdown(tk);
 }
+
+function refreshAccessoryDropdown(tk) {
+  const sel = document.getElementById('fmLinkAccessory');
+  if (!sel) return;
+  const accs = (DB[tk]?.accessories || []).filter(a => !getAccParent(a.serial));
+  sel.innerHTML = '<option value="">— Select existing accessory —</option>' + 
+    accs.map(a => `<option value="${a.serial}">${a.name} (${a.serial})</option>`).join('');
+}
+
+function openQuickAddAccessory() {
+  const storeSel = document.getElementById('fmStore');
+  const store = storeSel ? storeSel.value : '';
+  document.getElementById('quickAccStore').innerHTML = STORES.map(s => `<option value="${s.name}" ${s.name===store?'selected':''}>${s.name}</option>`).join('');
+  document.getElementById('quickAccSerial').value = genSerial(document.getElementById('fmTopKey').value || 'it');
+  document.getElementById('quickAccEngraving').value = uid('ACC');
+  openOv('quickAccOv');
+}
+
+function saveQuickAccessoryAndLink() {
+  const tk = document.getElementById('fmTopKey').value || 'it';
+  const name = document.getElementById('quickAccName').value.trim();
+  if (!name) { toast('Accessory name required','error'); return; }
+  const serial = document.getElementById('quickAccSerial').value.trim() || genSerial(tk);
+  const engraving = document.getElementById('quickAccEngraving').value.trim() || uid('ACC');
+  const store = document.getElementById('quickAccStore').value;
+  const condition = document.getElementById('quickAccCond').value;
+  const manufacturer = document.getElementById('quickAccManufacturer').value.trim();
+  const model = document.getElementById('quickAccModel').value.trim();
+  const newAcc = {
+    name, manufacturer, model, serial, engravingNo: engraving, store,
+    condition, status: 'Active', date: new Date().toISOString().slice(0,10),
+    assignedName: '', assignedTitle: '', assignedTel: ''
+  };
+  if (!DB[tk].accessories) DB[tk].accessories = [];
+  DB[tk].accessories.push(newAcc);
+  pendingLinkSerial = serial;
+  closeOv('quickAccOv');
+  toast('Accessory created, will be linked after saving asset','success');
+  refreshAccessoryDropdown(tk);
+}
+
 function onDeviceTypeChange() {
   const dt = document.getElementById('fmDeviceType')?.value;
   const subWrap = document.getElementById('fmDeviceSubTypeWrap');
@@ -2188,6 +2393,7 @@ function onDeviceTypeChange() {
     if(hintTxt) hintTxt.textContent=`No sub-types configured for ${dt}. Add them in Settings → Device Sub-Types.`;
   }
 }
+
 function saveAsset() {
   const sk = document.getElementById('fmPageKey').value;
   const tk = document.getElementById('fmTopKey').value || 'it';
@@ -2211,7 +2417,11 @@ function saveAsset() {
     engravingNo: document.getElementById('fmEngravingNo')?.value.trim()||editId||uid(PREFIX[`${tk}_${sk}`]||'AST'),
   };
   if(!item.name) { toast('Name is required','error'); return; }
-  if(isA||isAc) item.serial = document.getElementById('fmSerial')?.value.trim()||genSerial(tk);
+  let assetSerial = null;
+  if(isA||isAc) {
+    item.serial = document.getElementById('fmSerial')?.value.trim()||genSerial(tk);
+    if(isA) assetSerial = item.serial;
+  }
   if(!isA&&!isAc) item.qty = parseInt(document.getElementById('fmQty')?.value)||1;
   if(isCs) item.unit = document.getElementById('fmUnit')?.value.trim()||'pieces';
   if(isC) item.specs = document.getElementById('fmSpecs')?.value.trim()||'';
@@ -2228,11 +2438,71 @@ function saveAsset() {
     DB[tk][sk].push(item);
     toast('Added successfully','success');
   }
+  if (sk === 'assets' && pendingLinkSerial && assetSerial) {
+    if (!ASSET_LINKS[assetSerial]) ASSET_LINKS[assetSerial] = [];
+    if (!ASSET_LINKS[assetSerial].includes(pendingLinkSerial)) {
+      ASSET_LINKS[assetSerial].push(pendingLinkSerial);
+    }
+    pendingLinkSerial = null;
+  }
   closeOv('formOv');
   updateNavBadges();
   refreshDashboard();
-  if(['assets','components','consumables','accessories'].includes(curPage)) drawSubTable(curPage);
+  if (['assets','components','consumables','accessories'].includes(curPage)) drawSubTable(curPage);
 }
+
+function importAssetsFromFile() {
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.accept = '.csv, .xlsx, .xls';
+  input.onchange = e => {
+    const file = e.target.files[0];
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      try {
+        const data = ev.target.result;
+        const workbook = XLSX.read(data, {type: 'binary'});
+        const sheet = workbook.Sheets[workbook.SheetNames[0]];
+        const rows = XLSX.utils.sheet_to_json(sheet, {header:1});
+        if (rows.length < 2) throw new Error('No data rows');
+        const headers = rows[0];
+        const nameIdx = headers.findIndex(h => h && h.toString().toLowerCase().includes('name'));
+        const catIdx = headers.findIndex(h => h && h.toString().toLowerCase().includes('category'));
+        const storeIdx = headers.findIndex(h => h && h.toString().toLowerCase().includes('store'));
+        if (nameIdx===-1) throw new Error('Missing "name" column');
+        let imported = 0;
+        for (let i=1; i<rows.length; i++) {
+          const row = rows[i];
+          if (!row || row.length === 0) continue;
+          const name = row[nameIdx]?.toString().trim();
+          if (!name) continue;
+          const category = (catIdx>=0 && row[catIdx]) ? row[catIdx].toString().toLowerCase() : 'it';
+          const tk = category.includes('furniture') ? 'furniture' : (category.includes('car')||category.includes('vehicle')) ? 'cars' : 'it';
+          const store = (storeIdx>=0 && row[storeIdx]) ? row[storeIdx].toString() : STORES[0]?.name || 'Unknown';
+          const item = {
+            name, store, status:'Active', condition:'New', date:new Date().toISOString().slice(0,10),
+            engravingNo: uid(PREFIX[`${tk}_assets`]||'AST'),
+            serial: genSerial(tk),
+            manufacturer: row[headers.findIndex(h=>h&&h.toString().toLowerCase().includes('manufacturer'))]?.toString() || '',
+            model: row[headers.findIndex(h=>h&&h.toString().toLowerCase().includes('model'))]?.toString() || '',
+            assignedName: '', assignedTitle: '', assignedTel: '', notes: ''
+          };
+          if (!DB[tk].assets) DB[tk].assets = [];
+          DB[tk].assets.push(item);
+          imported++;
+        }
+        toast(`Imported ${imported} assets`,'success');
+        if (curPage === 'assets') drawSubTable('assets');
+        updateNavBadges();
+      } catch (err) {
+        toast('Import failed: '+err.message,'error');
+      }
+    };
+    reader.readAsBinaryString(file);
+  };
+  input.click();
+}
+
 function renderAssetPageHTML(pageId) {
   const parts = pageId.split('_');
   const topKey = parts[0], subKey = parts[1];
@@ -2266,6 +2536,7 @@ function renderAssetPageHTML(pageId) {
       </div>
     </div>`;
 }
+
 function renderAssetTable(pageId) {
   const parts = pageId.split('_');
   if(parts.length!==2) return;
@@ -2302,7 +2573,9 @@ function renderAssetTable(pageId) {
     </tr>`;
   }).join('');
 }
+
 function filterAssetPage(pageId) { renderAssetTable(pageId); }
+
 function openAddAsset(pageId) {
   const parts = pageId.split('_');
   const tk = parts[0], sk = parts[1];
@@ -2328,6 +2601,7 @@ function openAddAsset(pageId) {
   document.getElementById('formFieldsContainer').style.display = 'block';
   openOv('formOv');
 }
+
 function exportAssetPage(pageId) {
   const parts = pageId.split('_');
   const data = DB[parts[0]]?.[parts[1]]||[];
@@ -2336,6 +2610,7 @@ function exportAssetPage(pageId) {
   downloadFile(csv.join('\n'), `${pageId}_${new Date().toISOString().slice(0,10)}.csv`,'text/csv');
   toast('Export started','success');
 }
+
 function exportSubPage(sk) {
   const data = getAllForSub(sk);
   const csv = ['Name,Engraving No,Serial,Category,Store,Assigned To,Status,Condition,Date'];
@@ -2343,6 +2618,7 @@ function exportSubPage(sk) {
   downloadFile(csv.join('\n'),`${sk}_${new Date().toISOString().slice(0,10)}.csv`,'text/csv');
   toast('Export started','success');
 }
+
 function openLinkModal(serial) {
   linkTargetSerial = serial;
   const asset = getAllForSub('assets').find(a=>a.serial===serial);
@@ -2352,6 +2628,7 @@ function openLinkModal(serial) {
   renderAccessoryOptions();
   openOv('linkOv');
 }
+
 function renderLinkedItems() {
   const list = document.getElementById('linkedList');
   if(!list) return;
@@ -2362,6 +2639,7 @@ function renderLinkedItems() {
     <div class="linked-row"><div class="linked-row-left"><i class="ti ti-plug"></i><div><div class="linked-row-name">${a.name}</div><div class="linked-row-serial">${a.serial}</div></div></div>
     <button class="unlink-btn" onclick="unlinkAccessory('${s}')" title="Unlink"><i class="ti ti-link-off"></i></button></div>`:'';}).join('');
 }
+
 function renderAccessoryOptions() {
   const sel = document.getElementById('linkSelectAcc');
   if(!sel) return;
@@ -2371,6 +2649,7 @@ function renderAccessoryOptions() {
                   .sort((a,b)=>(a.store===asset?.store?-1:1));
   sel.innerHTML = '<option value="">— Choose an accessory —</option>'+avail.map(a=>`<option value="${a.serial}">${a.name} (${a.store||'—'})</option>`).join('');
 }
+
 function addLink() {
   const accSerial = document.getElementById('linkSelectAcc').value;
   if(!accSerial||!linkTargetSerial) return;
@@ -2380,6 +2659,7 @@ function addLink() {
   toast('Accessory linked','success');
   if(curPage==='assets') drawSubTable('assets');
 }
+
 function unlinkAccessory(serial) {
   if(!linkTargetSerial||!ASSET_LINKS[linkTargetSerial]) return;
   ASSET_LINKS[linkTargetSerial] = ASSET_LINKS[linkTargetSerial].filter(s=>s!==serial);
@@ -2387,6 +2667,7 @@ function unlinkAccessory(serial) {
   toast('Accessory unlinked','info');
   if(curPage==='assets') drawSubTable('assets');
 }
+
 function renderVerifyPage() {
   const el = document.getElementById('page-verify');
   if(!el) return;
@@ -2459,7 +2740,9 @@ function renderVerifyPage() {
       </div>
     </div>`;
 }
+
 function verifyChangePage(dir) { VERIFY_PAGE += dir; renderVerifyPage(); }
+
 function unverify(serial) {
   VERIFIED.delete(serial);
   updateNavBadges();
@@ -2467,6 +2750,7 @@ function unverify(serial) {
   if(curPage==='verify') renderVerifyPage();
   else { drawSubTable('assets'); drawSubTable('accessories'); }
 }
+
 function quickVerify(serial, sk) {
   _verifySourceSk = sk||null;
   _resetVerifyModal();
@@ -2474,12 +2758,14 @@ function quickVerify(serial, sk) {
   if(serial){ document.getElementById('manualSerial').value=serial; setTimeout(()=>lookupSerial(serial),120); }
   else setTimeout(()=>document.getElementById('manualSerial').focus(),80);
 }
+
 function openScan() {
   _verifySourceSk = null;
   _resetVerifyModal();
   openOv('scanOv');
   setTimeout(()=>document.getElementById('manualSerial').focus(),80);
 }
+
 function _resetVerifyModal() {
   _verifyCurrentSerial = null;
   const ms = document.getElementById('manualSerial');
@@ -2494,12 +2780,14 @@ function _resetVerifyModal() {
   const ql = document.getElementById('qrSerial'); if(ql) ql.textContent='';
   _stopCamera();
 }
+
 function onSerialInput() {
   clearTimeout(_serialDebounce);
   const val = document.getElementById('manualSerial').value.trim();
   if(!val){ clearVerifyResult(); return; }
   _serialDebounce = setTimeout(()=>lookupSerial(), 400);
 }
+
 function clearVerifyResult() {
   const ra = document.getElementById('verifyResultArea'); if(ra) ra.style.display='none';
   const im = document.getElementById('verifyInitMsg'); if(im) im.style.display='block';
@@ -2508,6 +2796,7 @@ function clearVerifyResult() {
   const ms = document.getElementById('scanModalSub'); if(ms) ms.textContent='Enter serial number then click Lookup';
   _verifyCurrentSerial = null;
 }
+
 function lookupSerial(overrideSerial) {
   const raw = (overrideSerial || document.getElementById('manualSerial')?.value||'').trim();
   if(!raw) return;
@@ -2569,6 +2858,7 @@ function lookupSerial(overrideSerial) {
     if(qb&&typeof QRCode!=='undefined') _qrInstance=new QRCode(qb,{text:serial,width:148,height:148,colorDark:'#111827',colorLight:'#ffffff',correctLevel:QRCode.CorrectLevel.M});
   } catch(e){ if(qb) qb.innerHTML=`<div style="width:148px;height:148px;display:grid;place-items:center;font-size:11px;color:var(--muted)">QR unavailable</div>`; }
 }
+
 function confirmVerify() {
   if(!_verifyCurrentSerial) return;
   const serial = _verifyCurrentSerial;
@@ -2584,6 +2874,7 @@ function confirmVerify() {
   const cb = document.getElementById('verifyConfirmBtn'); if(cb) cb.style.display='none';
   _verifyCurrentSerial = null;
 }
+
 function toggleCamera() {
   if(_cameraActive){ _stopCamera(); return; }
   const strip = document.getElementById('cameraStrip');
@@ -2600,6 +2891,7 @@ function toggleCamera() {
     })
     .catch(() => { const cs=document.getElementById('camStatus'); if(cs) cs.textContent='Camera access denied'; _stopCamera(); });
 }
+
 function _scanFrame() {
   if(!_cameraActive) return;
   const vid = document.getElementById('qrVideo');
@@ -2621,6 +2913,7 @@ function _scanFrame() {
   }
   _cameraRAF = requestAnimationFrame(_scanFrame);
 }
+
 function _stopCamera() {
   _cameraActive = false;
   if(_cameraRAF){ cancelAnimationFrame(_cameraRAF); _cameraRAF=null; }
@@ -2628,12 +2921,14 @@ function _stopCamera() {
   const strip = document.getElementById('cameraStrip'); if(strip) strip.style.display='none';
   const btn = document.getElementById('camToggleBtn'); if(btn) btn.innerHTML='<i class="ti ti-camera"></i>';
 }
+
 function stopScan() {
   _stopCamera();
   closeOv('scanOv');
   _resetVerifyModal();
   if(curPage==='verify') renderVerifyPage();
 }
+
 function refreshDashboard() {
   let total=0, active=0, maint=0, inactive=0;
   for(const top of ['it','furniture','cars']){
@@ -2679,6 +2974,7 @@ function refreshDashboard() {
     {label:'Inactive/Stored',count:inactive,color:'var(--red)'},
   ].map(s=>`<div style="display:flex;justify-content:space-between;align-items:center"><span>${s.label}</span><span style="font-weight:700;color:${s.color}">${s.count}</span></div>`).join('');
 }
+
 function updateNotifBadge() {
   const unread = NOTIFS.filter(n=>n.unread).length;
   const dot = document.getElementById('ndot'); if(dot) dot.style.display=unread?'block':'none';
@@ -2692,19 +2988,23 @@ function updateNotifBadge() {
     </div>`).join('');
   const ab = document.getElementById('nb-alerts'); if(ab) ab.textContent=ALERTS.filter(a=>!a.resolved).length;
 }
+
 function markNotifRead(el) { el.querySelector('.ni-dot')?.remove(); updateNotifBadge(); }
+
 function markRead() {
   NOTIFS.forEach(n=>n.unread=false);
   updateNotifBadge();
   const nm=document.getElementById('notifMenu'); if(nm) nm.classList.remove('open');
   toast('All notifications marked read','info');
 }
+
 function filterAlerts(type, el) {
   document.querySelectorAll('.af-pill').forEach(p=>p.classList.remove('active'));
   el.classList.add('active');
   alertFilter = type;
   renderAlerts();
 }
+
 function renderAlerts() {
   const filtered = ALERTS.filter(a=>!a.resolved&&(alertFilter==='all'||a.type===alertFilter));
   const list = document.getElementById('alerts-list'); if(!list) return;
@@ -2719,8 +3019,10 @@ function renderAlerts() {
       <div class="alert-actions"><button class="btn btn-xs btn-ghost" onclick="resolveAlert('${a.id}')"><i class="ti ti-check"></i> Resolve</button></div>
     </div>`).join('');
 }
+
 function resolveAlert(id) { const i=ALERTS.findIndex(a=>a.id===id); if(i>-1) ALERTS[i].resolved=true; renderAlerts(); updateNotifBadge(); toast('Alert resolved','success'); }
 function resolveAll() { ALERTS.forEach(a=>a.resolved=true); renderAlerts(); updateNotifBadge(); toast('All alerts resolved','success'); }
+
 function renderStores() {
   const grid = document.getElementById('stores-grid'); if(!grid) return;
   let html = `<div class="panel"><div class="fbar" style="justify-content:flex-end">
@@ -2756,6 +3058,7 @@ function renderStores() {
   grid.innerHTML = html;
   renderStoresTable(pageStores);
 }
+
 function renderStoresTable(stores) {
   const v = COL_VIS.stores;
   let th = '';
@@ -2791,6 +3094,7 @@ function renderStoresTable(stores) {
   const ss=document.getElementById('stores-sub'); if(ss) ss.textContent=`${STORES.length} stores registered`;
   const nb=document.getElementById('nb-stores'); if(nb) nb.textContent=STORES.length;
 }
+
 function toggleStoreColVis() { document.getElementById('colVis-stores').classList.toggle('open'); }
 function closeStoreColVis() { document.getElementById('colVis-stores').classList.remove('open'); }
 function toggleStoreColumn(col) { COL_VIS.stores[col] = document.getElementById('vis-stores-'+col).checked; renderStores(); }
@@ -2798,6 +3102,7 @@ function changeStorePage(dir) {
   STORE_PAGE.stores += dir;
   renderStores();
 }
+
 function openStoreDetail(id) {
   const s = STORES.find(st=>st.id===id); if(!s) return;
   const cat = STORE_CATS[s.cat]||STORE_CATS.it;
@@ -2807,6 +3112,7 @@ function openStoreDetail(id) {
   document.getElementById('vmSub').textContent=s.name;
   openOv('viewOv');
 }
+
 function editStore(id) {
   const s = STORES.find(st=>st.id===id); if(!s) return;
   document.getElementById('snCat').value = s.cat;
@@ -2820,9 +3126,11 @@ function editStore(id) {
   document.getElementById('storeOv').dataset.editId = id;
   openOv('storeOv');
 }
+
 function deleteStore(id) {
   if(confirm('Are you sure you want to delete this store?')){ STORES=STORES.filter(s=>s.id!==id); renderStores(); toast('Store deleted','info'); }
 }
+
 function openAddStore() {
   ['snName','snHosp','snContact','snPhone'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='';});
   document.getElementById('snCat').value='it';
@@ -2832,6 +3140,7 @@ function openAddStore() {
   document.querySelector('#storeOv .btn-primary').innerHTML = '<i class="ti ti-check"></i> Add Store';
   openOv('storeOv');
 }
+
 function saveStore() {
   const cat = document.getElementById('snCat').value;
   const name = document.getElementById('snName').value.trim();
@@ -2854,6 +3163,7 @@ function saveStore() {
   document.querySelector('#storeOv .btn-primary').innerHTML = '<i class="ti ti-check"></i> Add Store';
   renderStores(); closeOv('storeOv'); updateNavBadges();
 }
+
 function exportStores() {
   const csv = ['Store Name,Category,Location,Contact Person,Phone,Items'];
   STORES.forEach(s=>{
@@ -2864,6 +3174,7 @@ function exportStores() {
   downloadFile(csv.join('\n'), `stores_${new Date().toISOString().slice(0,10)}.csv`, 'text/csv');
   toast('Stores exported successfully', 'success');
 }
+
 function openAddUser() {
   document.getElementById('userEditId').value = '';
   document.getElementById('userEmail').value = '';
@@ -2875,6 +3186,7 @@ function openAddUser() {
   document.getElementById('userModalTitle').textContent = 'Invite User';
   openOv('userOv');
 }
+
 function saveUser() {
   const email = document.getElementById('userEmail').value.trim();
   const role = document.getElementById('userRole').value;
@@ -2890,6 +3202,7 @@ function saveUser() {
   closeOv('userOv');
   toast(`Invitation sent to ${email}`, 'success');
 }
+
 function renderUserSettings() {
   const tbody = document.getElementById('user-settings-body');
   if(!tbody) return;
@@ -2930,10 +3243,12 @@ function renderUserSettings() {
   const next = document.getElementById('user-pg-next');
   if(next) next.disabled = USER_PAGE>=totalPages;
 }
+
 function changeUserPage(dir) {
   USER_PAGE += dir;
   renderUserSettings();
 }
+
 function editUser(id) {
   const user = USERS.find(u=>u.id===id);
   if(!user) return;
@@ -2947,9 +3262,11 @@ function editUser(id) {
   document.getElementById('userModalTitle').textContent = 'Edit User';
   openOv('userOv');
 }
+
 function deleteUser(id) {
   if(confirm('Remove this user?')){ USERS=USERS.filter(u=>u.id!==id); renderUserSettings(); toast('User removed','info'); }
 }
+
 function openAddSupplier() {
   document.getElementById('supplierEditId').value = '';
   document.getElementById('supplierName').value = '';
@@ -2960,6 +3277,7 @@ function openAddSupplier() {
   document.getElementById('supplierModalTitle').textContent = 'Add Supplier';
   openOv('supplierOv');
 }
+
 function saveSupplier() {
   const name = document.getElementById('supplierName').value.trim();
   const cat = document.getElementById('supplierCat').value;
@@ -2979,6 +3297,7 @@ function saveSupplier() {
   renderSupplierSettings();
   closeOv('supplierOv');
 }
+
 function renderSupplierSettings() {
   const tbody = document.getElementById('supplier-settings-body');
   if(!tbody) return;
@@ -3014,10 +3333,12 @@ function renderSupplierSettings() {
   const next = document.getElementById('supplier-pg-next');
   if(next) next.disabled = SUPPLIER_PAGE>=totalPages;
 }
+
 function changeSupplierPage(dir) {
   SUPPLIER_PAGE += dir;
   renderSupplierSettings();
 }
+
 function editSupplier(id) {
   const s = SUPPLIERS.find(s=>s.id===id);
   if(!s) return;
@@ -3030,9 +3351,11 @@ function editSupplier(id) {
   document.getElementById('supplierModalTitle').textContent = 'Edit Supplier';
   openOv('supplierOv');
 }
+
 function deleteSupplier(id) {
   if(confirm('Delete this supplier?')){ SUPPLIERS=SUPPLIERS.filter(s=>s.id!==id); renderSupplierSettings(); toast('Supplier deleted','info'); }
 }
+
 function exportData(format) {
   const data = {
     users: USERS,
@@ -3054,6 +3377,7 @@ function exportData(format) {
     toast('PDF report generated', 'success');
   }
 }
+
 function viewActiveJob(id) {
   const job = maintenanceData.active.find(j=>j.id===id); if(!job) return;
   document.getElementById('vmGrid').innerHTML=`<div class="vg">
@@ -3068,6 +3392,7 @@ function viewActiveJob(id) {
   document.getElementById('vmSub').textContent='Active Maintenance Job';
   openOv('viewOv');
 }
+
 function viewScheduledTask(id) {
   const task=maintenanceData.scheduled.find(t=>t.id===id); if(!task) return;
   document.getElementById('vmGrid').innerHTML=`<div class="vg">
@@ -3083,6 +3408,7 @@ function viewScheduledTask(id) {
   document.getElementById('vmSub').textContent='Scheduled Maintenance';
   openOv('viewOv');
 }
+
 function viewHistoryRecord(id) {
   const r=maintenanceData.history.find(h=>h.id===id); if(!r) return;
   document.getElementById('vmGrid').innerHTML=`<div class="vg">
@@ -3097,6 +3423,7 @@ function viewHistoryRecord(id) {
   document.getElementById('vmSub').textContent='Maintenance History';
   openOv('viewOv');
 }
+
 function viewServiceRequest(id) {
   const r=maintenanceData.requests.find(r=>r.id===id); if(!r) return;
   document.getElementById('vmGrid').innerHTML=`<div class="vg">
@@ -3111,6 +3438,7 @@ function viewServiceRequest(id) {
   document.getElementById('vmSub').textContent='Service Request';
   openOv('viewOv');
 }
+
 function renderMaintenanceOverview() {
   const el=document.getElementById('page-maintenance_overview'); if(!el) return;
   const active=maintenanceData.active;
@@ -3145,6 +3473,7 @@ function renderMaintenanceOverview() {
     </div>`;
   renderMaintenanceOverviewTable();
 }
+
 function renderMaintenanceOverviewTable() {
   const v = MAINT_COL_VIS.overview;
   const totalPages = Math.max(1, Math.ceil(maintenanceData.active.length/PAGE_SIZE_SMALL));
@@ -3189,6 +3518,7 @@ function renderMaintenanceOverviewTable() {
       <button class="btn btn-ghost btn-sm" onclick="changeMaintPage('overview',1)" ${MAINT_PAGE.overview>=totalPages?'disabled':''}>Next <i class="ti ti-chevron-right"></i></button>
     </div>`;
 }
+
 function changeMaintPage(type, dir) {
   MAINT_PAGE[type] += dir;
   if(type==='overview') renderMaintenanceOverviewTable();
@@ -3196,9 +3526,11 @@ function changeMaintPage(type, dir) {
   if(type==='history') renderMaintenanceHistoryTable();
   if(type==='requests') renderMaintenanceRequestsTable();
 }
+
 function toggleMaintColVis(type) { document.getElementById('colVis-'+type).classList.toggle('open'); }
 function closeMaintColVis(type) { document.getElementById('colVis-'+type).classList.remove('open'); }
 function toggleMaintColumn(type, col) { MAINT_COL_VIS[type][col] = document.getElementById('vis-'+type+'-'+col).checked; if(type==='overview') renderMaintenanceOverviewTable(); if(type==='scheduled') renderMaintenanceScheduledTable(); if(type==='history') renderMaintenanceHistoryTable(); if(type==='requests') renderMaintenanceRequestsTable(); }
+
 function editActiveJob(id) {
   const job=maintenanceData.active.find(j=>j.id===id); if(!job) return;
   document.getElementById('maintModalType').value='active';
@@ -3220,9 +3552,11 @@ function editActiveJob(id) {
   document.getElementById('maintStatus').value=job.status;
   openOv('maintOv');
 }
+
 function deleteActiveJob(id) {
   if(confirm('Remove this job from active list?')){ maintenanceData.active=maintenanceData.active.filter(j=>j.id!==id); renderMaintenanceOverview(); toast('Job removed','info'); }
 }
+
 function renderMaintenanceScheduled() {
   const el=document.getElementById('page-maintenance_scheduled'); if(!el) return;
   const v = MAINT_COL_VIS.scheduled;
@@ -3247,6 +3581,7 @@ function renderMaintenanceScheduled() {
     <div class="pg-bar" id="scheduled-pagination"></div>`;
   renderMaintenanceScheduledTable();
 }
+
 function renderMaintenanceScheduledTable() {
   const v = MAINT_COL_VIS.scheduled;
   const search=(document.getElementById('sched-search')?.value||'').toLowerCase();
@@ -3296,7 +3631,9 @@ function renderMaintenanceScheduledTable() {
       <button class="btn btn-ghost btn-sm" onclick="changeMaintPage('scheduled',1)" ${MAINT_PAGE.scheduled>=totalPages?'disabled':''}>Next <i class="ti ti-chevron-right"></i></button>
     </div>`;
 }
+
 function deleteScheduled(id) { if(confirm('Delete this scheduled task?')){ maintenanceData.scheduled=maintenanceData.scheduled.filter(i=>i.id!==id); renderMaintenanceScheduled(); toast('Task deleted','info'); } }
+
 function renderMaintenanceHistory() {
   const el=document.getElementById('page-maintenance_history'); if(!el) return;
   const v = MAINT_COL_VIS.history;
@@ -3321,6 +3658,7 @@ function renderMaintenanceHistory() {
     <div class="pg-bar" id="history-pagination"></div>`;
   renderMaintenanceHistoryTable();
 }
+
 function renderMaintenanceHistoryTable() {
   const v = MAINT_COL_VIS.history;
   const search=(document.getElementById('history-search')?.value||'').toLowerCase();
@@ -3365,11 +3703,13 @@ function renderMaintenanceHistoryTable() {
       <button class="btn btn-ghost btn-sm" onclick="changeMaintPage('history',1)" ${MAINT_PAGE.history>=totalPages?'disabled':''}>Next <i class="ti ti-chevron-right"></i></button>
     </div>`;
 }
+
 function exportHistory() {
   const rows=maintenanceData.history.map(h=>`${h.date},${h.asset},${h.service},${h.technician},${h.cost},${h.notes}`).join('\n');
   downloadFile('Date,Asset,Service,Technician,Cost,Notes\n'+rows,`maintenance_history_${new Date().toISOString().slice(0,10)}.csv`,'text/csv');
   toast('History exported','success');
 }
+
 function renderMaintenanceRequests() {
   const el=document.getElementById('page-maintenance_requests'); if(!el) return;
   const v = MAINT_COL_VIS.requests;
@@ -3400,6 +3740,7 @@ function renderMaintenanceRequests() {
     <div class="pg-bar" id="requests-pagination"></div>`;
   renderMaintenanceRequestsTable();
 }
+
 function renderMaintenanceRequestsTable(filterPriority='all') {
   const v = MAINT_COL_VIS.requests;
   let filtered = filterPriority==='all'?maintenanceData.requests:maintenanceData.requests.filter(r=>r.priority===filterPriority);
@@ -3450,14 +3791,17 @@ function renderMaintenanceRequestsTable(filterPriority='all') {
       <button class="btn btn-ghost btn-sm" onclick="changeMaintPage('requests',1)" ${MAINT_PAGE.requests>=totalPages?'disabled':''}>Next <i class="ti ti-chevron-right"></i></button>
     </div>`;
 }
+
 function filterRequests(priority, el) {
   document.querySelectorAll('#request-filters .af-pill').forEach(p=>p.classList.remove('active'));
   el.classList.add('active');
   MAINT_PAGE.requests = 1;
   renderMaintenanceRequestsTable(priority);
 }
+
 function deleteRequest(id) { if(confirm('Delete this request?')){ maintenanceData.requests=maintenanceData.requests.filter(r=>r.id!==id); renderMaintenanceRequests(); toast(`Request ${id} deleted`,'info'); } }
 function resolveRequest(id) { if(confirm('Mark as resolved?')){ maintenanceData.requests=maintenanceData.requests.filter(r=>r.id!==id); renderMaintenanceRequests(); toast('Request resolved','success'); } }
+
 function openMaintModal(type, editId) {
   const isRequest=type==='request', isEdit=!!editId;
   document.getElementById('maintModalType').value=type;
@@ -3505,6 +3849,7 @@ function openMaintModal(type, editId) {
   }
   openOv('maintOv');
 }
+
 function saveMaintTask() {
   const type=document.getElementById('maintModalType').value;
   const editId=document.getElementById('maintEditId').value;
@@ -3535,7 +3880,9 @@ function saveMaintTask() {
     closeOv('maintOv'); renderMaintenanceRequests(); toast(`Request ${req.id} ${editId?'updated':'submitted'}`,'success');
   }
 }
+
 let pieChart, donutChart, growthChart, utilChart, depChart;
+
 function renderAnalysisOverview() {
   const el=document.getElementById('page-analysis_overview'); if(!el) return;
   el.innerHTML=`
@@ -3554,6 +3901,7 @@ function renderAnalysisOverview() {
     <div class="panel" style="margin-top:20px"><div class="panel-hd"><div class="panel-title">Monthly Asset Growth</div></div><div class="panel-body" style="height:300px;position:relative"><canvas id="growthChart"></canvas></div></div>`;
   setTimeout(initAnalysisCharts,80);
 }
+
 function initAnalysisCharts() {
   const isDark=document.body.classList.contains('dark');
   const gridColor=isDark?'rgba(255,255,255,0.08)':'rgba(0,0,0,0.06)';
@@ -3566,6 +3914,7 @@ function initAnalysisCharts() {
   const growthEl=document.getElementById('growthChart');
   if(growthEl){if(growthChart){try{growthChart.destroy();}catch(e){}} growthChart=new Chart(growthEl,{type:'line',data:{labels:['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],datasets:[{label:'IT Assets',data:[58,60,62,64,65,66,67,68,68,69,70,72],borderColor:'#2563eb',backgroundColor:'rgba(37,99,235,0.08)',tension:0.4,fill:true,pointRadius:3},{label:'Total Assets',data:[102,105,108,112,115,118,121,123,125,127,130,134],borderColor:'#10b981',backgroundColor:'rgba(16,185,129,0.08)',tension:0.4,fill:true,pointRadius:3}]},options:{...base,plugins:{legend:{labels:{color:tickColor}}},scales:{x:{ticks:{color:tickColor},grid:{color:gridColor}},y:{ticks:{color:tickColor},grid:{color:gridColor}}}}}); }
 }
+
 function renderAnalysisUtilization() {
   const el=document.getElementById('page-analysis_utilization'); if(!el) return;
   el.innerHTML=`
@@ -3579,6 +3928,7 @@ function renderAnalysisUtilization() {
     </tbody></table></div></div>`;
   setTimeout(initUtilChart,80);
 }
+
 function initUtilChart() {
   const isDark=document.body.classList.contains('dark');
   const gridColor=isDark?'rgba(255,255,255,0.08)':'rgba(0,0,0,0.06)';
@@ -3587,12 +3937,14 @@ function initUtilChart() {
   if(utilChart){try{utilChart.destroy();}catch(e){}}
   utilChart=new Chart(el,{type:'bar',data:{labels:['IT Dept','Admin','Clinical','Logistics','Facilities'],datasets:[{label:'Utilization %',data:[94,78,82,91,63],backgroundColor:['rgba(34,211,238,0.8)','rgba(34,211,238,0.7)','rgba(34,211,238,0.75)','rgba(34,211,238,0.85)','rgba(34,211,238,0.6)'],borderColor:'#0891b2',borderWidth:1,borderRadius:6}]},options:{responsive:true,maintainAspectRatio:false,scales:{y:{max:100,ticks:{color:tickColor,callback:v=>v+'%'},grid:{color:gridColor}},x:{ticks:{color:tickColor},grid:{color:'transparent'}}},plugins:{legend:{labels:{color:tickColor}}}}});
 }
+
 function refreshUtilChart() {
   if(!utilChart) return;
   const view=document.getElementById('util-view')?.value||'dept';
   const data={dept:{labels:['IT Dept','Admin','Clinical','Logistics','Facilities'],data:[94,78,82,91,63]},store:{labels:['Kabong','Mulago','Luwero','Mbarara','Karenga'],data:[89,94,86,81,68]},type:{labels:['Computers','Vehicles','Furniture','Medical','Other'],data:[92,78,65,83,71]}};
   const d=data[view]; utilChart.data.labels=d.labels; utilChart.data.datasets[0].data=d.data; utilChart.update();
 }
+
 function renderAnalysisDepreciation() {
   const el=document.getElementById('page-analysis_depreciation'); if(!el) return;
   el.innerHTML=`
@@ -3605,6 +3957,7 @@ function renderAnalysisDepreciation() {
     </tbody></table></div></div>`;
   setTimeout(initDepChart,80);
 }
+
 function initDepChart() {
   const isDark=document.body.classList.contains('dark');
   const gridColor=isDark?'rgba(255,255,255,0.08)':'rgba(0,0,0,0.06)';
@@ -3613,6 +3966,7 @@ function initDepChart() {
   if(depChart){try{depChart.destroy();}catch(e){}}
   depChart=new Chart(el,{type:'line',data:{labels:['2025','2026','2027','2028','2029','2030'],datasets:[{label:'IT Equipment',data:[1850,1480,1180,940,750,600],borderColor:'#2563eb',backgroundColor:'rgba(37,99,235,0.08)',tension:0.3,fill:true,pointRadius:4,pointBackgroundColor:'#2563eb'},{label:'Vehicles',data:[2100,1680,1340,1070,860,690],borderColor:'#10b981',backgroundColor:'rgba(16,185,129,0.08)',tension:0.3,fill:true,pointRadius:4,pointBackgroundColor:'#10b981'},{label:'Furniture',data:[420,370,330,290,255,220],borderColor:'#f59e0b',backgroundColor:'rgba(245,158,11,0.08)',tension:0.3,fill:true,pointRadius:4,pointBackgroundColor:'#f59e0b'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:tickColor}}},scales:{x:{ticks:{color:tickColor},grid:{color:gridColor}},y:{ticks:{color:tickColor,callback:v=>'UGX '+v.toLocaleString()+'M'},grid:{color:gridColor}}}}});
 }
+
 function renderAnalysisReports() {
   const el=document.getElementById('page-analysis_reports'); if(!el) return;
   el.innerHTML=`
@@ -3632,6 +3986,7 @@ function renderAnalysisReports() {
       <button class="btn btn-primary" onclick="generateCustomReport()"><i class="ti ti-file-export"></i> Generate Report</button>
     </div></div>`;
 }
+
 function exportReport(type) {
   let data = [];
   if(type==='inventory') data = getAllForSub('assets').map(a=>`${a.name},${a.serial},${a.store},${a.status},${a.warrantyStart||''},${a.warrantyEnd||''},${a.warrantyProvider||''}`);
@@ -3644,8 +3999,10 @@ function exportReport(type) {
   downloadFile(csv, `${type}_report_${new Date().toISOString().slice(0,10)}.csv`, 'text/csv');
   toast(`${type} report exported`, 'success');
 }
+
 function generateReport() { toast('Generating comprehensive report…','info'); setTimeout(()=>toast('Report generated and downloaded','success'),1500); }
 function generateCustomReport() { toast('Custom report started','info'); setTimeout(()=>toast('Custom report ready for download','success'),1200); }
+
 function renderDeviceSubTypes() {
   const grid=document.getElementById('dst-grid'); if(!grid) return;
   grid.innerHTML=Object.entries(DEVICE_SUBTYPES).map(([dt,cfg])=>`
@@ -3661,6 +4018,7 @@ function renderDeviceSubTypes() {
       </div>
     </div>`).join('');
 }
+
 function addDeviceSubType(dt) { document.getElementById(`add-row-${dt.replace(/\s+/g,'')}`).style.display='flex'; }
 function saveNewSubType(dt) {
   const input=document.getElementById(`new-${dt.replace(/\s+/g,'')}`);
@@ -3671,6 +4029,7 @@ function saveNewSubType(dt) {
   renderDeviceSubTypes(); toast(`Added ${val} to ${dt}`,'success');
 }
 function removeDeviceSubType(dt,st) { if(DEVICE_SUBTYPES[dt]) DEVICE_SUBTYPES[dt].subTypes=DEVICE_SUBTYPES[dt].subTypes.filter(s=>s!==st); renderDeviceSubTypes(); toast(`Removed ${st}`,'info'); }
+
 function renderCategorySettings() {
   const tbody=document.getElementById('cat-settings-body'); if(!tbody) return;
   tbody.innerHTML=Object.entries(TOP).flatMap(([tk,tv])=>Object.entries(SUB).map(([sk,sv])=>{
@@ -3686,10 +4045,12 @@ function renderCategorySettings() {
     </tr>`;
   })).join('');
 }
+
 function openAddCategory() {
   ['cfgCatTopKey','cfgCatSubKey','cfgCatName','cfgCatPrefix','cfgCatIcon'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='';});
   document.getElementById('cfgCatTitle').textContent='Add Category'; openOv('catOv');
 }
+
 function openEditCategory(tk,sk) {
   const ck=`${tk}_${sk}`;
   document.getElementById('cfgCatTopKey').value=tk; document.getElementById('cfgCatSubKey').value=sk;
@@ -3698,6 +4059,7 @@ function openEditCategory(tk,sk) {
   document.getElementById('cfgCatIcon').value=CAT_ICON[ck]||SUB[sk].itIcon;
   document.getElementById('cfgCatTitle').textContent='Edit Category'; openOv('catOv');
 }
+
 function saveCategoryForm() {
   const tk=document.getElementById('cfgCatTopKey').value, sk=document.getElementById('cfgCatSubKey').value;
   const name=document.getElementById('cfgCatName').value.trim(), prefix=document.getElementById('cfgCatPrefix').value.trim(), icon=document.getElementById('cfgCatIcon').value.trim();
@@ -3706,19 +4068,24 @@ function saveCategoryForm() {
   PREFIX[`${tk}_${sk}`]=prefix; CAT_ICON[`${tk}_${sk}`]=icon;
   renderCategorySettings(); closeOv('catOv'); toast(`Category ${name} updated`,'success');
 }
+
 function deleteCategory(tk,sk) { if(confirm(`Delete ${TOP[tk].label} — ${SUB[sk].label}?`)) toast('Category cannot be deleted while it has assets. Archive instead.','error'); }
+
 function saveSettings() { toast('Settings saved successfully','success'); }
+
 function switchSettings(section, el) {
   document.querySelectorAll('.sn-item').forEach(i=>i.classList.remove('active')); el.classList.add('active');
   document.querySelectorAll('.settings-section').forEach(s=>s.classList.remove('active'));
   document.getElementById(`ss-${section}`)?.classList.add('active');
 }
+
 function toggleGroup(id, el) {
   const grp=document.getElementById(id); if(!grp) return;
   const chev=el.querySelector('.chev');
   grp.classList.toggle('open'); el.classList.toggle('open');
   if(chev) chev.style.transform=grp.classList.contains('open')?'rotate(90deg)':'rotate(0deg)';
 }
+
 function toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); document.getElementById('sbOverlay').classList.toggle('open'); }
 function closeSidebar() { document.getElementById('sidebar')?.classList.remove('open'); document.getElementById('sbOverlay')?.classList.remove('open'); }
 function openOv(id) { document.getElementById(id)?.classList.add('open'); }
@@ -3740,6 +4107,7 @@ function toggleDark() {
   if(curPage==='analysis_utilization') initUtilChart();
   if(curPage==='analysis_depreciation') initDepChart();
 }
+
 document.addEventListener('DOMContentLoaded', () => {
   if(localStorage.getItem('darkMode')==='1'){
     document.body.classList.add('dark');
@@ -3759,6 +4127,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
   document.addEventListener('click', e=>{ if(!e.target.closest('.dd')) closeAllDD(); });
 });
+
 </script>
 </body>
 </html>
