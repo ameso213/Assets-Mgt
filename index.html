@@ -1888,11 +1888,50 @@ function toast(msg, type='info') {
   setTimeout(() => t.remove(), 4000);
 }
 
-function navigate(page) {
+async function loadPageTemplate(page) {
+  const pageEl = document.getElementById(`page-${page}`);
+  if(!pageEl || pageEl.innerHTML.trim() !== '') return false;
+  try {
+    const response = await fetch(`pages/${page}.html`);
+    if (!response.ok) throw new Error('Template not found');
+    pageEl.innerHTML = await response.text();
+    return true;
+  } catch (err) {
+    console.warn(`No external template for page: ${page}`, err);
+    return false;
+  }
+}
+
+// API endpoint mapping (future backend integration)
+// GET  /api/dashboard
+// GET  /api/inventory?subtype=assets
+// GET  /api/assets?category={category}&subtype={subtype}&page={page}
+// POST /api/assets
+// PUT  /api/assets/:id
+// DELETE /api/assets/:id
+// GET  /api/verify?page={page}
+// POST /api/verify
+// GET  /api/stores
+// GET  /api/alerts
+// GET  /api/settings/categories
+// GET  /api/settings/device-types
+// GET  /api/settings/users
+// GET  /api/settings/suppliers
+// GET  /api/maintenance/overview
+// GET  /api/maintenance/scheduled
+// GET  /api/maintenance/history
+// GET  /api/maintenance/requests
+// POST /api/maintenance/requests
+// GET  /api/analysis/overview
+// GET  /api/analysis/utilization
+// GET  /api/analysis/depreciation
+// GET  /api/analysis/reports
+async function navigate(page) {
   if(curPage === page) return;
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   const pageEl = document.getElementById(`page-${page}`);
   if(pageEl) pageEl.classList.add('active');
+  if(pageEl && pageEl.innerHTML.trim() === '') await loadPageTemplate(page);
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
   const activeNav = document.querySelector(`[data-page="${page}"]`);
   if(activeNav) activeNav.classList.add('active');
