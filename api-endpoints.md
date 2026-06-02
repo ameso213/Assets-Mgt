@@ -1,9 +1,16 @@
 # API Endpoint Reference
 
-This file documents the recommended backend endpoints for the Asset Management system.
+This file documents the recommended backend endpoints for the Resource Management system.
 
 ## Dashboard
 - `GET /api/dashboard`
+
+## Authentication
+- `POST /api/auth/login`
+- `POST /api/auth/register`
+- `POST /api/auth/verify`
+- `POST /api/auth/forgot-password`
+- `POST /api/auth/reset-password`
 
 ## Inventory
 - `GET /api/inventory?subtype=assets`
