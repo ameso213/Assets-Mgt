@@ -717,6 +717,7 @@
         <div class="link-row">
           Already have an account? <button class="as-link" onclick="showPage('login')">Sign in</button>
         </div>
+
       </div>
 
       <!-- ───────── PAGE: VERIFY OTP ───────── -->
@@ -769,6 +770,7 @@
           Didn't receive the code?&nbsp;
           <button id="resend-btn" onclick="resendCode()" disabled>Resend in <span id="countdown">60</span>s</button>
         </div>
+
       </div>
 
       <!-- ───────── PAGE: FORGOT PASSWORD ───────── -->
@@ -805,6 +807,7 @@
             Send Reset Link
           </span>
         </button>
+
       </div>
 
       <!-- ───────── PAGE: FORGOT SENT ───────── -->
@@ -903,6 +906,7 @@
             </span>
           </button>
         </div>
+
       </div>
 
       <!-- ───────── PAGE: ALL DONE ───────── -->
@@ -1050,25 +1054,75 @@ function resendCode() {
   startCountdown();
 }
 
+const API_BASE_URL = "https://esthernagawa.pythonanywhere.com/api/auth";
+
+const API = {
+  login: `${API_BASE_URL}/login/`,
+  register: `${API_BASE_URL}/register/`,
+  refresh: `${API_BASE_URL}/refresh/`,
+  verify: `${API_BASE_URL}/verify/`,
+  forgotPassword: `${API_BASE_URL}/forgot-password/`,
+  resetPassword: `${API_BASE_URL}/reset-password/`,
+};
+
 function fakeAsync(btn, cb) {
   btn.classList.add('loading');
   setTimeout(() => { btn.classList.remove('loading'); cb(); }, 1400);
 }
 
-function handleLogin(btn) {
+async function handleLogin(btn) {
   const email = document.getElementById('login-email').value.trim();
-  const pwd   = document.getElementById('login-pwd').value;
-  if (!email || !pwd) {
-    showAlert('login-alert', 'error', 'Please fill in your email and password.');
+  const password = document.getElementById('login-pwd').value;
+
+  if (!email || !password) {
+    showAlert('login-alert', 'error', 'Please fill all fields');
     return;
   }
-  if (!email.includes('@')) {
-    showAlert('login-alert', 'error', 'Please enter a valid email address.');
-    return;
-  }
-  fakeAsync(btn, () => {
+
+  btn.classList.add('loading');
+
+  try {
+    const res = await fetch(API.login, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+      username: email,
+    password: password
+      })
+    });
+
+    const data = await res.json();
+    console.log('LOGIN RESPONSE:', data);
+
+    if (!res.ok) {
+      throw new Error(JSON.stringify(data));
+    }
+
+    const authToken = data.access || data.token || data.access_token;
+    const refreshToken = data.refresh || data.refresh_token;
+
+    if (authToken) {
+      localStorage.setItem('token', authToken);
+    }
+    if (refreshToken) {
+      localStorage.setItem('refreshToken', refreshToken);
+    }
+
+    if (data.user) {
+      localStorage.setItem('user', JSON.stringify(data.user));
+    } else {
+      localStorage.setItem('user', JSON.stringify(data));
+    }
+
     window.location.href = 'index.html';
-  });
+
+  } catch (err) {
+    showAlert('login-alert', 'error', err.message);
+  }
+
+  btn.classList.remove('loading');
 }
 
 function handleGoogleSSO() {
@@ -1076,87 +1130,183 @@ function handleGoogleSSO() {
   setTimeout(() => { window.location.href = 'index.html'; }, 1200);
 }
 
-function handleRegister(btn) {
-  const first = document.getElementById('reg-first').value.trim();
-  const last  = document.getElementById('reg-last').value.trim();
+async function handleRegister(btn) {
+
+  const firstName = document.getElementById('reg-first').value.trim();
+  const lastName = document.getElementById('reg-last').value.trim();
   const email = document.getElementById('reg-email').value.trim();
-  const role  = document.getElementById('reg-role').value;
-  const pwd   = document.getElementById('reg-pwd').value;
-  const cpwd  = document.getElementById('reg-cpwd').value;
-  const agree = document.getElementById('agree-terms').checked;
+  const role = document.getElementById('reg-role').value;
+  const password = document.getElementById('reg-pwd').value;
+  const confirmPassword = document.getElementById('reg-cpwd').value;
 
-  if (!first || !last || !email || !role || !pwd || !cpwd) {
-    showAlert('reg-alert', 'error', 'Please complete all required fields.');
+  if (password !== confirmPassword) {
+    showAlert('reg-alert', 'error', 'Passwords do not match');
     return;
   }
-  if (pwd !== cpwd) {
-    showAlert('reg-alert', 'error', 'Passwords do not match.');
-    return;
-  }
-  if (getStrength(pwd) < 2) {
-    showAlert('reg-alert', 'error', 'Please choose a stronger password.');
-    return;
-  }
-  if (!agree) {
-    showAlert('reg-alert', 'error', 'You must agree to the Terms of Service.');
-    return;
-  }
-  document.getElementById('verify-email-display').textContent = email;
-  fakeAsync(btn, () => {
+
+  btn.classList.add('loading');
+
+  try {
+    const payload = {
+      username: email,
+      first_name: firstName,
+      last_name: lastName,
+      email,
+      password
+    };
+
+    if (role) {
+      payload.role = role;
+    }
+
+    console.log('REGISTER REQUEST:', payload);
+
+    const res = await fetch(API.register, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(payload)
+    });
+
+    const data = await res.json();
+    console.log('REGISTER RESPONSE:', data);
+
+    if (!res.ok) {
+      throw new Error(JSON.stringify(data));
+    }
+
+    document.getElementById('verify-email-display').textContent = email;
+
     showPage('verify');
-    startCountdown();
-  });
-}
 
-function handleVerify(btn) {
-  const inputs = document.querySelectorAll('#otp-inputs input');
-  const code = [...inputs].map(i => i.value).join('');
-  if (code.length < 6) {
-    showAlert('verify-alert', 'error', 'Please enter the full 6-digit code.');
-    return;
+  } catch (err) {
+    showAlert('reg-alert', 'error', err.message);
   }
-  fakeAsync(btn, () => {
-    document.getElementById('done-title').textContent = 'Account Verified!';
-    document.getElementById('done-msg').textContent = 'Your account has been verified. You can now sign in to Hospital Resource Mgt.';
-    showPage('done');
-  });
+
+  btn.classList.remove('loading');
 }
 
-function handleForgot(btn) {
+async function handleVerify(btn) {
+
+  const code = [...document.querySelectorAll('#otp-inputs input')]
+    .map(x => x.value)
+    .join('');
+
+  const email =
+    document.getElementById('verify-email-display').textContent;
+
+  btn.classList.add('loading');
+
+  try {
+
+    const res = await fetch(API.verify, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        email,
+        otp: code
+      })
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      throw new Error(data.message);
+    }
+
+    document.getElementById('done-title').textContent =
+      'Account Verified';
+
+    document.getElementById('done-msg').textContent =
+      'Your account has been activated successfully';
+
+    showPage('done');
+
+  } catch (err) {
+    showAlert('verify-alert', 'error', err.message);
+  }
+
+  btn.classList.remove('loading');
+}
+
+async function handleForgot(btn) {
+
   const email = document.getElementById('forgot-email').value.trim();
-  if (!email || !email.includes('@')) {
-    showAlert('forgot-alert', 'error', 'Please enter a valid email address.');
-    return;
+
+  btn.classList.add('loading');
+
+  try {
+
+    const res = await fetch(API.forgotPassword, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        email
+      })
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      throw new Error(data.message);
+    }
+
+    document.getElementById('forgot-sent-email').textContent =
+      email;
+
+    showPage('forgot-sent');
+
+  } catch (err) {
+    showAlert('forgot-alert', 'error', err.message);
   }
-  document.getElementById('forgot-sent-email').textContent = email;
-  fakeAsync(btn, () => { showPage('forgot-sent'); });
+
+  btn.classList.remove('loading');
 }
 
-function handleReset(btn) {
+async function handleReset(btn) {
+
   const code = document.getElementById('reset-code').value.trim();
-  const pwd  = document.getElementById('reset-pwd').value;
-  const cpwd = document.getElementById('reset-cpwd').value;
-  if (!code) {
-    showAlert('reset-alert', 'error', 'Please enter the reset code from your email.');
+  const password = document.getElementById('reset-pwd').value;
+  const confirmPassword = document.getElementById('reset-cpwd').value;
+
+  if (password !== confirmPassword) {
+    showAlert('reset-alert', 'error', 'Passwords do not match');
     return;
   }
-  if (!pwd || !cpwd) {
-    showAlert('reset-alert', 'error', 'Please enter and confirm your new password.');
-    return;
-  }
-  if (pwd !== cpwd) {
-    showAlert('reset-alert', 'error', 'Passwords do not match.');
-    return;
-  }
-  if (getStrength(pwd) < 3) {
-    showAlert('reset-alert', 'error', 'Please choose a stronger password (Good or Strong).');
-    return;
-  }
-  fakeAsync(btn, () => {
-    document.getElementById('done-title').textContent = 'Password Reset!';
-    document.getElementById('done-msg').textContent = 'Your password has been successfully updated. Sign in with your new credentials.';
+
+  btn.classList.add('loading');
+
+  try {
+
+    const res = await fetch(API.resetPassword, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        token: code,
+        password
+      })
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      throw new Error(data.message);
+    }
+
     showPage('done');
-  });
+
+  } catch (err) {
+    showAlert('reset-alert', 'error', err.message);
+  }
+
+  btn.classList.remove('loading');
 }
 </script>
 </body>

@@ -21,6 +21,15 @@ This file documents the recommended backend endpoints for the Resource Managemen
 - `PUT /api/assets/:id`
 - `DELETE /api/assets/:id`
 
+## Accessories
+- `GET /api/accessories?category={category}&page={page}`
+
+## Components
+- `GET /api/components?category={category}&page={page}`
+
+## Consumables
+- `GET /api/consumables?category={category}&page={page}`
+
 ## Verification
 - `GET /api/verify?page={page}`
 - `POST /api/verify`
@@ -38,6 +47,10 @@ This file documents the recommended backend endpoints for the Resource Managemen
 - `GET /api/settings/users`
 - `GET /api/settings/suppliers`
 - `PUT /api/settings/:section`
+
+## Account Settings
+- `GET /api/account-settings`
+- `PUT /api/account-settings`
 
 ## Profile
 - `GET /api/profile`
