@@ -898,7 +898,18 @@ textarea.fi{resize:vertical;min-height:70px;}
       <input type="hidden" id="userEditId"/>
       <div class="fg" style="margin-bottom:12px"><label>Email Address *</label><input type="email" id="userEmail" placeholder="user@example.com"/></div>
       <div class="fg" style="margin-bottom:12px"><label>Role</label>
-        <select class="fi" id="userRole"><option value="Administrator">Administrator</option><option value="Manager">Manager</option><option value="Technician">Technician</option><option value="Viewer">Viewer</option></select>
+       <select class="fi" id="userRole">
+  <option value="Administrator">Administrator</option>
+  <option value="Manager">Manager</option>
+  <option value="Doctor">Doctor</option>
+  <option value="Nurse">Nurse</option>
+  <option value="Pharmacist">Pharmacist</option>
+  <option value="Lab Technician">Lab Technician</option>
+  <option value="Technician">Technician</option>
+  <option value="Receptionist">Receptionist</option>
+  <option value="Viewer">Viewer</option>
+  <option value="Patient">Patient</option>
+</select>
       </div>
     </div>
     <div class="mft">
@@ -1016,7 +1027,7 @@ textarea.fi{resize:vertical;min-height:70px;}
 // ===================== API LAYER =====================
 const API_BASE = "https://esthernagawa.pythonanywhere.com/api";
 
-let authToken = localStorage.getItem("authToken");
+let authToken = localStorage.getItem("token");
 
 const API = {
   getHeaders() {
@@ -1034,7 +1045,8 @@ const API = {
         localStorage.removeItem("authToken");
         // Optionally redirect: window.location.href = "auth.html";
         toast("Session expired – please log in again.", "error");
-        return null;
+setTimeout(() => window.location.href = "auth.html", 1200);
+return null;
       }
       if (res.status === 204) return {};          // No Content
       if (!res.ok) {
@@ -1999,7 +2011,7 @@ async function saveStore() {
   const editId  = document.getElementById("storeEditId").value;
   if (!name || !location || !contact || !phone) { toast("Please fill all fields", "error"); return; }
 
-  const payload = { name, location, contact, phone };
+  const payload = { name, location, contact_person: contact, phone };
   let res;
   if (editId) {
     res = await StoreAPI.update(editId, payload);
@@ -2119,21 +2131,70 @@ async function renderSettingsPage() {
   renderSupplierSettings();
 }
 
+// Local role overrides — persisted in localStorage since API doesn't return role
+function getRoleOverrides() {
+  try { return JSON.parse(localStorage.getItem("userRoles") || "{}"); } 
+  catch { return {}; }
+}
+function setRoleOverride(userId, role) {
+  const overrides = getRoleOverrides();
+  overrides[String(userId)] = role;
+  localStorage.setItem("userRoles", JSON.stringify(overrides));
+}
+function getRoleDisplay(u) {
+  const overrides = getRoleOverrides();
+  const stored = overrides[String(u.id)];
+  if (stored) return stored;
+  if (u.role && u.role !== "User") return u.role;
+  if (u.is_staff) return "Administrator";
+  return "User";
+}
+
+function getRoleBadgeClass(role) {
+  const map = {
+    "Administrator": "b-critical",
+    "Manager": "b-info",
+    "Doctor": "b-teal",
+    "Nurse": "b-teal",
+    "Pharmacist": "b-active",
+    "Lab Technician": "b-active",
+    "Technician": "b-warning",
+    "Receptionist": "b-storage",
+    "Viewer": "b-low",
+    "Patient": "b-maint",
+  };
+  return map[role] || "b-info";
+}
+
 function renderUserSettings() {
   const tbody = document.getElementById("user-settings-body");
   if (!tbody) return;
   if (!_usersCache.length) { tbody.innerHTML = emptyRow(5, "No users found"); return; }
-  tbody.innerHTML = _usersCache.map(u => `
+  tbody.innerHTML = _usersCache.map(u => {
+    const role = getRoleDisplay(u);
+    const lastLogin = u.last_login
+      ? `<span title="${new Date(u.last_login).toLocaleString()}">${timeAgo(u.last_login)}</span>`
+      : `<span style="color:var(--light);font-style:italic">Never</span>`;
+    return `
     <tr>
-      <td><div class="acell"><div class="acell-ico" style="background:var(--blue-lt)"><i class="ti ti-user" style="color:var(--blue)"></i></div><div><div class="acell-name">${u.email || u.username}</div><div class="acell-id">${u.id}</div></div></div></td>
-      <td><span class="badge ${u.role === "Administrator" ? "b-info" : "b-teal"}">${u.role || "User"}</span></td>
-      <td style="font-family:var(--mono);font-size:11px;color:var(--muted)">${u.last_login ? timeAgo(u.last_login) : "Never"}</td>
+      <td>
+        <div class="acell">
+          <div class="acell-ico" style="background:var(--blue-lt)"><i class="ti ti-user" style="color:var(--blue)"></i></div>
+          <div>
+            <div class="acell-name">${u.email || u.username}</div>
+            <div class="acell-id">ID: ${u.id} · ${u.first_name || ""} ${u.last_name || ""}</div>
+          </div>
+        </div>
+      </td>
+      <td><span class="badge ${getRoleBadgeClass(role)}">${role}</span></td>
+      <td style="font-family:var(--mono);font-size:11px;color:var(--muted)">${lastLogin}</td>
       <td><span class="badge ${u.is_active !== false ? "b-active" : "b-inactive"}">${u.is_active !== false ? "Active" : "Inactive"}</span></td>
       <td><div class="cfg-actions">
         <button class="cfg-act e" onclick="editUser(${u.id})" title="Edit"><i class="ti ti-pencil"></i></button>
         <button class="cfg-act d" onclick="deleteUser(${u.id},'${(u.email||"").replace(/'/g,"\\'")}')"><i class="ti ti-trash"></i></button>
       </div></td>
-    </tr>`).join("");
+    </tr>`;
+  }).join("");
 }
 
 function renderCategorySettings() {
@@ -2177,8 +2238,8 @@ function editUser(id) {
   const u = _usersCache.find(x => x.id === id);
   if (!u) return;
   document.getElementById("userEditId").value = id;
-  document.getElementById("userEmail").value  = u.email || "";
-  document.getElementById("userRole").value   = u.role || "Viewer";
+  document.getElementById("userEmail").value  = u.email || u.username || "";
+  document.getElementById("userRole").value   = getRoleDisplay(u);
   document.getElementById("userModalTitle").textContent = "Edit User";
   openOv("userOv");
 }
@@ -2188,22 +2249,39 @@ async function saveUser() {
   const role   = document.getElementById("userRole").value;
   const editId = document.getElementById("userEditId").value;
   if (!email) { toast("Email required", "error"); return; }
+
   let res;
-  if (editId) {
-    res = await UserAPI.update(editId, { email, role });
-    if (res) toast("User updated", "success");
-  } else {
+ if (editId) {
+    res = await UserAPI.update(editId, { username: email, email, role });
+    if (res) {
+      // Save role locally since API doesn't return/persist it
+      setRoleOverride(editId, role);
+      const idx = _usersCache.findIndex(u => String(u.id) === String(editId));
+      if (idx > -1) {
+        _usersCache[idx] = { ..._usersCache[idx], ...res, role };
+      }
+      toast("User updated", "success");
+    }
+ } else {
     res = await UserAPI.invite({ email, role });
-    if (res) toast(`Invitation sent to ${email}`, "success");
+    if (res) {
+      // Save role for newly invited user
+      const newId = res.id || res.user?.id;
+      if (newId) setRoleOverride(newId, role);
+      toast(`Invitation sent to ${email}`, "success");
+    }
   }
+
   if (res) {
     closeOv("userOv");
+    // Always refetch to get server's latest data including last_login
     const users = await UserAPI.getAll();
     _usersCache = Array.isArray(users) ? users : (users?.results || []);
     renderUserSettings();
-  } else toast("Save failed", "error");
+  } else {
+    toast("Save failed — check console for details", "error");
+  }
 }
-
 async function deleteUser(id, email) {
   if (!confirm(`Remove user "${email}"?`)) return;
   const res = await UserAPI.delete(id);
@@ -2728,11 +2806,14 @@ function toggleDD(id) {
 function closeAllDD() { document.querySelectorAll(".dd-menu").forEach(m => m.classList.remove("open")); }
 function openSignOut() { document.getElementById("signoutOv")?.classList.add("open"); closeAllDD(); }
 function doSignOut() {
-  localStorage.removeItem("authToken");
+  localStorage.removeItem("token");
+  localStorage.removeItem("refreshToken");
+  localStorage.removeItem("user");
   authToken = null;
   toast("Signed out", "info");
-  setTimeout(() => window.location.reload(), 800);
+  setTimeout(() => window.location.href = "auth.html", 800);
 }
+
 function toggleSidebar()  { document.getElementById("sidebar").classList.toggle("open"); document.getElementById("sbOverlay").classList.toggle("open"); }
 function closeSidebar()   { document.getElementById("sidebar")?.classList.remove("open"); document.getElementById("sbOverlay")?.classList.remove("open"); }
 function toggleGroup(id, el) {
@@ -2749,6 +2830,12 @@ function toggleDark() {
 
 // ===================== BOOT =====================
 document.addEventListener("DOMContentLoaded", async () => {
+  // Auth guard
+  if (!localStorage.getItem("token")) {
+    window.location.href = "auth.html";
+    return;
+  }
+
   // Dark mode
   if (localStorage.getItem("darkMode") === "1") {
     document.body.classList.add("dark");
