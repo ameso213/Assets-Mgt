@@ -211,7 +211,7 @@ tbody tr:hover{background:var(--bg);}
 .b-cond-good{background:var(--teal-lt);color:var(--teal);border:1px solid var(--teal-bd);}
 .b-cond-fair{background:var(--orange-lt);color:var(--orange);border:1px solid var(--orange-bd);}
 .b-cond-poor{background:var(--red-lt);color:var(--red);border:1px solid var(--red-bd);}
-.store-tag{display:inline-flex;align-items:center;gap:5px;padding:3px 9px;background:var(--blue-lt);color:var(--blue);border:1px solid var(--blue-bd);border-radius:var(--rsm);font-size:11px;font-family:var(--mono);}
+.Facility-tag{display:inline-flex;align-items:center;gap:5px;padding:3px 9px;background:var(--blue-lt);color:var(--blue);border:1px solid var(--blue-bd);border-radius:var(--rsm);font-size:11px;font-family:var(--mono);}
 .acts{display:flex;gap:3px;}
 .act{width:29px;height:29px;border-radius:var(--rsm);border:1px solid var(--border);background:transparent;display:grid;place-items:center;color:var(--muted);transition:all .12s;cursor:pointer;}
 .act.v:hover{background:var(--blue-lt);border-color:var(--blue-bd);color:var(--blue);}
@@ -287,6 +287,7 @@ tbody tr:hover{background:var(--bg);}
 .alert-time{font-size:11px;color:var(--light);font-family:var(--mono);}
 .alert-actions{display:flex;gap:5px;align-items:flex-start;}
 .btn-xs{padding:4px 10px;font-size:11px;border-radius:5px;}
+/* ── SETTINGS LAYOUT ── */
 .settings-layout{display:grid;grid-template-columns:220px 1fr;gap:20px;}
 .settings-nav{display:flex;flex-direction:column;gap:2px;}
 .sn-item{display:flex;align-items:center;gap:9px;padding:9px 12px;border-radius:var(--rsm);cursor:pointer;font-size:13px;font-weight:500;color:var(--muted);transition:all .15s;}
@@ -295,20 +296,27 @@ tbody tr:hover{background:var(--bg);}
 .sn-item i{font-size:16px;}
 .sn-group-label{font-size:10px;font-family:var(--mono);color:var(--sb-section);letter-spacing:1.5px;text-transform:uppercase;padding:12px 12px 4px;margin-top:4px;}
 .settings-panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--rlg);}
+.settings-panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--rlg);overflow:hidden;}
 .settings-section{display:none;padding:24px;}
 .settings-section.active{display:block;}
 .settings-section h3{font-size:16px;font-weight:700;margin-bottom:4px;}
 .settings-section .desc{font-size:13px;color:var(--muted);margin-bottom:22px;}
+
+/* ── SETTING ROW ── */
 .setting-row{display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid var(--border-light);}
 .setting-row:last-child{border-bottom:none;}
 .setting-label{font-size:14px;font-weight:600;}
 .setting-desc{font-size:12px;color:var(--muted);margin-top:3px;}
+
+/* ── TOGGLE ── */
 .tog{position:relative;width:40px;height:22px;cursor:pointer;flex-shrink:0;}
 .tog input{opacity:0;width:0;height:0;}
 .tog-track{position:absolute;inset:0;background:var(--border);border-radius:11px;transition:background .2s;}
 .tog-thumb{position:absolute;top:3px;left:3px;width:16px;height:16px;background:#fff;border-radius:50%;transition:transform .2s;box-shadow:0 1px 3px rgba(0,0,0,.2);}
 .tog input:checked + .tog-track{background:var(--blue);}
 .tog input:checked + .tog-track + .tog-thumb{transform:translateX(18px);}
+
+/* ── FORM FIELDS ── */
 .sf-group{display:flex;flex-direction:column;gap:6px;margin-bottom:14px;}
 .sf-label{font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;}
 .sf-input,.sf-select{background:var(--bg);border:1px solid var(--border);border-radius:var(--rsm);padding:9px 12px;color:var(--text);font-size:13px;font-family:var(--sans);outline:none;transition:border .15s;}
@@ -316,6 +324,10 @@ tbody tr:hover{background:var(--bg);}
 .cfg-table-wrap{display:block;overflow-x:auto;width:100%;}
 .cfg-table{width:100%;min-width:600px;border-collapse:collapse;font-size:13px;}
 .cfg-table th{padding:9px 14px;text-align:left;font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;border-bottom:1px solid var(--border);background:var(--border-light);white-space:nowrap;}
+
+/* ── CFG TABLE ── */
+.cfg-table{width:100%;border-collapse:collapse;font-size:13px;}
+.cfg-table th{padding:9px 14px;text-align:left;font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;border-bottom:1px solid var(--border);background:var(--border-light);}
 .cfg-table td{padding:11px 14px;border-bottom:1px solid var(--border-light);vertical-align:middle;}
 .cfg-table tbody tr:last-child td{border-bottom:none;}
 .cfg-table tbody tr:hover{background:var(--bg);}
@@ -323,7 +335,59 @@ tbody tr:hover{background:var(--bg);}
 .cfg-act{width:28px;height:28px;border-radius:var(--rsm);border:1px solid var(--border);background:transparent;display:grid;place-items:center;color:var(--muted);cursor:pointer;transition:all .12s;}
 .cfg-act.e:hover{background:var(--orange-lt);border-color:var(--orange-bd);color:var(--orange);}
 .cfg-act.d:hover{background:var(--red-lt);border-color:var(--red-bd);color:var(--red);}
+.cfg-act.s:hover{background:var(--green-lt);border-color:var(--green-bd);color:var(--green);}
 .cfg-act i{font-size:13px;}
+.color-dot{width:14px;height:14px;border-radius:50%;display:inline-block;flex-shrink:0;}
+.cfg-empty{text-align:center;padding:36px;color:var(--muted);}
+.cfg-empty i{font-size:32px;display:block;margin-bottom:8px;opacity:.2;}
+.depr-method{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;}
+
+.modal-lg{width:560px;}
+.m-ico.green{background:var(--green-lt);}
+.m-ico.green i{color:var(--green);}
+.b-orange{background:var(--orange-lt);color:var(--orange);border:1px solid var(--orange-bd);}
+.b-pending{background:var(--orange-lt);color:var(--orange);border:1px solid var(--orange-bd);}
+.access-only{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:20px;font-size:11px;font-weight:700;background:var(--orange-lt);color:var(--orange);border:1px solid var(--orange-bd);margin-bottom:14px;}
+.access-only i{font-size:13px;}
+.step-pills{display:flex;gap:0;margin-bottom:22px;border:1px solid var(--border);border-radius:var(--rsm);overflow:hidden;}
+.step-pill{flex:1;padding:8px 12px;font-size:12px;font-weight:600;text-align:center;color:var(--muted);background:var(--bg);border:none;cursor:default;transition:all .2s;}
+.step-pill.done{background:var(--green-lt);color:var(--green);}
+.step-pill.active-step{background:var(--blue-lt);color:var(--blue);}
+.step-pill + .step-pill{border-left:1px solid var(--border);}
+.invite-step{display:none;}
+.invite-step.active{display:block;}
+.success-state{text-align:center;padding:24px 16px;}
+.success-state .s-ico{width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,var(--green),#34d399);display:grid;place-items:center;margin:0 auto 16px;box-shadow:0 8px 24px rgba(5,150,105,.25);}
+.success-state .s-ico i{font-size:30px;color:#fff;}
+.success-state h4{font-size:16px;font-weight:700;margin-bottom:6px;}
+.success-state p{font-size:13px;color:var(--muted);line-height:1.6;}
+.redirect-bar{margin-top:14px;padding:10px 14px;background:var(--blue-lt);border:1px solid var(--blue-bd);border-radius:var(--rsm);font-size:12px;color:var(--blue);display:flex;align-items:center;gap:8px;}
+.redirect-bar i{flex-shrink:0;}
+.cfg-loading{text-align:center;padding:36px;color:var(--muted);}
+.cfg-loading i{font-size:26px;display:block;margin-bottom:8px;animation:spin .9s linear infinite;}
+.cfg-error{text-align:center;padding:36px;color:var(--red);}
+.cfg-error i{font-size:28px;display:block;margin-bottom:8px;}
+.cfg-empty{text-align:center;padding:36px;color:var(--muted);}
+.cfg-empty i{font-size:32px;display:block;margin-bottom:8px;opacity:.2;}
+
+/* ── CATEGORY CARDS ── */
+.cat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:20px;}
+.cat-card{background:var(--bg);border:1px solid var(--border);border-radius:var(--r);padding:16px;cursor:pointer;transition:all .15s;position:relative;}
+.cat-card:hover{border-color:var(--blue-bd);background:var(--blue-lt);}
+.cat-card.active-cat{border-color:var(--blue);background:var(--blue-lt);box-shadow:0 0 0 2px var(--blue-bd);}
+.cat-card-ico{width:40px;height:40px;border-radius:var(--rsm);display:grid;place-items:center;margin-bottom:10px;}
+.cat-card-ico i{font-size:20px;}
+.cat-card-name{font-size:13px;font-weight:700;margin-bottom:3px;}
+.cat-card-count{font-size:11px;color:var(--muted);}
+.cat-card-check{position:absolute;top:10px;right:10px;width:18px;height:18px;border-radius:50%;background:var(--blue);display:none;place-items:center;}
+.cat-card-check i{font-size:10px;color:#fff;}
+.cat-card.active-cat .cat-card-check{display:grid;}
+.sub-table-wrap{background:var(--bg);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;}
+.sub-table-hd{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-bottom:1px solid var(--border);background:var(--border-light);}
+.sub-table-hd-title{font-size:12px;font-weight:700;display:flex;align-items:center;gap:7px;}
+.cat-row{cursor:pointer;}
+.cat-row.row-active{background:var(--blue-lt);}
+.cat-row.row-active td{color:var(--blue);}
 .profile-layout{display:grid;grid-template-columns:280px 1fr;gap:20px;}
 .profile-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--rlg);padding:24px;text-align:center;}
 .prof-av{width:80px;height:80px;border-radius:50%;background:var(--blue);display:grid;place-items:center;font-size:28px;font-weight:800;color:#fff;margin:0 auto 12px;border:3px solid var(--blue-bd);}
@@ -472,6 +536,20 @@ textarea.fi{resize:vertical;min-height:70px;}
   <div class="nav-item" data-page="consumables"><i class="ti ti-package"></i> Consumables <span class="nav-badge" id="nb-consumables">—</span></div>
   <div class="nav-item" data-page="accessories"><i class="ti ti-plug"></i> Accessories <span class="nav-badge" id="nb-accessories">—</span></div>
   <div class="nav-item" data-page="verify"><i class="ti ti-scan"></i> Verify Assets <span class="nav-badge" style="background:var(--green-lt);color:var(--green);border-color:var(--green-bd)" id="nb-verify">—</span></div>
+  <div class="sb-section">Tracking</div>
+<div class="nav-item" data-page="tracking">
+  <i class="ti ti-map-pin-bolt"></i> Live Tracking
+  <span class="nav-badge" style="background:var(--green-lt);color:var(--green);border-color:var(--green-bd)" id="nb-tracking">—</span>
+</div>
+<div class="nav-item" data-page="movements">
+  <i class="ti ti-transfer"></i> Movement Log
+  <span class="nav-badge" id="nb-movements">—</span>
+</div>
+<div class="nav-item" data-page="dispatch">
+  <i class="ti ti-send"></i> Dispatch Asset
+</div>
+
+
   <div class="sb-section">Maintenance</div>
   <div class="nav-group-header" onclick="toggleGroup('grp-maint',this)">
     <i class="ti ti-tool grp-icon" style="color:var(--orange)"></i>
@@ -497,7 +575,7 @@ textarea.fi{resize:vertical;min-height:70px;}
     <div class="nav-item sub" data-page="analysis_reports"><i class="ti ti-file-text"></i> Reports &amp; Export</div>
   </div>
   <div class="sb-section">System</div>
-  <div class="nav-item" data-page="stores"><i class="ti ti-building-hospital"></i> All Stores <span class="nav-badge" id="nb-stores">—</span></div>
+  <div class="nav-item" data-page="Facilities"><i class="ti ti-building-hospital"></i> All Facilities <span class="nav-badge" id="nb-Facilities">—</span></div>
   <div class="nav-item" data-page="alerts"><i class="ti ti-alert-triangle"></i> Alerts <span class="nav-badge red" id="nb-alerts">—</span></div>
   <div class="nav-item" data-page="settings"><i class="ti ti-settings"></i> Settings</div>
   <div class="sb-footer">
@@ -580,8 +658,8 @@ textarea.fi{resize:vertical;min-height:70px;}
         </div>
         <div class="rcol">
           <div class="panel">
-            <div class="panel-hd"><div class="panel-title">Store Breakdown</div></div>
-            <div class="panel-body"><div class="sbars" id="dash-store-bars"><div class="loading-row"><i class="ti ti-loader-2"></i></div></div></div>
+            <div class="panel-hd"><div class="panel-title">Facility Breakdown</div></div>
+            <div class="panel-body"><div class="sbars" id="dash-Facility-bars"><div class="loading-row"><i class="ti ti-loader-2"></i></div></div></div>
           </div>
           <div class="panel">
             <div class="panel-hd"><div class="panel-title">Status Summary</div></div>
@@ -598,19 +676,24 @@ textarea.fi{resize:vertical;min-height:70px;}
     <div class="page" id="page-accessories"></div>
     <div class="page" id="page-verify"></div>
 
-    <!-- Stores -->
-    <div class="page" id="page-stores">
+    <!-- Tracking pages -->
+<div class="page" id="page-tracking"></div>
+<div class="page" id="page-movements"></div>
+<div class="page" id="page-dispatch"></div>
+
+    <!-- Facilities -->
+    <div class="page" id="page-Facilities">
       <div class="ph">
         <div class="ph-left">
           <div class="ph-icon" style="background:var(--teal-lt)"><i class="ti ti-building-hospital" style="color:var(--teal)"></i></div>
-          <div><div class="ph-title">All Stores</div><div class="ph-sub" id="stores-sub">—</div></div>
+          <div><div class="ph-title">All Facilities</div><div class="ph-sub" id="Facilities-sub">—</div></div>
         </div>
         <div class="ph-actions">
-          <button class="btn btn-primary" onclick="openAddStore()"><i class="ti ti-plus"></i> Add Store</button>
-          <button class="btn btn-ghost" onclick="exportStores()"><i class="ti ti-download"></i> Export</button>
+          <button class="btn btn-primary" onclick="openAddFacility()"><i class="ti ti-plus"></i> Add Facility</button>
+          <button class="btn btn-ghost" onclick="exportFacilities()"><i class="ti ti-download"></i> Export</button>
         </div>
       </div>
-      <div id="stores-grid"></div>
+      <div id="Facilities-grid"></div>
     </div>
 
     <!-- Alerts -->
@@ -640,79 +723,448 @@ textarea.fi{resize:vertical;min-height:70px;}
         </div>
         <button class="btn btn-primary" onclick="saveSettings()"><i class="ti ti-device-floppy"></i> Save Changes</button>
       </div>
-      <div class="settings-layout">
-        <div class="settings-nav">
-          <div class="sn-group-label">System</div>
-          <div class="sn-item active" onclick="switchSettings('general',this)"><i class="ti ti-adjustments"></i> General</div>
-          <div class="sn-item" onclick="switchSettings('appearance',this)"><i class="ti ti-palette"></i> Appearance</div>
-          <div class="sn-item" onclick="switchSettings('notifications',this)"><i class="ti ti-bell"></i> Notifications</div>
-          <div class="sn-item" onclick="switchSettings('data',this)"><i class="ti ti-database"></i> Data &amp; Backup</div>
-          <div class="sn-item" onclick="switchSettings('users',this)"><i class="ti ti-users"></i> User Access</div>
-          <div class="sn-group-label">Asset Config</div>
-          <div class="sn-item" onclick="switchSettings('categories',this)"><i class="ti ti-category"></i> Categories</div>
-          <div class="sn-item" onclick="switchSettings('suppliers',this)"><i class="ti ti-truck-delivery"></i> Suppliers</div>
+
+
+  <!-- Settings Layout -->
+  <div class="settings-layout">
+
+    <!-- Left Nav -->
+    <div class="settings-nav">
+      <div class="sn-group-label">System</div>
+      <div class="sn-item active" onclick="switchSettings('general',this)"><i class="ti ti-adjustments"></i> General</div>
+      <div class="sn-item" onclick="switchSettings('appearance',this)"><i class="ti ti-palette"></i> Appearance</div>
+      <div class="sn-item" onclick="switchSettings('notifications',this)"><i class="ti ti-bell"></i> Notifications</div>
+      <div class="sn-item" onclick="switchSettings('data',this)"><i class="ti ti-database"></i> Data &amp; Backup</div>
+      <div class="sn-item" onclick="switchSettings('users',this)"><i class="ti ti-users"></i> User Access</div>
+      <div class="sn-group-label">Asset Configuration</div>
+      <div class="sn-item" onclick="switchSettings('customfields',this)"><i class="ti ti-forms"></i> Custom Fields</div>
+      <div class="sn-item" onclick="switchSettings('statuslabels',this)"><i class="ti ti-tags"></i> Status Labels</div>
+      <div class="sn-item" onclick="switchSettings('assetmodels',this)"><i class="ti ti-cube"></i> Asset Models</div>
+      <div class="sn-item" onclick="switchSettings('categories',this)"><i class="ti ti-category"></i> Categories</div>
+      <div class="sn-group-label">Organisation</div>
+      <div class="sn-item" onclick="switchSettings('manufacturers',this)"><i class="ti ti-building-factory-2"></i> Manufacturers</div>
+      <div class="sn-item" onclick="switchSettings('suppliers',this)"><i class="ti ti-truck-delivery"></i> Suppliers</div>
+      <div class="sn-item" onclick="switchSettings('departments',this)"><i class="ti ti-sitemap"></i> Departments</div>
+      <div class="sn-item" onclick="switchSettings('locations',this)"><i class="ti ti-map-pin"></i> Locations</div>
+      <div class="sn-item" onclick="switchSettings('companies',this)"><i class="ti ti-building"></i> Companies</div>
+      <div class="sn-item" onclick="switchSettings('depreciation',this)"><i class="ti ti-chart-line-down"></i> Depreciation</div>
+    </div>
+
+    <!-- Right Panel -->
+    <div class="settings-panel">
+
+      <!-- ── GENERAL ── -->
+      <div class="settings-section active" id="ss-general">
+        <h3>General Settings</h3>
+        <div class="desc">Manage system-wide configuration</div>
+        <div class="sf-group"><div class="sf-label">System Name</div><input type="text" class="sf-input" id="gen-system-name"/></div>
+        <div class="sf-group"><div class="sf-label">Organisation</div><input type="text" class="sf-input" id="gen-org-name"/></div>
+        <div class="sf-group"><div class="sf-label">Default Currency</div>
+          <select class="sf-select" id="gen-currency">
+            <option value="UGX">UGX – Ugandan Shilling</option>
+            <option value="USD">USD – US Dollar</option>
+            <option value="KES">KES – Kenyan Shilling</option>
+          </select>
         </div>
-        <div class="settings-panel">
-          <div class="settings-section active" id="ss-general">
-            <h3>General Settings</h3><div class="desc">System-wide configuration</div>
-            <div class="sf-group"><div class="sf-label">System Name</div><input type="text" class="sf-input" value="ResourceHub"/></div>
-            <div class="sf-group"><div class="sf-label">Organisation</div><input type="text" class="sf-input" id="org-name" value=""/></div>
-            <div class="sf-group"><div class="sf-label">Default Currency</div><select class="sf-select"><option>UGX – Ugandan Shilling</option><option>USD – US Dollar</option></select></div>
-            <div class="setting-row"><div><div class="setting-label">Auto-generate Asset IDs</div><div class="setting-desc">Automatically assign IDs when adding assets</div></div><label class="tog"><input type="checkbox" checked/><div class="tog-track"></div><div class="tog-thumb"></div></label></div>
-            <div class="setting-row"><div><div class="setting-label">Low Stock Alerts</div><div class="setting-desc">Alert when asset count falls below threshold</div></div><label class="tog"><input type="checkbox" checked/><div class="tog-track"></div><div class="tog-thumb"></div></label></div>
-          </div>
-          <div class="settings-section" id="ss-appearance">
-            <h3>Appearance</h3><div class="desc">Customise the look and feel</div>
-            <div class="setting-row"><div><div class="setting-label">Dark Mode</div><div class="setting-desc">Switch to dark interface</div></div><label class="tog" onclick="toggleDark()"><input type="checkbox" id="darkToggle"/><div class="tog-track"></div><div class="tog-thumb"></div></label></div>
-          </div>
-          <div class="settings-section" id="ss-notifications">
-            <h3>Notifications</h3><div class="desc">Configure alert and notification preferences</div>
-            <div class="setting-row"><div><div class="setting-label">Email Notifications</div></div><label class="tog"><input type="checkbox" checked/><div class="tog-track"></div><div class="tog-thumb"></div></label></div>
-            <div class="sf-group" style="margin-top:16px"><div class="sf-label">Alert Email</div><input type="email" class="sf-input" id="alert-email" value=""/></div>
-          </div>
-          <div class="settings-section" id="ss-data">
-            <h3>Data &amp; Backup</h3><div class="desc">Manage data exports and backups</div>
-            <div class="export-btns">
-              <button class="btn btn-ghost" onclick="exportData('csv')"><i class="ti ti-file-export"></i> Export CSV</button>
-              <button class="btn btn-ghost" onclick="exportData('excel')"><i class="ti ti-file-spreadsheet"></i> Export Excel</button>
-            </div>
-          </div>
-          <div class="settings-section" id="ss-users">
-            <h3>User Access</h3><div class="desc">Manage who can access the system</div>
-            <div style="display:flex;justify-content:flex-end;margin-bottom:12px">
-              <button class="btn btn-primary btn-sm" onclick="openAddUser()"><i class="ti ti-user-plus"></i> Invite User</button>
-            </div>
-            <div class="cfg-table-wrap">
-              <table class="cfg-table">
-                <thead><tr><th>User</th><th>Role</th><th>Last Login</th><th>Status</th><th>Actions</th></tr></thead>
-                <tbody id="user-settings-body"><tr><td colspan="5" class="loading-row"><i class="ti ti-loader-2"></i></td></tr></tbody>
-              </table>
-            </div>
-          </div>
-          <div class="settings-section" id="ss-categories">
-            <h3>Categories</h3><div class="desc">Asset category configuration</div>
-            <div class="cfg-table-wrap">
-              <table class="cfg-table">
-                <thead><tr><th>Category</th><th>Description</th></tr></thead>
-                <tbody id="cat-settings-body"><tr><td colspan="2" class="loading-row"><i class="ti ti-loader-2"></i></td></tr></tbody>
-              </table>
-            </div>
-          </div>
-          <div class="settings-section" id="ss-suppliers">
-            <h3>Suppliers</h3><div class="desc">Manage vendors from whom assets are procured</div>
-            <div style="display:flex;justify-content:flex-end;margin-bottom:12px">
-              <button class="btn btn-primary btn-sm" onclick="openAddSupplier()"><i class="ti ti-plus"></i> Add Supplier</button>
-            </div>
-            <div class="cfg-table-wrap">
-              <table class="cfg-table">
-                <thead><tr><th>Supplier</th><th>Category</th><th>Contact</th><th>Phone</th><th>Email</th><th>Actions</th></tr></thead>
-                <tbody id="supplier-settings-body"><tr><td colspan="6" class="loading-row"><i class="ti ti-loader-2"></i></td></tr></tbody>
-              </table>
-            </div>
+        <div class="sf-group"><div class="sf-label">Fiscal Year Start</div>
+          <select class="sf-select" id="gen-fiscal-start">
+            <option value="January">January</option><option value="April">April</option><option value="July">July</option>
+          </select>
+        </div>
+        <div class="setting-row">
+          <div><div class="setting-label">Auto-generate Asset IDs</div><div class="setting-desc">Automatically assign IDs when adding assets</div></div>
+          <label class="tog"><input type="checkbox" id="gen-auto-ids"/><div class="tog-track"></div><div class="tog-thumb"></div></label>
+        </div>
+        <div class="setting-row">
+          <div><div class="setting-label">Low Stock Alerts</div><div class="setting-desc">Alert when asset count falls below threshold</div></div>
+          <label class="tog"><input type="checkbox" id="gen-low-stock"/><div class="tog-track"></div><div class="tog-thumb"></div></label>
+        </div>
+      </div>
+
+      <!-- ── APPEARANCE ── -->
+      <div class="settings-section" id="ss-appearance">
+        <h3>Appearance</h3>
+        <div class="desc">Customise the look and feel</div>
+        <div class="setting-row">
+          <div><div class="setting-label">Dark Mode</div><div class="setting-desc">Switch to dark interface</div></div>
+          <label class="tog" onclick="toggleDark()"><input type="checkbox" id="darkToggle"/><div class="tog-track"></div><div class="tog-thumb"></div></label>
+        </div>
+        <div class="setting-row">
+          <div><div class="setting-label">Compact Sidebar</div><div class="setting-desc">Collapse sidebar to icons only</div></div>
+          <label class="tog"><input type="checkbox" id="appr-compact"/><div class="tog-track"></div><div class="tog-thumb"></div></label>
+        </div>
+        <div class="sf-group" style="margin-top:16px">
+          <div class="sf-label">Accent Color</div>
+          <div style="display:flex;gap:10px;margin-top:4px">
+            <div style="width:28px;height:28px;border-radius:50%;background:#2563eb;border:2px solid var(--text);cursor:pointer" title="Blue" onclick="changeAccent('#2563eb')"></div>
+            <div style="width:28px;height:28px;border-radius:50%;background:#059669;cursor:pointer" title="Green" onclick="changeAccent('#059669')"></div>
+            <div style="width:28px;height:28px;border-radius:50%;background:#7c3aed;cursor:pointer" title="Purple" onclick="changeAccent('#7c3aed')"></div>
+            <div style="width:28px;height:28px;border-radius:50%;background:#db2777;cursor:pointer" title="Pink" onclick="changeAccent('#db2777')"></div>
+            <div style="width:28px;height:28px;border-radius:50%;background:#0891b2;cursor:pointer" title="Teal" onclick="changeAccent('#0891b2')"></div>
           </div>
         </div>
       </div>
+
+      <!-- ── NOTIFICATIONS ── -->
+      <div class="settings-section" id="ss-notifications">
+        <h3>Notifications</h3>
+        <div class="desc">Configure alert and notification preferences</div>
+        <div class="setting-row"><div><div class="setting-label">Email Notifications</div><div class="setting-desc">Receive alerts via email</div></div><label class="tog"><input type="checkbox" id="notif-email"/><div class="tog-track"></div><div class="tog-thumb"></div></label></div>
+        <div class="setting-row"><div><div class="setting-label">Asset Maintenance Due</div><div class="setting-desc">Notify when assets require maintenance</div></div><label class="tog"><input type="checkbox" id="notif-maintenance"/><div class="tog-track"></div><div class="tog-thumb"></div></label></div>
+        <div class="setting-row"><div><div class="setting-label">New Asset Added</div><div class="setting-desc">Notify on new asset registration</div></div><label class="tog"><input type="checkbox" id="notif-new-asset"/><div class="tog-track"></div><div class="tog-thumb"></div></label></div>
+        <div class="setting-row"><div><div class="setting-label">Facility Movement Alerts</div><div class="setting-desc">Notify on assets sent/received between Facilities</div></div><label class="tog"><input type="checkbox" id="notif-movement"/><div class="tog-track"></div><div class="tog-thumb"></div></label></div>
+        <div class="sf-group" style="margin-top:16px"><div class="sf-label">Alert Email</div><input type="email" class="sf-input" id="notif-alert-email"/></div>
+      </div>
+
+      <!-- ── DATA & BACKUP ── -->
+      <div class="settings-section" id="ss-data">
+        <h3>Data &amp; Backup</h3>
+        <div class="desc">Manage data exports and backups</div>
+        <div class="setting-row"><div><div class="setting-label">Auto Backup</div><div class="setting-desc">Daily automatic database backup</div></div><label class="tog"><input type="checkbox" id="data-auto-backup"/><div class="tog-track"></div><div class="tog-thumb"></div></label></div>
+        <div style="display:flex;gap:10px;margin-top:16px">
+          <button class="btn btn-ghost" onclick="exportData('csv')"><i class="ti ti-file-export"></i> Export CSV</button>
+          <button class="btn btn-ghost" onclick="exportData('excel')"><i class="ti ti-file-spreadsheet"></i> Export Excel</button>
+          <button class="btn btn-ghost" onclick="exportData('pdf')"><i class="ti ti-file-type-pdf"></i> Export PDF</button>
+        </div>
+        <div style="margin-top:16px;padding:14px;background:var(--bg);border-radius:var(--rsm);font-size:13px;color:var(--muted)" id="backup-status">
+          <i class="ti ti-database" style="margin-right:6px"></i>Loading backup status…
+        </div>
+      </div>
+
+      <!-- ── USER ACCESS ── -->
+      <div class="settings-section" id="ss-users">
+        <h3>User Access</h3>
+        <div class="desc">Manage who can access the system. Only Administrators and System Managers can invite new users.</div>
+
+        <!-- Admin-only notice -->
+        <div class="access-only"><i class="ti ti-shield-lock"></i> Admin &amp; System Manager access only</div>
+
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+          <div style="font-size:12px;color:var(--muted)" id="user-summary">Loading users…</div>
+          <button class="btn btn-primary btn-sm" onclick="openInviteModal()"><i class="ti ti-user-plus"></i> Invite User</button>
+        </div>
+
+        <div class="tw"><table class="cfg-table">
+          <thead><tr><th>User</th><th>Role</th><th>Last Login</th><th>Status</th><th>Actions</th></tr></thead>
+          <tbody id="user-body"></tbody>
+        </table></div>
+
+        <!-- Pending invitations -->
+        <div style="margin-top:20px">
+          <div style="font-size:13px;font-weight:700;margin-bottom:10px;display:flex;align-items:center;gap:7px">
+            <i class="ti ti-mail" style="color:var(--orange)"></i> Pending Invitations
+          </div>
+          <div class="tw"><table class="cfg-table">
+            <thead><tr><th>Email</th><th>Role</th><th>Invited By</th><th>Expires</th><th>Actions</th></tr></thead>
+            <tbody id="inv-body"></tbody>
+          </table></div>
+        </div>
+      </div>
+
+      <!-- ── CUSTOM FIELDS ── -->
+      <div class="settings-section" id="ss-customfields">
+        <h3>Custom Fields</h3>
+        <div class="desc">Define extra data fields that appear on asset records — e.g. Warranty Number, MAC Address, License Key.</div>
+        <div style="display:flex;justify-content:flex-end;margin-bottom:14px">
+          <button class="btn btn-primary btn-sm" onclick="cfAdd()"><i class="ti ti-plus"></i> Add Field</button>
+        </div>
+        <div class="tw"><table class="cfg-table">
+          <thead><tr><th>Field Name</th><th>Field Type</th><th>Applies To</th><th>Required</th><th>Actions</th></tr></thead>
+          <tbody id="cf-body"></tbody>
+        </table></div>
+      </div>
+
+      <!-- ── STATUS LABELS ── -->
+      <div class="settings-section" id="ss-statuslabels">
+        <h3>Status Labels</h3>
+        <div class="desc">Customise the status labels used to categorise asset states across the system.</div>
+        <div style="display:flex;justify-content:flex-end;margin-bottom:14px">
+          <button class="btn btn-primary btn-sm" onclick="slAdd()"><i class="ti ti-plus"></i> Add Status</button>
+        </div>
+        <div class="tw"><table class="cfg-table">
+          <thead><tr><th>Label</th><th>Color</th><th>Type</th><th>Default</th><th>Actions</th></tr></thead>
+          <tbody id="sl-body"></tbody>
+        </table></div>
+      </div>
+
+      <!-- ── ASSET MODELS ── -->
+      <div class="settings-section" id="ss-assetmodels">
+        <h3>Asset Models</h3>
+        <div class="desc">Register specific hardware models. Linking assets to models enables richer reporting and lifecycle tracking.</div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+          <div style="position:relative;max-width:260px;flex:1">
+            <i class="ti ti-search" style="position:absolute;left:9px;top:50%;transform:translateY(-50%);font-size:15px;color:var(--muted)"></i>
+            <input type="text" id="am-search" oninput="renderAM()" style="width:100%;background:var(--bg);border:1px solid var(--border);border-radius:var(--rsm);padding:8px 12px 8px 32px;color:var(--text);font-size:13px;font-family:var(--sans);outline:none;" placeholder="Search models..."/>
+          </div>
+          <button class="btn btn-primary btn-sm" onclick="amAdd()"><i class="ti ti-plus"></i> Add Model</button>
+        </div>
+        <div class="tw"><table class="cfg-table">
+          <thead><tr><th>Model Name</th><th>Manufacturer</th><th>Category</th><th>EOL Date</th><th>Assets</th><th>Actions</th></tr></thead>
+          <tbody id="am-body"></tbody>
+        </table></div>
+      </div>
+
+      <!-- ── CATEGORIES ── -->
+      <div class="settings-section" id="ss-categories">
+        <h3>Categories</h3>
+        <div class="desc">Top-level categories group all assets. Click a row to manage its device types below.</div>
+
+        <div style="display:flex;justify-content:flex-end;margin-bottom:14px">
+          <button class="btn btn-primary btn-sm" onclick="catAdd()"><i class="ti ti-plus"></i> Add Category</button>
+        </div>
+        <div class="tw"><table class="cfg-table">
+          <thead><tr><th>Category</th><th>Device Types</th><th>Assets</th><th>Actions</th></tr></thead>
+          <tbody id="cat-body"></tbody>
+        </table></div>
+
+        <!-- Device-type sub-table -->
+        <div class="sub-table-wrap" style="margin-top:22px">
+          <div class="sub-table-hd">
+            <div class="sub-table-hd-title" id="sub-table-title">
+              <i class="ti ti-category"></i>
+              Select a category to manage its device types
+            </div>
+            <button class="btn btn-primary btn-sm" id="catSubAddBtn" onclick="catSubAdd()" disabled><i class="ti ti-plus"></i> Add Device Type</button>
+          </div>
+          <div class="tw"><table class="cfg-table">
+            <thead><tr><th>Device Type</th><th>Icon</th><th>ID Prefix</th><th>Asset Count</th><th>Actions</th></tr></thead>
+            <tbody id="cat-sub-body"></tbody>
+          </table></div>
+        </div>
+      </div>
+
+      <!-- ── MANUFACTURERS ── -->
+      <div class="settings-section" id="ss-manufacturers">
+        <h3>Manufacturers</h3>
+        <div class="desc">Track hardware and software manufacturers. Used when logging assets and models.</div>
+        <div style="display:flex;justify-content:flex-end;margin-bottom:14px">
+          <button class="btn btn-primary btn-sm" onclick="mfgAdd()"><i class="ti ti-plus"></i> Add Manufacturer</button>
+        </div>
+        <div class="tw"><table class="cfg-table">
+          <thead><tr><th>Manufacturer</th><th>URL</th><th>Support Tel</th><th>Assets</th><th>Actions</th></tr></thead>
+          <tbody id="mfg-body"></tbody>
+        </table></div>
+      </div>
+
+      <!-- ── SUPPLIERS ── -->
+      <div class="settings-section" id="ss-suppliers">
+        <h3>Suppliers</h3>
+        <div class="desc">Manage vendors and suppliers from whom assets are procured. Linked to purchase records.</div>
+        <div style="display:flex;justify-content:flex-end;margin-bottom:14px">
+          <button class="btn btn-primary btn-sm" onclick="supAdd()"><i class="ti ti-plus"></i> Add Supplier</button>
+        </div>
+        <div class="tw"><table class="cfg-table">
+          <thead><tr><th>Supplier</th><th>Contact</th><th>Email</th><th>Phone</th><th>Assets Supplied</th><th>Actions</th></tr></thead>
+          <tbody id="sup-body"></tbody>
+        </table></div>
+      </div>
+
+      <!-- ── DEPARTMENTS ── -->
+      <div class="settings-section" id="ss-departments">
+        <h3>Departments</h3>
+        <div class="desc">Define departments. Assets and users can be assigned to departments for tracking.</div>
+        <div style="display:flex;justify-content:flex-end;margin-bottom:14px">
+          <button class="btn btn-primary btn-sm" onclick="deptAdd()"><i class="ti ti-plus"></i> Add Department</button>
+        </div>
+        <div class="tw"><table class="cfg-table">
+          <thead><tr><th>Department</th><th>Manager</th><th>Location</th><th>Users</th><th>Assets</th><th>Actions</th></tr></thead>
+          <tbody id="dept-body"></tbody>
+        </table></div>
+      </div>
+
+      <!-- ── LOCATIONS ── -->
+      <div class="settings-section" id="ss-locations">
+        <h3>Locations</h3>
+        <div class="desc">Map physical locations — buildings, floors, sites — where assets are deployed or Facilityd.</div>
+        <div style="display:flex;justify-content:flex-end;margin-bottom:14px">
+          <button class="btn btn-primary btn-sm" onclick="locAdd()"><i class="ti ti-plus"></i> Add Location</button>
+        </div>
+        <div class="tw"><table class="cfg-table">
+          <thead><tr><th>Location</th><th>Parent</th><th>Address</th><th>Currency</th><th>Assets</th><th>Actions</th></tr></thead>
+          <tbody id="loc-body"></tbody>
+        </table></div>
+      </div>
+
+      <!-- ── COMPANIES ── -->
+      <div class="settings-section" id="ss-companies">
+        <h3>Companies</h3>
+        <div class="desc">Register entities or partner companies. Useful for multi-site deployments and asset ownership tracking.</div>
+        <div style="display:flex;justify-content:flex-end;margin-bottom:14px">
+          <button class="btn btn-primary btn-sm" onclick="compAdd()"><i class="ti ti-plus"></i> Add Company</button>
+        </div>
+        <div class="tw"><table class="cfg-table">
+          <thead><tr><th>Company</th><th>Email</th><th>Phone</th><th>Assets</th><th>Users</th><th>Actions</th></tr></thead>
+          <tbody id="comp-body"></tbody>
+        </table></div>
+      </div>
+
+      <!-- ── DEPRECIATION ── -->
+      <div class="settings-section" id="ss-depreciation">
+        <h3>Depreciation</h3>
+        <div class="desc">Configure depreciation methods and rates. Applied per asset category to compute current book value.</div>
+        <div style="display:flex;justify-content:flex-end;margin-bottom:14px">
+          <button class="btn btn-primary btn-sm" onclick="deprAdd()"><i class="ti ti-plus"></i> Add Method</button>
+        </div>
+        <div class="tw"><table class="cfg-table">
+          <thead><tr><th>Name</th><th>Method</th><th>Rate / Years</th><th>Applies To</th><th>Assets Using</th><th>Actions</th></tr></thead>
+          <tbody id="depr-body"></tbody>
+        </table></div>
+        <div style="margin-top:20px;padding:16px;background:var(--blue-lt);border:1px solid var(--blue-bd);border-radius:var(--rsm)">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px"><i class="ti ti-info-circle" style="color:var(--blue)"></i><strong style="font-size:13px;color:var(--blue)">How Depreciation Works</strong></div>
+          <div style="font-size:12px;color:var(--muted);line-height:1.6">Assets are assigned a depreciation method at registration. The system uses the purchase date and cost to compute the current book value. <strong>Straight-Line</strong> reduces value evenly each year. <strong>Declining Balance</strong> applies a fixed percentage to the remaining value. <strong>Sum-of-Years</strong> front-loads depreciation.</div>
+        </div>
+      </div>
+
+    </div><!-- /settings-panel -->
+  </div><!-- /settings-layout -->
+</div><!-- /page-wrap -->
+
+<!-- ══════════════════════════════════════
+     INVITE USER MODAL  (3-step flow)
+══════════════════════════════════════ -->
+<div class="ov" id="inviteOv" onclick="bgClose(event,'inviteOv')">
+  <div class="modal modal-lg">
+    <div class="mhd">
+      <div class="mhd-l">
+        <div class="m-ico" id="invIco"><i class="ti ti-user-plus"></i></div>
+        <div>
+          <div class="m-title" id="invTitle">Invite New User</div>
+          <div class="m-sub" id="invSub">Create an account and send an invitation</div>
+        </div>
+      </div>
+      <button class="close-btn" onclick="closeOv('inviteOv')"><i class="ti ti-x"></i></button>
     </div>
+
+    <div class="mbody">
+
+      <!-- Step progress -->
+      <div class="step-pills" id="inv-step-pills">
+        <div class="step-pill active-step" id="pill-1">1 · Account Details</div>
+        <div class="step-pill" id="pill-2">2 · Send Invitation</div>
+        <div class="step-pill" id="pill-3">3 · Done</div>
+      </div>
+
+      <!-- ── Step 1: Create account ── -->
+      <div class="invite-step active" id="inv-step-1">
+        <div class="fgrid">
+          <div class="fg">
+            <label>First Name</label>
+            <input type="text" class="fi" id="inv-first" placeholder="e.g. Sarah"/>
+          </div>
+          <div class="fg">
+            <label>Last Name</label>
+            <input type="text" class="fi" id="inv-last" placeholder="e.g. Nakato"/>
+          </div>
+          <div class="fg full">
+            <label>Email Address</label>
+            <input type="email" class="fi" id="inv-email" placeholder="user@example.com"/>
+          </div>
+          <div class="fg">
+            <label>Role</label>
+            <select class="fi" id="inv-role">
+              <option value="">Select role</option>
+              <option>Administrator</option>
+              <option>System Manager</option>
+              <option>Technician</option>
+              <option>Viewer</option>
+              <option>Department Head</option>
+            </select>
+          </div>
+          <div class="fg">
+            <label>Department</label>
+            <select class="fi" id="inv-dept">
+              <option value="">Select department</option>
+            </select>
+          </div>
+          <div class="fg full">
+            <label>Temporary Password</label>
+            <input type="password" class="fi" id="inv-pwd" placeholder="Temporary password for account"/>
+          </div>
+          <div class="fg full">
+            <label>Confirm Password</label>
+            <input type="password" class="fi" id="inv-cpwd" placeholder="Repeat temporary password"/>
+          </div>
+        </div>
+        <div style="margin-top:6px;padding:12px;background:var(--blue-lt);border:1px solid var(--blue-bd);border-radius:var(--rsm);font-size:12px;color:var(--muted);line-height:1.6">
+          <i class="ti ti-info-circle" style="color:var(--blue);margin-right:5px"></i>
+          The account will be created immediately. The user will be asked to change their password when they first log in.
+        </div>
+      </div>
+
+      <!-- ── Step 2: Send invitation ── -->
+      <div class="invite-step" id="inv-step-2">
+        <div style="padding:14px;background:var(--green-lt);border:1px solid var(--green-bd);border-radius:var(--rsm);margin-bottom:18px;display:flex;align-items:center;gap:10px">
+          <i class="ti ti-circle-check" style="color:var(--green);font-size:20px;flex-shrink:0"></i>
+          <div>
+            <div style="font-size:13px;font-weight:600;color:var(--green)">Account created successfully</div>
+            <div style="font-size:12px;color:var(--muted);margin-top:2px">Now send the user an invitation email to activate access.</div>
+          </div>
+        </div>
+
+        <div class="fg" style="margin-bottom:14px">
+          <label>Invitation Email Preview</label>
+          <div style="padding:14px;background:var(--bg);border:1px solid var(--border);border-radius:var(--rsm);font-size:12px;line-height:1.8;color:var(--muted)">
+            <strong style="color:var(--text)">To:</strong> <span id="inv-email-preview">—</span><br/>
+            <strong style="color:var(--text)">Subject:</strong> You've been invited to the Asset Management system<br/><br/>
+            Hi <span id="inv-name-preview">—</span>, you have been added as a <span id="inv-role-preview" style="color:var(--blue);font-weight:600">—</span>.<br/><br/>
+            Click the link below to accept your invitation and log in with the temporary credentials provided by the administrator.<br/><br/>
+            <span style="color:var(--blue)" id="inv-login-url">→ /login</span>
+          </div>
+        </div>
+
+        <div class="fg">
+          <label>Personal Note (optional)</label>
+          <textarea class="fi" rows="2" id="inv-note" placeholder="Add a short note to include in the invitation email..."></textarea>
+        </div>
+      </div>
+
+      <!-- ── Step 3: Done ── -->
+      <div class="invite-step" id="inv-step-3">
+        <div class="success-state">
+          <div class="s-ico"><i class="ti ti-send"></i></div>
+          <h4>Invitation Sent!</h4>
+          <p>An invitation email has been sent to <strong id="inv-done-email">—</strong>.<br/>
+          They will be prompted to set a permanent password on first login.</p>
+          <div class="redirect-bar">
+            <i class="ti ti-loader-2" style="animation:spin .9s linear infinite"></i>
+            <span>Returning to User Access in <strong id="redirect-count">2</strong>s…</span>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /mbody -->
+
+    <div class="mft" id="inv-footer">
+      <button class="btn btn-ghost" onclick="closeOv('inviteOv')">Cancel</button>
+      <button class="btn btn-primary" id="inv-next-btn" onclick="inviteNext()">
+        <i class="ti ti-arrow-right"></i> Create Account
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Generic cfg modal -->
+<div class="ov" id="cfgOv" onclick="bgClose(event,'cfgOv')">
+  <div class="modal">
+    <div class="mhd">
+      <div class="mhd-l">
+        <div class="m-ico" id="cfgIco"><i class="ti ti-plus" id="cfgIcoI" style="color:var(--blue)"></i></div>
+        <div><div class="m-title" id="cfgTitle">Add Item</div><div class="m-sub" id="cfgSub"></div></div>
+      </div>
+      <button class="close-btn" onclick="closeOv('cfgOv')"><i class="ti ti-x"></i></button>
+    </div>
+    <div class="mbody" id="cfgBody"></div>
+    <div class="mft">
+      <button class="btn btn-ghost" onclick="closeOv('cfgOv')">Cancel</button>
+      <button class="btn btn-primary" id="cfgSaveBtn"><i class="ti ti-check"></i> Save</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast-wrap" id="toastWrap"></div>
+<style>@keyframes spin{to{transform:rotate(360deg)}}</style>
+
+
 
     <!-- Profile -->
     <div class="page" id="page-profile">
@@ -814,7 +1266,7 @@ textarea.fi{resize:vertical;min-height:70px;}
         <div class="fg"><label>Tel No.</label><input type="text" id="fmAssignedTel"/></div>
         <hr class="fg-divider"/>
         <div class="fg-section-label">Location &amp; Status</div>
-        <div class="fg"><label>Store *</label><select class="fi" id="fmStore"></select></div>
+        <div class="fg"><label>Facility *</label><select class="fi" id="fmFacility"></select></div>
         <div class="fg"><label>Category</label><select class="fi" id="fmCategory"></select></div>
         <div class="fg"><label>Status</label>
           <select class="fi" id="fmStatus"><option>Active</option><option>Maintenance</option><option>Inactive</option><option>In Storage</option></select>
@@ -866,23 +1318,23 @@ textarea.fi{resize:vertical;min-height:70px;}
   </div>
 </div>
 
-<!-- STORE -->
-<div class="ov" id="storeOv" onclick="bgClose(event,'storeOv')">
+<!-- Facility -->
+<div class="ov" id="FacilityOv" onclick="bgClose(event,'FacilityOv')">
   <div class="modal sm">
     <div class="mhd">
-      <div class="mhd-l"><div class="m-ico" style="background:var(--teal-lt)"><i class="ti ti-building-hospital" style="color:var(--teal)"></i></div><div><div class="m-title" id="storeModalTitle">Add Store</div><div class="m-sub">Register a new store location</div></div></div>
-      <button class="close-btn" onclick="closeOv('storeOv')"><i class="ti ti-x"></i></button>
+      <div class="mhd-l"><div class="m-ico" style="background:var(--teal-lt)"><i class="ti ti-building-hospital" style="color:var(--teal)"></i></div><div><div class="m-title" id="FacilityModalTitle">Add Facility</div><div class="m-sub">Register a new Facility location</div></div></div>
+      <button class="close-btn" onclick="closeOv('FacilityOv')"><i class="ti ti-x"></i></button>
     </div>
     <div class="mbody">
-      <input type="hidden" id="storeEditId"/>
-      <div class="fg" style="margin-bottom:12px"><label>Store Name *</label><input type="text" id="snName" placeholder="e.g. Gulu Regional Hospital"/></div>
+      <input type="hidden" id="FacilityEditId"/>
+      <div class="fg" style="margin-bottom:12px"><label>Facility Name *</label><input type="text" id="snName" placeholder="e.g. Gulu Regional Hospital"/></div>
       <div class="fg" style="margin-bottom:12px"><label>Location / District *</label><input type="text" id="snHosp" placeholder="e.g. Gulu City"/></div>
-      <div class="fg" style="margin-bottom:12px"><label>Contact Person *</label><input type="text" id="snContact" placeholder="Store manager name"/></div>
+      <div class="fg" style="margin-bottom:12px"><label>Contact Person *</label><input type="text" id="snContact" placeholder="Facility manager name"/></div>
       <div class="fg"><label>Phone *</label><input type="text" id="snPhone" placeholder="+256 …"/></div>
     </div>
     <div class="mft">
-      <button class="btn btn-ghost" onclick="closeOv('storeOv')">Cancel</button>
-      <button class="btn btn-primary" onclick="saveStore()"><i class="ti ti-check"></i> Save Store</button>
+      <button class="btn btn-ghost" onclick="closeOv('FacilityOv')">Cancel</button>
+      <button class="btn btn-primary" onclick="saveFacility()"><i class="ti ti-check"></i> Save Facility</button>
     </div>
   </div>
 </div>
@@ -975,6 +1427,94 @@ textarea.fi{resize:vertical;min-height:70px;}
   </div>
 </div>
 
+
+
+<!-- DISPATCH ASSET -->
+<div class="ov" id="dispatchOv" onclick="bgClose(event,'dispatchOv')">
+  <div class="modal">
+    <div class="mhd">
+      <div class="mhd-l">
+        <div class="m-ico" style="background:var(--purple-lt)">
+          <i class="ti ti-send" style="color:var(--purple)"></i>
+        </div>
+        <div>
+          <div class="m-title">Dispatch Asset</div>
+          <div class="m-sub">Transfer asset and record movement</div>
+        </div>
+      </div>
+      <button class="close-btn" onclick="closeOv('dispatchOv')"><i class="ti ti-x"></i></button>
+    </div>
+    <div class="mbody">
+      <div class="fgrid">
+        <div class="fg-section-label full">Asset &amp; Transfer</div>
+
+        <div class="fg full">
+          <label>Asset *</label>
+          <select class="fi" id="disp-asset"></select>
+          <div id="disp-asset-info"></div>
+        </div>
+
+        <div class="fg full">
+          <label>Destination Facility *</label>
+          <select class="fi" id="disp-to-Facility"></select>
+        </div>
+
+        <div class="fg">
+          <label>Transfer Date *</label>
+          <input type="date" id="disp-date"/>
+        </div>
+
+        <div class="fg">
+          <label>Authorised By *</label>
+          <input type="text" id="disp-by" placeholder="Your full name"/>
+        </div>
+
+        <div class="fg full">
+          <label>Reason for Transfer *</label>
+          <select class="fi" id="disp-reason">
+            <option value="">— Select reason —</option>
+            <option>Initial Deployment</option>
+            <option>Redistribution</option>
+            <option>Maintenance</option>
+            <option>Return After Service</option>
+            <option>Emergency Transfer</option>
+            <option>Upgrade Replacement</option>
+            <option>Donation</option>
+          </select>
+        </div>
+
+        <div class="fg-section-label full">New Assignment at Destination (optional)</div>
+
+        <div class="fg">
+          <label>Assign To</label>
+          <input type="text" id="disp-assign-to" placeholder="Person's name"/>
+        </div>
+
+        <div class="fg">
+          <label>Department</label>
+          <input type="text" id="disp-dept" placeholder="e.g. ICU"/>
+        </div>
+
+        <div class="fg">
+          <label>Phone</label>
+          <input type="text" id="disp-tel" placeholder="+256 …"/>
+        </div>
+
+        <div class="fg">
+          <label>Notes</label>
+          <input type="text" id="disp-notes" placeholder="Any remarks…"/>
+        </div>
+      </div>
+    </div>
+    <div class="mft">
+      <button class="btn btn-ghost" onclick="closeOv('dispatchOv')">Cancel</button>
+      <button class="btn btn-primary" onclick="saveDispatch()">
+        <i class="ti ti-send"></i> Confirm Dispatch
+      </button>
+    </div>
+  </div>
+</div>
+
 <!-- SCAN / VERIFY -->
 <div class="ov" id="scanOv" onclick="bgClose(event,'scanOv')">
   <div class="modal" style="width:680px;max-width:96vw">
@@ -1043,10 +1583,9 @@ const API = {
       });
       if (res.status === 401) {
         localStorage.removeItem("authToken");
-        // Optionally redirect: window.location.href = "auth.html";
         toast("Session expired – please log in again.", "error");
-setTimeout(() => window.location.href = "auth.html", 1200);
-return null;
+        setTimeout(() => window.location.href = "auth.html", 1200);
+        return null;
       }
       if (res.status === 204) return {};          // No Content
       if (!res.ok) {
@@ -1100,12 +1639,12 @@ const AccessoryAPI = {
   delete:   (id)          => API.delete(`/accessories/${id}/`),
 };
 
-const StoreAPI = {
-  getAll:   () => API.get("/stores/"),
-  getOne:   (id) => API.get(`/stores/${id}/`),
-  create:   (data) => API.post("/stores/", data),
-  update:   (id, data) => API.put(`/stores/${id}/`, data),
-  delete:   (id) => API.delete(`/stores/${id}/`),
+const FacilityAPI = {
+  getAll:   () => API.get("/Facilities/"),
+  getOne:   (id) => API.get(`/Facilities/${id}/`),
+  create:   (data) => API.post("/Facilities/", data),
+  update:   (id, data) => API.put(`/Facilities/${id}/`, data),
+  delete:   (id) => API.delete(`/Facilities/${id}/`),
 };
 
 const AlertAPI = {
@@ -1139,6 +1678,14 @@ const UserAPI = {
 const CategoryAPI = {
   getAll: () => API.get("/categories/"),
 };
+// ── extended Categories endpoints (top-level categories + device-type subtypes) ──
+CategoryAPI.create        = (data)      => API.post("/categories/", data);
+CategoryAPI.update        = (id, data)  => API.put(`/categories/${id}/`, data);
+CategoryAPI.delete        = (id)        => API.delete(`/categories/${id}/`);
+CategoryAPI.getSubtypes   = (catId)     => API.get(`/categories/${catId}/subtypes/`);
+CategoryAPI.createSubtype = (catId, d)  => API.post(`/categories/${catId}/subtypes/`, d);
+CategoryAPI.updateSubtype = (catId, id, d) => API.put(`/categories/${catId}/subtypes/${id}/`, d);
+CategoryAPI.deleteSubtype = (catId, id) => API.delete(`/categories/${catId}/subtypes/${id}/`);
 
 const SupplierAPI = {
   getAll:  () => API.get("/suppliers/"),
@@ -1162,13 +1709,29 @@ const VerifyAPI = {
   markVerified: (id) => API.patch(`/assets/${id}/`, { verified: true }),
 };
 
+// ── new Settings service modules ──
+const CustomFieldAPI  = { getAll:()=>API.get("/custom-fields/"),        create:(d)=>API.post("/custom-fields/",d),        delete:(id)=>API.delete(`/custom-fields/${id}/`) };
+const StatusLabelAPI  = { getAll:()=>API.get("/status-labels/"),        create:(d)=>API.post("/status-labels/",d),        delete:(id)=>API.delete(`/status-labels/${id}/`) };
+const AssetModelAPI   = { getAll:()=>API.get("/asset-models/"),         create:(d)=>API.post("/asset-models/",d),         delete:(id)=>API.delete(`/asset-models/${id}/`) };
+const ManufacturerAPI = { getAll:()=>API.get("/manufacturers/"),        create:(d)=>API.post("/manufacturers/",d),        delete:(id)=>API.delete(`/manufacturers/${id}/`) };
+const DepartmentAPI   = { getAll:()=>API.get("/departments/"),          create:(d)=>API.post("/departments/",d),          delete:(id)=>API.delete(`/departments/${id}/`) };
+const LocationAPI     = { getAll:()=>API.get("/locations/"),            create:(d)=>API.post("/locations/",d),            delete:(id)=>API.delete(`/locations/${id}/`) };
+const CompanyAPI      = { getAll:()=>API.get("/companies/"),            create:(d)=>API.post("/companies/",d),            delete:(id)=>API.delete(`/companies/${id}/`) };
+const DepreciationAPI = { getAll:()=>API.get("/depreciation-methods/"), create:(d)=>API.post("/depreciation-methods/",d), delete:(id)=>API.delete(`/depreciation-methods/${id}/`) };
+const InvitationAPI   = { getAll:()=>API.get("/invitations/"), resend:(id)=>API.post(`/invitations/${id}/resend/`,{}), revoke:(id)=>API.delete(`/invitations/${id}/`) };
+const SettingsAPI = {
+  getGeneral:()=>API.get("/settings/general/"),             saveGeneral:(d)=>API.put("/settings/general/",d),
+  getNotifications:()=>API.get("/settings/notifications/"), saveNotifications:(d)=>API.put("/settings/notifications/",d),
+  getBackupStatus:()=>API.get("/settings/backup-status/"),
+};
+
 // ===================== UI STATE =====================
 let curPage = "dashboard";
 let _delTgt = null;
 let _verifyCurrentItem = null;
 let alertFilter = "all";
 let _allAlerts = [];
-let _storesCache = [];
+let _FacilitiesCache = [];
 let _categoriesCache = [];
 let _usersCache = [];
 let _suppliersCache = [];
@@ -1176,12 +1739,17 @@ let _chartsMap = {};
 let VERIFY_PAGE = 1;
 const PAGE_SIZE = 10;
 
+// Settings extended state
+let CFG = { customFields:[], statusLabels:[], assetModels:[], categories:[], categorySubtypes:{}, manufacturers:[], departments:[], locations:[], companies:[], depreciation:[], invitations:[] };
+let activeCat = null;
+let inviteStep = 1;
+
 // Per-page state
 const PAGE_STATE = {
-  assets: { page: 1, search: "", category: "", store: "", status: "", condition: "" },
-  components: { page: 1, search: "", category: "", store: "", status: "", condition: "" },
-  consumables: { page: 1, search: "", category: "", store: "", status: "", condition: "" },
-  accessories: { page: 1, search: "", category: "", store: "", status: "", condition: "" },
+  assets: { page: 1, search: "", category: "", Facility: "", status: "", condition: "" },
+  components: { page: 1, search: "", category: "", Facility: "", status: "", condition: "" },
+  consumables: { page: 1, search: "", category: "", Facility: "", status: "", condition: "" },
+  accessories: { page: 1, search: "", category: "", Facility: "", status: "", condition: "" },
 };
 
 // ===================== HELPERS =====================
@@ -1263,6 +1831,16 @@ function paginationBar(page, total, perPage, onPrev, onNext) {
     </div>`;
 }
 
+// ── Settings-specific helpers ──
+async function fetchListSafe(getter, label) {
+  const data = await getter();
+  if (data === null) { toast(`Could not load ${label}`, "error"); return []; }
+  return Array.isArray(data) ? data : (data?.results || []);
+}
+function cfgActBtns(editFn, delFn) {
+  return `<div class="cfg-actions"><button class="cfg-act e" onclick="${editFn}" title="Edit"><i class="ti ti-pencil"></i></button><button class="cfg-act d" onclick="${delFn}" title="Delete"><i class="ti ti-trash"></i></button></div>`;
+}
+
 // ===================== NAV =====================
 async function navigate(page) {
   if (curPage === page) return;
@@ -1283,8 +1861,11 @@ async function navigate(page) {
     components: () => renderInventoryPage("components"),
     consumables: () => renderInventoryPage("consumables"),
     accessories: () => renderInventoryPage("accessories"),
+    tracking:  renderTrackingPage,
+    movements: renderMovementsPage,
+    dispatch:  renderDispatchPage,
     verify: renderVerifyPage,
-    stores: renderStoresPage,
+    Facilities: renderFacilitiesPage,
     alerts: renderAlertsPage,
     settings: renderSettingsPage,
     profile: renderProfilePage,
@@ -1304,7 +1885,7 @@ function setBreadcrumb(page) {
   const icons = {
     dashboard: "ti-layout-dashboard", assets: "ti-device-laptop",
     components: "ti-circuit-board", consumables: "ti-package", accessories: "ti-plug",
-    verify: "ti-scan", stores: "ti-building-hospital", alerts: "ti-alert-triangle",
+    verify: "ti-scan", Facilities: "ti-building-hospital", alerts: "ti-alert-triangle",
     settings: "ti-settings", profile: "ti-user-circle",
     "account-settings": "ti-settings-2", security: "ti-shield-lock",
     maintenance_overview: "ti-tool", maintenance_scheduled: "ti-calendar-event",
@@ -1322,15 +1903,14 @@ function gotoPage(p) { navigate(p); closeAllDD(); }
 // ===================== DASHBOARD =====================
 async function loadDashboard() {
   document.getElementById("dash-activity").innerHTML = `<div class="loading-row"><i class="ti ti-loader-2"></i></div>`;
-  document.getElementById("dash-store-bars").innerHTML = `<div class="loading-row"><i class="ti ti-loader-2"></i></div>`;
+  document.getElementById("dash-Facility-bars").innerHTML = `<div class="loading-row"><i class="ti ti-loader-2"></i></div>`;
 
-  const [overview, stores, assets] = await Promise.all([
+  const [overview, Facilities, assets] = await Promise.all([
     DashboardAPI.getOverview(),
-    StoreAPI.getAll(),
+    FacilityAPI.getAll(),
     AssetAPI.getAll(),
   ]);
 
-  // KPIs
   const kData = overview || {};
   const allAssets = (Array.isArray(assets) ? assets : assets?.results || []);
   const total  = kData.total  ?? allAssets.length;
@@ -1345,7 +1925,6 @@ async function loadDashboard() {
   document.getElementById("ps-total").textContent   = total;
   document.getElementById("ps-active").textContent  = active;
 
-  // Recent activity
   const recent = allAssets.slice().sort((a, b) => new Date(b.created_at || b.date || 0) - new Date(a.created_at || a.date || 0)).slice(0, 6);
   const actEl = document.getElementById("dash-activity");
   if (!recent.length) {
@@ -1361,29 +1940,26 @@ async function loadDashboard() {
       </div>`).join("");
   }
 
-  // Store bars
-  const storeList = Array.isArray(stores) ? stores : (stores?.results || []);
-  _storesCache = storeList;
-  document.getElementById("nb-stores").textContent = storeList.length;
-  const stBarEl = document.getElementById("dash-store-bars");
-  if (!storeList.length) {
-    stBarEl.innerHTML = `<div style="color:var(--muted);font-size:12px">No stores available</div>`;
+  const FacilityList = Array.isArray(Facilities) ? Facilities : (Facilities?.results || []);
+  _FacilitiesCache = FacilityList;
+  document.getElementById("nb-Facilities").textContent = FacilityList.length;
+  const stBarEl = document.getElementById("dash-Facility-bars");
+  if (!FacilityList.length) {
+    stBarEl.innerHTML = `<div style="color:var(--muted);font-size:12px">No Facilities available</div>`;
   } else {
-    stBarEl.innerHTML = storeList.slice(0, 6).map(s => {
+    stBarEl.innerHTML = FacilityList.slice(0, 6).map(s => {
       const cnt = s.item_count ?? 0;
-      const pct = Math.min((cnt / Math.max(...storeList.map(x => x.item_count ?? 1), 1)) * 100, 100);
+      const pct = Math.min((cnt / Math.max(...FacilityList.map(x => x.item_count ?? 1), 1)) * 100, 100);
       return `<div class="sbar-item"><div class="sbar-row"><div class="sbar-lbl"><i class="ti ti-building-hospital" style="color:var(--blue)"></i>${s.name}</div><div class="sbar-cnt">${cnt} items</div></div><div class="bar-track"><div class="bar-fill" style="width:${pct}%;background:var(--blue)"></div></div></div>`;
     }).join("");
   }
 
-  // Status summary
   document.getElementById("dash-status").innerHTML = [
     { label: "Active", count: active, color: "var(--green)" },
     { label: "Maintenance", count: maint, color: "var(--orange)" },
-    { label: "Inactive/Stored", count: fault, color: "var(--red)" },
+    { label: "Inactive/Facilityd", count: fault, color: "var(--red)" },
   ].map(s => `<div style="display:flex;justify-content:space-between;align-items:center"><span>${s.label}</span><span style="font-weight:700;color:${s.color}">${s.count}</span></div>`).join("");
 
-  // Badges
   updateNavBadges(total, active, maint, fault);
 }
 
@@ -1407,10 +1983,9 @@ async function renderInventoryPage(sk) {
   if (!el) return;
   el.innerHTML = buildInventoryShell(sk);
 
-  // Load stores & categories for filters/forms
-  if (!_storesCache.length) {
-    const s = await StoreAPI.getAll();
-    _storesCache = Array.isArray(s) ? s : (s?.results || []);
+  if (!_FacilitiesCache.length) {
+    const s = await FacilityAPI.getAll();
+    _FacilitiesCache = Array.isArray(s) ? s : (s?.results || []);
   }
   if (!_categoriesCache.length) {
     const c = await CategoryAPI.getAll();
@@ -1428,7 +2003,7 @@ function buildInventoryShell(sk) {
       <i class="ti ${icons[s]}"></i>${labels[s]}
     </div>`).join("");
 
-  const storeOpts = _storesCache.map(s => `<option value="${s.id}">${s.name}</option>`).join("");
+  const FacilityOpts = _FacilitiesCache.map(s => `<option value="${s.id}">${s.name}</option>`).join("");
   const catOpts = _categoriesCache.map(c => `<option value="${c.id}">${c.name}</option>`).join("");
 
   return `
@@ -1452,7 +2027,7 @@ function buildInventoryShell(sk) {
         </div>
         <div class="filter-group">
           <div class="filter-group-label"><i class="ti ti-adjustments-horizontal"></i> Filter by</div>
-          <select onchange="applyFilter('${sk}','store',this.value)"><option value="">All Stores</option>${storeOpts}</select>
+          <select onchange="applyFilter('${sk}','Facility',this.value)"><option value="">All Facilities</option>${FacilityOpts}</select>
           <select onchange="applyFilter('${sk}','status',this.value)"><option value="">All Status</option><option>Active</option><option>Maintenance</option><option>Inactive</option><option>In Storage</option></select>
           <select onchange="applyFilter('${sk}','condition',this.value)"><option value="">All Conditions</option><option>New</option><option>Good</option><option>Fair</option><option>Poor</option></select>
         </div>
@@ -1489,10 +2064,9 @@ async function drawInventoryTable(sk) {
 
   tbEl.innerHTML = loadingRow(9);
 
-  // Build query string
   const params = new URLSearchParams();
   if (state.search)    params.set("search",    state.search);
-  if (state.store)     params.set("store",     state.store);
+  if (state.Facility)     params.set("Facility",     state.Facility);
   if (state.status)    params.set("status",    state.status);
   if (state.condition) params.set("condition", state.condition);
   params.set("page", state.page);
@@ -1509,17 +2083,15 @@ async function drawInventoryTable(sk) {
   const rows   = Array.isArray(data) ? data : (data?.results || []);
   const total  = data?.count ?? rows.length;
 
-  // Sub-label
   const subEl = document.getElementById(`sub-${sk}`);
   if (subEl) subEl.textContent = `${total} total record${total !== 1 ? "s" : ""}`;
 
-  // Header
   const isA  = sk === "assets";
   const isAc = sk === "accessories";
   const isCs = sk === "consumables";
   const isC  = sk === "components";
   const thCols = ["Name", "Engraving", ...(isA || isAc ? ["Serial"] : []), ...(!isA && !isAc ? ["Qty"] : []),
-    "Store", "Assigned To", "Status", "Condition", "Date", "Actions"];
+    "Facility", "Assigned To", "Status", "Condition", "Date", "Actions"];
   if (thEl) thEl.innerHTML = thCols.map(c => `<th>${c}</th>`).join("");
 
   if (!rows.length) {
@@ -1528,7 +2100,6 @@ async function drawInventoryTable(sk) {
     tbEl.innerHTML = rows.map(item => buildInventoryRow(sk, item)).join("");
   }
 
-  // Pagination
   const pgEl = document.getElementById(`pg-${sk}`);
   if (pgEl) {
     pgEl.innerHTML = paginationBar(
@@ -1561,7 +2132,7 @@ function buildInventoryRow(sk, item) {
     <td>${item.engraving_no ? `<span class="engrave-tag"><i class="ti ti-hash"></i>${item.engraving_no}</span>` : "—"}</td>
     ${(isA || isAc) ? `<td><code style="font-size:11px;background:var(--bg);padding:2px 7px;border-radius:4px;font-family:var(--mono)">${item.serial || "—"}</code></td>` : ""}
     ${(!isA && !isAc) ? `<td><span style="font-family:var(--mono);font-weight:700">${item.qty ?? item.quantity ?? "—"}</span>${item.unit ? ` <span style="font-size:11px;color:var(--muted)">${item.unit}</span>` : ""}</td>` : ""}
-    <td>${item.store_name || item.store || "—"}</td>
+    <td>${item.Facility_name || item.Facility || "—"}</td>
     <td>
       ${assigned !== "—" ? `<div class="person-cell"><div class="person-name">${assigned}</div>${assignedTitle ? `<div class="person-title">${assignedTitle}</div>` : ""}${assignedTel ? `<div class="person-tel"><i class="ti ti-phone"></i>${assignedTel}</div>` : ""}</div>` : `<span style="color:var(--muted);font-size:12px">—</span>`}
     </td>
@@ -1583,8 +2154,8 @@ function changeInventoryPage(sk, dir) {
 
 // ===================== ASSET FORM =====================
 async function openAdd(sk) {
-  if (!_storesCache.length) {
-    const s = await StoreAPI.getAll(); _storesCache = Array.isArray(s) ? s : (s?.results || []);
+  if (!_FacilitiesCache.length) {
+    const s = await FacilityAPI.getAll(); _FacilitiesCache = Array.isArray(s) ? s : (s?.results || []);
   }
   if (!_categoriesCache.length) {
     const c = await CategoryAPI.getAll(); _categoriesCache = Array.isArray(c) ? c : (c?.results || []);
@@ -1595,15 +2166,15 @@ async function openAdd(sk) {
   document.getElementById("fmSaveLbl").textContent = "Save";
   document.getElementById("fmDate").value = new Date().toISOString().slice(0, 10);
   _prepareFormFields(sk);
-  _fillStoreSelect();
+  _fillFacilitieselect();
   _fillCategorySelect();
   _clearFormInputs();
   openOv("formOv");
 }
 
 async function openEditItem(sk, id) {
-  if (!_storesCache.length) {
-    const s = await StoreAPI.getAll(); _storesCache = Array.isArray(s) ? s : (s?.results || []);
+  if (!_FacilitiesCache.length) {
+    const s = await FacilityAPI.getAll(); _FacilitiesCache = Array.isArray(s) ? s : (s?.results || []);
   }
   if (!_categoriesCache.length) {
     const c = await CategoryAPI.getAll(); _categoriesCache = Array.isArray(c) ? c : (c?.results || []);
@@ -1617,10 +2188,9 @@ async function openEditItem(sk, id) {
   document.getElementById("fmTitle").textContent = `Edit ${sk.slice(0, -1).charAt(0).toUpperCase() + sk.slice(1, -1)}`;
   document.getElementById("fmSaveLbl").textContent = "Update";
   _prepareFormFields(sk);
-  _fillStoreSelect(item.store || item.store_id);
+  _fillFacilitieselect(item.Facility || item.Facility_id);
   _fillCategorySelect(item.category || item.category_id);
 
-  // Populate fields
   document.getElementById("fmName").value          = item.name || "";
   document.getElementById("fmManufacturer").value  = item.manufacturer || "";
   document.getElementById("fmModel").value         = item.model || "";
@@ -1651,9 +2221,9 @@ function _prepareFormFields(sk) {
   show("fmSpecsWrap",  isC);
 }
 
-function _fillStoreSelect(selected) {
-  const sel = document.getElementById("fmStore");
-  sel.innerHTML = `<option value="">— Select store —</option>` + _storesCache.map(s =>
+function _fillFacilitieselect(selected) {
+  const sel = document.getElementById("fmFacility");
+  sel.innerHTML = `<option value="">— Select Facility —</option>` + _FacilitiesCache.map(s =>
     `<option value="${s.id}" ${selected == s.id ? "selected" : ""}>${s.name}</option>`).join("");
 }
 
@@ -1693,7 +2263,7 @@ async function saveAsset() {
     assigned_name: document.getElementById("fmAssignedName").value.trim(),
     assigned_title:document.getElementById("fmAssignedTitle").value.trim(),
     assigned_tel:  document.getElementById("fmAssignedTel").value.trim(),
-    store:         document.getElementById("fmStore").value || null,
+    Facility:         document.getElementById("fmFacility").value || null,
     category:      document.getElementById("fmCategory").value || null,
     status:        document.getElementById("fmStatus").value,
     condition:     document.getElementById("fmCond").value,
@@ -1845,11 +2415,11 @@ async function renderVerifyPage() {
     return;
   }
   wrap.innerHTML = `<div class="tw"><table>
-    <thead><tr><th>Name / Serial</th><th>Store</th><th>Assigned To</th><th>Status</th><th>Action</th></tr></thead>
+    <thead><tr><th>Name / Serial</th><th>Facility</th><th>Assigned To</th><th>Status</th><th>Action</th></tr></thead>
     <tbody>${rows.map(item => `
       <tr>
         <td><div class="acell"><div class="acell-ico" style="background:var(--blue-lt)"><i class="ti ti-device-laptop" style="color:var(--blue)"></i></div><div><div class="acell-name">${item.name}</div><div class="acell-id">${item.serial || "—"}</div></div></div></td>
-        <td>${item.store_name || "—"}</td>
+        <td>${item.Facility_name || "—"}</td>
         <td>${item.assigned_name || "—"}</td>
         <td>${sBadge(item.status || "Active")}</td>
         <td><button class="btn btn-success btn-sm" onclick="markVerified(${item.id},'${(item.serial||"").replace(/'/g,"\\'")}')"><i class="ti ti-circle-check"></i> Verify</button></td>
@@ -1868,7 +2438,6 @@ async function markVerified(id, serial) {
   }
 }
 
-// Scan modal
 function openScan() {
   _verifyCurrentItem = null;
   document.getElementById("manualSerial").value = "";
@@ -1911,7 +2480,7 @@ async function lookupSerial() {
     ["Name", found.name],
     ["Serial", `<code style="font-family:var(--mono)">${found.serial}</code>`],
     ["Engraving", found.engraving_no || "—"],
-    ["Store", found.store_name || "—"],
+    ["Facility", found.Facility_name || "—"],
     ["Assigned To", found.assigned_name || "—"],
     ["Status", sBadge(found.status)],
     ["Condition", cBadge(found.condition)],
@@ -1931,25 +2500,25 @@ async function confirmVerify() {
 
 function stopScan() { closeOv("scanOv"); }
 
-// ===================== STORES =====================
-async function renderStoresPage() {
-  document.getElementById("stores-grid").innerHTML = loadingRow(7);
-  const data = await StoreAPI.getAll();
-  const stores = Array.isArray(data) ? data : (data?.results || []);
-  _storesCache = stores;
-  document.getElementById("nb-stores").textContent = stores.length;
-  document.getElementById("stores-sub").textContent = `${stores.length} stores registered`;
+// ===================== Facilities =====================
+async function renderFacilitiesPage() {
+  document.getElementById("Facilities-grid").innerHTML = loadingRow(7);
+  const data = await FacilityAPI.getAll();
+  const Facilities = Array.isArray(data) ? data : (data?.results || []);
+  _FacilitiesCache = Facilities;
+  document.getElementById("nb-Facilities").textContent = Facilities.length;
+  document.getElementById("Facilities-sub").textContent = `${Facilities.length} Facilities registered`;
 
-  if (!stores.length) {
-    document.getElementById("stores-grid").innerHTML = `<div class="empty-td"><i class="ti ti-building-off"></i>No stores found. Add one!</div>`;
+  if (!Facilities.length) {
+    document.getElementById("Facilities-grid").innerHTML = `<div class="empty-td"><i class="ti ti-building-off"></i>No Facilities found. Add one!</div>`;
     return;
   }
 
-  document.getElementById("stores-grid").innerHTML = `
+  document.getElementById("Facilities-grid").innerHTML = `
     <div class="panel">
       <div class="tw"><table>
-        <thead><tr><th>Store Name</th><th>Location</th><th>Contact Person</th><th>Phone</th><th>Items</th><th>Actions</th></tr></thead>
-        <tbody>${stores.map(s => `
+        <thead><tr><th>Facility Name</th><th>Location</th><th>Contact Person</th><th>Phone</th><th>Items</th><th>Actions</th></tr></thead>
+        <tbody>${Facilities.map(s => `
           <tr>
             <td><div class="acell"><div class="acell-ico" style="background:var(--teal-lt)"><i class="ti ti-building-hospital" style="color:var(--teal)"></i></div><div><div class="acell-name">${s.name}</div><div class="acell-id">${s.id}</div></div></div></td>
             <td>${s.location || s.district || "—"}</td>
@@ -1957,9 +2526,9 @@ async function renderStoresPage() {
             <td style="font-family:var(--mono);font-size:12px">${s.phone || "—"}</td>
             <td><span class="badge b-teal">${s.item_count ?? "—"}</span></td>
             <td><div class="acts">
-              <button class="act v" onclick="viewStore(${s.id})" title="View"><i class="ti ti-eye"></i></button>
-              <button class="act e" onclick="editStore(${s.id})" title="Edit"><i class="ti ti-pencil"></i></button>
-              <button class="act d" onclick="deleteStore(${s.id},'${(s.name||"").replace(/'/g,"\\'")}')"><i class="ti ti-trash"></i></button>
+              <button class="act v" onclick="viewFacility(${s.id})" title="View"><i class="ti ti-eye"></i></button>
+              <button class="act e" onclick="editFacility(${s.id})" title="Edit"><i class="ti ti-pencil"></i></button>
+              <button class="act d" onclick="deleteFacility(${s.id},'${(s.name||"").replace(/'/g,"\\'")}')"><i class="ti ti-trash"></i></button>
             </div></td>
           </tr>`).join("")}
         </tbody>
@@ -1967,9 +2536,9 @@ async function renderStoresPage() {
     </div>`;
 }
 
-async function viewStore(id) {
-  const s = await StoreAPI.getOne(id);
-  if (!s) { toast("Could not load store", "error"); return; }
+async function viewFacility(id) {
+  const s = await FacilityAPI.getOne(id);
+  if (!s) { toast("Could not load Facility", "error"); return; }
   const grid = [["Name",s.name],["Location",s.location||"—"],["Contact",s.contact||"—"],["Phone",s.phone||"—"],["Items",s.item_count??0]]
     .map(([l,v])=>`<div class="vi full"><div class="vi-lbl">${l}</div><div class="vi-val">${v}</div></div>`).join("");
   document.getElementById("vmGrid").innerHTML = grid;
@@ -1977,59 +2546,500 @@ async function viewStore(id) {
   openOv("viewOv");
 }
 
-async function editStore(id) {
-  const s = await StoreAPI.getOne(id);
-  if (!s) { toast("Could not load store", "error"); return; }
-  document.getElementById("storeEditId").value = id;
-  document.getElementById("storeModalTitle").textContent = "Edit Store";
+async function editFacility(id) {
+  const s = await FacilityAPI.getOne(id);
+  if (!s) { toast("Could not load Facility", "error"); return; }
+  document.getElementById("FacilityEditId").value = id;
+  document.getElementById("FacilityModalTitle").textContent = "Edit Facility";
   document.getElementById("snName").value    = s.name || "";
   document.getElementById("snHosp").value    = s.location || s.district || "";
   document.getElementById("snContact").value = s.contact || s.contact_person || "";
   document.getElementById("snPhone").value   = s.phone || "";
-  openOv("storeOv");
+  openOv("FacilityOv");
 }
 
-async function deleteStore(id, name) {
-  if (!confirm(`Delete store "${name}"?`)) return;
-  const res = await StoreAPI.delete(id);
-  if (res !== null) { toast("Store deleted", "info"); renderStoresPage(); }
+async function deleteFacility(id, name) {
+  if (!confirm(`Delete Facility "${name}"?`)) return;
+  const res = await FacilityAPI.delete(id);
+  if (res !== null) { toast("Facility deleted", "info"); renderFacilitiesPage(); }
   else toast("Delete failed", "error");
 }
 
-function openAddStore() {
-  document.getElementById("storeEditId").value = "";
-  document.getElementById("storeModalTitle").textContent = "Add Store";
+function openAddFacility() {
+  document.getElementById("FacilityEditId").value = "";
+  document.getElementById("FacilityModalTitle").textContent = "Add Facility";
   ["snName","snHosp","snContact","snPhone"].forEach(id => { document.getElementById(id).value = ""; });
-  openOv("storeOv");
+  openOv("FacilityOv");
 }
 
-async function saveStore() {
+async function saveFacility() {
   const name    = document.getElementById("snName").value.trim();
   const location= document.getElementById("snHosp").value.trim();
   const contact = document.getElementById("snContact").value.trim();
   const phone   = document.getElementById("snPhone").value.trim();
-  const editId  = document.getElementById("storeEditId").value;
+  const editId  = document.getElementById("FacilityEditId").value;
   if (!name || !location || !contact || !phone) { toast("Please fill all fields", "error"); return; }
 
   const payload = { name, location, contact_person: contact, phone };
   let res;
   if (editId) {
-    res = await StoreAPI.update(editId, payload);
-    if (res) toast(`Store "${name}" updated`, "success");
+    res = await FacilityAPI.update(editId, payload);
+    if (res) toast(`Facility "${name}" updated`, "success");
   } else {
-    res = await StoreAPI.create(payload);
-    if (res) toast(`Store "${name}" added`, "success");
+    res = await FacilityAPI.create(payload);
+    if (res) toast(`Facility "${name}" added`, "success");
   }
-  if (res) { closeOv("storeOv"); renderStoresPage(); }
+  if (res) { closeOv("FacilityOv"); renderFacilitiesPage(); }
   else toast("Save failed", "error");
 }
 
-function exportStores() {
-  if (!_storesCache.length) { toast("No data to export", "info"); return; }
-  const csv = toCSV(_storesCache, ["name","location","contact","phone","item_count"]);
-  downloadFile(csv, `stores_${new Date().toISOString().slice(0,10)}.csv`, "text/csv");
-  toast("Stores exported", "success");
+function exportFacilities() {
+  if (!_FacilitiesCache.length) { toast("No data to export", "info"); return; }
+  const csv = toCSV(_FacilitiesCache, ["name","location","contact","phone","item_count"]);
+  downloadFile(csv, `Facilities_${new Date().toISOString().slice(0,10)}.csv`, "text/csv");
+  toast("Facilities exported", "success");
 }
+
+
+// ── LIVE TRACKING PAGE ──────────────────────────────────────────────
+async function renderTrackingPage() {
+  const el = document.getElementById("page-tracking");
+  if (!el) return;
+  el.innerHTML = `<div class="loading-row"><i class="ti ti-loader-2"></i></div>`;
+  
+  const [assetsData, FacilitiesData] = await Promise.all([
+    AssetAPI.getAll("?page_size=9999"),
+    FacilityAPI.getAll()
+  ]);
+  
+  const assets = Array.isArray(assetsData) ? assetsData : (assetsData?.results || []);
+  const Facilities = Array.isArray(FacilitiesData) ? FacilitiesData : (FacilitiesData?.results || []);
+  
+  // Update nav badge
+  document.getElementById("nb-tracking").textContent = assets.length;
+  
+  el.innerHTML = `
+    <div class="ph">
+      <div class="ph-left">
+        <div class="ph-icon" style="background:var(--green-lt)">
+          <i class="ti ti-map-pin-bolt" style="color:var(--green)"></i>
+        </div>
+        <div>
+          <div class="ph-title">Live Asset Tracking</div>
+          <div class="ph-sub">${assets.length} assets tracked across ${Facilities.length} Facilities</div>
+        </div>
+      </div>
+      <div class="ph-actions">
+        <button class="btn btn-ghost" onclick="exportTracking()">
+          <i class="ti ti-download"></i> Export
+        </button>
+        <button class="btn btn-primary" onclick="openDispatchModal()">
+          <i class="ti ti-send"></i> Dispatch Asset
+        </button>
+      </div>
+    </div>
+
+    <!-- KPI row -->
+    <div class="kpi-row">
+      <div class="kpi">
+        <div class="kpi-icon" style="background:var(--blue-lt)"><i class="ti ti-packages" style="color:var(--blue)"></i></div>
+        <div><div class="kpi-val" style="color:var(--blue)">${assets.length}</div><div class="kpi-lbl">Total Assets</div></div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-icon" style="background:var(--green-lt)"><i class="ti ti-circle-check" style="color:var(--green)"></i></div>
+        <div><div class="kpi-val" style="color:var(--green)">${assets.filter(a=>a.status==="Active"||a.status==="In Use").length}</div><div class="kpi-lbl">In Use</div></div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-icon" style="background:var(--orange-lt)"><i class="ti ti-tool" style="color:var(--orange)"></i></div>
+        <div><div class="kpi-val" style="color:var(--orange)">${assets.filter(a=>a.status==="Maintenance").length}</div><div class="kpi-lbl">Maintenance</div></div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-icon" style="background:var(--purple-lt)"><i class="ti ti-archive" style="color:var(--purple)"></i></div>
+        <div><div class="kpi-val" style="color:var(--purple)">${assets.filter(a=>a.status==="In Storage").length}</div><div class="kpi-lbl">In Storage</div></div>
+      </div>
+    </div>
+
+    <!-- Filter bar + table -->
+    <div class="panel">
+      <div class="fbar">
+        <div class="sw">
+          <i class="ti ti-search"></i>
+          <input type="text" id="track-search" placeholder="Search name, serial, Facility, person…"
+            oninput="filterTrackingTable()" spellcheck="false"/>
+        </div>
+        <select id="track-status" class="fsel" onchange="filterTrackingTable()">
+          <option value="">All Statuses</option>
+          <option>Active</option><option>In Use</option>
+          <option>In Storage</option><option>Maintenance</option><option>Inactive</option>
+        </select>
+        <select id="track-Facility" class="fsel" onchange="filterTrackingTable()">
+          <option value="">All Facilities</option>
+          ${Facilities.map(s=>`<option value="${s.id}">${s.name}</option>`).join("")}
+        </select>
+      </div>
+      <div class="tw">
+        <table>
+          <thead>
+            <tr>
+              <th>Asset</th><th>Facility / Location</th><th>Department</th>
+              <th>Assigned To</th><th>Status</th><th>Condition</th><th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="track-tbody">
+            ${assets.length === 0
+              ? `<tr><td colspan="7" class="empty-td"><i class="ti ti-database-off"></i>No assets found</td></tr>`
+              : assets.map(a => {
+                  const Facility = Facilities.find(s=>s.id===a.Facility||s.id===a.FacilityId);
+                  const assigned = a.assigned_to_name || a.assigned_name || a.assignedTo || "";
+                  const dept = a.department || "";
+                  return `
+                    <tr data-name="${(a.name||"").toLowerCase()}"
+                        data-serial="${(a.serial||"").toLowerCase()}"
+                        data-assigned="${assigned.toLowerCase()}"
+                        data-Facility="${a.Facility||a.FacilityId||""}"
+                        data-status="${a.status||""}">
+                      <td>
+                        <div class="acell">
+                          <div class="acell-ico" style="background:var(--blue-lt)">
+                            <i class="ti ti-package" style="color:var(--blue)"></i>
+                          </div>
+                          <div>
+                            <div class="acell-name">${a.name||"—"}</div>
+                            <div class="acell-id">${a.engraving_no||a.engravingNo||a.serial||"—"}</div>
+                          </div>
+                        </div>
+                      </td>
+                      <td>
+                        <div style="font-weight:600;font-size:12px">${Facility?.name||"—"}</div>
+                        <div style="font-size:11px;color:var(--muted)">${Facility?.location||Facility?.district||""}</div>
+                      </td>
+                      <td>
+                        ${dept
+                          ? `<span class="devtype-tag"><i class="ti ti-sitemap"></i>${dept}</span>`
+                          : `<span style="color:var(--light);font-style:italic;font-size:12px">—</span>`}
+                      </td>
+                      <td>
+                        ${assigned
+                          ? `<div class="person-cell">
+                              <div class="person-name">${assigned}</div>
+                              ${a.assigned_title||a.assignedTitle?`<div class="person-title">${a.assigned_title||a.assignedTitle}</div>`:""}
+                              ${a.assigned_tel||a.assignedTel?`<div class="person-tel"><i class="ti ti-phone"></i>${a.assigned_tel||a.assignedTel}</div>`:""}
+                            </div>`
+                          : `<span style="color:var(--light);font-style:italic;font-size:12px">Unassigned</span>`}
+                      </td>
+                      <td>${sBadge(a.status||"Active")}</td>
+                      <td>${cBadge(a.condition)}</td>
+                      <td>
+                        <div class="acts">
+                          <button class="act v" onclick="openViewItem('assets','${a.id}')" title="View">
+                            <i class="ti ti-eye"></i>
+                          </button>
+                          <button class="act" style="color:var(--purple);border-color:var(--purple-bd);background:var(--purple-lt)"
+                            onclick="openDispatchModal('${a.id}')" title="Dispatch">
+                            <i class="ti ti-send"></i>
+                          </button>
+                        </div>
+                      </td>
+                    </tr>`;
+                }).join("")}
+          </tbody>
+        </table>
+      </div>
+    </div>`;
+}
+
+function filterTrackingTable() {
+  const q      = (document.getElementById("track-search")?.value || "").toLowerCase();
+  const status = document.getElementById("track-status")?.value || "";
+  const Facility  = document.getElementById("track-Facility")?.value  || "";
+  document.querySelectorAll("#track-tbody tr[data-name]").forEach(row => {
+    const matchQ  = !q      || row.dataset.name.includes(q) || row.dataset.serial.includes(q) || row.dataset.assigned.includes(q);
+    const matchSt = !status || row.dataset.status === status;
+    const matchSr = !Facility  || row.dataset.Facility  == Facility;
+    row.style.display = matchQ && matchSt && matchSr ? "" : "none";
+  });
+}
+
+
+// ── MOVEMENT LOG PAGE ──────────────────────────────────────────────
+async function renderMovementsPage() {
+  const el = document.getElementById("page-movements");
+  if (!el) return;
+  el.innerHTML = `<div class="loading-row"><i class="ti ti-loader-2"></i></div>`;
+  
+  const data = await API.get("/movements/");
+  const movements = Array.isArray(data) ? data : (data?.results || []);
+  
+  document.getElementById("nb-movements").textContent = movements.length;
+  
+  el.innerHTML = `
+    <div class="ph">
+      <div class="ph-left">
+        <div class="ph-icon" style="background:var(--purple-lt)">
+          <i class="ti ti-transfer" style="color:var(--purple)"></i>
+        </div>
+        <div>
+          <div class="ph-title">Movement Log</div>
+          <div class="ph-sub">${movements.length} transfer records — full audit trail</div>
+        </div>
+      </div>
+      <div class="ph-actions">
+        <button class="btn btn-ghost" onclick="exportMovements()">
+          <i class="ti ti-download"></i> Export CSV
+        </button>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="fbar">
+        <div class="sw">
+          <i class="ti ti-search"></i>
+          <input type="text" id="mov-search" placeholder="Search by asset, Facility, person, reason…"
+            oninput="filterMovementsTable()" spellcheck="false"/>
+        </div>
+      </div>
+      <div class="tw">
+        <table>
+          <thead>
+            <tr>
+              <th>Reference</th><th>Asset</th><th>From</th><th>To</th>
+              <th>Date</th><th>Authorised By</th><th>Reason</th><th>Status</th><th>Evidence</th>
+            </tr>
+          </thead>
+          <tbody id="mov-tbody">
+            ${movements.length === 0
+              ? `<tr><td colspan="9" class="empty-td"><i class="ti ti-database-off"></i>No movement records yet</td></tr>`
+              : movements.map((m,i) => `
+                <tr>
+                  <td>
+                    <span class="badge b-info" style="font-family:var(--mono);font-size:10px">
+                      REF-MOV-${String(m.id).padStart(4,"0")}
+                    </span>
+                  </td>
+                  <td style="font-weight:600;max-width:160px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">
+                    ${m.asset_name||m.assetName||"—"}
+                  </td>
+                  <td>
+                    <div style="display:flex;align-items:center;gap:5px">
+                      <i class="ti ti-building-hospital" style="font-size:13px;color:var(--muted)"></i>
+                      <span style="font-size:12px">${m.from_Facility||m.from||"—"}</span>
+                    </div>
+                  </td>
+                  <td>
+                    <div style="display:flex;align-items:center;gap:5px">
+                      <i class="ti ti-building-hospital" style="font-size:13px;color:var(--purple)"></i>
+                      <span style="font-size:12px;font-weight:600;color:var(--purple)">${m.to_Facility||m.to||"—"}</span>
+                    </div>
+                  </td>
+                  <td style="font-family:var(--mono);font-size:11px;color:var(--muted)">${m.date||m.transferred_at||"—"}</td>
+                  <td style="font-size:12px">${m.transferred_by||m.by||"—"}</td>
+                  <td>
+                    <span class="devtype-tag" style="font-size:10px">${m.reason||"—"}</span>
+                  </td>
+                  <td><span class="badge b-active"><i class="ti ti-circle-check"></i>Completed</span></td>
+                  <td>
+                    <button class="act v" onclick="viewMovement(${m.id})" title="View evidence">
+                      <i class="ti ti-file-text"></i>
+                    </button>
+                  </td>
+                </tr>`).join("")}
+          </tbody>
+        </table>
+      </div>
+    </div>`;
+}
+
+function filterMovementsTable() {
+  const q = (document.getElementById("mov-search")?.value||"").toLowerCase();
+  document.querySelectorAll("#mov-tbody tr").forEach(row => {
+    row.style.display = !q || row.textContent.toLowerCase().includes(q) ? "" : "none";
+  });
+}
+
+async function exportMovements() {
+  const data = await API.get("/movements/?page_size=9999");
+  const rows = Array.isArray(data) ? data : (data?.results || []);
+  const csv = toCSV(rows, ["id","asset_name","from_Facility","to_Facility","date","transferred_by","reason","notes"]);
+  downloadFile(csv, `movement_log_${new Date().toISOString().slice(0,10)}.csv`, "text/csv");
+  toast("Movement log exported", "success");
+}
+
+async function exportTracking() {
+  const data = await AssetAPI.getAll("?page_size=9999");
+  const rows = Array.isArray(data) ? data : (data?.results || []);
+  const csv  = toCSV(rows, ["name","engraving_no","serial","Facility_name","department","assigned_to_name","assigned_title","assigned_tel","status","condition","date"]);
+  downloadFile(csv, `asset_tracking_${new Date().toISOString().slice(0,10)}.csv`, "text/csv");
+  toast("Tracking data exported", "success");
+}
+
+
+// ── DISPATCH PAGE ──────────────────────────────────────────────────
+async function renderDispatchPage() {
+  const el = document.getElementById("page-dispatch");
+  if (!el) return;
+  el.innerHTML = `
+    <div class="ph">
+      <div class="ph-left">
+        <div class="ph-icon" style="background:var(--purple-lt)">
+          <i class="ti ti-send" style="color:var(--purple)"></i>
+        </div>
+        <div>
+          <div class="ph-title">Dispatch Asset</div>
+          <div class="ph-sub">Transfer assets between Facilities with full movement records</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 340px;gap:18px">
+      <div class="panel">
+        <div class="panel-hd">
+          <div class="panel-title">Transfer Details</div>
+        </div>
+        <div class="panel-body">
+          <div style="padding:14px;background:var(--purple-lt);border:1px solid var(--purple-bd);border-radius:var(--rsm);margin-bottom:20px;font-size:13px;color:var(--muted);line-height:1.6">
+            <i class="ti ti-info-circle" style="color:var(--purple);margin-right:5px"></i>
+            When you dispatch an asset, the <strong>source Facility inventory decreases</strong> and the
+            <strong>destination increases</strong>. A timestamped movement record is created automatically as evidence.
+          </div>
+          <button class="btn btn-primary" onclick="openDispatchModal()">
+            <i class="ti ti-send"></i> Open Dispatch Form
+          </button>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-hd"><div class="panel-title">Recent Dispatches</div></div>
+        <div id="recent-dispatches-list"><div class="loading-row"><i class="ti ti-loader-2"></i></div></div>
+      </div>
+    </div>`;
+
+  const data = await API.get("/movements/?page_size=6");
+  const movs = Array.isArray(data) ? data : (data?.results || []);
+  const listEl = document.getElementById("recent-dispatches-list");
+  if (!listEl) return;
+  listEl.innerHTML = movs.length === 0
+    ? `<div style="padding:20px;text-align:center;color:var(--muted);font-size:13px">No dispatches yet</div>`
+    : movs.map(m=>`
+        <div style="display:flex;gap:10px;padding:11px 16px;border-bottom:1px solid var(--border-light);cursor:pointer" onclick="viewMovement(${m.id})">
+          <div style="width:28px;height:28px;border-radius:50%;background:var(--purple-lt);display:grid;place-items:center;flex-shrink:0">
+            <i class="ti ti-transfer" style="font-size:13px;color:var(--purple)"></i>
+          </div>
+          <div style="flex:1">
+            <div style="font-size:12px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:220px">${m.asset_name||"—"}</div>
+            <div style="font-size:11px;color:var(--muted)">${m.from_Facility||"—"} → ${m.to_Facility||"—"}</div>
+            <div style="font-size:10px;color:var(--light);font-family:var(--mono)">${m.date||""}</div>
+          </div>
+        </div>`).join("");
+}
+
+
+// ── DISPATCH MODAL (works with existing modal system) ──────────────
+async function openDispatchModal(preAssetId) {
+  // Reuse existing formOv modal adapted for dispatch
+  // OR use a new dedicated modal added in Step 4 below
+  openOv("dispatchOv");
+  
+  if (!_FacilitiesCache.length) {
+    const s = await FacilityAPI.getAll();
+    _FacilitiesCache = Array.isArray(s) ? s : (s?.results || []);
+  }
+  
+  const assets = await AssetAPI.getAll("?page_size=9999");
+  const assetList = Array.isArray(assets) ? assets : (assets?.results || []);
+  
+  document.getElementById("disp-asset").innerHTML =
+    `<option value="">— Select asset —</option>` +
+    assetList.map(a=>`<option value="${a.id}" ${a.id==preAssetId?"selected":""}>${a.name} (${a.engraving_no||a.serial||"—"})</option>`).join("");
+  
+  document.getElementById("disp-to-Facility").innerHTML =
+    `<option value="">— Select destination —</option>` +
+    _FacilitiesCache.map(s=>`<option value="${s.id}">${s.name} — ${s.location||""}</option>`).join("");
+  
+  document.getElementById("disp-date").value = new Date().toISOString().slice(0,10);
+  
+  if (preAssetId) updateDispatchAssetInfo(preAssetId, assetList);
+  document.getElementById("disp-asset").onchange = function(){
+    updateDispatchAssetInfo(this.value, assetList);
+  };
+}
+
+function updateDispatchAssetInfo(assetId, assetList) {
+  const a = assetList.find(x=>x.id==assetId);
+  const infoEl = document.getElementById("disp-asset-info");
+  if (!infoEl) return;
+  if (!a) { infoEl.innerHTML = ""; return; }
+  const Facility = _FacilitiesCache.find(s=>s.id===a.Facility||s.id===a.FacilityId);
+  infoEl.innerHTML = `
+    <div style="margin-top:10px;padding:10px 14px;background:var(--bg);border:1px solid var(--border);border-radius:var(--rsm);font-size:12px">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <div><span style="color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.5px">Current Facility</span><br/><strong>${Facility?.name||"—"}</strong></div>
+        <div><span style="color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.5px">Status</span><br/>${sBadge(a.status||"Active")}</div>
+        <div><span style="color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.5px">Assigned To</span><br/>${a.assigned_to_name||a.assignedTo||"Unassigned"}</div>
+        <div><span style="color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.5px">Condition</span><br/>${cBadge(a.condition)}</div>
+      </div>
+    </div>`;
+}
+
+async function saveDispatch() {
+  const assetId   = document.getElementById("disp-asset").value;
+  const toFacilityId = document.getElementById("disp-to-Facility").value;
+  const reason    = document.getElementById("disp-reason").value;
+  const by        = document.getElementById("disp-by").value.trim();
+  const notes     = document.getElementById("disp-notes").value.trim();
+  const date      = document.getElementById("disp-date").value;
+  const assignTo  = document.getElementById("disp-assign-to").value.trim();
+  const dept      = document.getElementById("disp-dept").value.trim();
+  const tel       = document.getElementById("disp-tel").value.trim();
+
+  if (!assetId||!toFacilityId||!reason||!by) {
+    toast("Please fill all required fields","error"); return;
+  }
+
+  const payload = {
+    asset: assetId,
+    to_Facility: toFacilityId,
+    reason,
+    transferred_by: by,
+    notes,
+    date,
+    assigned_to: assignTo||null,
+    department: dept||null,
+    assigned_tel: tel||null,
+  };
+
+  const res = await API.post("/movements/", payload);
+  if (res) {
+    toast("Asset dispatched successfully! Inventories updated.","success");
+    closeOv("dispatchOv");
+    // Refresh current page
+    if (curPage==="tracking")  renderTrackingPage();
+    if (curPage==="movements") renderMovementsPage();
+    if (curPage==="dispatch")  renderDispatchPage();
+    if (curPage==="Facilities")    renderFacilitiesPage();
+  } else {
+    toast("Dispatch failed — check API connection","error");
+  }
+}
+
+async function viewMovement(id) {
+  const data = await API.get(`/movements/${id}/`);
+  if (!data) { toast("Could not load movement record","error"); return; }
+  const grid = [
+    ["Reference", `REF-MOV-${String(data.id).padStart(4,"0")}`],
+    ["Asset", data.asset_name||"—"],
+    ["From", data.from_Facility||"—"],
+    ["To",   data.to_Facility||"—"],
+    ["Date", data.date||"—"],
+    ["Authorised By", data.transferred_by||"—"],
+    ["Reason", data.reason||"—"],
+    ["Notes", data.notes||"—"],
+    ["Status", "Completed"],
+  ].map(([l,v])=>`<div class="vi full"><div class="vi-lbl">${l}</div><div class="vi-val">${v}</div></div>`).join("");
+  document.getElementById("vmGrid").innerHTML = grid;
+  document.getElementById("vmSub").textContent = `Movement Record · REF-MOV-${String(data.id).padStart(4,"0")}`;
+  openOv("viewOv");
+}
+
+
 
 // ===================== ALERTS =====================
 async function renderAlertsPage() {
@@ -2097,7 +3107,6 @@ async function markAllAlertsRead() {
   closeAllDD();
 }
 
-// Notification panel (top bar)
 async function loadNotifications() {
   const data = await AlertAPI.getAll();
   const list = Array.isArray(data) ? data : (data?.results || []);
@@ -2119,21 +3128,11 @@ async function loadNotifications() {
     </div>`).join("");
 }
 
-// ===================== SETTINGS =====================
-async function renderSettingsPage() {
-  // Load users, categories, suppliers concurrently
-  const [users, cats, supps] = await Promise.all([UserAPI.getAll(), CategoryAPI.getAll(), SupplierAPI.getAll()]);
-  _usersCache     = Array.isArray(users) ? users : (users?.results || []);
-  _categoriesCache= Array.isArray(cats)  ? cats  : (cats?.results  || []);
-  _suppliersCache = Array.isArray(supps) ? supps : (supps?.results || []);
-  renderUserSettings();
-  renderCategorySettings();
-  renderSupplierSettings();
-}
+// ===================== SETTINGS (rebuilt, all tabs fetch live data) =====================
 
-// Local role overrides — persisted in localStorage since API doesn't return role
+// ── Role helpers (local override since API doesn't return role) ──
 function getRoleOverrides() {
-  try { return JSON.parse(localStorage.getItem("userRoles") || "{}"); } 
+  try { return JSON.parse(localStorage.getItem("userRoles") || "{}"); }
   catch { return {}; }
 }
 function setRoleOverride(userId, role) {
@@ -2143,87 +3142,115 @@ function setRoleOverride(userId, role) {
 }
 function getRoleDisplay(u) {
   const overrides = getRoleOverrides();
-  const stored = overrides[String(u.id)];
-  if (stored) return stored;
+  const Facilityd = overrides[String(u.id)];
+  if (Facilityd) return Facilityd;
   if (u.role && u.role !== "User") return u.role;
   if (u.is_staff) return "Administrator";
   return "User";
 }
-
 function getRoleBadgeClass(role) {
   const map = {
-    "Administrator": "b-critical",
-    "Manager": "b-info",
-    "Doctor": "b-teal",
-    "Nurse": "b-teal",
-    "Pharmacist": "b-active",
-    "Lab Technician": "b-active",
-    "Technician": "b-warning",
-    "Receptionist": "b-storage",
-    "Viewer": "b-low",
-    "Patient": "b-maint",
+    "Administrator": "b-critical", "Manager": "b-info", "Doctor": "b-teal", "Nurse": "b-teal",
+    "Pharmacist": "b-active", "Lab Technician": "b-active", "Technician": "b-warning",
+    "Receptionist": "b-storage", "Viewer": "b-low", "Patient": "b-maint",
+    "System Manager": "b-storage", "Department Head": "b-orange",
   };
   return map[role] || "b-info";
 }
 
-function renderUserSettings() {
-  const tbody = document.getElementById("user-settings-body");
-  if (!tbody) return;
+// ── Orchestrator: called by navigate() ──
+async function renderSettingsPage() {
+  await Promise.all([
+    loadGeneralSettings(), loadNotifSettings(), loadBackupStatus(),
+    renderUserSettings(), loadInvitations(),
+    loadCustomFields(), loadStatusLabels(), loadAssetModels(), loadCategories(),
+    renderSupplierSettings(),
+    loadManufacturers(), loadDepartments(), loadLocations(), loadCompanies(), loadDepreciation(),
+  ]);
+}
+
+// ── General / Notifications / Backup / Save ──
+async function loadGeneralSettings() {
+  const el = document.getElementById("gen-system-name"); if (!el) return;
+  const s = await SettingsAPI.getGeneral(); if (!s) return;
+  document.getElementById("gen-system-name").value  = s.systemName || "ResourceHub";
+  document.getElementById("gen-org-name").value      = s.orgName || "";
+  document.getElementById("gen-currency").value      = s.currency || "UGX";
+  document.getElementById("gen-fiscal-start").value  = s.fiscalStart || "January";
+  document.getElementById("gen-auto-ids").checked    = !!s.autoGenerateIds;
+  document.getElementById("gen-low-stock").checked   = !!s.lowStockAlerts;
+}
+async function loadNotifSettings() {
+  const el = document.getElementById("notif-email"); if (!el) return;
+  const s = await SettingsAPI.getNotifications(); if (!s) return;
+  document.getElementById("notif-email").checked       = !!s.emailNotifications;
+  document.getElementById("notif-maintenance").checked = !!s.maintenanceDue;
+  document.getElementById("notif-new-asset").checked   = !!s.newAssetAdded;
+  document.getElementById("notif-movement").checked    = !!s.FacilityMovement;
+  document.getElementById("notif-alert-email").value   = s.alertEmail || "";
+}
+async function loadBackupStatus() {
+  const el = document.getElementById("backup-status"); if (!el) return;
+  const s = await SettingsAPI.getBackupStatus();
+  if (!s) { el.innerHTML = `<i class="ti ti-alert-triangle" style="color:var(--red);margin-right:6px"></i>Could not load backup status.`; return; }
+  const when = s.lastBackupAt ? new Date(s.lastBackupAt).toLocaleString() : "Never";
+  const size = s.sizeBytes ? `${(s.sizeBytes/1048576).toFixed(1)} MB` : "—";
+  el.innerHTML = `<i class="ti ti-database" style="margin-right:6px"></i>Last backup: <strong>${when}</strong> — ${size}`;
+}
+async function saveSettings() {
+  const generalEl = document.getElementById("gen-system-name");
+  if (!generalEl) { toast("Settings saved", "success"); return; }
+  const general = {
+    systemName: document.getElementById("gen-system-name").value,
+    orgName: document.getElementById("gen-org-name").value,
+    currency: document.getElementById("gen-currency").value,
+    fiscalStart: document.getElementById("gen-fiscal-start").value,
+    autoGenerateIds: document.getElementById("gen-auto-ids").checked,
+    lowStockAlerts: document.getElementById("gen-low-stock").checked,
+  };
+  const notifications = {
+    emailNotifications: document.getElementById("notif-email").checked,
+    maintenanceDue: document.getElementById("notif-maintenance").checked,
+    newAssetAdded: document.getElementById("notif-new-asset").checked,
+    FacilityMovement: document.getElementById("notif-movement").checked,
+    alertEmail: document.getElementById("notif-alert-email").value,
+  };
+  const [r1, r2] = await Promise.all([SettingsAPI.saveGeneral(general), SettingsAPI.saveNotifications(notifications)]);
+  toast(r1 && r2 ? "Settings saved" : "Some settings may not have saved", r1 && r2 ? "success" : "error");
+}
+function changeAccent(c) { document.documentElement.style.setProperty("--blue", c); }
+
+function switchSettings(s, el) {
+  document.querySelectorAll(".sn-item").forEach(i => i.classList.remove("active")); el.classList.add("active");
+  document.querySelectorAll(".settings-section").forEach(x => x.classList.remove("active"));
+  document.getElementById(`ss-${s}`)?.classList.add("active");
+}
+
+// ── Users (real API, real edit/delete modal) ──
+async function renderUserSettings() {
+  const tbody = document.getElementById("user-body"); if (!tbody) return;
+  tbody.innerHTML = loadingRow(5);
+  const users = await UserAPI.getAll();
+  _usersCache = Array.isArray(users) ? users : (users?.results || []);
+  const summary = document.getElementById("user-summary");
+  if (summary) summary.textContent = `${_usersCache.length} user${_usersCache.length === 1 ? "" : "s"}`;
   if (!_usersCache.length) { tbody.innerHTML = emptyRow(5, "No users found"); return; }
   tbody.innerHTML = _usersCache.map(u => {
     const role = getRoleDisplay(u);
     const lastLogin = u.last_login
       ? `<span title="${new Date(u.last_login).toLocaleString()}">${timeAgo(u.last_login)}</span>`
       : `<span style="color:var(--light);font-style:italic">Never</span>`;
-    return `
-    <tr>
-      <td>
-        <div class="acell">
-          <div class="acell-ico" style="background:var(--blue-lt)"><i class="ti ti-user" style="color:var(--blue)"></i></div>
-          <div>
-            <div class="acell-name">${u.email || u.username}</div>
-            <div class="acell-id">ID: ${u.id} · ${u.first_name || ""} ${u.last_name || ""}</div>
-          </div>
-        </div>
-      </td>
+    return `<tr>
+      <td><div class="acell">
+        <div class="acell-ico" style="background:var(--blue-lt)"><i class="ti ti-user" style="color:var(--blue)"></i></div>
+        <div><div class="acell-name">${u.email || u.username}</div><div class="acell-id">ID: ${u.id} · ${u.first_name || ""} ${u.last_name || ""}</div></div>
+      </div></td>
       <td><span class="badge ${getRoleBadgeClass(role)}">${role}</span></td>
       <td style="font-family:var(--mono);font-size:11px;color:var(--muted)">${lastLogin}</td>
       <td><span class="badge ${u.is_active !== false ? "b-active" : "b-inactive"}">${u.is_active !== false ? "Active" : "Inactive"}</span></td>
-      <td><div class="cfg-actions">
-        <button class="cfg-act e" onclick="editUser(${u.id})" title="Edit"><i class="ti ti-pencil"></i></button>
-        <button class="cfg-act d" onclick="deleteUser(${u.id},'${(u.email||"").replace(/'/g,"\\'")}')"><i class="ti ti-trash"></i></button>
-      </div></td>
+      <td>${cfgActBtns(`editUser(${u.id})`, `deleteUser(${u.id},'${(u.email||"").replace(/'/g,"\\'")}')`)}</td>
     </tr>`;
   }).join("");
-}
-
-function renderCategorySettings() {
-  const tbody = document.getElementById("cat-settings-body");
-  if (!tbody) return;
-  if (!_categoriesCache.length) { tbody.innerHTML = emptyRow(2, "No categories found"); return; }
-  tbody.innerHTML = _categoriesCache.map(c => `
-    <tr>
-      <td><strong>${c.name}</strong></td>
-      <td>${c.description || "—"}</td>
-    </tr>`).join("");
-}
-
-function renderSupplierSettings() {
-  const tbody = document.getElementById("supplier-settings-body");
-  if (!tbody) return;
-  if (!_suppliersCache.length) { tbody.innerHTML = emptyRow(6, "No suppliers found"); return; }
-  tbody.innerHTML = _suppliersCache.map(s => `
-    <tr>
-      <td><strong>${s.name}</strong></td>
-      <td><span class="badge b-info">${s.category || "—"}</span></td>
-      <td>${s.contact || "—"}</td>
-      <td style="font-family:var(--mono);font-size:12px">${s.phone || "—"}</td>
-      <td style="font-family:var(--mono);font-size:12px">${s.email || "—"}</td>
-      <td><div class="cfg-actions">
-        <button class="cfg-act e" onclick="editSupplier(${s.id})"><i class="ti ti-pencil"></i></button>
-        <button class="cfg-act d" onclick="deleteSupplier(${s.id},'${(s.name||"").replace(/'/g,"\\'")}')"><i class="ti ti-trash"></i></button>
-      </div></td>
-    </tr>`).join("");
 }
 
 function openAddUser() {
@@ -2251,21 +3278,17 @@ async function saveUser() {
   if (!email) { toast("Email required", "error"); return; }
 
   let res;
- if (editId) {
+  if (editId) {
     res = await UserAPI.update(editId, { username: email, email, role });
     if (res) {
-      // Save role locally since API doesn't return/persist it
       setRoleOverride(editId, role);
       const idx = _usersCache.findIndex(u => String(u.id) === String(editId));
-      if (idx > -1) {
-        _usersCache[idx] = { ..._usersCache[idx], ...res, role };
-      }
+      if (idx > -1) _usersCache[idx] = { ..._usersCache[idx], ...res, role };
       toast("User updated", "success");
     }
- } else {
+  } else {
     res = await UserAPI.invite({ email, role });
     if (res) {
-      // Save role for newly invited user
       const newId = res.id || res.user?.id;
       if (newId) setRoleOverride(newId, role);
       toast(`Invitation sent to ${email}`, "success");
@@ -2274,10 +3297,7 @@ async function saveUser() {
 
   if (res) {
     closeOv("userOv");
-    // Always refetch to get server's latest data including last_login
-    const users = await UserAPI.getAll();
-    _usersCache = Array.isArray(users) ? users : (users?.results || []);
-    renderUserSettings();
+    await renderUserSettings();
   } else {
     toast("Save failed — check console for details", "error");
   }
@@ -2290,6 +3310,23 @@ async function deleteUser(id, email) {
     _usersCache = _usersCache.filter(u => u.id !== id);
     renderUserSettings();
   } else toast("Delete failed", "error");
+}
+
+// ── Suppliers (real API, real edit/delete modal) ──
+async function renderSupplierSettings() {
+  const tbody = document.getElementById("sup-body"); if (!tbody) return;
+  tbody.innerHTML = loadingRow(6);
+  const supps = await SupplierAPI.getAll();
+  _suppliersCache = Array.isArray(supps) ? supps : (supps?.results || []);
+  if (!_suppliersCache.length) { tbody.innerHTML = emptyRow(6, "No suppliers found"); return; }
+  tbody.innerHTML = _suppliersCache.map(s => `<tr>
+    <td style="font-weight:600">${s.name}</td>
+    <td>${s.contact || "—"}</td>
+    <td style="font-size:12px;color:var(--muted)">${s.email || "—"}</td>
+    <td style="font-family:var(--mono);font-size:11px">${s.phone || "—"}</td>
+    <td><span class="badge b-teal">${s.supplied ?? 0}</span></td>
+    <td>${cfgActBtns(`editSupplier(${s.id})`,`deleteSupplier(${s.id},'${(s.name||"").replace(/'/g,"\\'")}')`)}</td>
+  </tr>`).join("");
 }
 
 function openAddSupplier() {
@@ -2329,9 +3366,7 @@ async function saveSupplier() {
   if (res) {
     toast(`Supplier "${name}" ${editId ? "updated" : "added"}`, "success");
     closeOv("supplierOv");
-    const supps = await SupplierAPI.getAll();
-    _suppliersCache = Array.isArray(supps) ? supps : (supps?.results || []);
-    renderSupplierSettings();
+    await renderSupplierSettings();
   } else toast("Save failed", "error");
 }
 
@@ -2345,11 +3380,357 @@ async function deleteSupplier(id, name) {
   } else toast("Delete failed", "error");
 }
 
-function saveSettings() { toast("Settings saved", "success"); }
-function switchSettings(s, el) {
-  document.querySelectorAll(".sn-item").forEach(i => i.classList.remove("active")); el.classList.add("active");
-  document.querySelectorAll(".settings-section").forEach(x => x.classList.remove("active"));
-  document.getElementById(`ss-${s}`)?.classList.add("active");
+// ── Categories + Device Types ──
+async function loadCategories() {
+  const body = document.getElementById("cat-body"); if (!body) return;
+  body.innerHTML = loadingRow(4);
+  CFG.categories = await fetchListSafe(() => CategoryAPI.getAll(), "categories");
+  renderCatTable();
+  if (CFG.categories.length) {
+    const keep = CFG.categories.find(c => c.id === activeCat);
+    await selectCat(keep ? activeCat : CFG.categories[0].id);
+  } else {
+    activeCat = null;
+    const btn = document.getElementById("catSubAddBtn"); if (btn) btn.disabled = true;
+    const subBody = document.getElementById("cat-sub-body"); if (subBody) subBody.innerHTML = emptyRow(5, "No categories yet");
+  }
+}
+function renderCatTable() {
+  const b = document.getElementById("cat-body"); if (!b) return;
+  b.innerHTML = CFG.categories.length ? CFG.categories.map(c => `<tr class="cat-row${c.id===activeCat?" row-active":""}" id="cat-row-${c.id}" onclick="selectCat('${c.id}')">
+    <td><div style="display:flex;align-items:center;gap:9px"><i class="ti ${c.icon||"ti-category"}" style="font-size:17px;color:var(--${c.color||"blue"})"></i><strong>${c.name}</strong></div></td>
+    <td><span class="badge b-info">${c.subtypeCount??0}</span></td>
+    <td><span class="badge b-teal">${c.assetCount??0}</span></td>
+    <td onclick="event.stopPropagation()">${cfgActBtns(`cfEdit('topcat','${c.id}')`,`cfDel('topcat','${c.id}')`)}</td>
+  </tr>`).join("") : emptyRow(4, "No categories yet");
+}
+async function selectCat(catId) {
+  activeCat = catId;
+  document.querySelectorAll(".cat-row").forEach(r => r.classList.remove("row-active"));
+  document.getElementById("cat-row-"+catId)?.classList.add("row-active");
+  const btn = document.getElementById("catSubAddBtn"); if (btn) btn.disabled = false;
+  const meta = CFG.categories.find(c => c.id === catId);
+  const titleEl = document.getElementById("sub-table-title");
+  if (meta && titleEl) titleEl.innerHTML = `<i class="ti ${meta.icon||"ti-category"}" style="color:var(--${meta.color||"blue"})"></i> ${meta.name} — Device Types`;
+  const body = document.getElementById("cat-sub-body");
+  if (!body) return;
+  body.innerHTML = loadingRow(5);
+  CFG.categorySubtypes[catId] = await fetchListSafe(() => CategoryAPI.getSubtypes(catId), "device types");
+  renderCatSubTable();
+}
+function renderCatSubTable() {
+  const b = document.getElementById("cat-sub-body"); if (!b) return;
+  const subs = CFG.categorySubtypes[activeCat] || [];
+  b.innerHTML = subs.length ? subs.map(c => `<tr>
+    <td><div style="display:flex;align-items:center;gap:9px"><i class="ti ${c.icon||"ti-box"}" style="font-size:17px;color:var(--blue)"></i><strong>${c.name}</strong></div></td>
+    <td><code style="font-size:11px;background:var(--bg);padding:2px 7px;border-radius:4px;border:1px solid var(--border)">${c.icon||""}</code></td>
+    <td><span class="badge b-info" style="font-family:var(--mono)">${c.prefix||""}</span></td>
+    <td><span class="badge b-teal">${c.count??0}</span></td>
+    <td>${cfgActBtns(`cfEdit('cat','${c.id}')`,`cfDel('cat','${c.id}')`)}</td>
+  </tr>`).join("") : emptyRow(5,"No device types");
+}
+
+// ── Custom Fields ──
+async function loadCustomFields() {
+  const b = document.getElementById("cf-body"); if (!b) return;
+  b.innerHTML = loadingRow(5);
+  CFG.customFields = await fetchListSafe(() => CustomFieldAPI.getAll(), "custom fields");
+  renderCustomFields();
+}
+function renderCustomFields() {
+  const b = document.getElementById("cf-body"); if (!b) return;
+  b.innerHTML = CFG.customFields.length ? CFG.customFields.map(f => `<tr>
+    <td style="font-weight:600">${f.name}</td><td><span class="badge b-info">${f.type||""}</span></td>
+    <td style="color:var(--muted);font-size:12px">${f.appliesTo||""}</td>
+    <td>${f.required?'<span class="badge b-active">Yes</span>':'<span class="badge b-inactive">No</span>'}</td>
+    <td>${cfgActBtns(`cfEdit('cf','${f.id}')`,`cfDel('cf','${f.id}')`)}</td>
+  </tr>`).join("") : emptyRow(5,"No custom fields defined");
+}
+
+// ── Status Labels ──
+async function loadStatusLabels() {
+  const b = document.getElementById("sl-body"); if (!b) return;
+  b.innerHTML = loadingRow(5);
+  CFG.statusLabels = await fetchListSafe(() => StatusLabelAPI.getAll(), "status labels");
+  renderStatusLabels();
+}
+function renderStatusLabels() {
+  const b = document.getElementById("sl-body"); if (!b) return;
+  b.innerHTML = CFG.statusLabels.length ? CFG.statusLabels.map(s => `<tr>
+    <td><div style="display:flex;align-items:center;gap:8px"><span class="color-dot" style="background:${s.color}"></span><strong>${s.label}</strong></div></td>
+    <td><span style="width:20px;height:20px;border-radius:4px;background:${s.color};display:inline-block;border:1px solid rgba(0,0,0,.1)"></span></td>
+    <td style="color:var(--muted);font-size:12px">${s.type||""}</td>
+    <td>${s.isDefault?'<span class="badge b-active">Default</span>':"—"}</td>
+    <td>${cfgActBtns(`cfEdit('sl','${s.id}')`,`cfDel('sl','${s.id}')`)}</td>
+  </tr>`).join("") : emptyRow(5,"No status labels");
+}
+
+// ── Asset Models ──
+async function loadAssetModels() {
+  const b = document.getElementById("am-body"); if (!b) return;
+  b.innerHTML = loadingRow(6);
+  CFG.assetModels = await fetchListSafe(() => AssetModelAPI.getAll(), "asset models");
+  renderAssetModels();
+}
+function renderAssetModels() {
+  const b = document.getElementById("am-body"); if (!b) return;
+  const q = (document.getElementById("am-search")?.value || "").trim().toLowerCase();
+  const rows = q ? CFG.assetModels.filter(m => (m.name||"").toLowerCase().includes(q) || (m.manufacturer||"").toLowerCase().includes(q)) : CFG.assetModels;
+  b.innerHTML = rows.length ? rows.map(m => `<tr>
+    <td style="font-weight:600">${m.name}</td><td>${m.manufacturer||""}</td><td><span class="badge b-info">${m.category||""}</span></td>
+    <td style="font-family:var(--mono);font-size:11px;color:var(--muted)">${m.eol||"—"}</td><td><span class="badge b-teal">${m.assets??0}</span></td>
+    <td>${cfgActBtns(`cfEdit('am','${m.id}')`,`cfDel('am','${m.id}')`)}</td>
+  </tr>`).join("") : emptyRow(6, q ? "No models match your search" : "No models registered");
+}
+
+// ── Manufacturers ──
+async function loadManufacturers() {
+  const b = document.getElementById("mfg-body"); if (!b) return;
+  b.innerHTML = loadingRow(5);
+  CFG.manufacturers = await fetchListSafe(() => ManufacturerAPI.getAll(), "manufacturers");
+  renderManufacturers();
+}
+function renderManufacturers() {
+  const b = document.getElementById("mfg-body"); if (!b) return;
+  b.innerHTML = CFG.manufacturers.length ? CFG.manufacturers.map(m => `<tr>
+    <td style="font-weight:600">${m.name}</td><td><a href="https://${m.url}" target="_blank" style="color:var(--blue);font-size:12px">${m.url||""}</a></td>
+    <td style="font-family:var(--mono);font-size:11px;color:var(--muted)">${m.support||""}</td><td><span class="badge b-teal">${m.assets??0}</span></td>
+    <td>${cfgActBtns(`cfEdit('mfg','${m.id}')`,`cfDel('mfg','${m.id}')`)}</td>
+  </tr>`).join("") : emptyRow(5,"No manufacturers defined");
+}
+
+// ── Departments ──
+async function loadDepartments() {
+  const b = document.getElementById("dept-body"); if (!b) return;
+  b.innerHTML = loadingRow(6);
+  CFG.departments = await fetchListSafe(() => DepartmentAPI.getAll(), "departments");
+  renderDepartments();
+}
+function renderDepartments() {
+  const b = document.getElementById("dept-body"); if (!b) return;
+  b.innerHTML = CFG.departments.length ? CFG.departments.map(d => `<tr>
+    <td style="font-weight:600">${d.name}</td><td>${d.manager||""}</td><td style="color:var(--muted);font-size:12px">${d.location||""}</td>
+    <td><span class="badge b-info">${d.users??0}</span></td><td><span class="badge b-teal">${d.assets??0}</span></td>
+    <td>${cfgActBtns(`cfEdit('dept','${d.id}')`,`cfDel('dept','${d.id}')`)}</td>
+  </tr>`).join("") : emptyRow(6,"No departments defined");
+}
+
+// ── Locations ──
+async function loadLocations() {
+  const b = document.getElementById("loc-body"); if (!b) return;
+  b.innerHTML = loadingRow(6);
+  CFG.locations = await fetchListSafe(() => LocationAPI.getAll(), "locations");
+  renderLocations();
+}
+function renderLocations() {
+  const b = document.getElementById("loc-body"); if (!b) return;
+  b.innerHTML = CFG.locations.length ? CFG.locations.map(l => `<tr>
+    <td style="font-weight:600">${l.name}</td><td style="color:var(--muted);font-size:12px">${l.parent||"—"}</td>
+    <td style="color:var(--muted);font-size:12px">${l.address||""}</td><td style="font-family:var(--mono);font-size:11px">${l.currency||""}</td>
+    <td><span class="badge b-teal">${l.assets??0}</span></td><td>${cfgActBtns(`cfEdit('loc','${l.id}')`,`cfDel('loc','${l.id}')`)}</td>
+  </tr>`).join("") : emptyRow(6,"No locations defined");
+}
+
+// ── Companies ──
+async function loadCompanies() {
+  const b = document.getElementById("comp-body"); if (!b) return;
+  b.innerHTML = loadingRow(6);
+  CFG.companies = await fetchListSafe(() => CompanyAPI.getAll(), "companies");
+  renderCompanies();
+}
+function renderCompanies() {
+  const b = document.getElementById("comp-body"); if (!b) return;
+  b.innerHTML = CFG.companies.length ? CFG.companies.map(c => `<tr>
+    <td style="font-weight:600">${c.name}</td><td style="font-size:12px;color:var(--muted)">${c.email||""}</td>
+    <td style="font-family:var(--mono);font-size:11px;color:var(--muted)">${c.phone||""}</td><td><span class="badge b-teal">${c.assets??0}</span></td>
+    <td><span class="badge b-info">${c.users??0}</span></td><td>${cfgActBtns(`cfEdit('comp','${c.id}')`,`cfDel('comp','${c.id}')`)}</td>
+  </tr>`).join("") : emptyRow(6,"No companies defined");
+}
+
+// ── Depreciation ──
+async function loadDepreciation() {
+  const b = document.getElementById("depr-body"); if (!b) return;
+  b.innerHTML = loadingRow(6);
+  CFG.depreciation = await fetchListSafe(() => DepreciationAPI.getAll(), "depreciation methods");
+  renderDepreciationTable();
+}
+function renderDepreciationTable() {
+  const b = document.getElementById("depr-body"); if (!b) return;
+  const mColors = { "Straight-Line":["#059669","#ecfdf5"], "Declining Balance":["#d97706","#fffbeb"], "Sum-of-Years":["#7c3aed","#f5f3ff"] };
+  b.innerHTML = CFG.depreciation.length ? CFG.depreciation.map(d => {
+    const [mc, mbg] = mColors[d.method] || ["#6b7280","#f9fafb"];
+    return `<tr>
+      <td style="font-weight:600">${d.name}</td><td><span class="depr-method" style="color:${mc};background:${mbg};border:1px solid ${mc}33">${d.method}</span></td>
+      <td style="font-family:var(--mono);font-size:12px">${d.rate||""}</td><td style="color:var(--muted);font-size:12px">${d.appliesTo||""}</td>
+      <td><span class="badge b-teal">${d.using??0}</span></td><td>${cfgActBtns(`cfEdit('depr','${d.id}')`,`cfDel('depr','${d.id}')`)}</td>
+    </tr>`;
+  }).join("") : emptyRow(6,"No depreciation methods defined");
+}
+
+// ── Invitations + 3-step invite wizard (sends via real UserAPI.invite) ──
+async function loadInvitations() {
+  const b = document.getElementById("inv-body"); if (!b) return;
+  b.innerHTML = loadingRow(5);
+  CFG.invitations = await fetchListSafe(() => InvitationAPI.getAll(), "invitations");
+  renderInvitations();
+}
+function renderInvitations() {
+  const b = document.getElementById("inv-body"); if (!b) return;
+  b.innerHTML = CFG.invitations.length ? CFG.invitations.map(inv => `<tr>
+    <td style="font-weight:600">${inv.email}</td><td><span class="badge b-info">${inv.role||""}</span></td>
+    <td style="color:var(--muted);font-size:12px">${inv.invitedBy||"—"}</td>
+    <td style="font-family:var(--mono);font-size:11px;color:var(--muted)">${inv.expires||"—"}</td>
+    <td><div class="cfg-actions"><button class="cfg-act s" onclick="resendInvite('${inv.id}')" title="Resend"><i class="ti ti-send"></i></button>
+    <button class="cfg-act d" onclick="cfDel('inv','${inv.id}')" title="Revoke"><i class="ti ti-x"></i></button></div></td>
+  </tr>`).join("") : emptyRow(5,"No pending invitations");
+}
+async function resendInvite(id) {
+  const res = await InvitationAPI.resend(id);
+  toast(res !== null ? "Invitation resent." : "Failed to resend invitation.", res !== null ? "success" : "error");
+}
+
+async function openInviteModal() {
+  inviteStep = 1;
+  ["inv-first","inv-last","inv-email","inv-pwd","inv-cpwd","inv-note"].forEach(id => { const el = document.getElementById(id); if (el) el.value = ""; });
+  const roleEl = document.getElementById("inv-role"); if (roleEl) roleEl.value = "";
+  const deptEl = document.getElementById("inv-dept");
+  if (deptEl) deptEl.innerHTML = '<option value="">Select department</option>' + CFG.departments.map(d => `<option value="${d.name}">${d.name}</option>`).join("");
+  updateInviteStep(1);
+  openOv("inviteOv");
+}
+function updateInviteStep(step) {
+  inviteStep = step;
+  [1,2,3].forEach(n => {
+    document.getElementById("inv-step-"+n).classList.toggle("active", n === step);
+    const pill = document.getElementById("pill-"+n);
+    pill.className = "step-pill" + (n === step ? " active-step" : n < step ? " done" : "");
+  });
+  const btn = document.getElementById("inv-next-btn");
+  const footer = document.getElementById("inv-footer");
+  if (step === 1) {
+    btn.innerHTML = '<i class="ti ti-arrow-right"></i> Continue';
+    btn.style.display = ""; footer.querySelector(".btn-ghost").style.display = "";
+  } else if (step === 2) {
+    const first = document.getElementById("inv-first").value.trim();
+    const last  = document.getElementById("inv-last").value.trim();
+    const email = document.getElementById("inv-email").value.trim();
+    const role  = document.getElementById("inv-role").value;
+    document.getElementById("inv-email-preview").textContent = email || "—";
+    document.getElementById("inv-name-preview").textContent  = `${first} ${last}`.trim() || "—";
+    document.getElementById("inv-role-preview").textContent  = role || "—";
+    document.getElementById("inv-login-url").textContent = `→ ${window.location.origin}/login`;
+    btn.innerHTML = '<i class="ti ti-send"></i> Send Invitation';
+    btn.style.display = ""; footer.querySelector(".btn-ghost").style.display = "";
+  } else {
+    const email = document.getElementById("inv-email").value.trim();
+    document.getElementById("inv-done-email").textContent = email;
+    btn.style.display = "none"; footer.querySelector(".btn-ghost").style.display = "none";
+    let t = 2;
+    document.getElementById("redirect-count").textContent = t;
+    const timer = setInterval(() => {
+      t--; const el = document.getElementById("redirect-count"); if (el) el.textContent = t;
+      if (t <= 0) { clearInterval(timer); closeOv("inviteOv"); toast(`Invitation sent to ${email}`, "success"); renderUserSettings(); loadInvitations(); }
+    }, 1000);
+  }
+}
+async function inviteNext() {
+  if (inviteStep === 1) {
+    const first = document.getElementById("inv-first").value.trim();
+    const email = document.getElementById("inv-email").value.trim();
+    const role  = document.getElementById("inv-role").value;
+    if (!first) { toast("Please enter the first name.","error"); return; }
+    if (!email || !email.includes("@")) { toast("Please enter a valid email address.","error"); return; }
+    if (!role) { toast("Please select a role.","error"); return; }
+    updateInviteStep(2);
+  } else if (inviteStep === 2) {
+    const first = document.getElementById("inv-first").value.trim();
+    const last  = document.getElementById("inv-last").value.trim();
+    const email = document.getElementById("inv-email").value.trim();
+    const role  = document.getElementById("inv-role").value;
+    const res = await UserAPI.invite({ email, role, first_name: first, last_name: last });
+    if (!res) { toast("Failed to send invitation.","error"); return; }
+    setRoleOverride(res.id || res.user?.id || email, role);
+    updateInviteStep(3);
+  }
+}
+
+// ── Generic Add modal + Delete (Custom Fields, Status Labels, Asset Models, Categories, Device Types, Manufacturers, Departments, Locations, Companies, Depreciation) ──
+const ADD_HANDLERS = {
+  "Custom Field": d => CustomFieldAPI.create(d), "Status Label": d => StatusLabelAPI.create(d), "Asset Model": d => AssetModelAPI.create(d),
+  "Manufacturer": d => ManufacturerAPI.create(d), "Department": d => DepartmentAPI.create(d), "Location": d => LocationAPI.create(d),
+  "Company": d => CompanyAPI.create(d), "Depreciation Method": d => DepreciationAPI.create(d), "Category": d => CategoryAPI.create(d),
+};
+const RELOAD_AFTER_ADD = {
+  "Custom Field": loadCustomFields, "Status Label": loadStatusLabels, "Asset Model": loadAssetModels,
+  "Manufacturer": loadManufacturers, "Department": loadDepartments, "Location": loadLocations,
+  "Company": loadCompanies, "Depreciation Method": loadDepreciation, "Category": loadCategories,
+};
+
+function openCfgModal(title, icon) {
+  document.getElementById("cfgTitle").textContent = `Add ${title}`;
+  document.getElementById("cfgSub").textContent = `Enter details for the new ${title.toLowerCase()}`;
+  document.getElementById("cfgIcoI").className = `ti ti-${icon}`;
+  if (title === "Device Type") {
+    document.getElementById("cfgBody").innerHTML = `
+      <div class="fg" style="margin-bottom:12px"><label>Device Type Name</label><input type="text" class="fi" id="cfgName" placeholder="e.g. Switches"/></div>
+      <div class="fgrid"><div class="fg"><label>Tabler Icon Class</label><input type="text" class="fi" id="cfgIconInput" placeholder="e.g. ti-router"/></div>
+      <div class="fg"><label>ID Prefix</label><input type="text" class="fi" id="cfgPrefix" maxlength="4" placeholder="e.g. RT"/></div></div>`;
+  } else if (title === "Category") {
+    document.getElementById("cfgBody").innerHTML = `
+      <div class="fg" style="margin-bottom:12px"><label>Category Name</label><input type="text" class="fi" id="cfgName" placeholder="e.g. IT Equipment"/></div>
+      <div class="fgrid"><div class="fg"><label>Tabler Icon Class</label><input type="text" class="fi" id="cfgIconInput" placeholder="e.g. ti-device-laptop"/></div>
+      <div class="fg"><label>Color</label><select class="fi" id="cfgColor"><option value="blue">Blue</option><option value="orange">Orange</option><option value="teal">Teal</option><option value="green">Green</option><option value="purple">Purple</option><option value="red">Red</option></select></div></div>`;
+  } else {
+    document.getElementById("cfgBody").innerHTML = `
+      <div class="fg" style="margin-bottom:12px"><label>Name</label><input type="text" class="fi" id="cfgName" placeholder="${title} name"/></div>
+      <div class="fg"><label>Description (optional)</label><textarea class="fi" id="cfgDesc" rows="2"></textarea></div>`;
+  }
+  document.getElementById("cfgSaveBtn").onclick = async () => {
+    const n = document.getElementById("cfgName")?.value.trim();
+    if (!n) { toast("Please enter a name.","error"); return; }
+    if (title === "Device Type") {
+      const payload = { name:n, icon: document.getElementById("cfgIconInput").value.trim()||"ti-box", prefix: document.getElementById("cfgPrefix").value.trim().toUpperCase() };
+      const res = await CategoryAPI.createSubtype(activeCat, payload);
+      if (res) { toast(`Device type "${n}" added.`,"success"); closeOv("cfgOv"); await selectCat(activeCat); await loadCategories(); }
+      else toast("Failed to add device type.","error");
+      return;
+    }
+    const payload = title === "Category"
+      ? { name:n, icon: document.getElementById("cfgIconInput").value.trim()||"ti-category", color: document.getElementById("cfgColor").value }
+      : { name:n, description: document.getElementById("cfgDesc")?.value.trim() };
+    const res = await ADD_HANDLERS[title](payload);
+    if (res) { toast(`${title} "${n}" added.`,"success"); closeOv("cfgOv"); RELOAD_AFTER_ADD[title](); }
+    else toast(`Failed to add ${title.toLowerCase()}.`,"error");
+  };
+  openOv("cfgOv");
+}
+function cfAdd(){ openCfgModal("Custom Field","forms"); }
+function slAdd(){ openCfgModal("Status Label","tags"); }
+function amAdd(){ openCfgModal("Asset Model","cube"); }
+function catAdd(){ openCfgModal("Category","category"); }
+function catSubAdd(){ if (!activeCat) { toast("Select a category first.","error"); return; } openCfgModal("Device Type","box"); }
+function mfgAdd(){ openCfgModal("Manufacturer","building-factory-2"); }
+function deptAdd(){ openCfgModal("Department","sitemap"); }
+function locAdd(){ openCfgModal("Location","map-pin"); }
+function compAdd(){ openCfgModal("Company","building"); }
+function deprAdd(){ openCfgModal("Depreciation Method","chart-line-down"); }
+
+const DELETE_HANDLERS = {
+  inv: id => InvitationAPI.revoke(id), cf: id => CustomFieldAPI.delete(id), sl: id => StatusLabelAPI.delete(id), am: id => AssetModelAPI.delete(id),
+  cat: id => CategoryAPI.deleteSubtype(activeCat, id), topcat: id => CategoryAPI.delete(id), mfg: id => ManufacturerAPI.delete(id),
+  dept: id => DepartmentAPI.delete(id), loc: id => LocationAPI.delete(id), comp: id => CompanyAPI.delete(id), depr: id => DepreciationAPI.delete(id),
+};
+const RELOAD_AFTER_DELETE = {
+  inv: loadInvitations, cf: loadCustomFields, sl: loadStatusLabels, am: loadAssetModels,
+  cat: () => selectCat(activeCat), topcat: () => { activeCat = null; loadCategories(); },
+  mfg: loadManufacturers, dept: loadDepartments, loc: loadLocations, comp: loadCompanies, depr: loadDepreciation,
+};
+function cfEdit(type, id) { toast("Edit form coming soon for this item.","info"); }
+async function cfDel(type, id) {
+  if (!confirm("Are you sure you want to delete this item?")) return;
+  const res = await DELETE_HANDLERS[type](id);
+  if (res !== null) { toast("Item removed.","success"); RELOAD_AFTER_DELETE[type](); }
+  else toast("Failed to remove item.","error");
 }
 
 // ===================== PROFILE =====================
@@ -2612,7 +3993,6 @@ async function renderAnalysisOverview() {
   const bdr = isDark ? "#161b26" : "#ffffff";
 
   setTimeout(() => {
-    // Pie chart
     destroyChart("pie");
     const pieEl = document.getElementById("analysisPieChart");
     if (pieEl && data.by_category) {
@@ -2625,7 +4005,6 @@ async function renderAnalysisOverview() {
         options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: "bottom", labels: { color: tickColor } } } },
       });
     }
-    // Donut chart
     destroyChart("donut");
     const donutEl = document.getElementById("analysisDonutChart");
     if (donutEl && data.by_status) {
@@ -2676,7 +4055,6 @@ async function renderAnalysisDepreciation() {
   const data = await AnalysisAPI.getDepreciation();
   if (!data) return;
 
-  // Table
   const rows = data.schedule || data.items || [];
   const depTbl = document.getElementById("dep-table");
   if (depTbl) {
@@ -2692,7 +4070,6 @@ async function renderAnalysisDepreciation() {
     </tbody></table>`;
   }
 
-  // Chart
   const isDark = document.body.classList.contains("dark");
   const tick = isDark ? "#8899aa" : "#6b7280";
   const grid = isDark ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.06)";
@@ -2717,7 +4094,7 @@ function renderAnalysisReports() {
     { type: "utilization",  icon: "ti-trending-up",       color: "var(--teal)",   title: "Utilization Report",  desc: "Usage metrics by department" },
     { type: "maintenance",  icon: "ti-tool",             color: "var(--purple)", title: "Maintenance History", desc: "All service records" },
     { type: "alerts",       icon: "ti-alert-triangle",   color: "var(--red)",    title: "Alerts Log",          desc: "System alerts log" },
-    { type: "stores",       icon: "ti-building-hospital",color: "var(--green)",  title: "Store Inventory",     desc: "All store stock levels" },
+    { type: "Facilities",       icon: "ti-building-hospital",color: "var(--green)",  title: "Facility Inventory",     desc: "All Facility stock levels" },
   ];
   el.innerHTML = `
     <div class="ph"><div class="ph-left"><div class="ph-icon" style="background:var(--blue-lt)"><i class="ti ti-file-text" style="color:var(--blue)"></i></div><div><div class="ph-title">Reports &amp; Export</div><div class="ph-sub">Download analysis documents</div></div></div></div>
@@ -2736,7 +4113,7 @@ async function exportReport(type) {
   if (type === "inventory") {
     data = await AssetAPI.getAll("?page_size=9999");
     rows = Array.isArray(data) ? data : (data?.results || []);
-    keys = ["name","engraving_no","serial","store_name","status","condition","date"];
+    keys = ["name","engraving_no","serial","Facility_name","status","condition","date"];
   } else if (type === "depreciation") {
     data = await AnalysisAPI.getDepreciation();
     rows = data?.schedule || [];
@@ -2749,8 +4126,8 @@ async function exportReport(type) {
     data = await AlertAPI.getAll();
     rows = Array.isArray(data) ? data : (data?.results || []);
     keys = ["type","title","description","created_at","resolved"];
-  } else if (type === "stores") {
-    data = await StoreAPI.getAll();
+  } else if (type === "Facilities") {
+    data = await FacilityAPI.getAll();
     rows = Array.isArray(data) ? data : (data?.results || []);
     keys = ["name","location","contact","phone","item_count"];
   }
@@ -2778,15 +4155,12 @@ async function loadUserProfile() {
   const role = p.role || "User";
   const email= p.email || "";
 
-  // Sidebar
   document.getElementById("sb-av").textContent   = av;
   document.getElementById("sb-name").textContent = name;
   document.getElementById("sb-role").textContent = role;
 
-  // Topbar
   document.getElementById("topbar-av").textContent = av;
 
-  // Dropdown
   document.getElementById("pd-av").textContent    = av;
   document.getElementById("pd-name").textContent  = name;
   document.getElementById("pd-role").textContent  = role;
@@ -2822,10 +4196,16 @@ function toggleGroup(id, el) {
   grp.classList.toggle("open"); el.classList.toggle("open");
   if (chev) chev.style.transform = grp.classList.contains("open") ? "rotate(90deg)" : "rotate(0deg)";
 }
+
+// ── Dark mode (single source of truth — toggled from topbar dropdown AND Settings → Appearance) ──
 function toggleDark() {
   document.body.classList.toggle("dark");
-  const dt = document.getElementById("darkToggle"); if (dt) dt.checked = document.body.classList.contains("dark");
-  localStorage.setItem("darkMode", document.body.classList.contains("dark") ? "1" : "0");
+  const isDark = document.body.classList.contains("dark");
+  const dt = document.getElementById("darkToggle");
+  if (dt) dt.checked = isDark;
+  const darkIcon = document.getElementById("darkIcon");
+  if (darkIcon) darkIcon.className = isDark ? "ti ti-sun" : "ti ti-moon";
+  localStorage.setItem("darkMode", isDark ? "1" : "0");
 }
 
 // ===================== BOOT =====================
@@ -2836,10 +4216,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     return;
   }
 
-  // Dark mode
+  // Dark mode — reFacility saved preference and sync every toggle UI element
   if (localStorage.getItem("darkMode") === "1") {
     document.body.classList.add("dark");
     const dt = document.getElementById("darkToggle"); if (dt) dt.checked = true;
+    const darkIcon = document.getElementById("darkIcon"); if (darkIcon) darkIcon.className = "ti ti-sun";
   }
 
   // Wire sidebar nav

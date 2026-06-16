@@ -1,0 +1,1602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Settings — IT Asset Management</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css"/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --sb-bg:#ffffff; --sb-border:#e8edf3; --sb-text:#5a6a7e;
+  --sb-active-bg:#eff6ff; --sb-active-text:#2563eb; --sb-active-border:#2563eb;
+  --sb-hover-bg:#f5f8ff; --sb-section:#94a3b8;
+  --bg:#f4f7fb; --surface:#ffffff; --border:#e5eaf1; --border-light:#f1f5f9;
+  --text:#111827; --muted:#6b7280; --light:#9ca3af;
+  --blue:#2563eb; --blue-lt:#eff6ff; --blue-bd:#bfdbfe;
+  --green:#059669; --green-lt:#ecfdf5; --green-bd:#a7f3d0;
+  --orange:#d97706; --orange-lt:#fffbeb; --orange-bd:#fde68a;
+  --red:#dc2626; --red-lt:#fef2f2; --red-bd:#fecaca;
+  --purple:#7c3aed; --purple-lt:#f5f3ff; --purple-bd:#ddd6fe;
+  --teal:#0891b2; --teal-lt:#ecfeff; --teal-bd:#a5f3fc;
+  --sh1:0 1px 2px rgba(0,0,0,.04);
+  --sh2:0 2px 8px rgba(0,0,0,.07);
+  --sh4:0 16px 48px rgba(0,0,0,.14);
+  --r:8px; --rsm:6px; --rlg:12px; --rxl:16px;
+  --sans:'DM Sans',sans-serif; --mono:'DM Mono',monospace;
+}
+.dark {
+  --bg:#0d1117; --surface:#161b26; --border:#21293a; --border-light:#1a2234;
+  --text:#e2e8f0; --muted:#8899aa; --light:#546e7a;
+  --blue:#3b82f6; --blue-lt:rgba(59,130,246,.12); --blue-bd:rgba(59,130,246,.3);
+  --green:#10b981; --green-lt:rgba(16,185,129,.12); --green-bd:rgba(16,185,129,.3);
+  --orange:#f59e0b; --orange-lt:rgba(245,158,11,.12); --orange-bd:rgba(245,158,11,.3);
+  --red:#ef4444; --red-lt:rgba(239,68,68,.12); --red-bd:rgba(239,68,68,.3);
+  --purple:#a78bfa; --purple-lt:rgba(167,139,250,.12); --purple-bd:rgba(167,139,250,.3);
+  --teal:#22d3ee; --teal-lt:rgba(34,211,238,.12); --teal-bd:rgba(34,211,238,.3);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:14px;min-height:100vh;transition:background .25s,color .25s;}
+button{cursor:pointer;font-family:var(--sans);}
+a{text-decoration:none;color:inherit;}
+*::-webkit-scrollbar{width:0;height:0;display:none;}
+*{scrollbar-width:none;-ms-overflow-style:none;}
+
+/* ── PAGE HEADER ── */
+.page-wrap{max-width:1200px;margin:0 auto;padding:28px 24px;}
+.ph{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:24px;}
+.ph-left{display:flex;align-items:center;gap:14px;}
+.ph-icon{width:44px;height:44px;border-radius:var(--r);display:grid;place-items:center;flex-shrink:0;background:var(--border-light);}
+.ph-icon i{font-size:22px;color:var(--muted);}
+.ph-title{font-size:21px;font-weight:800;}
+.ph-sub{font-size:13px;color:var(--muted);margin-top:2px;}
+.ph-actions{display:flex;gap:8px;align-items:center;}
+
+/* ── BUTTONS ── */
+.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:var(--rsm);border:none;font-family:var(--sans);font-size:13px;font-weight:600;transition:all .15s;cursor:pointer;}
+.btn i{font-size:16px;}
+.btn-primary{background:var(--blue);color:#fff;}
+.btn-primary:hover{background:#1d4ed8;box-shadow:0 4px 12px rgba(37,99,235,.3);}
+.btn-ghost{background:transparent;color:var(--muted);border:1px solid var(--border);}
+.btn-ghost:hover{background:var(--bg);color:var(--text);}
+.btn-danger{background:var(--red);color:#fff;}
+.btn-danger:hover{background:#b91c1c;}
+.btn-success{background:var(--green);color:#fff;}
+.btn-success:hover{background:#047857;}
+.btn-sm{padding:6px 12px;font-size:12px;}
+.btn[disabled]{opacity:.6;cursor:default;}
+
+/* ── SETTINGS LAYOUT ── */
+.settings-layout{display:grid;grid-template-columns:220px 1fr;gap:20px;}
+.settings-nav{display:flex;flex-direction:column;gap:2px;}
+.sn-item{display:flex;align-items:center;gap:9px;padding:9px 12px;border-radius:var(--rsm);cursor:pointer;font-size:13px;font-weight:500;color:var(--muted);transition:all .15s;}
+.sn-item:hover{background:var(--bg);color:var(--text);}
+.sn-item.active{background:var(--blue-lt);color:var(--blue);font-weight:600;}
+.sn-item i{font-size:16px;}
+.sn-group-label{font-size:10px;font-family:var(--mono);color:var(--sb-section);letter-spacing:1.5px;text-transform:uppercase;padding:12px 12px 4px;margin-top:4px;}
+.settings-panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--rlg);overflow:hidden;}
+.settings-section{display:none;padding:24px;}
+.settings-section.active{display:block;}
+.settings-section h3{font-size:16px;font-weight:700;margin-bottom:4px;}
+.settings-section .desc{font-size:13px;color:var(--muted);margin-bottom:22px;}
+
+/* ── SETTING ROW ── */
+.setting-row{display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid var(--border-light);}
+.setting-row:last-child{border-bottom:none;}
+.setting-label{font-size:14px;font-weight:600;}
+.setting-desc{font-size:12px;color:var(--muted);margin-top:3px;}
+
+/* ── TOGGLE ── */
+.tog{position:relative;width:40px;height:22px;cursor:pointer;flex-shrink:0;}
+.tog input{opacity:0;width:0;height:0;}
+.tog-track{position:absolute;inset:0;background:var(--border);border-radius:11px;transition:background .2s;}
+.tog-thumb{position:absolute;top:3px;left:3px;width:16px;height:16px;background:#fff;border-radius:50%;transition:transform .2s;box-shadow:0 1px 3px rgba(0,0,0,.2);}
+.tog input:checked + .tog-track{background:var(--blue);}
+.tog input:checked + .tog-track + .tog-thumb{transform:translateX(18px);}
+
+/* ── FORM FIELDS ── */
+.sf-group{display:flex;flex-direction:column;gap:6px;margin-bottom:14px;}
+.sf-label{font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;}
+.sf-input,.sf-select{background:var(--bg);border:1px solid var(--border);border-radius:var(--rsm);padding:9px 12px;color:var(--text);font-size:13px;font-family:var(--sans);outline:none;transition:border .15s;}
+.sf-input:focus,.sf-select:focus{border-color:var(--blue);background:var(--surface);}
+label{font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;}
+input[type=text],input[type=email],input[type=password],.fi,textarea.fi{background:var(--bg);border:1px solid var(--border);border-radius:var(--rsm);padding:8px 11px;color:var(--text);font-size:13px;font-family:var(--sans);outline:none;transition:border .15s;width:100%;}
+input:focus,.fi:focus,textarea.fi:focus{border-color:var(--blue);background:var(--surface);}
+.fgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.fg{display:flex;flex-direction:column;gap:5px;}
+.fg.full{grid-column:1/-1;}
+select.fi{background:var(--bg);border:1px solid var(--border);border-radius:var(--rsm);padding:8px 11px;color:var(--text);font-size:13px;font-family:var(--sans);outline:none;transition:border .15s;width:100%;appearance:none;}
+select.fi:focus{border-color:var(--blue);background:var(--surface);}
+
+/* ── BADGES ── */
+.badge{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:600;font-family:var(--mono);}
+.b-active  {background:var(--green-lt); color:var(--green);  border:1px solid var(--green-bd);}
+.b-inactive{background:var(--red-lt);   color:var(--red);    border:1px solid var(--red-bd);}
+.b-info    {background:var(--blue-lt);  color:var(--blue);   border:1px solid var(--blue-bd);}
+.b-teal    {background:var(--teal-lt);  color:var(--teal);   border:1px solid var(--teal-bd);}
+.b-storage {background:var(--purple-lt);color:var(--purple); border:1px solid var(--purple-bd);}
+.b-orange  {background:var(--orange-lt);color:var(--orange); border:1px solid var(--orange-bd);}
+.b-pending {background:var(--orange-lt);color:var(--orange); border:1px solid var(--orange-bd);}
+
+/* ── ACELL ── */
+.acell{display:flex;align-items:center;gap:10px;}
+.acell-ico{width:32px;height:32px;border-radius:var(--rsm);display:grid;place-items:center;flex-shrink:0;}
+.acell-ico i{font-size:16px;}
+.acell-name{font-weight:600;font-size:13px;}
+.acell-id{font-size:11px;color:var(--muted);font-family:var(--mono);}
+
+/* ── CFG TABLE ── */
+.cfg-table{width:100%;border-collapse:collapse;font-size:13px;}
+.cfg-table th{padding:9px 14px;text-align:left;font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;border-bottom:1px solid var(--border);background:var(--border-light);}
+.cfg-table td{padding:11px 14px;border-bottom:1px solid var(--border-light);vertical-align:middle;}
+.cfg-table tbody tr:last-child td{border-bottom:none;}
+.cfg-table tbody tr:hover{background:var(--bg);}
+.cfg-actions{display:flex;gap:4px;}
+.cfg-act{width:28px;height:28px;border-radius:var(--rsm);border:1px solid var(--border);background:transparent;display:grid;place-items:center;color:var(--muted);cursor:pointer;transition:all .12s;}
+.cfg-act.e:hover{background:var(--orange-lt);border-color:var(--orange-bd);color:var(--orange);}
+.cfg-act.d:hover{background:var(--red-lt);border-color:var(--red-bd);color:var(--red);}
+.cfg-act.s:hover{background:var(--green-lt);border-color:var(--green-bd);color:var(--green);}
+.cfg-act i{font-size:13px;}
+.color-dot{width:14px;height:14px;border-radius:50%;display:inline-block;flex-shrink:0;}
+.cfg-empty{text-align:center;padding:36px;color:var(--muted);}
+.cfg-empty i{font-size:32px;display:block;margin-bottom:8px;opacity:.2;}
+.depr-method{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;}
+.tw{overflow-x:auto;}
+
+/* ── CATEGORY CARDS ── */
+.cat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:20px;}
+.cat-card{background:var(--bg);border:1px solid var(--border);border-radius:var(--r);padding:16px;cursor:pointer;transition:all .15s;position:relative;}
+.cat-card:hover{border-color:var(--blue-bd);background:var(--blue-lt);}
+.cat-card.active-cat{border-color:var(--blue);background:var(--blue-lt);box-shadow:0 0 0 2px var(--blue-bd);}
+.cat-card-ico{width:40px;height:40px;border-radius:var(--rsm);display:grid;place-items:center;margin-bottom:10px;}
+.cat-card-ico i{font-size:20px;}
+.cat-card-name{font-size:13px;font-weight:700;margin-bottom:3px;}
+.cat-card-count{font-size:11px;color:var(--muted);}
+.cat-card-check{position:absolute;top:10px;right:10px;width:18px;height:18px;border-radius:50%;background:var(--blue);display:none;place-items:center;}
+.cat-card-check i{font-size:10px;color:#fff;}
+.cat-card.active-cat .cat-card-check{display:grid;}
+.sub-table-wrap{background:var(--bg);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;}
+.sub-table-hd{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-bottom:1px solid var(--border);background:var(--border-light);}
+.sub-table-hd-title{font-size:12px;font-weight:700;display:flex;align-items:center;gap:7px;}
+.cat-row{cursor:pointer;}
+.cat-row.row-active{background:var(--blue-lt);}
+.cat-row.row-active td{color:var(--blue);}
+
+/* ── INVITE FLOW ── */
+.invite-step{display:none;}
+.invite-step.active{display:block;}
+.step-pills{display:flex;gap:0;margin-bottom:22px;border:1px solid var(--border);border-radius:var(--rsm);overflow:hidden;}
+.step-pill{flex:1;padding:8px 12px;font-size:12px;font-weight:600;text-align:center;color:var(--muted);background:var(--bg);border:none;cursor:default;transition:all .2s;}
+.step-pill.done{background:var(--green-lt);color:var(--green);}
+.step-pill.active-step{background:var(--blue-lt);color:var(--blue);}
+.step-pill + .step-pill{border-left:1px solid var(--border);}
+
+/* ── ACCESS BADGE ── */
+.access-only{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:20px;font-size:11px;font-weight:700;background:var(--orange-lt);color:var(--orange);border:1px solid var(--orange-bd);margin-bottom:14px;}
+.access-only i{font-size:13px;}
+
+/* ── MODAL ── */
+.ov{display:none;position:fixed;inset:0;background:rgba(15,23,42,.4);backdrop-filter:blur(4px);z-index:300;place-items:center;}
+.ov.open{display:grid;}
+.modal{background:var(--surface);border:1px solid var(--border);border-radius:var(--rlg);width:480px;max-height:90vh;overflow-y:auto;box-shadow:var(--sh4);animation:mIn .2s ease;}
+.modal-lg{width:560px;}
+@keyframes mIn{from{opacity:0;transform:scale(.96)}to{opacity:1;transform:scale(1)}}
+.mhd{display:flex;align-items:center;justify-content:space-between;padding:17px 22px;border-bottom:1px solid var(--border);}
+.mhd-l{display:flex;align-items:center;gap:11px;}
+.m-ico{width:36px;height:36px;border-radius:var(--rsm);display:grid;place-items:center;flex-shrink:0;background:var(--blue-lt);}
+.m-ico i{font-size:18px;color:var(--blue);}
+.m-ico.green{background:var(--green-lt);}
+.m-ico.green i{color:var(--green);}
+.m-title{font-size:15px;font-weight:700;}
+.m-sub{font-size:12px;color:var(--muted);}
+.close-btn{width:30px;height:30px;border-radius:var(--rsm);border:1px solid var(--border);background:transparent;display:grid;place-items:center;color:var(--muted);cursor:pointer;}
+.close-btn:hover{background:var(--red-lt);color:var(--red);border-color:var(--red-bd);}
+.close-btn i{font-size:16px;}
+.mbody{padding:20px 22px;}
+.mft{display:flex;justify-content:flex-end;gap:8px;padding:14px 22px;border-top:1px solid var(--border);}
+
+/* ── SUCCESS STATE ── */
+.success-state{text-align:center;padding:24px 16px;}
+.success-state .s-ico{width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,var(--green),#34d399);display:grid;place-items:center;margin:0 auto 16px;box-shadow:0 8px 24px rgba(5,150,105,.25);}
+.success-state .s-ico i{font-size:30px;color:#fff;}
+.success-state h4{font-size:16px;font-weight:700;margin-bottom:6px;}
+.success-state p{font-size:13px;color:var(--muted);line-height:1.6;}
+.redirect-bar{margin-top:14px;padding:10px 14px;background:var(--blue-lt);border:1px solid var(--blue-bd);border-radius:var(--rsm);font-size:12px;color:var(--blue);display:flex;align-items:center;gap:8px;}
+.redirect-bar i{flex-shrink:0;}
+
+/* ── TOAST ── */
+.toast-wrap{position:fixed;bottom:24px;right:24px;z-index:999;display:flex;flex-direction:column;gap:8px;}
+.toast{display:flex;align-items:center;gap:10px;padding:12px 16px;border-radius:var(--rsm);background:var(--surface);border:1px solid var(--border);box-shadow:var(--sh4);font-size:13px;font-weight:500;animation:toastIn .25s ease;min-width:240px;}
+.toast i{font-size:17px;flex-shrink:0;}
+.toast.success{border-left:3px solid var(--green);}
+.toast.success i{color:var(--green);}
+.toast.error{border-left:3px solid var(--red);}
+.toast.error i{color:var(--red);}
+.toast.info{border-left:3px solid var(--blue);}
+.toast.info i{color:var(--blue);}
+@keyframes toastIn{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:translateX(0)}}
+
+/* ── LOADING / ERROR STATES ── */
+.cfg-loading{text-align:center;padding:36px;color:var(--muted);}
+.cfg-loading i{font-size:26px;display:block;margin-bottom:8px;animation:spin .9s linear infinite;}
+.cfg-error{text-align:center;padding:36px;color:var(--red);}
+.cfg-error i{font-size:28px;display:block;margin-bottom:8px;}
+.cfg-error button{margin-top:10px;}
+
+/* ── RESPONSIVE ── */
+@media(max-width:768px){
+  .page-wrap{padding:16px 14px;}
+  .settings-layout{grid-template-columns:1fr;}
+  .settings-nav{flex-direction:row;overflow-x:auto;gap:4px;padding-bottom:6px;border-bottom:1px solid var(--border);margin-bottom:4px;}
+  .sn-item{white-space:nowrap;flex-shrink:0;}
+  .sn-group-label{display:none;}
+  .ph{flex-direction:column;gap:12px;align-items:flex-start;}
+  .ph-actions{width:100%;}
+  .modal{width:calc(100vw - 28px);max-width:480px;}
+  .fgrid{grid-template-columns:1fr;}
+  .fg.full{grid-column:1;}
+  .tw{overflow-x:auto;}
+  .cfg-table{min-width:560px;}
+  .toast-wrap{bottom:16px;right:12px;left:12px;}
+  .cat-grid{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<div class="page-wrap">
+
+  <!-- Page Header -->
+  <div class="ph">
+    <div class="ph-left">
+      <div class="ph-icon"><i class="ti ti-settings"></i></div>
+      <div>
+        <div class="ph-title">Settings</div>
+        <div class="ph-sub">System configuration and preferences</div>
+      </div>
+    </div>
+    <div class="ph-actions">
+      <button class="btn btn-primary" onclick="saveSettings()"><i class="ti ti-device-floppy"></i> Save Changes</button>
+    </div>
+  </div>
+
+  <!-- Settings Layout -->
+  <div class="settings-layout">
+
+    <!-- Left Nav -->
+    <div class="settings-nav">
+      <div class="sn-group-label">System</div>
+      <div class="sn-item active" onclick="switchSettings('general',this)"><i class="ti ti-adjustments"></i> General</div>
+      <div class="sn-item" onclick="switchSettings('appearance',this)"><i class="ti ti-palette"></i> Appearance</div>
+      <div class="sn-item" onclick="switchSettings('notifications',this)"><i class="ti ti-bell"></i> Notifications</div>
+      <div class="sn-item" onclick="switchSettings('data',this)"><i class="ti ti-database"></i> Data &amp; Backup</div>
+      <div class="sn-item" onclick="switchSettings('users',this)"><i class="ti ti-users"></i> User Access</div>
+      <div class="sn-group-label">Asset Configuration</div>
+      <div class="sn-item" onclick="switchSettings('customfields',this)"><i class="ti ti-forms"></i> Custom Fields</div>
+      <div class="sn-item" onclick="switchSettings('statuslabels',this)"><i class="ti ti-tags"></i> Status Labels</div>
+      <div class="sn-item" onclick="switchSettings('assetmodels',this)"><i class="ti ti-cube"></i> Asset Models</div>
+      <div class="sn-item" onclick="switchSettings('categories',this)"><i class="ti ti-category"></i> Categories</div>
+      <div class="sn-group-label">Organisation</div>
+      <div class="sn-item" onclick="switchSettings('manufacturers',this)"><i class="ti ti-building-factory-2"></i> Manufacturers</div>
+      <div class="sn-item" onclick="switchSettings('suppliers',this)"><i class="ti ti-truck-delivery"></i> Suppliers</div>
+      <div class="sn-item" onclick="switchSettings('departments',this)"><i class="ti ti-sitemap"></i> Departments</div>
+      <div class="sn-item" onclick="switchSettings('locations',this)"><i class="ti ti-map-pin"></i> Locations</div>
+      <div class="sn-item" onclick="switchSettings('companies',this)"><i class="ti ti-building"></i> Companies</div>
+      <div class="sn-item" onclick="switchSettings('depreciation',this)"><i class="ti ti-chart-line-down"></i> Depreciation</div>
+    </div>
+
+    <!-- Right Panel -->
+    <div class="settings-panel">
+
+      <!-- ── GENERAL ── -->
+      <div class="settings-section active" id="ss-general">
+        <h3>General Settings</h3>
+        <div class="desc">Manage system-wide configuration</div>
+        <div class="sf-group"><div class="sf-label">System Name</div><input type="text" class="sf-input" id="gen-system-name"/></div>
+        <div class="sf-group"><div class="sf-label">Organisation</div><input type="text" class="sf-input" id="gen-org-name"/></div>
+        <div class="sf-group"><div class="sf-label">Default Currency</div>
+          <select class="sf-select" id="gen-currency">
+            <option value="UGX">UGX – Ugandan Shilling</option>
+            <option value="USD">USD – US Dollar</option>
+            <option value="KES">KES – Kenyan Shilling</option>
+          </select>
+        </div>
+        <div class="sf-group"><div class="sf-label">Fiscal Year Start</div>
+          <select class="sf-select" id="gen-fiscal-start">
+            <option value="January">January</option><option value="April">April</option><option value="July">July</option>
+          </select>
+        </div>
+        <div class="setting-row">
+          <div><div class="setting-label">Auto-generate Asset IDs</div><div class="setting-desc">Automatically assign IDs when adding assets</div></div>
+          <label class="tog"><input type="checkbox" id="gen-auto-ids"/><div class="tog-track"></div><div class="tog-thumb"></div></label>
+        </div>
+        <div class="setting-row">
+          <div><div class="setting-label">Low Stock Alerts</div><div class="setting-desc">Alert when asset count falls below threshold</div></div>
+          <label class="tog"><input type="checkbox" id="gen-low-stock"/><div class="tog-track"></div><div class="tog-thumb"></div></label>
+        </div>
+      </div>
+
+      <!-- ── APPEARANCE ── -->
+      <div class="settings-section" id="ss-appearance">
+        <h3>Appearance</h3>
+        <div class="desc">Customise the look and feel</div>
+        <div class="setting-row">
+          <div><div class="setting-label">Dark Mode</div><div class="setting-desc">Switch to dark interface</div></div>
+          <label class="tog" onclick="toggleDark()"><input type="checkbox" id="darkToggle"/><div class="tog-track"></div><div class="tog-thumb"></div></label>
+        </div>
+        <div class="setting-row">
+          <div><div class="setting-label">Compact Sidebar</div><div class="setting-desc">Collapse sidebar to icons only</div></div>
+          <label class="tog"><input type="checkbox" id="appr-compact"/><div class="tog-track"></div><div class="tog-thumb"></div></label>
+        </div>
+        <div class="sf-group" style="margin-top:16px">
+          <div class="sf-label">Accent Color</div>
+          <div style="display:flex;gap:10px;margin-top:4px">
+            <div style="width:28px;height:28px;border-radius:50%;background:#2563eb;border:2px solid var(--text);cursor:pointer" title="Blue" onclick="changeAccent('#2563eb')"></div>
+            <div style="width:28px;height:28px;border-radius:50%;background:#059669;cursor:pointer" title="Green" onclick="changeAccent('#059669')"></div>
+            <div style="width:28px;height:28px;border-radius:50%;background:#7c3aed;cursor:pointer" title="Purple" onclick="changeAccent('#7c3aed')"></div>
+            <div style="width:28px;height:28px;border-radius:50%;background:#db2777;cursor:pointer" title="Pink" onclick="changeAccent('#db2777')"></div>
+            <div style="width:28px;height:28px;border-radius:50%;background:#0891b2;cursor:pointer" title="Teal" onclick="changeAccent('#0891b2')"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── NOTIFICATIONS ── -->
+      <div class="settings-section" id="ss-notifications">
+        <h3>Notifications</h3>
+        <div class="desc">Configure alert and notification preferences</div>
+        <div class="setting-row"><div><div class="setting-label">Email Notifications</div><div class="setting-desc">Receive alerts via email</div></div><label class="tog"><input type="checkbox" id="notif-email"/><div class="tog-track"></div><div class="tog-thumb"></div></label></div>
+        <div class="setting-row"><div><div class="setting-label">Asset Maintenance Due</div><div class="setting-desc">Notify when assets require maintenance</div></div><label class="tog"><input type="checkbox" id="notif-maintenance"/><div class="tog-track"></div><div class="tog-thumb"></div></label></div>
+        <div class="setting-row"><div><div class="setting-label">New Asset Added</div><div class="setting-desc">Notify on new asset registration</div></div><label class="tog"><input type="checkbox" id="notif-new-asset"/><div class="tog-track"></div><div class="tog-thumb"></div></label></div>
+        <div class="setting-row"><div><div class="setting-label">Facility Movement Alerts</div><div class="setting-desc">Notify on assets sent/received between Facilities</div></div><label class="tog"><input type="checkbox" id="notif-movement"/><div class="tog-track"></div><div class="tog-thumb"></div></label></div>
+        <div class="sf-group" style="margin-top:16px"><div class="sf-label">Alert Email</div><input type="email" class="sf-input" id="notif-alert-email"/></div>
+      </div>
+
+      <!-- ── DATA & BACKUP ── -->
+      <div class="settings-section" id="ss-data">
+        <h3>Data &amp; Backup</h3>
+        <div class="desc">Manage data exports and backups</div>
+        <div class="setting-row"><div><div class="setting-label">Auto Backup</div><div class="setting-desc">Daily automatic database backup</div></div><label class="tog"><input type="checkbox" id="data-auto-backup"/><div class="tog-track"></div><div class="tog-thumb"></div></label></div>
+        <div style="display:flex;gap:10px;margin-top:16px">
+          <button class="btn btn-ghost" onclick="exportData('csv')"><i class="ti ti-file-export"></i> Export CSV</button>
+          <button class="btn btn-ghost" onclick="exportData('excel')"><i class="ti ti-file-spreadsheet"></i> Export Excel</button>
+          <button class="btn btn-ghost" onclick="exportData('pdf')"><i class="ti ti-file-type-pdf"></i> Export PDF</button>
+        </div>
+        <div style="margin-top:16px;padding:14px;background:var(--bg);border-radius:var(--rsm);font-size:13px;color:var(--muted)" id="backup-status">
+          <i class="ti ti-database" style="margin-right:6px"></i>Loading backup status…
+        </div>
+      </div>
+
+      <!-- ── USER ACCESS ── -->
+      <div class="settings-section" id="ss-users">
+        <h3>User Access</h3>
+        <div class="desc">Manage who can access the system. Only Administrators and System Managers can invite new users.</div>
+
+        <!-- Admin-only notice -->
+        <div class="access-only"><i class="ti ti-shield-lock"></i> Admin &amp; System Manager access only</div>
+
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+          <div style="font-size:12px;color:var(--muted)" id="user-summary">Loading users…</div>
+          <button class="btn btn-primary btn-sm" onclick="openInviteModal()"><i class="ti ti-user-plus"></i> Invite User</button>
+        </div>
+
+        <div class="tw"><table class="cfg-table">
+          <thead><tr><th>User</th><th>Role</th><th>Last Login</th><th>Status</th><th>Actions</th></tr></thead>
+          <tbody id="user-body"></tbody>
+        </table></div>
+
+        <!-- Pending invitations -->
+        <div style="margin-top:20px">
+          <div style="font-size:13px;font-weight:700;margin-bottom:10px;display:flex;align-items:center;gap:7px">
+            <i class="ti ti-mail" style="color:var(--orange)"></i> Pending Invitations
+          </div>
+          <div class="tw"><table class="cfg-table">
+            <thead><tr><th>Email</th><th>Role</th><th>Invited By</th><th>Expires</th><th>Actions</th></tr></thead>
+            <tbody id="inv-body"></tbody>
+          </table></div>
+        </div>
+      </div>
+
+      <!-- ── CUSTOM FIELDS ── -->
+      <div class="settings-section" id="ss-customfields">
+        <h3>Custom Fields</h3>
+        <div class="desc">Define extra data fields that appear on asset records — e.g. Warranty Number, MAC Address, License Key.</div>
+        <div style="display:flex;justify-content:flex-end;margin-bottom:14px">
+          <button class="btn btn-primary btn-sm" onclick="cfAdd()"><i class="ti ti-plus"></i> Add Field</button>
+        </div>
+        <div class="tw"><table class="cfg-table">
+          <thead><tr><th>Field Name</th><th>Field Type</th><th>Applies To</th><th>Required</th><th>Actions</th></tr></thead>
+          <tbody id="cf-body"></tbody>
+        </table></div>
+      </div>
+
+      <!-- ── STATUS LABELS ── -->
+      <div class="settings-section" id="ss-statuslabels">
+        <h3>Status Labels</h3>
+        <div class="desc">Customise the status labels used to categorise asset states across the system.</div>
+        <div style="display:flex;justify-content:flex-end;margin-bottom:14px">
+          <button class="btn btn-primary btn-sm" onclick="slAdd()"><i class="ti ti-plus"></i> Add Status</button>
+        </div>
+        <div class="tw"><table class="cfg-table">
+          <thead><tr><th>Label</th><th>Color</th><th>Type</th><th>Default</th><th>Actions</th></tr></thead>
+          <tbody id="sl-body"></tbody>
+        </table></div>
+      </div>
+
+      <!-- ── ASSET MODELS ── -->
+      <div class="settings-section" id="ss-assetmodels">
+        <h3>Asset Models</h3>
+        <div class="desc">Register specific hardware models. Linking assets to models enables richer reporting and lifecycle tracking.</div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+          <div style="position:relative;max-width:260px;flex:1">
+            <i class="ti ti-search" style="position:absolute;left:9px;top:50%;transform:translateY(-50%);font-size:15px;color:var(--muted)"></i>
+            <input type="text" id="am-search" oninput="renderAM()" style="width:100%;background:var(--bg);border:1px solid var(--border);border-radius:var(--rsm);padding:8px 12px 8px 32px;color:var(--text);font-size:13px;font-family:var(--sans);outline:none;" placeholder="Search models..."/>
+          </div>
+          <button class="btn btn-primary btn-sm" onclick="amAdd()"><i class="ti ti-plus"></i> Add Model</button>
+        </div>
+        <div class="tw"><table class="cfg-table">
+          <thead><tr><th>Model Name</th><th>Manufacturer</th><th>Category</th><th>EOL Date</th><th>Assets</th><th>Actions</th></tr></thead>
+          <tbody id="am-body"></tbody>
+        </table></div>
+      </div>
+
+      <!-- ── CATEGORIES ── -->
+      <div class="settings-section" id="ss-categories">
+        <h3>Categories</h3>
+        <div class="desc">Top-level categories group all assets. Click a row to manage its device types below.</div>
+
+        <div style="display:flex;justify-content:flex-end;margin-bottom:14px">
+          <button class="btn btn-primary btn-sm" onclick="catAdd()"><i class="ti ti-plus"></i> Add Category</button>
+        </div>
+        <div class="tw"><table class="cfg-table">
+          <thead><tr><th>Category</th><th>Device Types</th><th>Assets</th><th>Actions</th></tr></thead>
+          <tbody id="cat-body"></tbody>
+        </table></div>
+
+        <!-- Device-type sub-table -->
+        <div class="sub-table-wrap" style="margin-top:22px">
+          <div class="sub-table-hd">
+            <div class="sub-table-hd-title" id="sub-table-title">
+              <i class="ti ti-category"></i>
+              Select a category to manage its device types
+            </div>
+            <button class="btn btn-primary btn-sm" id="catSubAddBtn" onclick="catSubAdd()" disabled><i class="ti ti-plus"></i> Add Device Type</button>
+          </div>
+          <div class="tw"><table class="cfg-table">
+            <thead><tr><th>Device Type</th><th>Icon</th><th>ID Prefix</th><th>Asset Count</th><th>Actions</th></tr></thead>
+            <tbody id="cat-sub-body"></tbody>
+          </table></div>
+        </div>
+      </div>
+
+      <!-- ── MANUFACTURERS ── -->
+      <div class="settings-section" id="ss-manufacturers">
+        <h3>Manufacturers</h3>
+        <div class="desc">Track hardware and software manufacturers. Used when logging assets and models.</div>
+        <div style="display:flex;justify-content:flex-end;margin-bottom:14px">
+          <button class="btn btn-primary btn-sm" onclick="mfgAdd()"><i class="ti ti-plus"></i> Add Manufacturer</button>
+        </div>
+        <div class="tw"><table class="cfg-table">
+          <thead><tr><th>Manufacturer</th><th>URL</th><th>Support Tel</th><th>Assets</th><th>Actions</th></tr></thead>
+          <tbody id="mfg-body"></tbody>
+        </table></div>
+      </div>
+
+      <!-- ── SUPPLIERS ── -->
+      <div class="settings-section" id="ss-suppliers">
+        <h3>Suppliers</h3>
+        <div class="desc">Manage vendors and suppliers from whom assets are procured. Linked to purchase records.</div>
+        <div style="display:flex;justify-content:flex-end;margin-bottom:14px">
+          <button class="btn btn-primary btn-sm" onclick="supAdd()"><i class="ti ti-plus"></i> Add Supplier</button>
+        </div>
+        <div class="tw"><table class="cfg-table">
+          <thead><tr><th>Supplier</th><th>Contact</th><th>Email</th><th>Phone</th><th>Assets Supplied</th><th>Actions</th></tr></thead>
+          <tbody id="sup-body"></tbody>
+        </table></div>
+      </div>
+
+      <!-- ── DEPARTMENTS ── -->
+      <div class="settings-section" id="ss-departments">
+        <h3>Departments</h3>
+        <div class="desc">Define departments. Assets and users can be assigned to departments for tracking.</div>
+        <div style="display:flex;justify-content:flex-end;margin-bottom:14px">
+          <button class="btn btn-primary btn-sm" onclick="deptAdd()"><i class="ti ti-plus"></i> Add Department</button>
+        </div>
+        <div class="tw"><table class="cfg-table">
+          <thead><tr><th>Department</th><th>Manager</th><th>Location</th><th>Users</th><th>Assets</th><th>Actions</th></tr></thead>
+          <tbody id="dept-body"></tbody>
+        </table></div>
+      </div>
+
+      <!-- ── LOCATIONS ── -->
+      <div class="settings-section" id="ss-locations">
+        <h3>Locations</h3>
+        <div class="desc">Map physical locations — buildings, floors, sites — where assets are deployed or Facilityd.</div>
+        <div style="display:flex;justify-content:flex-end;margin-bottom:14px">
+          <button class="btn btn-primary btn-sm" onclick="locAdd()"><i class="ti ti-plus"></i> Add Location</button>
+        </div>
+        <div class="tw"><table class="cfg-table">
+          <thead><tr><th>Location</th><th>Parent</th><th>Address</th><th>Currency</th><th>Assets</th><th>Actions</th></tr></thead>
+          <tbody id="loc-body"></tbody>
+        </table></div>
+      </div>
+
+      <!-- ── COMPANIES ── -->
+      <div class="settings-section" id="ss-companies">
+        <h3>Companies</h3>
+        <div class="desc">Register entities or partner companies. Useful for multi-site deployments and asset ownership tracking.</div>
+        <div style="display:flex;justify-content:flex-end;margin-bottom:14px">
+          <button class="btn btn-primary btn-sm" onclick="compAdd()"><i class="ti ti-plus"></i> Add Company</button>
+        </div>
+        <div class="tw"><table class="cfg-table">
+          <thead><tr><th>Company</th><th>Email</th><th>Phone</th><th>Assets</th><th>Users</th><th>Actions</th></tr></thead>
+          <tbody id="comp-body"></tbody>
+        </table></div>
+      </div>
+
+      <!-- ── DEPRECIATION ── -->
+      <div class="settings-section" id="ss-depreciation">
+        <h3>Depreciation</h3>
+        <div class="desc">Configure depreciation methods and rates. Applied per asset category to compute current book value.</div>
+        <div style="display:flex;justify-content:flex-end;margin-bottom:14px">
+          <button class="btn btn-primary btn-sm" onclick="deprAdd()"><i class="ti ti-plus"></i> Add Method</button>
+        </div>
+        <div class="tw"><table class="cfg-table">
+          <thead><tr><th>Name</th><th>Method</th><th>Rate / Years</th><th>Applies To</th><th>Assets Using</th><th>Actions</th></tr></thead>
+          <tbody id="depr-body"></tbody>
+        </table></div>
+        <div style="margin-top:20px;padding:16px;background:var(--blue-lt);border:1px solid var(--blue-bd);border-radius:var(--rsm)">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px"><i class="ti ti-info-circle" style="color:var(--blue)"></i><strong style="font-size:13px;color:var(--blue)">How Depreciation Works</strong></div>
+          <div style="font-size:12px;color:var(--muted);line-height:1.6">Assets are assigned a depreciation method at registration. The system uses the purchase date and cost to compute the current book value. <strong>Straight-Line</strong> reduces value evenly each year. <strong>Declining Balance</strong> applies a fixed percentage to the remaining value. <strong>Sum-of-Years</strong> front-loads depreciation.</div>
+        </div>
+      </div>
+
+    </div><!-- /settings-panel -->
+  </div><!-- /settings-layout -->
+</div><!-- /page-wrap -->
+
+<!-- ══════════════════════════════════════
+     INVITE USER MODAL  (3-step flow)
+══════════════════════════════════════ -->
+<div class="ov" id="inviteOv" onclick="bgClose(event,'inviteOv')">
+  <div class="modal modal-lg">
+    <div class="mhd">
+      <div class="mhd-l">
+        <div class="m-ico" id="invIco"><i class="ti ti-user-plus"></i></div>
+        <div>
+          <div class="m-title" id="invTitle">Invite New User</div>
+          <div class="m-sub" id="invSub">Create an account and send an invitation</div>
+        </div>
+      </div>
+      <button class="close-btn" onclick="closeOv('inviteOv')"><i class="ti ti-x"></i></button>
+    </div>
+
+    <div class="mbody">
+
+      <!-- Step progress -->
+      <div class="step-pills" id="inv-step-pills">
+        <div class="step-pill active-step" id="pill-1">1 · Account Details</div>
+        <div class="step-pill" id="pill-2">2 · Send Invitation</div>
+        <div class="step-pill" id="pill-3">3 · Done</div>
+      </div>
+
+      <!-- ── Step 1: Create account ── -->
+      <div class="invite-step active" id="inv-step-1">
+        <div class="fgrid">
+          <div class="fg">
+            <label>First Name</label>
+            <input type="text" class="fi" id="inv-first" placeholder="e.g. Sarah"/>
+          </div>
+          <div class="fg">
+            <label>Last Name</label>
+            <input type="text" class="fi" id="inv-last" placeholder="e.g. Nakato"/>
+          </div>
+          <div class="fg full">
+            <label>Email Address</label>
+            <input type="email" class="fi" id="inv-email" placeholder="user@example.com"/>
+          </div>
+          <div class="fg">
+            <label>Role</label>
+            <select class="fi" id="inv-role">
+              <option value="">Select role</option>
+              <option>Administrator</option>
+              <option>System Manager</option>
+              <option>Technician</option>
+              <option>Viewer</option>
+              <option>Department Head</option>
+            </select>
+          </div>
+          <div class="fg">
+            <label>Department</label>
+            <select class="fi" id="inv-dept">
+              <option value="">Select department</option>
+            </select>
+          </div>
+          <div class="fg full">
+            <label>Temporary Password</label>
+            <input type="password" class="fi" id="inv-pwd" placeholder="Temporary password for account"/>
+          </div>
+          <div class="fg full">
+            <label>Confirm Password</label>
+            <input type="password" class="fi" id="inv-cpwd" placeholder="Repeat temporary password"/>
+          </div>
+        </div>
+        <div style="margin-top:6px;padding:12px;background:var(--blue-lt);border:1px solid var(--blue-bd);border-radius:var(--rsm);font-size:12px;color:var(--muted);line-height:1.6">
+          <i class="ti ti-info-circle" style="color:var(--blue);margin-right:5px"></i>
+          The account will be created immediately. The user will be asked to change their password when they first log in.
+        </div>
+      </div>
+
+      <!-- ── Step 2: Send invitation ── -->
+      <div class="invite-step" id="inv-step-2">
+        <div style="padding:14px;background:var(--green-lt);border:1px solid var(--green-bd);border-radius:var(--rsm);margin-bottom:18px;display:flex;align-items:center;gap:10px">
+          <i class="ti ti-circle-check" style="color:var(--green);font-size:20px;flex-shrink:0"></i>
+          <div>
+            <div style="font-size:13px;font-weight:600;color:var(--green)">Account created successfully</div>
+            <div style="font-size:12px;color:var(--muted);margin-top:2px">Now send the user an invitation email to activate access.</div>
+          </div>
+        </div>
+
+        <div class="fg" style="margin-bottom:14px">
+          <label>Invitation Email Preview</label>
+          <div style="padding:14px;background:var(--bg);border:1px solid var(--border);border-radius:var(--rsm);font-size:12px;line-height:1.8;color:var(--muted)">
+            <strong style="color:var(--text)">To:</strong> <span id="inv-email-preview">—</span><br/>
+            <strong style="color:var(--text)">Subject:</strong> You've been invited to the Asset Management system<br/><br/>
+            Hi <span id="inv-name-preview">—</span>, you have been added as a <span id="inv-role-preview" style="color:var(--blue);font-weight:600">—</span>.<br/><br/>
+            Click the link below to accept your invitation and log in with the temporary credentials provided by the administrator.<br/><br/>
+            <span style="color:var(--blue)" id="inv-login-url">→ /login</span>
+          </div>
+        </div>
+
+        <div class="fg">
+          <label>Personal Note (optional)</label>
+          <textarea class="fi" rows="2" id="inv-note" placeholder="Add a short note to include in the invitation email..."></textarea>
+        </div>
+      </div>
+
+      <!-- ── Step 3: Done ── -->
+      <div class="invite-step" id="inv-step-3">
+        <div class="success-state">
+          <div class="s-ico"><i class="ti ti-send"></i></div>
+          <h4>Invitation Sent!</h4>
+          <p>An invitation email has been sent to <strong id="inv-done-email">—</strong>.<br/>
+          They will be prompted to set a permanent password on first login.</p>
+          <div class="redirect-bar">
+            <i class="ti ti-loader-2" style="animation:spin .9s linear infinite"></i>
+            <span>Returning to User Access in <strong id="redirect-count">2</strong>s…</span>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /mbody -->
+
+    <div class="mft" id="inv-footer">
+      <button class="btn btn-ghost" onclick="closeOv('inviteOv')">Cancel</button>
+      <button class="btn btn-primary" id="inv-next-btn" onclick="inviteNext()">
+        <i class="ti ti-arrow-right"></i> Create Account
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Generic cfg modal -->
+<div class="ov" id="cfgOv" onclick="bgClose(event,'cfgOv')">
+  <div class="modal">
+    <div class="mhd">
+      <div class="mhd-l">
+        <div class="m-ico" id="cfgIco"><i class="ti ti-plus" id="cfgIcoI" style="color:var(--blue)"></i></div>
+        <div><div class="m-title" id="cfgTitle">Add Item</div><div class="m-sub" id="cfgSub"></div></div>
+      </div>
+      <button class="close-btn" onclick="closeOv('cfgOv')"><i class="ti ti-x"></i></button>
+    </div>
+    <div class="mbody" id="cfgBody"></div>
+    <div class="mft">
+      <button class="btn btn-ghost" onclick="closeOv('cfgOv')">Cancel</button>
+      <button class="btn btn-primary" id="cfgSaveBtn"><i class="ti ti-check"></i> Save</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast-wrap" id="toastWrap"></div>
+<style>@keyframes spin{to{transform:rotate(360deg)}}</style>
+
+<script>
+/* ════════════════════════════════════
+   API CONFIGURATION
+   Adjust API_BASE and the endpoint paths
+   below to match your backend.
+════════════════════════════════════ */
+const API_BASE = '/api';
+
+const ENDPOINTS = {
+  generalSettings:  `${API_BASE}/settings/general`,
+  notifSettings:    `${API_BASE}/settings/notifications`,
+  backupStatus:     `${API_BASE}/settings/backup-status`,
+  exportData:       `${API_BASE}/settings/export`,
+
+  users:            `${API_BASE}/users`,
+  invitations:      `${API_BASE}/invitations`,
+
+  customFields:     `${API_BASE}/custom-fields`,
+  statusLabels:      `${API_BASE}/status-labels`,
+  assetModels:       `${API_BASE}/asset-models`,
+  categories:        `${API_BASE}/categories`,          // GET returns top-level categories
+  categorySubtypes:  (catId) => `${API_BASE}/categories/${catId}/subtypes`,
+
+  manufacturers:     `${API_BASE}/manufacturers`,
+  suppliers:         `${API_BASE}/suppliers`,
+  departments:       `${API_BASE}/departments`,
+  locations:         `${API_BASE}/locations`,
+  companies:         `${API_BASE}/companies`,
+  depreciation:      `${API_BASE}/depreciation-methods`,
+};
+
+/* In-memory cache of data fetched from the API.
+   Populated by the load* functions below. */
+let CFG = {
+  generalSettings: {},
+  notifSettings: {},
+  customFields: [],
+  statusLabels: [],
+  assetModels: [],
+  categories: [],          // [{id,name,icon,color,subtypeCount,assetCount}]
+  categorySubtypes: {},    // { [categoryId]: [{id,name,icon,prefix,count}] }
+  manufacturers: [],
+  suppliers: [],
+  departments: [],
+  locations: [],
+  companies: [],
+  depreciation: [],
+  users: [],
+  invitations: [],
+};
+
+let activeCat = null;
+let inviteStep = 1;
+
+/* ════════════════════════════════════
+   FETCH HELPERS
+════════════════════════════════════ */
+async function apiGet(url) {
+  const res = await fetch(url, { headers: { 'Accept': 'application/json' } });
+  if (!res.ok) throw new Error(`GET ${url} failed: ${res.status}`);
+  return res.json();
+}
+async function apiSend(url, method, body) {
+  const res = await fetch(url, {
+    method,
+    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+    body: body ? JSON.stringify(body) : undefined,
+  });
+  if (!res.ok) {
+    let detail = '';
+    try { detail = (await res.json()).message || ''; } catch (e) {}
+    throw new Error(detail || `${method} ${url} failed: ${res.status}`);
+  }
+  const text = await res.text();
+  return text ? JSON.parse(text) : null;
+}
+const apiPost   = (url, body) => apiSend(url, 'POST', body);
+const apiPut    = (url, body) => apiSend(url, 'PUT', body);
+const apiPatch  = (url, body) => apiSend(url, 'PATCH', body);
+const apiDelete = (url) => apiSend(url, 'DELETE');
+
+function loadingRow(cols, msg) {
+  return `<tr><td colspan="${cols}" class="cfg-loading"><i class="ti ti-loader-2"></i>${msg || 'Loading…'}</td></tr>`;
+}
+function errorRow(cols, msg, retryFn) {
+  return `<tr><td colspan="${cols}" class="cfg-error">
+    <i class="ti ti-alert-triangle"></i>${msg || 'Failed to load data.'}
+    <div><button class="btn btn-ghost btn-sm" onclick="${retryFn}"><i class="ti ti-refresh"></i> Retry</button></div>
+  </td></tr>`;
+}
+function emptyRow(cols, msg) {
+  return `<tr><td colspan="${cols}" class="cfg-empty"><i class="ti ti-database-off"></i>${msg}</td></tr>`;
+}
+
+/* ════════════════════════════════════
+   SETTINGS NAV
+════════════════════════════════════ */
+function switchSettings(sec, el) {
+  document.querySelectorAll('.sn-item').forEach(x => x.classList.remove('active'));
+  document.querySelectorAll('.settings-section').forEach(x => x.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('ss-' + sec).classList.add('active');
+}
+
+async function saveSettings() {
+  try {
+    const general = {
+      systemName:  document.getElementById('gen-system-name').value,
+      orgName:     document.getElementById('gen-org-name').value,
+      currency:    document.getElementById('gen-currency').value,
+      fiscalStart: document.getElementById('gen-fiscal-start').value,
+      autoGenerateIds: document.getElementById('gen-auto-ids').checked,
+      lowStockAlerts:  document.getElementById('gen-low-stock').checked,
+    };
+    const notifications = {
+      emailNotifications: document.getElementById('notif-email').checked,
+      maintenanceDue:     document.getElementById('notif-maintenance').checked,
+      newAssetAdded:      document.getElementById('notif-new-asset').checked,
+      FacilityMovement:      document.getElementById('notif-movement').checked,
+      alertEmail:         document.getElementById('notif-alert-email').value,
+    };
+    await Promise.all([
+      apiPut(ENDPOINTS.generalSettings, general),
+      apiPut(ENDPOINTS.notifSettings, notifications),
+    ]);
+    toast('Settings saved successfully.', 'success');
+  } catch (e) {
+    toast(e.message || 'Failed to save settings.', 'error');
+  }
+}
+
+function changeAccent(c) { document.documentElement.style.setProperty('--blue', c); }
+let darkMode = false;
+function toggleDark() {
+  darkMode = !darkMode;
+  document.body.classList.toggle('dark', darkMode);
+  const dt = document.getElementById('darkToggle');
+  if (dt) dt.checked = darkMode;
+}
+
+async function exportData(format) {
+  try {
+    toast(`Preparing ${format.toUpperCase()} export…`, 'info');
+    const res = await fetch(`${ENDPOINTS.exportData}?format=${format}`);
+    if (!res.ok) throw new Error(`Export failed: ${res.status}`);
+    const blob = await res.blob();
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `assets-export.${format === 'excel' ? 'xlsx' : format}`;
+    document.body.appendChild(a); a.click(); a.remove();
+    URL.revokeObjectURL(url);
+    toast('Export downloaded.', 'success');
+  } catch (e) {
+    toast(e.message || 'Export failed.', 'error');
+  }
+}
+
+/* ════════════════════════════════════
+   HELPER: table action buttons
+════════════════════════════════════ */
+function cfgActBtns(editFn, delFn, extraBtn) {
+  return `<div class="cfg-actions">
+    ${extraBtn || ''}
+    <button class="cfg-act e" onclick="${editFn}" title="Edit"><i class="ti ti-pencil"></i></button>
+    <button class="cfg-act d" onclick="${delFn}" title="Delete"><i class="ti ti-trash"></i></button>
+  </div>`;
+}
+
+/* ════════════════════════════════════
+   LOAD + RENDER: GENERAL / NOTIFICATIONS / BACKUP
+════════════════════════════════════ */
+async function loadGeneralSettings() {
+  try {
+    const s = await apiGet(ENDPOINTS.generalSettings);
+    CFG.generalSettings = s || {};
+    document.getElementById('gen-system-name').value = s.systemName || '';
+    document.getElementById('gen-org-name').value    = s.orgName || '';
+    document.getElementById('gen-currency').value     = s.currency || 'UGX';
+    document.getElementById('gen-fiscal-start').value = s.fiscalStart || 'January';
+    document.getElementById('gen-auto-ids').checked   = !!s.autoGenerateIds;
+    document.getElementById('gen-low-stock').checked  = !!s.lowStockAlerts;
+  } catch (e) {
+    toast('Could not load general settings.', 'error');
+  }
+}
+
+async function loadNotifSettings() {
+  try {
+    const s = await apiGet(ENDPOINTS.notifSettings);
+    CFG.notifSettings = s || {};
+    document.getElementById('notif-email').checked       = !!s.emailNotifications;
+    document.getElementById('notif-maintenance').checked = !!s.maintenanceDue;
+    document.getElementById('notif-new-asset').checked   = !!s.newAssetAdded;
+    document.getElementById('notif-movement').checked    = !!s.FacilityMovement;
+    document.getElementById('notif-alert-email').value   = s.alertEmail || '';
+  } catch (e) {
+    toast('Could not load notification settings.', 'error');
+  }
+}
+
+async function loadBackupStatus() {
+  const el = document.getElementById('backup-status');
+  try {
+    const s = await apiGet(ENDPOINTS.backupStatus);
+    const when = s.lastBackupAt ? new Date(s.lastBackupAt).toLocaleString() : 'Never';
+    const size = s.sizeBytes ? `${(s.sizeBytes / (1024*1024)).toFixed(1)} MB` : '—';
+    el.innerHTML = `<i class="ti ti-database" style="margin-right:6px"></i>Last backup: <strong>${when}</strong> — ${size}`;
+  } catch (e) {
+    el.innerHTML = `<i class="ti ti-alert-triangle" style="margin-right:6px;color:var(--red)"></i>Could not load backup status.`;
+  }
+}
+
+/* ════════════════════════════════════
+   LOAD + RENDER: USERS + INVITATIONS
+════════════════════════════════════ */
+const roleColors = {
+  'Administrator':'b-info','System Manager':'b-storage',
+  'Technician':'b-teal','Viewer':'b-storage','Department Head':'b-orange',
+};
+
+async function loadUsers() {
+  const body = document.getElementById('user-body');
+  body.innerHTML = loadingRow(5, 'Loading users…');
+  try {
+    CFG.users = await apiGet(ENDPOINTS.users);
+    renderUsers();
+  } catch (e) {
+    body.innerHTML = errorRow(5, 'Could not load users.', 'loadUsers()');
+  }
+}
+
+function renderUsers() {
+  const b = document.getElementById('user-body'); if (!b) return;
+  document.getElementById('user-summary').textContent =
+    `${CFG.users.length} user${CFG.users.length === 1 ? '' : 's'}`;
+  if (!CFG.users.length) { b.innerHTML = emptyRow(5, 'No users found'); return; }
+  b.innerHTML = CFG.users.map(u => {
+    const cls = roleColors[u.role] || 'b-info';
+    const color = u.color || 'blue';
+    const statusBadge = u.status === 'active'
+      ? '<span class="badge b-active">Active</span>'
+      : u.status === 'invited'
+        ? '<span class="badge b-pending">Invited</span>'
+        : '<span class="badge b-inactive">Inactive</span>';
+    return `<tr>
+      <td><div class="acell">
+        <div class="acell-ico" style="background:var(--${color}-lt)"><i class="ti ti-user" style="color:var(--${color})"></i></div>
+        <div><div class="acell-name">${u.name || '—'}</div><div class="acell-id">${u.email || ''}</div></div>
+      </div></td>
+      <td><span class="badge ${cls}">${u.role || '—'}</span></td>
+      <td style="font-family:var(--mono);font-size:11px;color:var(--muted)">${u.lastLogin || '—'}</td>
+      <td>${statusBadge}</td>
+      <td>${cfgActBtns(`cfEdit('user','${u.id}')`,`cfDel('user','${u.id}')`)}</td>
+    </tr>`;
+  }).join('');
+}
+
+async function loadInvitations() {
+  const body = document.getElementById('inv-body');
+  body.innerHTML = loadingRow(5, 'Loading invitations…');
+  try {
+    CFG.invitations = await apiGet(ENDPOINTS.invitations);
+    renderInvitations();
+  } catch (e) {
+    body.innerHTML = errorRow(5, 'Could not load invitations.', 'loadInvitations()');
+  }
+}
+
+function renderInvitations() {
+  const b = document.getElementById('inv-body'); if (!b) return;
+  if (!CFG.invitations.length) {
+    b.innerHTML = emptyRow(5,'No pending invitations'); return;
+  }
+  b.innerHTML = CFG.invitations.map(inv => `<tr>
+    <td style="font-weight:600">${inv.email}</td>
+    <td><span class="badge ${roleColors[inv.role]||'b-info'}">${inv.role}</span></td>
+    <td style="color:var(--muted);font-size:12px">${inv.invitedBy || '—'}</td>
+    <td style="font-family:var(--mono);font-size:11px;color:var(--muted)">${inv.expires || '—'}</td>
+    <td>
+      <div class="cfg-actions">
+        <button class="cfg-act s" onclick="resendInvite('${inv.id}')" title="Resend"><i class="ti ti-send"></i></button>
+        <button class="cfg-act d" onclick="cfDel('inv','${inv.id}')" title="Revoke"><i class="ti ti-x"></i></button>
+      </div>
+    </td>
+  </tr>`).join('');
+}
+
+async function resendInvite(id) {
+  try {
+    await apiPost(`${ENDPOINTS.invitations}/${id}/resend`);
+    toast('Invitation resent successfully.', 'success');
+  } catch (e) {
+    toast(e.message || 'Failed to resend invitation.', 'error');
+  }
+}
+
+/* ════════════════════════════════════
+   INVITE MODAL FLOW
+════════════════════════════════════ */
+async function openInviteModal() {
+  inviteStep = 1;
+  ['inv-first','inv-last','inv-email','inv-pwd','inv-cpwd','inv-note'].forEach(id => {
+    const el = document.getElementById(id); if (el) el.value = '';
+  });
+  ['inv-role','inv-dept'].forEach(id => {
+    const el = document.getElementById(id); if (el) el.value = '';
+  });
+  await populateDeptOptions();
+  updateInviteStep(1);
+  openOv('inviteOv');
+}
+
+async function populateDeptOptions() {
+  const sel = document.getElementById('inv-dept');
+  sel.innerHTML = '<option value="">Select department</option>';
+  const depts = CFG.departments.length ? CFG.departments : await safeLoadDepartmentsForSelect();
+  depts.forEach(d => {
+    const opt = document.createElement('option');
+    opt.value = d.name; opt.textContent = d.name;
+    sel.appendChild(opt);
+  });
+}
+async function safeLoadDepartmentsForSelect() {
+  try { return await apiGet(ENDPOINTS.departments); } catch (e) { return []; }
+}
+
+function updateInviteStep(step) {
+  inviteStep = step;
+  [1,2,3].forEach(n => {
+    document.getElementById('inv-step-'+n).classList.toggle('active', n === step);
+    const pill = document.getElementById('pill-'+n);
+    pill.className = 'step-pill' + (n === step ? ' active-step' : n < step ? ' done' : '');
+  });
+
+  const btn = document.getElementById('inv-next-btn');
+  const footer = document.getElementById('inv-footer');
+
+  if (step === 1) {
+    btn.innerHTML = '<i class="ti ti-arrow-right"></i> Create Account';
+    btn.style.display = '';
+    footer.querySelector('.btn-ghost').style.display = '';
+  } else if (step === 2) {
+    const first = document.getElementById('inv-first').value.trim();
+    const last  = document.getElementById('inv-last').value.trim();
+    const email = document.getElementById('inv-email').value.trim();
+    const role  = document.getElementById('inv-role').value;
+    document.getElementById('inv-email-preview').textContent = email || '—';
+    document.getElementById('inv-name-preview').textContent  = `${first} ${last}`.trim() || '—';
+    document.getElementById('inv-role-preview').textContent  = role || '—';
+    document.getElementById('inv-login-url').textContent = `→ ${window.location.origin}/login`;
+    btn.innerHTML = '<i class="ti ti-send"></i> Send Invitation';
+    btn.style.display = '';
+    footer.querySelector('.btn-ghost').style.display = '';
+  } else {
+    const email = document.getElementById('inv-email').value.trim();
+    document.getElementById('inv-done-email').textContent = email;
+    btn.style.display = 'none';
+    footer.querySelector('.btn-ghost').style.display = 'none';
+
+    let t = 2;
+    document.getElementById('redirect-count').textContent = t;
+    const timer = setInterval(() => {
+      t--;
+      const el = document.getElementById('redirect-count');
+      if (el) el.textContent = t;
+      if (t <= 0) {
+        clearInterval(timer);
+        closeOv('inviteOv');
+        toast(`Invitation sent to ${email}`, 'success');
+        loadUsers();
+        loadInvitations();
+      }
+    }, 1000);
+  }
+}
+
+async function inviteNext() {
+  if (inviteStep === 1) {
+    const first = document.getElementById('inv-first').value.trim();
+    const last  = document.getElementById('inv-last').value.trim();
+    const email = document.getElementById('inv-email').value.trim();
+    const role  = document.getElementById('inv-role').value;
+    const dept  = document.getElementById('inv-dept').value;
+    const pwd   = document.getElementById('inv-pwd').value;
+    const cpwd  = document.getElementById('inv-cpwd').value;
+    if (!first)           { toast('Please enter the first name.','error'); return; }
+    if (!email || !email.includes('@')) { toast('Please enter a valid email address.','error'); return; }
+    if (!role)            { toast('Please select a role.','error'); return; }
+    if (!pwd || pwd.length < 6) { toast('Password must be at least 6 characters.','error'); return; }
+    if (pwd !== cpwd)     { toast('Passwords do not match.','error'); return; }
+
+    try {
+      const created = await apiPost(ENDPOINTS.users, {
+        firstName: first, lastName: last, email, role, department: dept, password: pwd,
+      });
+      window.__lastCreatedUserId = created && created.id;
+      toast('Account created successfully.', 'success');
+      updateInviteStep(2);
+    } catch (e) {
+      toast(e.message || 'Failed to create account.', 'error');
+    }
+  } else if (inviteStep === 2) {
+    const note = document.getElementById('inv-note').value.trim();
+    try {
+      await apiPost(ENDPOINTS.invitations, {
+        userId: window.__lastCreatedUserId,
+        email: document.getElementById('inv-email').value.trim(),
+        role: document.getElementById('inv-role').value,
+        note,
+      });
+      updateInviteStep(3);
+    } catch (e) {
+      toast(e.message || 'Failed to send invitation.', 'error');
+    }
+  }
+}
+
+/* ════════════════════════════════════
+   LOAD + RENDER: CATEGORIES (top-level table)
+════════════════════════════════════ */
+async function loadCategories() {
+  const body = document.getElementById('cat-body');
+  body.innerHTML = loadingRow(4, 'Loading categories…');
+  try {
+    CFG.categories = await apiGet(ENDPOINTS.categories);
+    renderCatTable();
+    if (CFG.categories.length) {
+      const keepSelected = CFG.categories.find(c => c.id === activeCat);
+      await selectCat(keepSelected ? activeCat : CFG.categories[0].id);
+    } else {
+      activeCat = null;
+      document.getElementById('catSubAddBtn').disabled = true;
+      document.getElementById('sub-table-title').innerHTML = `<i class="ti ti-category"></i> Select a category to manage its device types`;
+      document.getElementById('cat-sub-body').innerHTML = emptyRow(5, 'No categories yet');
+    }
+  } catch (e) {
+    body.innerHTML = emptyRow(4, 'No categories');
+  }
+}
+
+function renderCatTable() {
+  const b = document.getElementById('cat-body'); if (!b) return;
+  if (!CFG.categories.length) { b.innerHTML = emptyRow(4, 'No categories yet'); return; }
+  b.innerHTML = CFG.categories.map(c => `<tr class="cat-row${c.id === activeCat ? ' row-active' : ''}" id="cat-row-${c.id}" onclick="selectCat('${c.id}')">
+    <td><div style="display:flex;align-items:center;gap:9px">
+      <i class="ti ${c.icon || 'ti-category'}" style="font-size:17px;color:var(--${c.color || 'blue'})"></i>
+      <strong>${c.name}</strong>
+    </div></td>
+    <td><span class="badge b-info">${c.subtypeCount ?? 0}</span></td>
+    <td><span class="badge b-teal">${c.assetCount ?? 0}</span></td>
+    <td onclick="event.stopPropagation()">${cfgActBtns(`cfEdit('topcat','${c.id}')`,`cfDel('topcat','${c.id}')`)}</td>
+  </tr>`).join('');
+}
+
+async function selectCat(catId) {
+  activeCat = catId;
+  document.querySelectorAll('.cat-row').forEach(r => r.classList.remove('row-active'));
+  const row = document.getElementById('cat-row-' + catId);
+  if (row) row.classList.add('row-active');
+
+  document.getElementById('catSubAddBtn').disabled = false;
+  const meta = CFG.categories.find(c => c.id === catId);
+  if (meta) {
+    document.getElementById('sub-table-title').innerHTML =
+      `<i class="ti ${meta.icon || 'ti-category'}" style="color:var(--${meta.color || 'blue'})"></i> ${meta.name} — Device Types`;
+  }
+  await loadCategorySubtypes(catId);
+}
+
+/* ════════════════════════════════════
+   LOAD + RENDER: DEVICE TYPES (per category)
+════════════════════════════════════ */
+async function loadCategorySubtypes(catId) {
+  const body = document.getElementById('cat-sub-body');
+  body.innerHTML = loadingRow(5, 'Loading device types…');
+  try {
+    const subs = await apiGet(ENDPOINTS.categorySubtypes(catId));
+    CFG.categorySubtypes[catId] = subs;
+    renderCatSubTable();
+  } catch (e) {
+    CFG.categorySubtypes[catId] = [];
+    body.innerHTML = emptyRow(5, 'No device types');
+  }
+}
+
+function renderCatSubTable() {
+  const b = document.getElementById('cat-sub-body'); if (!b) return;
+  const subs = CFG.categorySubtypes[activeCat] || [];
+  b.innerHTML = subs.length ? subs.map(c => `<tr>
+    <td><div style="display:flex;align-items:center;gap:9px">
+      <i class="ti ${c.icon || 'ti-box'}" style="font-size:17px;color:var(--blue)"></i>
+      <strong>${c.name}</strong>
+    </div></td>
+    <td><code style="font-size:11px;background:var(--bg);padding:2px 7px;border-radius:4px;border:1px solid var(--border)">${c.icon || ''}</code></td>
+    <td><span class="badge b-info" style="font-family:var(--mono)">${c.prefix || ''}</span></td>
+    <td><span class="badge b-teal">${c.count ?? 0}</span></td>
+    <td>${cfgActBtns(`cfEdit('cat','${c.id}')`,`cfDel('cat','${c.id}')`)}</td>
+  </tr>`).join('') : emptyRow(5,'No device types');
+}
+
+
+/* ════════════════════════════════════
+   LOAD + RENDER: SIMPLE LOOKUP TABLES
+════════════════════════════════════ */
+async function loadCF() {
+  const b = document.getElementById('cf-body');
+  b.innerHTML = loadingRow(5, 'Loading custom fields…');
+  try { CFG.customFields = await apiGet(ENDPOINTS.customFields); renderCF(); }
+  catch (e) { b.innerHTML = errorRow(5, 'Could not load custom fields.', 'loadCF()'); }
+}
+function renderCF() {
+  const b = document.getElementById('cf-body'); if (!b) return;
+  b.innerHTML = CFG.customFields.length ? CFG.customFields.map(f => `<tr>
+    <td style="font-weight:600">${f.name}</td>
+    <td><span class="badge b-info">${f.type}</span></td>
+    <td style="color:var(--muted);font-size:12px">${f.appliesTo}</td>
+    <td>${f.required ? '<span class="badge b-active">Yes</span>' : '<span class="badge b-inactive">No</span>'}</td>
+    <td>${cfgActBtns(`cfEdit('cf','${f.id}')`,`cfDel('cf','${f.id}')`)}</td>
+  </tr>`).join('') : emptyRow(5,'No custom fields defined');
+}
+
+async function loadSL() {
+  const b = document.getElementById('sl-body');
+  b.innerHTML = loadingRow(5, 'Loading status labels…');
+  try { CFG.statusLabels = await apiGet(ENDPOINTS.statusLabels); renderSL(); }
+  catch (e) { b.innerHTML = errorRow(5, 'Could not load status labels.', 'loadSL()'); }
+}
+function renderSL() {
+  const b = document.getElementById('sl-body'); if (!b) return;
+  b.innerHTML = CFG.statusLabels.length ? CFG.statusLabels.map(s => `<tr>
+    <td><div style="display:flex;align-items:center;gap:8px"><span class="color-dot" style="background:${s.color}"></span><strong>${s.label}</strong></div></td>
+    <td><span style="width:20px;height:20px;border-radius:4px;background:${s.color};display:inline-block;border:1px solid rgba(0,0,0,.1)"></span></td>
+    <td style="color:var(--muted);font-size:12px">${s.type}</td>
+    <td>${s.isDefault ? '<span class="badge b-active">Default</span>' : '—'}</td>
+    <td>${cfgActBtns(`cfEdit('sl','${s.id}')`,`cfDel('sl','${s.id}')`)}</td>
+  </tr>`).join('') : emptyRow(5,'No status labels');
+}
+
+async function loadAM() {
+  const b = document.getElementById('am-body');
+  b.innerHTML = loadingRow(6, 'Loading asset models…');
+  try { CFG.assetModels = await apiGet(ENDPOINTS.assetModels); renderAM(); }
+  catch (e) { b.innerHTML = errorRow(6, 'Could not load asset models.', 'loadAM()'); }
+}
+function renderAM() {
+  const b = document.getElementById('am-body'); if (!b) return;
+  const q = (document.getElementById('am-search')?.value || '').trim().toLowerCase();
+  const rows = q
+    ? CFG.assetModels.filter(m => (m.name||'').toLowerCase().includes(q) || (m.manufacturer||'').toLowerCase().includes(q))
+    : CFG.assetModels;
+  b.innerHTML = rows.length ? rows.map(m => `<tr>
+    <td style="font-weight:600">${m.name}</td>
+    <td>${m.manufacturer}</td>
+    <td><span class="badge b-info">${m.category}</span></td>
+    <td style="font-family:var(--mono);font-size:11px;color:var(--muted)">${m.eol || '—'}</td>
+    <td><span class="badge b-teal">${m.assets ?? 0}</span></td>
+    <td>${cfgActBtns(`cfEdit('am','${m.id}')`,`cfDel('am','${m.id}')`)}</td>
+  </tr>`).join('') : emptyRow(6, q ? 'No models match your search' : 'No models registered');
+}
+
+async function loadMFG() {
+  const b = document.getElementById('mfg-body');
+  b.innerHTML = loadingRow(5, 'Loading manufacturers…');
+  try { CFG.manufacturers = await apiGet(ENDPOINTS.manufacturers); renderMFG(); }
+  catch (e) { b.innerHTML = errorRow(5, 'Could not load manufacturers.', 'loadMFG()'); }
+}
+function renderMFG() {
+  const b = document.getElementById('mfg-body'); if (!b) return;
+  b.innerHTML = CFG.manufacturers.length ? CFG.manufacturers.map(m => `<tr>
+    <td style="font-weight:600">${m.name}</td>
+    <td><a href="https://${m.url}" style="color:var(--blue);font-size:12px" target="_blank">${m.url || ''}</a></td>
+    <td style="font-family:var(--mono);font-size:11px;color:var(--muted)">${m.support || ''}</td>
+    <td><span class="badge b-teal">${m.assets ?? 0}</span></td>
+    <td>${cfgActBtns(`cfEdit('mfg','${m.id}')`,`cfDel('mfg','${m.id}')`)}</td>
+  </tr>`).join('') : emptyRow(5, 'No manufacturers defined');
+}
+
+async function loadSUP() {
+  const b = document.getElementById('sup-body');
+  b.innerHTML = loadingRow(6, 'Loading suppliers…');
+  try { CFG.suppliers = await apiGet(ENDPOINTS.suppliers); renderSUP(); }
+  catch (e) { b.innerHTML = errorRow(6, 'Could not load suppliers.', 'loadSUP()'); }
+}
+function renderSUP() {
+  const b = document.getElementById('sup-body'); if (!b) return;
+  b.innerHTML = CFG.suppliers.length ? CFG.suppliers.map(s => `<tr>
+    <td style="font-weight:600">${s.name}</td>
+    <td>${s.contact || ''}</td>
+    <td style="font-size:12px;color:var(--muted)">${s.email || ''}</td>
+    <td style="font-family:var(--mono);font-size:11px;color:var(--muted)">${s.phone || ''}</td>
+    <td><span class="badge b-teal">${s.supplied ?? 0}</span></td>
+    <td>${cfgActBtns(`cfEdit('sup','${s.id}')`,`cfDel('sup','${s.id}')`)}</td>
+  </tr>`).join('') : emptyRow(6, 'No suppliers defined');
+}
+
+async function loadDEPT() {
+  const b = document.getElementById('dept-body');
+  b.innerHTML = loadingRow(6, 'Loading departments…');
+  try { CFG.departments = await apiGet(ENDPOINTS.departments); renderDEPT(); }
+  catch (e) { b.innerHTML = errorRow(6, 'Could not load departments.', 'loadDEPT()'); }
+}
+function renderDEPT() {
+  const b = document.getElementById('dept-body'); if (!b) return;
+  b.innerHTML = CFG.departments.length ? CFG.departments.map(d => `<tr>
+    <td style="font-weight:600">${d.name}</td>
+    <td>${d.manager || ''}</td>
+    <td style="color:var(--muted);font-size:12px">${d.location || ''}</td>
+    <td><span class="badge b-info">${d.users ?? 0}</span></td>
+    <td><span class="badge b-teal">${d.assets ?? 0}</span></td>
+    <td>${cfgActBtns(`cfEdit('dept','${d.id}')`,`cfDel('dept','${d.id}')`)}</td>
+  </tr>`).join('') : emptyRow(6, 'No departments defined');
+}
+
+async function loadLOC() {
+  const b = document.getElementById('loc-body');
+  b.innerHTML = loadingRow(6, 'Loading locations…');
+  try { CFG.locations = await apiGet(ENDPOINTS.locations); renderLOC(); }
+  catch (e) { b.innerHTML = errorRow(6, 'Could not load locations.', 'loadLOC()'); }
+}
+function renderLOC() {
+  const b = document.getElementById('loc-body'); if (!b) return;
+  b.innerHTML = CFG.locations.length ? CFG.locations.map(l => `<tr>
+    <td style="font-weight:600">${l.name}</td>
+    <td style="color:var(--muted);font-size:12px">${l.parent || '—'}</td>
+    <td style="color:var(--muted);font-size:12px">${l.address || ''}</td>
+    <td style="font-family:var(--mono);font-size:11px">${l.currency || ''}</td>
+    <td><span class="badge b-teal">${l.assets ?? 0}</span></td>
+    <td>${cfgActBtns(`cfEdit('loc','${l.id}')`,`cfDel('loc','${l.id}')`)}</td>
+  </tr>`).join('') : emptyRow(6, 'No locations defined');
+}
+
+async function loadCOMP() {
+  const b = document.getElementById('comp-body');
+  b.innerHTML = loadingRow(6, 'Loading companies…');
+  try { CFG.companies = await apiGet(ENDPOINTS.companies); renderCOMP(); }
+  catch (e) { b.innerHTML = errorRow(6, 'Could not load companies.', 'loadCOMP()'); }
+}
+function renderCOMP() {
+  const b = document.getElementById('comp-body'); if (!b) return;
+  b.innerHTML = CFG.companies.length ? CFG.companies.map(c => `<tr>
+    <td style="font-weight:600">${c.name}</td>
+    <td style="font-size:12px;color:var(--muted)">${c.email || ''}</td>
+    <td style="font-family:var(--mono);font-size:11px;color:var(--muted)">${c.phone || ''}</td>
+    <td><span class="badge b-teal">${c.assets ?? 0}</span></td>
+    <td><span class="badge b-info">${c.users ?? 0}</span></td>
+    <td>${cfgActBtns(`cfEdit('comp','${c.id}')`,`cfDel('comp','${c.id}')`)}</td>
+  </tr>`).join('') : emptyRow(6, 'No companies defined');
+}
+
+async function loadDEPR() {
+  const b = document.getElementById('depr-body');
+  b.innerHTML = loadingRow(6, 'Loading depreciation methods…');
+  try { CFG.depreciation = await apiGet(ENDPOINTS.depreciation); renderDEPR(); }
+  catch (e) { b.innerHTML = errorRow(6, 'Could not load depreciation methods.', 'loadDEPR()'); }
+}
+function renderDEPR() {
+  const b = document.getElementById('depr-body'); if (!b) return;
+  const mColors = {
+    'Straight-Line':     ['#059669','#ecfdf5'],
+    'Declining Balance': ['#d97706','#fffbeb'],
+    'Sum-of-Years':      ['#7c3aed','#f5f3ff'],
+  };
+  b.innerHTML = CFG.depreciation.length ? CFG.depreciation.map(d => {
+    const [mc, mbg] = mColors[d.method] || ['#6b7280','#f9fafb'];
+    return `<tr>
+      <td style="font-weight:600">${d.name}</td>
+      <td><span class="depr-method" style="color:${mc};background:${mbg};border:1px solid ${mc}33">${d.method}</span></td>
+      <td style="font-family:var(--mono);font-size:12px">${d.rate || ''}</td>
+      <td style="color:var(--muted);font-size:12px">${d.appliesTo || ''}</td>
+      <td><span class="badge b-teal">${d.using ?? 0}</span></td>
+      <td>${cfgActBtns(`cfEdit('depr','${d.id}')`,`cfDel('depr','${d.id}')`)}</td>
+    </tr>`;
+  }).join('') : emptyRow(6, 'No depreciation methods defined');
+}
+
+/* ════════════════════════════════════
+   ADD / EDIT / DELETE
+════════════════════════════════════ */
+const ADD_ENDPOINT = {
+  'Custom Field': ENDPOINTS.customFields,
+  'Status Label': ENDPOINTS.statusLabels,
+  'Asset Model':  ENDPOINTS.assetModels,
+  'Manufacturer': ENDPOINTS.manufacturers,
+  'Supplier':     ENDPOINTS.suppliers,
+  'Department':   ENDPOINTS.departments,
+  'Location':     ENDPOINTS.locations,
+  'Company':      ENDPOINTS.companies,
+  'Depreciation Method': ENDPOINTS.depreciation,
+  'Category':     ENDPOINTS.categories,
+};
+const RELOAD_FN = {
+  'Custom Field': loadCF, 'Status Label': loadSL, 'Asset Model': loadAM,
+  'Manufacturer': loadMFG, 'Supplier': loadSUP, 'Department': loadDEPT,
+  'Location': loadLOC, 'Company': loadCOMP, 'Depreciation Method': loadDEPR,
+  'Category': loadCategories,
+};
+
+function openCfgModal(title, icon) {
+  document.getElementById('cfgTitle').textContent = `Add ${title}`;
+  document.getElementById('cfgSub').textContent   = `Enter details for the new ${title.toLowerCase()}`;
+  document.getElementById('cfgIco').style.background = 'var(--blue-lt)';
+  document.getElementById('cfgIcoI').className = `ti ti-${icon}`;
+  document.getElementById('cfgIcoI').style.color = 'var(--blue)';
+
+  if (title === 'Device Type') {
+    document.getElementById('cfgBody').innerHTML = `
+      <div class="fg" style="margin-bottom:12px">
+        <label>Device Type Name</label>
+        <input type="text" class="fi" id="cfgName" placeholder="e.g. Switches, Office Chairs"/>
+      </div>
+      <div class="fgrid" style="margin-bottom:4px">
+        <div class="fg">
+          <label>Tabler Icon Class</label>
+          <input type="text" class="fi" id="cfgIconInput" placeholder="e.g. ti-router"/>
+        </div>
+        <div class="fg">
+          <label>ID Prefix</label>
+          <input type="text" class="fi" id="cfgPrefix" placeholder="e.g. RT" maxlength="4"/>
+        </div>
+      </div>`;
+  } else if (title === 'Category') {
+    document.getElementById('cfgBody').innerHTML = `
+      <div class="fg" style="margin-bottom:12px">
+        <label>Category Name</label>
+        <input type="text" class="fi" id="cfgName" placeholder="e.g. IT Equipment"/>
+      </div>
+      <div class="fgrid" style="margin-bottom:4px">
+        <div class="fg">
+          <label>Tabler Icon Class</label>
+          <input type="text" class="fi" id="cfgIconInput" placeholder="e.g. ti-device-laptop"/>
+        </div>
+        <div class="fg">
+          <label>Color</label>
+          <select class="fi" id="cfgColor">
+            <option value="blue">Blue</option>
+            <option value="orange">Orange</option>
+            <option value="teal">Teal</option>
+            <option value="green">Green</option>
+            <option value="purple">Purple</option>
+            <option value="red">Red</option>
+          </select>
+        </div>
+      </div>`;
+  } else {
+    document.getElementById('cfgBody').innerHTML = `
+      <div class="fg" style="margin-bottom:12px">
+        <label>Name</label>
+        <input type="text" class="fi" id="cfgName" placeholder="${title} name"/>
+      </div>
+      <div class="fg" style="margin-bottom:4px">
+        <label>Description (optional)</label>
+        <textarea class="fi" rows="2" id="cfgDesc" placeholder="Add a brief description..."></textarea>
+      </div>`;
+  }
+
+  document.getElementById('cfgSaveBtn').onclick = async () => {
+    const n = document.getElementById('cfgName')?.value.trim();
+    if (!n) { toast('Please enter a name.','error'); return; }
+
+    if (title === 'Device Type') {
+      const icon = document.getElementById('cfgIconInput').value.trim() || 'ti-box';
+      const prefix = document.getElementById('cfgPrefix').value.trim().toUpperCase();
+      try {
+        await apiPost(ENDPOINTS.categorySubtypes(activeCat), { name: n, icon, prefix });
+        toast(`Device type "${n}" added successfully.`,'success');
+        closeOv('cfgOv');
+        await loadCategorySubtypes(activeCat);
+        await loadCategories();
+      } catch (e) {
+        toast(e.message || 'Failed to add device type.', 'error');
+      }
+      return;
+    }
+
+    if (title === 'Category') {
+      const icon = document.getElementById('cfgIconInput').value.trim() || 'ti-category';
+      const color = document.getElementById('cfgColor').value;
+      try {
+        await apiPost(ENDPOINTS.categories, { name: n, icon, color });
+        toast(`Category "${n}" added successfully.`,'success');
+        closeOv('cfgOv');
+        loadCategories();
+      } catch (e) {
+        toast(e.message || 'Failed to add category.', 'error');
+      }
+      return;
+    }
+
+    const d = document.getElementById('cfgDesc')?.value.trim();
+    try {
+      await apiPost(ADD_ENDPOINT[title], { name: n, description: d });
+      toast(`${title} "${n}" added successfully.`,'success');
+      closeOv('cfgOv');
+      if (RELOAD_FN[title]) RELOAD_FN[title]();
+    } catch (e) {
+      toast(e.message || `Failed to add ${title.toLowerCase()}.`, 'error');
+    }
+  };
+  openOv('cfgOv');
+}
+
+function cfAdd()      { openCfgModal('Custom Field','forms'); }
+function slAdd()      { openCfgModal('Status Label','tags'); }
+function amAdd()      { openCfgModal('Asset Model','cube'); }
+function catAdd()     { openCfgModal('Category','category'); }
+function catSubAdd()  {
+  if (!activeCat) { toast('Select a category first.', 'error'); return; }
+  openCfgModal('Device Type', 'box');
+}
+function mfgAdd()     { openCfgModal('Manufacturer','building-factory-2'); }
+function supAdd()     { openCfgModal('Supplier','truck-delivery'); }
+function deptAdd()    { openCfgModal('Department','sitemap'); }
+function locAdd()     { openCfgModal('Location','map-pin'); }
+function compAdd()    { openCfgModal('Company','building'); }
+function deprAdd()    { openCfgModal('Depreciation Method','chart-line-down'); }
+
+const DELETE_ENDPOINT = {
+  user:   (id) => `${ENDPOINTS.users}/${id}`,
+  inv:    (id) => `${ENDPOINTS.invitations}/${id}`,
+  cf:     (id) => `${ENDPOINTS.customFields}/${id}`,
+  sl:     (id) => `${ENDPOINTS.statusLabels}/${id}`,
+  am:     (id) => `${ENDPOINTS.assetModels}/${id}`,
+  cat:    (id) => `${ENDPOINTS.categorySubtypes(activeCat)}/${id}`,
+  topcat: (id) => `${ENDPOINTS.categories}/${id}`,
+  mfg:    (id) => `${ENDPOINTS.manufacturers}/${id}`,
+  sup:    (id) => `${ENDPOINTS.suppliers}/${id}`,
+  dept:   (id) => `${ENDPOINTS.departments}/${id}`,
+  loc:    (id) => `${ENDPOINTS.locations}/${id}`,
+  comp:   (id) => `${ENDPOINTS.companies}/${id}`,
+  depr:   (id) => `${ENDPOINTS.depreciation}/${id}`,
+};
+const RELOAD_AFTER_DELETE = {
+  user: loadUsers, inv: loadInvitations, cf: loadCF, sl: loadSL, am: loadAM,
+  cat: () => { loadCategorySubtypes(activeCat); loadCategories(); },
+  topcat: () => { activeCat = null; loadCategories(); },
+  mfg: loadMFG, sup: loadSUP, dept: loadDEPT, loc: loadLOC, comp: loadCOMP, depr: loadDEPR,
+};
+
+function cfEdit(type, id) {
+  toast('Edit form coming soon.', 'info');
+}
+
+async function cfDel(type, id) {
+  if (!confirm('Are you sure you want to delete this item?')) return;
+  try {
+    await apiDelete(DELETE_ENDPOINT[type](id));
+    toast('Item removed.', 'success');
+    if (RELOAD_AFTER_DELETE[type]) RELOAD_AFTER_DELETE[type]();
+  } catch (e) {
+    toast(e.message || 'Failed to remove item.', 'error');
+  }
+}
+
+/* ════════════════════════════════════
+   MODAL HELPERS
+════════════════════════════════════ */
+function openOv(id)  { document.getElementById(id).classList.add('open'); }
+function closeOv(id) { document.getElementById(id).classList.remove('open'); }
+function bgClose(e, id) { if (e.target === document.getElementById(id)) closeOv(id); }
+
+/* ════════════════════════════════════
+   TOAST
+════════════════════════════════════ */
+function toast(msg, type = 'info') {
+  const wrap  = document.getElementById('toastWrap');
+  const icons = {success:'ti-circle-check',error:'ti-alert-circle',info:'ti-info-circle'};
+  const el    = document.createElement('div');
+  el.className = `toast ${type}`;
+  el.innerHTML = `<i class="ti ${icons[type]||'ti-info-circle'}"></i><span>${msg}</span>`;
+  wrap.appendChild(el);
+  setTimeout(() => {
+    el.style.opacity = '0'; el.style.transition = 'opacity .3s';
+    setTimeout(() => el.remove(), 300);
+  }, 3000);
+}
+
+/* ════════════════════════════════════
+   INIT — fetch everything from the API
+════════════════════════════════════ */
+function loadAll() {
+  loadGeneralSettings();
+  loadNotifSettings();
+  loadBackupStatus();
+  loadUsers();
+  loadInvitations();
+  loadCF();
+  loadSL();
+  loadAM();
+  loadCategories();
+  loadMFG();
+  loadSUP();
+  loadDEPT();
+  loadLOC();
+  loadCOMP();
+  loadDEPR();
+}
+loadAll();
+</script>
+</body>
+</html>

@@ -34,8 +34,8 @@ This file documents the recommended backend endpoints for the Resource Managemen
 - `GET /api/verify?page={page}`
 - `POST /api/verify`
 
-## Stores
-- `GET /api/stores`
+## Facilities
+- `GET /api/Facilities`
 
 ## Alerts
 - `GET /api/alerts`
