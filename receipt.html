@@ -1,235 +1,253 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>EQUIPMENTS Acknowledgement Receipt – Ministry of Health Uganda</title>
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>MOH Equipment Receipt Generator</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/docx/8.5.0/docx.umd.min.js"></script>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
-    body {
-      font-family: "Times New Roman", Times, serif;
-      font-size: 12pt;
-      background: #fff;
-      color: #000;
-    }
+body {
+  font-family: "Times New Roman", Times, serif;
+  font-size: 12pt;
+  background: #fff;
+  color: #000;
+}
 
-    .page {
-      width: 210mm;
-      min-height: 297mm;
-      margin: 0 auto;
-      padding: 18mm 20mm 18mm 20mm;
-    }
+.page {
+  width: 210mm;
+  min-height: 297mm;
+  margin: 0 auto;
+  padding: 18mm 20mm 18mm 20mm;
+  position: relative;
+}
 
-    /* ── Header ── */
-    .header {
-      text-align: center;
-      margin-bottom: 10px;
-    }
+/* watermark COPY */
+.page.copy-mode::before{
+  content:"COPY";
+  position:absolute;
+  top:50%;left:50%;
+  transform:translate(-50%,-50%) rotate(-35deg);
+  font-size:100pt;
+  font-weight:900;
+  color:rgba(200,0,0,.07);
+  pointer-events:none;
+  user-select:none;
+  z-index:0;
+  white-space:nowrap;
+}
+.page > * { position:relative; z-index:1; }
 
-    .header img {
-      height: 72px;
-      margin-bottom: 4px;
-    }
+/* ── Header ── */
+.header {
+  text-align: center;
+  margin-bottom: 10px;
+}
 
-    .header .republic {
-      font-size: 9pt;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      margin-bottom: 2px;
-    }
+.header img {
+  height: 72px;
+  margin-bottom: 4px;
+}
 
-    .header .ministry {
-      font-size: 12pt;
-      font-weight: bold;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      margin-bottom: 8px;
-    }
+.header .republic {
+  font-size: 9pt;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 2px;
+}
 
-    .header .doc-title {
-      font-size: 11pt;
-      font-style: italic;
-      text-decoration: underline;
-      margin-bottom: 12px;
-    }
+.header .ministry {
+  font-size: 12pt;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 8px;
+}
 
-    /* ── Meta block (facility, district, date, no.) ── */
-    .meta-block {
-      margin-bottom: 14px;
-    }
+.header .doc-title {
+  font-size: 11pt;
+  font-style: italic;
+  text-decoration: underline;
+  margin-bottom: 12px;
+}
 
-    .meta-row {
-      display: flex;
-      align-items: flex-end;
-      margin-bottom: 7px;
-      font-size: 10.5pt;
-    }
+/* ── Meta block (facility, district, date, no.) ── */
+.meta-block {
+  margin-bottom: 14px;
+}
 
-    .meta-row .label {
-      font-weight: bold;
-      white-space: nowrap;
-      margin-right: 5px;
-    }
+.meta-row {
+  display: flex;
+  align-items: flex-end;
+  margin-bottom: 7px;
+  font-size: 10.5pt;
+}
 
-    .meta-row .fill-line {
-      flex: 1;
-      border-bottom: 1px solid #000;
-      min-width: 100px;
-      height: 1px;
-      margin-bottom: 2px;
-    }
+.meta-row .label {
+  font-weight: bold;
+  white-space: nowrap;
+  margin-right: 5px;
+}
 
-    .meta-row .fill-value {
-      flex: 1;
-      border-bottom: 1px solid #000;
-      min-width: 100px;
-      padding-bottom: 1px;
-      font-size: 10.5pt;
-    }
+.meta-row .fill-value {
+  flex: 1;
+  border-bottom: 1px dotted #555;
+  min-width: 100px;
+  padding-bottom: 1px;
+  font-size: 10.5pt;
+}
 
-    /* top row: facility left, date+no right */
-    .meta-top {
-      display: flex;
-      gap: 24px;
-      align-items: flex-end;
-      margin-bottom: 7px;
-    }
+/* top row: facility left, date+no right */
+.meta-top {
+  display: flex;
+  gap: 24px;
+  align-items: flex-end;
+  margin-bottom: 7px;
+}
 
-    .meta-top .left {
-      flex: 2;
-      display: flex;
-      align-items: flex-end;
-    }
+.meta-top .left {
+  flex: 2;
+  display: flex;
+  align-items: flex-end;
+}
 
-    .meta-top .right {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      gap: 7px;
-    }
+.meta-top .right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
 
-    .meta-top .right .meta-row {
-      margin-bottom: 0;
-    }
+.meta-top .right .meta-row {
+  margin-bottom: 0;
+}
 
-    /* ── Table ── */
-    table.items {
-      width: 100%;
-      border-collapse: collapse;
-      margin-bottom: 16px;
-    }
+/* ── Table ── */
+table.items {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 16px;
+}
 
-    table.items th,
-    table.items td {
-      border: 1px solid #000;
-      padding: 3px 5px;
-      font-size: 10.5pt;
-    }
+table.items th,
+table.items td {
+  border: 1px solid #000;
+  padding: 3px 5px;
+  font-size: 10.5pt;
+}
 
-    table.items th {
-      font-weight: bold;
-      text-align: left;
-      background: #fff;
-      white-space: nowrap;
-    }
+table.items th {
+  font-weight: bold;
+  text-align: left;
+  background: #fff;
+  white-space: nowrap;
+}
 
-    table.items th:first-child,
-    table.items td:first-child {
-      width: 40px;
-      text-align: center;
-    }
+table.items th:first-child,
+table.items td:first-child {
+  width: 40px;
+  text-align: center;
+}
 
-    table.items td {
-      height: 22px;
-    }
+table.items td {
+  height: 22px;
+}
 
-    /* ── Acknowledgement text ── */
-    .ack-text {
-      font-size: 10.5pt;
-      margin-bottom: 18px;
-    }
+table.items .total-row td {
+  font-weight: bold;
+}
 
-    /* ── Signature block ── */
-    .sig-block {
-      display: flex;
-      justify-content: space-between;
-      gap: 30px;
-    }
+/* ── Acknowledgement text ── */
+.ack-text {
+  font-size: 10.5pt;
+  margin-bottom: 18px;
+}
 
-    .sig-col {
-      flex: 1;
-    }
+/* ── Signature block ── */
+.sig-block {
+  display: flex;
+  justify-content: space-between;
+  gap: 30px;
+  margin-bottom: 14px;
+}
 
-    .sig-col .sig-heading {
-      font-size: 10.5pt;
-      font-weight: bold;
-      margin-bottom: 10px;
-    }
+.sig-col {
+  flex: 1;
+}
 
-    .sig-row {
-      display: flex;
-      align-items: flex-end;
-      margin-bottom: 9px;
-      font-size: 10.5pt;
-    }
+.sig-col .sig-heading {
+  font-size: 10.5pt;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
 
-    .sig-row .label {
-      white-space: nowrap;
-      margin-right: 4px;
-    }
+.sig-row {
+  display: flex;
+  align-items: flex-end;
+  margin-bottom: 9px;
+  font-size: 10.5pt;
+}
 
-    .sig-row .dots {
-      flex: 1;
-      border-bottom: 1px dotted #555;
-      min-width: 80px;
-      height: 1px;
-      margin-bottom: 2px;
-    }
+.sig-row .label {
+  white-space: nowrap;
+  margin-right: 4px;
+}
 
-    @media print {
-      body { background: #fff; }
-      .page { margin: 0; padding: 15mm 18mm; }
-    }
-  </style>
+.sig-row .dots {
+  flex: 1;
+  border-bottom: 1px dotted #555;
+  min-width: 80px;
+  height: 1px;
+  margin-bottom: 2px;
+}
+
+.sig-row .fill-value {
+  flex: 1;
+  border-bottom: 1px dotted #555;
+  min-width: 80px;
+  padding-bottom: 1px;
+  font-size: 10.5pt;
+}
+
+@media print {
+  body { background: #fff; }
+  .page { margin: 0; padding: 15mm 18mm; }
+}
+</style>
 </head>
 <body>
-<div class="page">
+<div class="page" id="receipt">
 
   <!-- Header -->
   <div class="header">
-    <img
-      src=" https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/Coat_of_arms_of_Uganda.svg/960px-Coat_of_arms_of_Uganda.svg.png?_=20221003150508
-      alt="Coat of Arms of Uganda"
-    />
+    <img id="r-coa" src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/Coat_of_arms_of_Uganda.svg/960px-Coat_of_arms_of_Uganda.svg.png" alt="Coat of Arms of Uganda" onerror="this.style.display='none'"/>
     <div class="republic">Republic of Uganda</div>
     <div class="ministry">Ministry of Health</div>
-    <div class="doc-title">EQUIPMENTS Acknowledgement Receipt</div>
+    <div class="doc-title" id="r-doc-title">Equipment Acknowledgement Receipt</div>
   </div>
 
-  <!-- Meta block: Facility, District, Date, No. -->
+  <!-- Meta block -->
   <div class="meta-block">
 
-    <!-- Row 1: Receiving Facility (full width) -->
     <div class="meta-row">
       <span class="label">Name of Receiving Facility:</span>
-      <span class="dots" style="border-bottom:1px dotted #555; flex:1; min-width:100px; height:1px; margin-bottom:2px; display:inline-block;"></span>
+      <span class="fill-value" id="r-facility">—</span>
     </div>
 
-    <!-- Row 2: District (left) | Date + No. (right) -->
     <div class="meta-top">
       <div class="left">
         <span class="label">District:</span>
-        <span class="dots" style="margin-left:5px; border-bottom:1px dotted #555; flex:1; min-width:80px; height:1px; margin-bottom:2px; display:inline-block;"></span>
+        <span class="fill-value" id="r-district">—</span>
       </div>
       <div class="right">
         <div class="meta-row">
           <span class="label">Date:</span>
-          <span id="receipt-date" style="flex:1; min-width:80px; padding-left:5px; border-bottom:1px dotted #555; display:inline-block; padding-bottom:1px;"></span>
+          <span class="fill-value" id="r-date-generated">—</span>
         </div>
         <div class="meta-row">
           <span class="label">No:</span>
-          <span id="receipt-no" style="flex:1; min-width:80px; padding-left:5px; font-weight:bold; border-bottom:1px dotted #555; display:inline-block; padding-bottom:1px;"></span>
+          <span class="fill-value" id="r-ref-no" style="font-weight:bold">—</span>
         </div>
       </div>
     </div>
@@ -237,7 +255,7 @@
   </div>
 
   <!-- Items table -->
-  <table class="items">
+  <table class="items" id="r-items-table">
     <thead>
       <tr>
         <th>Qty</th>
@@ -246,65 +264,284 @@
         <th>No.Engraved</th>
       </tr>
     </thead>
-    <tbody>
-      <tr><td></td><td></td><td></td><td></td></tr>
-      <tr><td></td><td></td><td></td><td></td></tr>
-      <tr><td></td><td></td><td></td><td></td></tr>
-      <tr><td></td><td></td><td></td><td></td></tr>
-      <tr><td></td><td></td><td></td><td></td></tr>
-      <tr><td></td><td></td><td></td><td></td></tr>
-      <tr><td></td><td></td><td></td><td></td></tr>
-      <tr><td></td><td></td><td></td><td></td></tr>
-      <tr><td></td><td></td><td></td><td></td></tr>
-      <tr><td></td><td></td><td></td><td></td></tr>
-      <tr><td></td><td></td><td></td><td></td></tr>
-      <tr><td></td><td></td><td></td><td></td></tr>
-      <tr><td></td><td></td><td></td><td></td></tr>
-      <tr><td></td><td></td><td></td><td></td></tr>
+    <tbody id="r-tbody">
+      <!-- filled by JS -->
     </tbody>
+    <tfoot id="r-tfoot"></tfoot>
   </table>
 
-  <!-- Acknowledgement text -->
-  <p class="ack-text">
-    I hereby acknowledge receipt of the above ICT Equipment from Ministry of Health in good order
+  <!-- Acknowledgement -->
+  <p class="ack-text" id="r-ack-text">
+    I hereby acknowledge receipt of the above equipment from Ministry of Health in good order
   </p>
 
-  <!-- Signature block -->
+  <!-- Signatures -->
   <div class="sig-block">
-
     <div class="sig-col">
       <div class="sig-heading">Received by:</div>
-      <div class="sig-row"><span class="label">Name:</span><span class="dots"></span></div>
+      <div class="sig-row"><span class="label">Name:</span><span class="fill-value" id="sig-recv-name">—</span></div>
       <div class="sig-row"><span class="label">Signature:</span><span class="dots"></span></div>
-      <div class="sig-row"><span class="label">Phone Number:</span><span class="dots"></span></div>
+      <div class="sig-row"><span class="label">Phone Number:</span><span class="fill-value" id="sig-recv-phone">—</span></div>
       <div class="sig-row"><span class="label">Date:</span><span class="dots"></span></div>
     </div>
 
     <div class="sig-col">
       <div class="sig-heading">Issued by:</div>
-      <div class="sig-row"><span class="label">Name:</span><span class="dots"></span></div>
+      <div class="sig-row"><span class="label">Name:</span><span class="fill-value" id="sig-issue-name">—</span></div>
       <div class="sig-row"><span class="label">Signature:</span><span class="dots"></span></div>
-      <div class="sig-row"><span class="label">Phone Number:</span><span class="dots"></span></div>
+      <div class="sig-row"><span class="label">Phone Number:</span><span class="fill-value" id="sig-issue-phone">—</span></div>
       <div class="sig-row"><span class="label">Date:</span><span class="dots"></span></div>
     </div>
-
   </div>
 
 </div>
 
 <script>
-  (function () {
-    var now = new Date();
-    var day   = String(now.getDate()).padStart(2, '0');
-    var month = String(now.getMonth() + 1).padStart(2, '0');
-    var year  = now.getFullYear();
-    document.getElementById('receipt-date').textContent = day + '/' + month + '/' + year;
+// ══════════════════════════════════════════════════════════════════
+//  RECEIPT DATA — this object is what gets filled when called from
+//  the main ResourceHub app via window.showReceipt(data)
+// ══════════════════════════════════════════════════════════════════
+const RECEIPT_DATA = {
+  category:      "ICT Equipment",    // asset category label
+  facility:      "Gulu Regional Hospital",
+  district:      "Gulu",
+  region:        "Northern",
+  fromStore:     "MOH Headquarters, Kampala",
+  transferDate:  "10/08/2024",
+  receiverName:  "Dr. James Opio",
+  receiverTitle: "Hospital Director",
+  receiverPhone: "+256 772 100 001",
+  issuerName:    "Sarah Nakato",
+  issuerPhone:   "+256 414 200 001",
+  items: [
+    { name:"Dell OptiPlex 7090 Desktop",   serial:"DL-OPT-7090-001", tag:"MOH-GLU-010", qty:2, condition:"New",  value:4200000 },
+    { name:"HP LaserJet Pro 4001n Printer", serial:"HP-LJ-4001-003",  tag:"MOH-GLU-011", qty:1, condition:"New",  value:1800000 },
+    { name:"Logitech Wireless Keyboard+Mouse", serial:"LG-KM-0047",   tag:"MOH-GLU-012", qty:2, condition:"Good", value:380000 },
+    { name:"UPS APC Back-UPS 650VA",        serial:"APC-650-009",     tag:"MOH-GLU-013", qty:2, condition:"New",  value:750000 },
+    { name:"Samsung 24-inch Monitor",       serial:"SM-MN-24-004",    tag:"MOH-GLU-014", qty:2, condition:"New",  value:1200000 },
+  ]
+};
 
-    var ts    = now.getTime();
-    var rand  = Math.floor(Math.random() * 900) + 100;
-    var no    = 'MOH-' + year + '-' + String(now.getMonth() + 1).padStart(2,'0') + '-' + ts.toString().slice(-5) + rand;
-    document.getElementById('receipt-no').textContent = no;
-  })();
+// ── Category config ──────────────────────────────────────────────
+const CAT_CONFIG = {
+  "ICT Equipment":      { title:"ICT Equipment Acknowledgement Receipt",      ack:"I hereby acknowledge receipt of the above ICT Equipment from Ministry of Health in good order" },
+  "Medical Equipment":  { title:"Medical Equipment Acknowledgement Receipt",   ack:"I hereby acknowledge receipt of the above Medical Equipment from Ministry of Health in good order" },
+  "Furniture":          { title:"Furniture & Fittings Acknowledgement Receipt", ack:"I hereby acknowledge receipt of the above Furniture & Fittings from Ministry of Health in good order" },
+  "Vehicles":           { title:"Vehicle Acknowledgement Receipt",             ack:"I hereby acknowledge receipt of the above Vehicle(s) from Ministry of Health in good order" },
+  "Accessories":        { title:"Accessories & Peripherals Acknowledgement Receipt", ack:"I hereby acknowledge receipt of the above Accessories/Peripherals from Ministry of Health in good order" },
+  "Consumables":        { title:"Consumables & Supplies Acknowledgement Receipt",    ack:"I hereby acknowledge receipt of the above Consumables/Supplies from Ministry of Health in good order" },
+  "default":            { title:"Equipment Acknowledgement Receipt",           ack:"I hereby acknowledge receipt of the above items from Ministry of Health in good order" },
+};
+
+// ── Reference number generator ───────────────────────────────────
+function generateRef(category) {
+  const now    = new Date();
+  const yr     = now.getFullYear();
+  const mo     = String(now.getMonth()+1).padStart(2,"0");
+  const ts     = now.getTime().toString().slice(-5);
+  const rand   = Math.floor(Math.random()*900)+100;
+  const prefix = {
+    "ICT Equipment":"ICT","Medical Equipment":"MED","Furniture":"FRN",
+    "Vehicles":"VEH","Accessories":"ACC","Consumables":"CSM"
+  }[category] || "GEN";
+  return `MOH-${prefix}-${yr}${mo}-${ts}${rand}`;
+}
+
+// ── Format helpers ───────────────────────────────────────────────
+function fmtUGX(v) {
+  if (!v && v!==0) return "—";
+  return "UGX " + Number(v).toLocaleString("en-UG");
+}
+
+function fmtDate(d) {
+  if (!d) return "—";
+  const dt = d instanceof Date ? d : new Date(d);
+  if (isNaN(dt)) return d; // already formatted string
+  return dt.toLocaleDateString("en-GB",{day:"2-digit",month:"2-digit",year:"numeric"});
+}
+
+function todayStr() {
+  const now = new Date();
+  const day   = String(now.getDate()).padStart(2, '0');
+  const month = String(now.getMonth() + 1).padStart(2, '0');
+  const year  = now.getFullYear();
+  return day + '/' + month + '/' + year;
+}
+
+// ── Main render ──────────────────────────────────────────────────
+function renderReceipt(data) {
+  const cat    = data.category || "default";
+  const cfg    = CAT_CONFIG[cat] || CAT_CONFIG["default"];
+  const ref    = generateRef(cat);
+
+  // Header
+  document.getElementById("r-doc-title").textContent = cfg.title;
+
+  // Meta
+  document.getElementById("r-ref-no").textContent         = ref;
+  document.getElementById("r-date-generated").textContent = todayStr();
+  document.getElementById("r-facility").textContent       = data.facility || "—";
+  document.getElementById("r-district").textContent       = data.district || "—";
+
+  // Items table
+  const tbody = document.getElementById("r-tbody");
+  const items = data.items || [];
+  const BLANK_ROWS = 14;
+
+  tbody.innerHTML = "";
+  let totalQty = 0, totalVal = 0;
+
+  items.forEach((item) => {
+    const tr = document.createElement("tr");
+    const val = item.value ? item.value * (item.qty||1) : null;
+    totalQty += (item.qty||1);
+    if (val) totalVal += val;
+    tr.innerHTML = `
+      <td style="text-align:center;font-weight:bold">${item.qty||1}</td>
+      <td>${item.name||"—"}</td>
+      <td style="font-family:'Courier New',monospace;font-size:9.5pt">${item.serial||"—"}</td>
+      <td style="font-family:'Courier New',monospace;font-size:9.5pt">${item.tag||item.engraving||"—"}</td>`;
+    tbody.appendChild(tr);
+  });
+
+  // Blank rows to pad to at least BLANK_ROWS
+  for (let i = items.length; i < BLANK_ROWS; i++) {
+    const tr = document.createElement("tr");
+    tr.innerHTML = `<td></td><td></td><td></td><td></td>`;
+    tbody.appendChild(tr);
+  }
+
+  // Ack text
+  document.getElementById("r-ack-text").textContent = cfg.ack;
+
+  // Signatures — pre-fill known fields, leave sig lines blank
+  document.getElementById("sig-recv-name").textContent  = data.receiverName  || "—";
+  document.getElementById("sig-recv-phone").textContent = data.receiverPhone || "—";
+  document.getElementById("sig-issue-name").textContent = data.issuerName    || "—";
+  document.getElementById("sig-issue-phone").textContent= data.issuerPhone   || "—";
+
+  // Store ref globally for Word export
+  window._currentRef = ref;
+  window._currentData = data;
+  window._currentCfg = cfg;
+}
+
+// ── Word (docx.js) ───────────────────────────────────────────────
+async function downloadWord() {
+  if (!window.docx) {
+    alert("Word export library not yet loaded. Please wait a moment and try again.");
+    return;
+  }
+
+  const data = window._currentData || RECEIPT_DATA;
+  const cfg  = window._currentCfg  || CAT_CONFIG["default"];
+  const ref  = window._currentRef  || generateRef(data.category||"default");
+
+  const { Document, Packer, Paragraph, Table, TableRow, TableCell, TextRun,
+          AlignmentType, WidthType, ShadingType } = window.docx;
+
+  const bold = (text, size=20, extra={}) =>
+    new TextRun({ text, bold:true, size, font:"Times New Roman", ...extra });
+  const norm = (text, size=20, extra={}) =>
+    new TextRun({ text, size, font:"Times New Roman", ...extra });
+  const para = (children, align=AlignmentType.LEFT, spacing={}) =>
+    new Paragraph({ children, alignment:align, spacing:{after:60,...spacing} });
+
+  const linePara = (labelTxt, valueTxt) => new Paragraph({
+    children:[
+      bold(labelTxt+" ", 20),
+      norm(valueTxt||"—", 20, {underline:{type:"dotted",color:"000000"}}),
+    ],
+    spacing:{after:80}
+  });
+
+  const header = [
+    para([bold("REPUBLIC OF UGANDA",18)], AlignmentType.CENTER, {after:30}),
+    para([bold("MINISTRY OF HEALTH",22)], AlignmentType.CENTER, {after:60}),
+    para([bold(cfg.title.toUpperCase(), 20, {underline:{type:"single",color:"000000"}, italics:true})], AlignmentType.CENTER, {after:160}),
+  ];
+
+  const meta = [
+    linePara("Name of Receiving Facility:", data.facility),
+    linePara("District:", data.district),
+    linePara("Date:", todayStr()),
+    linePara("No:", ref),
+    para([],AlignmentType.LEFT,{after:100}),
+  ];
+
+  const items = data.items || [];
+  const BLANK = 14;
+  const tableRows = [
+    new TableRow({
+      children: ["Qty","Description","Serial no","No.Engraved"].map(h =>
+        new TableCell({
+          children:[para([bold(h,18)], AlignmentType.LEFT)],
+        })
+      ),
+    }),
+    ...items.map((item) =>
+      new TableRow({
+        children: [
+          String(item.qty||1),
+          item.name||"—",
+          item.serial||"—",
+          item.tag||item.engraving||"—",
+        ].map(txt =>
+          new TableCell({children:[para([norm(txt,18)],AlignmentType.LEFT,{after:20})]})
+        )
+      })
+    ),
+    ...Array.from({length: Math.max(0, BLANK - items.length)}, () =>
+      new TableRow({
+        children: Array(4).fill("").map(()=>
+          new TableCell({children:[para([norm("",18)],AlignmentType.LEFT,{after:20})]})
+        )
+      })
+    ),
+  ];
+  const itemsTable = new Table({rows:tableRows, width:{size:100,type:WidthType.PERCENTAGE}});
+
+  const sigSection = [
+    para([],AlignmentType.LEFT,{after:80}),
+    para([norm(cfg.ack,19)],AlignmentType.LEFT,{after:160}),
+    para([bold("Received by:",19)],AlignmentType.LEFT,{after:60}),
+    linePara("Name:", data.receiverName),
+    linePara("Signature:", ""),
+    linePara("Phone Number:", data.receiverPhone),
+    linePara("Date:", ""),
+    para([],AlignmentType.LEFT,{after:120}),
+    para([bold("Issued by:",19)],AlignmentType.LEFT,{after:60}),
+    linePara("Name:", data.issuerName),
+    linePara("Signature:", ""),
+    linePara("Phone Number:", data.issuerPhone),
+    linePara("Date:", ""),
+  ];
+
+  const doc = new Document({
+    sections:[{
+      properties:{
+        page:{ margin:{top:1080,right:1080,bottom:1080,left:1080} },
+      },
+      children:[...header,...meta,itemsTable,...sigSection],
+    }]
+  });
+
+  const blob = await Packer.toBlob(doc);
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement("a");
+  a.href = url;
+  a.download = `MOH-Receipt-${ref}.docx`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+// ── Entry point called from ResourceHub ──────────────────────────
+window.showReceipt = function(data) {
+  renderReceipt(data);
+};
+
+// Initial render with sample data (demo mode)
+renderReceipt(RECEIPT_DATA);
 </script>
 </body>
 </html>

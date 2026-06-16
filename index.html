@@ -1561,6 +1561,15 @@ textarea.fi{resize:vertical;min-height:70px;}
 
 <!-- TOAST -->
 <div class="toast-wrap" id="toastWrap"></div>
+<!-- Receipt iframe (hidden, used for live render + print) -->
+<iframe id="receiptFrame" src="receipt.html" style="display:none;width:0;height:0;border:0"></iframe>
+
+<!-- Receipt download dropdown menu -->
+<div class="dd-menu" id="receiptMenu" style="position:fixed;min-width:180px;z-index:700">
+  <div class="dd-item" onclick="receiptAction('pdf')"><i class="ti ti-file-type-pdf"></i> Download PDF</div>
+  <div class="dd-item" onclick="receiptAction('word')"><i class="ti ti-file-word"></i> Download Word</div>
+  <div class="dd-item" onclick="receiptAction('print')"><i class="ti ti-printer"></i> Print</div>
+</div> 
 
 <!-- ============================= SCRIPT ============================= -->
 <script>
@@ -2803,12 +2812,12 @@ async function renderMovementsPage() {
           <thead>
             <tr>
               <th>Reference</th><th>Asset</th><th>From</th><th>To</th>
-              <th>Date</th><th>Authorised By</th><th>Reason</th><th>Status</th><th>Evidence</th>
+              <th>Date</th><th>Authorised By</th><th>Reason</th><th>Status</th><th>Evidence</th><th>Receipt</th>
             </tr>
           </thead>
           <tbody id="mov-tbody">
             ${movements.length === 0
-              ? `<tr><td colspan="9" class="empty-td"><i class="ti ti-database-off"></i>No movement records yet</td></tr>`
+              ? `<tr><td colspan="10" class="empty-td"><i class="ti ti-database-off"></i>No movement records yet</td></tr>`
               : movements.map((m,i) => `
                 <tr>
                   <td>
@@ -2840,6 +2849,11 @@ async function renderMovementsPage() {
                   <td>
                     <button class="act v" onclick="viewMovement(${m.id})" title="View evidence">
                       <i class="ti ti-file-text"></i>
+                    </button>
+                  </td>
+                  <td>
+                    <button class="act" style="color:var(--purple);border-color:var(--purple-bd);background:var(--purple-lt)" onclick="openReceiptMenu(event,${m.id})" title="Receipt">
+                      <i class="ti ti-receipt"></i>
                     </button>
                   </td>
                 </tr>`).join("")}
@@ -3039,6 +3053,88 @@ async function viewMovement(id) {
   openOv("viewOv");
 }
 
+
+// ===================== RECEIPT GENERATION =====================
+let _receiptCtxId = null; // which movement the open dropdown refers to
+
+function openReceiptMenu(ev, movementId) {
+  ev.stopPropagation();
+  _receiptCtxId = movementId;
+  const menu = document.getElementById("receiptMenu");
+  const rect = ev.currentTarget.getBoundingClientRect();
+  menu.style.top  = `${rect.bottom + 6}px`;
+  menu.style.left = `${Math.min(rect.left, window.innerWidth - 200)}px`;
+  menu.classList.add("open");
+}
+
+document.addEventListener("click", (e) => {
+  if (!e.target.closest("#receiptMenu") && !e.target.closest('[onclick^="openReceiptMenu"]')) {
+    document.getElementById("receiptMenu")?.classList.remove("open");
+  }
+});
+
+async function receiptAction(action) {
+  document.getElementById("receiptMenu").classList.remove("open");
+  if (!_receiptCtxId) return;
+
+  const movement = await API.get(`/movements/${_receiptCtxId}/`);
+  if (!movement) { toast("Could not load movement record", "error"); return; }
+
+  await generateReceiptForMovement(movement, action);
+}
+
+async function generateReceiptForMovement(movement, action = "print") {
+  // Pull the linked asset for richer item details (serial, tag, value, condition)
+  let asset = null;
+  if (movement.asset) {
+    asset = await AssetAPI.getOne(movement.asset);
+  }
+
+  const receiptData = {
+    category:      asset?.category_name || "ICT Equipment",
+    facility:      movement.to_Facility || movement.to_Facility_name || "—",
+    district:      asset?.district || "",
+    region:        asset?.region || "",
+    fromStore:     movement.from_Facility || "Ministry of Health, Kampala",
+    transferDate:  movement.date || new Date().toLocaleDateString("en-GB"),
+    receiverName:  movement.assigned_to || asset?.assigned_to_name || "",
+    receiverTitle: movement.department || "",
+    receiverPhone: movement.assigned_tel || "",
+    issuerName:    movement.transferred_by || "",
+    issuerPhone:   "",
+    items: [{
+      name:      asset?.name || movement.asset_name || "—",
+      serial:    asset?.serial || "",
+      tag:       asset?.engraving_no || "",
+      qty:       asset?.qty || 1,
+      condition: asset?.condition || "Good",
+      value:     asset?.value || null,
+    }],
+  };
+
+  const frame = document.getElementById("receiptFrame");
+
+  const renderAndAct = () => {
+    frame.contentWindow.showReceipt(receiptData);
+    setTimeout(() => {
+      if (action === "print") {
+        frame.contentWindow.print();
+      } else if (action === "pdf") {
+        frame.contentWindow.document.title = `MOH-Receipt-${frame.contentWindow._currentRef || "receipt"}`;
+        frame.contentWindow.print(); // user selects "Save as PDF" in print dialog
+      } else if (action === "word") {
+        frame.contentWindow.downloadWord();
+      }
+    }, 150);
+  };
+
+  // If the iframe hasn't loaded yet, wait for it
+  if (frame.contentWindow && frame.contentWindow.showReceipt) {
+    renderAndAct();
+  } else {
+    frame.onload = renderAndAct;
+  }
+}
 
 
 // ===================== ALERTS =====================
