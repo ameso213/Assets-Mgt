@@ -249,6 +249,27 @@ tbody tr:hover{background:var(--bg);}
 .filter-group-label i{font-size:14px;}
 .filter-group select{background:transparent;border:none;border-right:1px solid var(--border);padding:7px 10px;color:var(--text);font-size:12px;font-family:var(--sans);outline:none;cursor:pointer;}
 .filter-group select:last-child{border-right:none;}
+
+.col-vis-panel{position:relative;}
+.col-toggle-wrap{position:relative;}
+.col-toggle-btn{display:flex;align-items:center;gap:5px;padding:6px 10px;background:var(--bg);border:1px solid var(--border);border-radius:var(--rsm);color:var(--muted);font-size:11px;font-weight:600;cursor:pointer;white-space:nowrap;font-family:var(--sans);}
+.col-toggle-btn:hover{background:var(--surface);color:var(--text);}
+.col-toggle-btn i{font-size:13px;}
+.col-toggle-dd{position:absolute;top:calc(100% + 5px);right:0;background:var(--surface);border:1px solid var(--border);border-radius:var(--rlg);box-shadow:var(--sh3);min-width:200px;z-index:200;display:none;overflow:hidden;}
+.col-toggle-dd.open{display:block;animation:ddIn .15s ease;}
+.col-toggle-hd{padding:9px 14px;border-bottom:1px solid var(--border);font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;display:flex;align-items:center;justify-content:space-between;}
+.col-toggle-hd a{font-size:11px;color:var(--blue);font-weight:600;cursor:pointer;text-transform:none;letter-spacing:0;}
+.col-toggle-item{display:flex;align-items:center;gap:9px;padding:8px 14px;cursor:pointer;font-size:12px;transition:background .1s;}
+.col-toggle-item:hover{background:var(--bg);}
+.col-toggle-item input{accent-color:var(--blue);}
+
+.parent-link-tag{display:inline-flex;align-items:center;gap:5px;padding:1px 14px;background:var(--purple-lt);color:var(--purple);border:1px solid var(--purple-bd);border-radius:20px;font-size:10px;font-family:var(--mono);font-weight:600;margin-top:4px;white-space:nowrap;}
+.act-link{display:inline-flex;align-items:center;gap:4px;height:29px;padding:0 8px;border-radius:var(--rsm);border:1px solid var(--purple-bd);background:var(--purple-lt);color:var(--purple);font-size:11px;font-family:var(--mono);font-weight:700;cursor:pointer;transition:all .12s;}
+.act-link:hover{background:var(--purple);color:#fff;}
+.link-count-badge{display:inline-flex;align-items:center;justify-content:center;min-width:16px;height:16px;padding:0 4px;background:var(--purple);color:#fff;border-radius:20px;font-size:10px;font-weight:700;}
+
+
+
 .col-vis-panel{position:relative;}
 .col-vis-btn{display:flex;align-items:center;gap:5px;background:var(--bg);border:1px solid var(--border);border-radius:var(--rsm);padding:6px 12px;font-size:13px;color:var(--muted);cursor:pointer;transition:all .15s;}
 .col-vis-btn:hover{background:var(--surface);color:var(--text);}
@@ -309,12 +330,14 @@ tbody tr:hover{background:var(--bg);}
 .setting-desc{font-size:12px;color:var(--muted);margin-top:3px;}
 
 /* ── TOGGLE ── */
-.tog{position:relative;width:40px;height:22px;cursor:pointer;flex-shrink:0;}
-.tog input{opacity:0;width:0;height:0;}
-.tog-track{position:absolute;inset:0;background:var(--border);border-radius:11px;transition:background .2s;}
-.tog-thumb{position:absolute;top:3px;left:3px;width:16px;height:16px;background:#fff;border-radius:50%;transition:transform .2s;box-shadow:0 1px 3px rgba(0,0,0,.2);}
+/* ── TOGGLE ── */
+.tog{position:relative;width:40px;height:22px;cursor:pointer;flex-shrink:0;display:inline-block;}
+.tog input{opacity:0;width:0;height:0;position:absolute;}
+.tog-track{position:absolute;inset:0;background:var(--border);border-radius:11px;transition:background .2s;pointer-events:none;}
+.tog-thumb{position:absolute;top:3px;left:3px;width:16px;height:16px;background:#fff;border-radius:50%;transition:transform .2s;box-shadow:0 1px 3px rgba(0,0,0,.2);pointer-events:none;}
 .tog input:checked + .tog-track{background:var(--blue);}
-.tog input:checked + .tog-track + .tog-thumb{transform:translateX(18px);}
+.tog input:checked ~ .tog-thumb{transform:translateX(18px);}
+
 
 /* ── FORM FIELDS ── */
 .sf-group{display:flex;flex-direction:column;gap:6px;margin-bottom:14px;}
@@ -787,7 +810,7 @@ textarea.fi{resize:vertical;min-height:70px;}
         <div class="desc">Customise the look and feel</div>
         <div class="setting-row">
           <div><div class="setting-label">Dark Mode</div><div class="setting-desc">Switch to dark interface</div></div>
-          <label class="tog" onclick="toggleDark()"><input type="checkbox" id="darkToggle"/><div class="tog-track"></div><div class="tog-thumb"></div></label>
+          <label class="tog"><input type="checkbox" id="darkToggle" onchange="toggleDark()"/><div class="tog-track"></div><div class="tog-thumb"></div></label>
         </div>
         <div class="setting-row">
           <div><div class="setting-label">Compact Sidebar</div><div class="setting-desc">Collapse sidebar to icons only</div></div>
@@ -951,7 +974,7 @@ textarea.fi{resize:vertical;min-height:70px;}
         <h3>Suppliers</h3>
         <div class="desc">Manage vendors and suppliers from whom assets are procured. Linked to purchase records.</div>
         <div style="display:flex;justify-content:flex-end;margin-bottom:14px">
-          <button class="btn btn-primary btn-sm" onclick="supAdd()"><i class="ti ti-plus"></i> Add Supplier</button>
+          <button class="btn btn-primary btn-sm" onclick="openAddSupplier()"><i class="ti ti-plus"></i> Add Supplier</button>
         </div>
         <div class="tw"><table class="cfg-table">
           <thead><tr><th>Supplier</th><th>Contact</th><th>Email</th><th>Phone</th><th>Assets Supplied</th><th>Actions</th></tr></thead>
@@ -1360,16 +1383,7 @@ textarea.fi{resize:vertical;min-height:70px;}
   <option value="Technician">Technician</option>
   <option value="Receptionist">Receptionist</option>
   <option value="Viewer">Viewer</option>
-  <option value="Patient">Patient</option>
-</select>
-      </div>
-    </div>
-    <div class="mft">
-      <button class="btn btn-ghost" onclick="closeOv('userOv')">Cancel</button>
-      <button class="btn btn-primary" onclick="saveUser()"><i class="ti ti-send"></i> Send Invitation</button>
-    </div>
-  </div>
-</div>
+  <option value=
 
 <!-- SUPPLIER -->
 <div class="ov" id="supplierOv" onclick="bgClose(event,'supplierOv')">
@@ -1514,6 +1528,38 @@ textarea.fi{resize:vertical;min-height:70px;}
     </div>
   </div>
 </div>
+
+
+
+<!-- LINK ACCESSORY/COMPONENT TO ASSET -->
+<div class="ov" id="linkOv" onclick="bgClose(event,'linkOv')">
+  <div class="modal">
+    <div class="mhd">
+      <div class="mhd-l">
+        <div class="m-ico" style="background:var(--purple-lt)"><i class="ti ti-link" style="color:var(--purple)"></i></div>
+        <div><div class="m-title">Link Item to Asset</div><div class="m-sub">Track which accessories/components belong to which asset</div></div>
+      </div>
+      <button class="close-btn" onclick="closeOv('linkOv')"><i class="ti ti-x"></i></button>
+    </div>
+    <div class="mbody">
+      <div class="fgrid">
+        <div class="fg full"><label>Parent Asset</label>
+          <select class="fi" id="linkParent"><option value="">— Select Asset —</option></select>
+        </div>
+        <div class="fg full"><label>Item to Link</label>
+          <select class="fi" id="linkChild"><option value="">— Select Accessory/Component —</option></select>
+        </div>
+        <div class="fg full"><label>Relationship Note</label><input type="text" id="linkNote" placeholder="e.g. Mouse for this desktop, Keyboard for Laptop..."/></div>
+      </div>
+      <div id="linkCurrentLinks" style="margin-top:16px"></div>
+    </div>
+    <div class="mft">
+      <button class="btn btn-ghost" onclick="closeOv('linkOv')">Cancel</button>
+      <button class="btn btn-primary" onclick="saveLinkage()"><i class="ti ti-link"></i> Link</button>
+    </div>
+  </div>
+</div>
+
 
 <!-- SCAN / VERIFY -->
 <div class="ov" id="scanOv" onclick="bgClose(event,'scanOv')">
@@ -3750,66 +3796,266 @@ async function inviteNext() {
   }
 }
 
-// ── Generic Add modal + Delete (Custom Fields, Status Labels, Asset Models, Categories, Device Types, Manufacturers, Departments, Locations, Companies, Depreciation) ──
-const ADD_HANDLERS = {
-  "Custom Field": d => CustomFieldAPI.create(d), "Status Label": d => StatusLabelAPI.create(d), "Asset Model": d => AssetModelAPI.create(d),
-  "Manufacturer": d => ManufacturerAPI.create(d), "Department": d => DepartmentAPI.create(d), "Location": d => LocationAPI.create(d),
-  "Company": d => CompanyAPI.create(d), "Depreciation Method": d => DepreciationAPI.create(d), "Category": d => CategoryAPI.create(d),
-};
-const RELOAD_AFTER_ADD = {
-  "Custom Field": loadCustomFields, "Status Label": loadStatusLabels, "Asset Model": loadAssetModels,
-  "Manufacturer": loadManufacturers, "Department": loadDepartments, "Location": loadLocations,
-  "Company": loadCompanies, "Depreciation Method": loadDepreciation, "Category": loadCategories,
+// ── Settings CRUD: field schemas matched to each table's columns ──
+
+// Add `update` methods to the CFG-prefixed APIs (only create/delete existed before)
+CustomFieldAPI.update  = (id,d) => API.put(`/custom-fields/${id}/`, d);
+StatusLabelAPI.update  = (id,d) => API.put(`/status-labels/${id}/`, d);
+AssetModelAPI.update   = (id,d) => API.put(`/asset-models/${id}/`, d);
+ManufacturerAPI.update = (id,d) => API.put(`/manufacturers/${id}/`, d);
+DepartmentAPI.update   = (id,d) => API.put(`/departments/${id}/`, d);
+LocationAPI.update     = (id,d) => API.put(`/locations/${id}/`, d);
+CompanyAPI.update      = (id,d) => API.put(`/companies/${id}/`, d);
+DepreciationAPI.update = (id,d) => API.put(`/depreciation-methods/${id}/`, d);
+
+// Each entry: which table this feeds, the fields (must match the <th> columns exactly),
+// and how to build/parse the payload for create+update calls.
+const CFG_SCHEMAS = {
+  "Custom Field": {
+    icon: "forms",
+    fields: (v={}) => `
+      <div class="fg" style="margin-bottom:12px"><label>Field Name</label><input type="text" class="fi" id="cfgName" placeholder="e.g. Warranty Number" value="${v.name||""}"/></div>
+      <div class="fgrid">
+        <div class="fg"><label>Field Type</label><select class="fi" id="cfgType">
+          ${["Text","Number","Date","Dropdown","Checkbox","URL"].map(t=>`<option ${v.type===t?"selected":""}>${t}</option>`).join("")}
+        </select></div>
+        <div class="fg"><label>Applies To</label><select class="fi" id="cfgAppliesTo">
+          ${["Assets","Components","Consumables","Accessories","All"].map(t=>`<option ${v.appliesTo===t?"selected":""}>${t}</option>`).join("")}
+        </select></div>
+      </div>
+      <div class="fg" style="margin-top:12px"><label style="display:flex;align-items:center;gap:8px;text-transform:none"><input type="checkbox" id="cfgRequired" ${v.required?"checked":""} style="width:16px;height:16px;accent-color:var(--blue)"/> Required field</label></div>`,
+    toPayload: () => ({
+      name: document.getElementById("cfgName").value.trim(),
+      type: document.getElementById("cfgType").value,
+      appliesTo: document.getElementById("cfgAppliesTo").value,
+      required: document.getElementById("cfgRequired").checked,
+    }),
+    api: CustomFieldAPI, reload: loadCustomFields,
+  },
+  "Status Label": {
+    icon: "tags",
+    fields: (v={}) => `
+      <div class="fg" style="margin-bottom:12px"><label>Label</label><input type="text" class="fi" id="cfgName" placeholder="e.g. Awaiting Disposal" value="${v.label||""}"/></div>
+      <div class="fgrid">
+        <div class="fg"><label>Color</label><input type="color" class="fi" id="cfgColor" value="${v.color||"#2563eb"}" style="height:38px;padding:4px"/></div>
+        <div class="fg"><label>Type</label><select class="fi" id="cfgType">
+          ${["Asset Status","Condition","Custom"].map(t=>`<option ${v.type===t?"selected":""}>${t}</option>`).join("")}
+        </select></div>
+      </div>
+      <div class="fg" style="margin-top:12px"><label style="display:flex;align-items:center;gap:8px;text-transform:none"><input type="checkbox" id="cfgDefault" ${v.isDefault?"checked":""} style="width:16px;height:16px;accent-color:var(--blue)"/> Set as default</label></div>`,
+    toPayload: () => ({
+      label: document.getElementById("cfgName").value.trim(),
+      color: document.getElementById("cfgColor").value,
+      type: document.getElementById("cfgType").value,
+      isDefault: document.getElementById("cfgDefault").checked,
+    }),
+    api: StatusLabelAPI, reload: loadStatusLabels,
+  },
+  "Asset Model": {
+    icon: "cube",
+    fields: (v={}) => `
+      <div class="fg" style="margin-bottom:12px"><label>Model Name</label><input type="text" class="fi" id="cfgName" placeholder="e.g. Latitude 5520" value="${v.name||""}"/></div>
+      <div class="fgrid">
+        <div class="fg"><label>Manufacturer</label><input type="text" class="fi" id="cfgManufacturer" placeholder="e.g. Dell" value="${v.manufacturer||""}"/></div>
+        <div class="fg"><label>Category</label><select class="fi" id="cfgCategory">
+          ${CFG.categories.map(c=>`<option value="${c.name}" ${v.category===c.name?"selected":""}>${c.name}</option>`).join("") || `<option value="">— none —</option>`}
+        </select></div>
+        <div class="fg full"><label>EOL Date</label><input type="date" class="fi" id="cfgEol" value="${v.eol||""}"/></div>
+      </div>`,
+    toPayload: () => ({
+      name: document.getElementById("cfgName").value.trim(),
+      manufacturer: document.getElementById("cfgManufacturer").value.trim(),
+      category: document.getElementById("cfgCategory").value,
+      eol: document.getElementById("cfgEol").value,
+    }),
+    api: AssetModelAPI, reload: loadAssetModels,
+  },
+  "Manufacturer": {
+    icon: "building-factory-2",
+    fields: (v={}) => `
+      <div class="fg" style="margin-bottom:12px"><label>Manufacturer Name</label><input type="text" class="fi" id="cfgName" placeholder="e.g. Dell" value="${v.name||""}"/></div>
+      <div class="fgrid">
+        <div class="fg"><label>Website URL</label><input type="text" class="fi" id="cfgUrl" placeholder="e.g. dell.com" value="${v.url||""}"/></div>
+        <div class="fg"><label>Support Tel</label><input type="text" class="fi" id="cfgSupport" placeholder="+256 …" value="${v.support||""}"/></div>
+      </div>`,
+    toPayload: () => ({
+      name: document.getElementById("cfgName").value.trim(),
+      url: document.getElementById("cfgUrl").value.trim(),
+      support: document.getElementById("cfgSupport").value.trim(),
+    }),
+    api: ManufacturerAPI, reload: loadManufacturers,
+  },
+  "Department": {
+    icon: "sitemap",
+    fields: (v={}) => `
+      <div class="fg" style="margin-bottom:12px"><label>Department Name</label><input type="text" class="fi" id="cfgName" placeholder="e.g. ICU" value="${v.name||""}"/></div>
+      <div class="fgrid">
+        <div class="fg"><label>Manager</label><input type="text" class="fi" id="cfgManager" placeholder="Manager name" value="${v.manager||""}"/></div>
+        <div class="fg"><label>Location</label><input type="text" class="fi" id="cfgLocation" placeholder="e.g. Block C, 2nd Floor" value="${v.location||""}"/></div>
+      </div>`,
+    toPayload: () => ({
+      name: document.getElementById("cfgName").value.trim(),
+      manager: document.getElementById("cfgManager").value.trim(),
+      location: document.getElementById("cfgLocation").value.trim(),
+    }),
+    api: DepartmentAPI, reload: loadDepartments,
+  },
+  "Location": {
+    icon: "map-pin",
+    fields: (v={}) => `
+      <div class="fg" style="margin-bottom:12px"><label>Location Name</label><input type="text" class="fi" id="cfgName" placeholder="e.g. Gulu Regional Hospital" value="${v.name||""}"/></div>
+      <div class="fgrid">
+        <div class="fg"><label>Parent Location</label><input type="text" class="fi" id="cfgParent" placeholder="e.g. Northern Region" value="${v.parent||""}"/></div>
+        <div class="fg"><label>Currency</label><select class="fi" id="cfgCurrency">
+          ${["UGX","USD","KES"].map(c=>`<option ${v.currency===c?"selected":""}>${c}</option>`).join("")}
+        </select></div>
+        <div class="fg full"><label>Address</label><input type="text" class="fi" id="cfgAddress" placeholder="Street / district address" value="${v.address||""}"/></div>
+      </div>`,
+    toPayload: () => ({
+      name: document.getElementById("cfgName").value.trim(),
+      parent: document.getElementById("cfgParent").value.trim(),
+      currency: document.getElementById("cfgCurrency").value,
+      address: document.getElementById("cfgAddress").value.trim(),
+    }),
+    api: LocationAPI, reload: loadLocations,
+  },
+  "Company": {
+    icon: "building",
+    fields: (v={}) => `
+      <div class="fg" style="margin-bottom:12px"><label>Company Name</label><input type="text" class="fi" id="cfgName" placeholder="Company / entity name" value="${v.name||""}"/></div>
+      <div class="fgrid">
+        <div class="fg"><label>Email</label><input type="email" class="fi" id="cfgEmail" placeholder="info@company.com" value="${v.email||""}"/></div>
+        <div class="fg"><label>Phone</label><input type="text" class="fi" id="cfgPhone" placeholder="+256 …" value="${v.phone||""}"/></div>
+      </div>`,
+    toPayload: () => ({
+      name: document.getElementById("cfgName").value.trim(),
+      email: document.getElementById("cfgEmail").value.trim(),
+      phone: document.getElementById("cfgPhone").value.trim(),
+    }),
+    api: CompanyAPI, reload: loadCompanies,
+  },
+  "Depreciation Method": {
+    icon: "chart-line-down",
+    fields: (v={}) => `
+      <div class="fg" style="margin-bottom:12px"><label>Name</label><input type="text" class="fi" id="cfgName" placeholder="e.g. IT Equipment Standard" value="${v.name||""}"/></div>
+      <div class="fgrid">
+        <div class="fg"><label>Method</label><select class="fi" id="cfgMethod">
+          ${["Straight-Line","Declining Balance","Sum-of-Years"].map(m=>`<option ${v.method===m?"selected":""}>${m}</option>`).join("")}
+        </select></div>
+        <div class="fg"><label>Rate / Years</label><input type="text" class="fi" id="cfgRate" placeholder="e.g. 20% or 5 years" value="${v.rate||""}"/></div>
+        <div class="fg full"><label>Applies To</label><select class="fi" id="cfgAppliesTo">
+          ${CFG.categories.map(c=>`<option value="${c.name}" ${v.appliesTo===c.name?"selected":""}>${c.name}</option>`).join("") || `<option value="">— none —</option>`}
+        </select></div>
+      </div>`,
+    toPayload: () => ({
+      name: document.getElementById("cfgName").value.trim(),
+      method: document.getElementById("cfgMethod").value,
+      rate: document.getElementById("cfgRate").value.trim(),
+      appliesTo: document.getElementById("cfgAppliesTo").value,
+    }),
+    api: DepreciationAPI, reload: loadDepreciation,
+  },
+  "Category": {
+    icon: "category",
+    fields: (v={}) => `
+      <div class="fg" style="margin-bottom:12px"><label>Category Name</label><input type="text" class="fi" id="cfgName" placeholder="e.g. IT Equipment" value="${v.name||""}"/></div>
+      <div class="fgrid">
+        <div class="fg"><label>Tabler Icon Class</label><input type="text" class="fi" id="cfgIconInput" placeholder="e.g. ti-device-laptop" value="${v.icon||""}"/></div>
+        <div class="fg"><label>Color</label><select class="fi" id="cfgColorSel">
+          ${["blue","orange","teal","green","purple","red"].map(c=>`<option value="${c}" ${v.color===c?"selected":""}>${c[0].toUpperCase()+c.slice(1)}</option>`).join("")}
+        </select></div>
+      </div>`,
+    toPayload: () => ({
+      name: document.getElementById("cfgName").value.trim(),
+      icon: document.getElementById("cfgIconInput").value.trim() || "ti-category",
+      color: document.getElementById("cfgColorSel").value,
+    }),
+    api: CategoryAPI, reload: loadCategories,
+  },
+  "Device Type": {
+    icon: "box",
+    fields: (v={}) => `
+      <div class="fg" style="margin-bottom:12px"><label>Device Type Name</label><input type="text" class="fi" id="cfgName" placeholder="e.g. Switches" value="${v.name||""}"/></div>
+      <div class="fg"><label>Category</label><select class="fi" id="cfgDeviceCategory">
+        ${CFG.categories.map(c=>`<option value="${c.id}" ${String(activeCat)===String(c.id)?"selected":""}>${c.name}</option>`).join("") || `<option value="">— no categories yet —</option>`}
+      </select></div>`,
+    toPayload: () => ({
+      name: document.getElementById("cfgName").value.trim(),
+    }),
+    api: null, reload: null, // handled specially below (nested under category)
+  },
 };
 
-function openCfgModal(title, icon) {
-  document.getElementById("cfgTitle").textContent = `Add ${title}`;
-  document.getElementById("cfgSub").textContent = `Enter details for the new ${title.toLowerCase()}`;
-  document.getElementById("cfgIcoI").className = `ti ti-${icon}`;
-  if (title === "Device Type") {
-    document.getElementById("cfgBody").innerHTML = `
-      <div class="fg" style="margin-bottom:12px"><label>Device Type Name</label><input type="text" class="fi" id="cfgName" placeholder="e.g. Switches"/></div>
-      <div class="fgrid"><div class="fg"><label>Tabler Icon Class</label><input type="text" class="fi" id="cfgIconInput" placeholder="e.g. ti-router"/></div>
-      <div class="fg"><label>ID Prefix</label><input type="text" class="fi" id="cfgPrefix" maxlength="4" placeholder="e.g. RT"/></div></div>`;
-  } else if (title === "Category") {
-    document.getElementById("cfgBody").innerHTML = `
-      <div class="fg" style="margin-bottom:12px"><label>Category Name</label><input type="text" class="fi" id="cfgName" placeholder="e.g. IT Equipment"/></div>
-      <div class="fgrid"><div class="fg"><label>Tabler Icon Class</label><input type="text" class="fi" id="cfgIconInput" placeholder="e.g. ti-device-laptop"/></div>
-      <div class="fg"><label>Color</label><select class="fi" id="cfgColor"><option value="blue">Blue</option><option value="orange">Orange</option><option value="teal">Teal</option><option value="green">Green</option><option value="purple">Purple</option><option value="red">Red</option></select></div></div>`;
-  } else {
-    document.getElementById("cfgBody").innerHTML = `
-      <div class="fg" style="margin-bottom:12px"><label>Name</label><input type="text" class="fi" id="cfgName" placeholder="${title} name"/></div>
-      <div class="fg"><label>Description (optional)</label><textarea class="fi" id="cfgDesc" rows="2"></textarea></div>`;
+let _cfgEditCtx = null; // { type, id, item } when editing, null when adding
+
+function openCfgModal(type, editId) {
+  const schema = CFG_SCHEMAS[type];
+  if (!schema) return;
+  const isEdit = !!editId;
+  let existing = {};
+
+  if (isEdit) {
+    if (type === "Device Type") existing = (CFG.categorySubtypes[activeCat] || []).find(x => String(x.id) === String(editId)) || {};
+    else if (type === "Category") existing = CFG.categories.find(x => String(x.id) === String(editId)) || {};
+    else {
+      const cacheMap = {
+        "Custom Field": CFG.customFields, "Status Label": CFG.statusLabels, "Asset Model": CFG.assetModels,
+        "Manufacturer": CFG.manufacturers, "Department": CFG.departments, "Location": CFG.locations,
+        "Company": CFG.companies, "Depreciation Method": CFG.depreciation,
+      };
+      existing = (cacheMap[type] || []).find(x => String(x.id) === String(editId)) || {};
+    }
   }
+
+  _cfgEditCtx = isEdit ? { type, id: editId, item: existing } : { type, id: null, item: null };
+
+  document.getElementById("cfgTitle").textContent = `${isEdit ? "Edit" : "Add"} ${type}`;
+  document.getElementById("cfgSub").textContent = `Enter details for ${isEdit ? "this" : "the new"} ${type.toLowerCase()}`;
+  document.getElementById("cfgIcoI").className = `ti ti-${schema.icon}`;
+  document.getElementById("cfgBody").innerHTML = schema.fields(existing);
+  document.getElementById("cfgSaveBtn").innerHTML = `<i class="ti ti-check"></i> ${isEdit ? "Update" : "Save"}`;
+
   document.getElementById("cfgSaveBtn").onclick = async () => {
-    const n = document.getElementById("cfgName")?.value.trim();
-    if (!n) { toast("Please enter a name.","error"); return; }
-    if (title === "Device Type") {
-      const payload = { name:n, icon: document.getElementById("cfgIconInput").value.trim()||"ti-box", prefix: document.getElementById("cfgPrefix").value.trim().toUpperCase() };
-      const res = await CategoryAPI.createSubtype(activeCat, payload);
-      if (res) { toast(`Device type "${n}" added.`,"success"); closeOv("cfgOv"); await selectCat(activeCat); await loadCategories(); }
-      else toast("Failed to add device type.","error");
+    const payload = schema.toPayload();
+    const nameCheck = payload.name || payload.label;
+    if (!nameCheck) { toast("Please enter a name.", "error"); return; }
+
+    let res;
+    if (type === "Device Type") {
+      const targetCat = document.getElementById("cfgDeviceCategory").value;
+      if (!targetCat) { toast("Please select a category.", "error"); return; }
+      res = isEdit
+        ? await CategoryAPI.updateSubtype(targetCat, editId, payload)
+        : await CategoryAPI.createSubtype(targetCat, payload);
+      if (res) {
+        toast(`Device type "${nameCheck}" ${isEdit ? "updated" : "added"}.`, "success");
+        closeOv("cfgOv"); await selectCat(targetCat); await loadCategories();
+      } else toast(`Failed to ${isEdit ? "update" : "add"} device type.`, "error");
       return;
     }
-    const payload = title === "Category"
-      ? { name:n, icon: document.getElementById("cfgIconInput").value.trim()||"ti-category", color: document.getElementById("cfgColor").value }
-      : { name:n, description: document.getElementById("cfgDesc")?.value.trim() };
-    const res = await ADD_HANDLERS[title](payload);
-    if (res) { toast(`${title} "${n}" added.`,"success"); closeOv("cfgOv"); RELOAD_AFTER_ADD[title](); }
-    else toast(`Failed to add ${title.toLowerCase()}.`,"error");
+
+    res = isEdit ? await schema.api.update(editId, payload) : await schema.api.create(payload);
+    if (res) {
+      toast(`${type} "${nameCheck}" ${isEdit ? "updated" : "added"}.`, "success");
+      closeOv("cfgOv");
+      schema.reload();
+    } else {
+      toast(`Failed to ${isEdit ? "update" : "add"} ${type.toLowerCase()}.`, "error");
+    }
   };
   openOv("cfgOv");
 }
-function cfAdd(){ openCfgModal("Custom Field","forms"); }
-function slAdd(){ openCfgModal("Status Label","tags"); }
-function amAdd(){ openCfgModal("Asset Model","cube"); }
-function catAdd(){ openCfgModal("Category","category"); }
-function catSubAdd(){ if (!activeCat) { toast("Select a category first.","error"); return; } openCfgModal("Device Type","box"); }
-function mfgAdd(){ openCfgModal("Manufacturer","building-factory-2"); }
-function deptAdd(){ openCfgModal("Department","sitemap"); }
-function locAdd(){ openCfgModal("Location","map-pin"); }
-function compAdd(){ openCfgModal("Company","building"); }
-function deprAdd(){ openCfgModal("Depreciation Method","chart-line-down"); }
+
+function cfAdd(){ openCfgModal("Custom Field"); }
+function slAdd(){ openCfgModal("Status Label"); }
+function amAdd(){ openCfgModal("Asset Model"); }
+function catAdd(){ openCfgModal("Category"); }
+function catSubAdd(){ if (!activeCat) { toast("Select a category first.","error"); return; } openCfgModal("Device Type"); }
+function mfgAdd(){ openCfgModal("Manufacturer"); }
+function deptAdd(){ openCfgModal("Department"); }
+function locAdd(){ openCfgModal("Location"); }
+function compAdd(){ openCfgModal("Company"); }
+function deprAdd(){ openCfgModal("Depreciation Method"); }
 
 const DELETE_HANDLERS = {
   inv: id => InvitationAPI.revoke(id), cf: id => CustomFieldAPI.delete(id), sl: id => StatusLabelAPI.delete(id), am: id => AssetModelAPI.delete(id),
@@ -3821,7 +4067,20 @@ const RELOAD_AFTER_DELETE = {
   cat: () => selectCat(activeCat), topcat: () => { activeCat = null; loadCategories(); },
   mfg: loadManufacturers, dept: loadDepartments, loc: loadLocations, comp: loadCompanies, depr: loadDepreciation,
 };
-function cfEdit(type, id) { toast("Edit form coming soon for this item.","info"); }
+
+// type-key (as used by the row buttons: cf, sl, am, cat, topcat, mfg, dept, loc, comp, depr) → modal type name
+const TYPE_KEY_TO_MODAL = {
+  cf: "Custom Field", sl: "Status Label", am: "Asset Model",
+  cat: "Device Type", topcat: "Category", mfg: "Manufacturer",
+  dept: "Department", loc: "Location", comp: "Company", depr: "Depreciation Method",
+};
+
+function cfEdit(type, id) {
+  const modalType = TYPE_KEY_TO_MODAL[type];
+  if (!modalType) { toast("Edit not available for this item.", "info"); return; }
+  openCfgModal(modalType, id);
+}
+
 async function cfDel(type, id) {
   if (!confirm("Are you sure you want to delete this item?")) return;
   const res = await DELETE_HANDLERS[type](id);
@@ -4294,9 +4553,11 @@ function toggleGroup(id, el) {
 }
 
 // ── Dark mode (single source of truth — toggled from topbar dropdown AND Settings → Appearance) ──
-function toggleDark() {
-  document.body.classList.toggle("dark");
-  const isDark = document.body.classList.contains("dark");
+
+
+function toggleDark(forceState) {
+  const isDark = typeof forceState === "boolean" ? forceState : !document.body.classList.contains("dark");
+  document.body.classList.toggle("dark", isDark);
   const dt = document.getElementById("darkToggle");
   if (dt) dt.checked = isDark;
   const darkIcon = document.getElementById("darkIcon");
