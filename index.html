@@ -1692,7 +1692,7 @@ const UserAPI = {
   getAll:        () => API.get("/users/"),
   getProfile:    () => API.get("/profile/"),
   updateProfile: (data) => API.put("/profile/", data),
-  invite:        (data) => API.post("/users/invite/", data),
+  invite:        (data) => API.post("/invitations/", data),
   update:        (id, data) => API.put(`/users/${id}/`, data),
   delete:        (id) => API.delete(`/users/${id}/`),
 };
