@@ -1176,9 +1176,8 @@ async function handleRegister(btn) {
       throw new Error(JSON.stringify(data));
     }
 
-    document.getElementById('verify-email-display').textContent = email;
-
-    showPage('verify');
+    showAlert('reg-alert', 'success', 'Account created successfully! Please sign in.');
+    setTimeout(() => showPage('login'), 1500);
 
   } catch (err) {
     showAlert('reg-alert', 'error', err.message);
