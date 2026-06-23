@@ -1766,7 +1766,7 @@ const MaintenanceAPI = {
 const UserAPI = {
   getAll:        () => API.get("/users/"),
   getProfile:    () => API.get("/profile/"),
-  updateProfile: (data) => API.put("/profile/", data),
+  updateProfile: (data) => API.patch("/profile/", data),
   invite:        (data) => API.post("/invitations/", data),
   update:        (id, data) => API.put(`/users/${id}/`, data),
   delete:        (id) => API.delete(`/users/${id}/`),
@@ -5072,8 +5072,17 @@ async function saveProfile() {
     employee_id: document.getElementById("prof-empid").value.trim(),
   };
   const res = await UserAPI.updateProfile(payload);
-  if (res) toast("Profile updated", "success");
-  else toast("Update failed", "error");
+  if (res) {
+    toast("Profile updated", "success");
+    // Update the stored user so sidebar reflects changes
+    const stored = JSON.parse(localStorage.getItem("user") || "{}");
+    localStorage.setItem("user", JSON.stringify({ ...stored, ...payload, ...res }));
+    // Re-render to confirm saved values came back from server
+    await renderProfilePage();
+    await loadUserProfile();
+  } else {
+    toast("Update failed — check that /api/profile/ accepts PATCH or PUT", "error");
+  }
 }
 
 async function changePassword() {
