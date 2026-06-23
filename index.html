@@ -1092,6 +1092,14 @@ textarea.fi{resize:vertical;min-height:70px;}
             <label>Confirm Password</label>
             <input type="password" class="fi" id="inv-cpwd" placeholder="Repeat temporary password"/>
           </div>
+          <div class="fg">
+            <label>Invited By</label>
+            <input type="text" class="fi" id="inv-invited-by" placeholder="Your full name"/>
+          </div>
+          <div class="fg">
+            <label>Invitation Expires</label>
+            <input type="date" class="fi" id="inv-expires"/>
+          </div>
         </div>
         <div style="margin-top:6px;padding:12px;background:var(--blue-lt);border:1px solid var(--blue-bd);border-radius:var(--rsm);font-size:12px;color:var(--muted);line-height:1.6">
           <i class="ti ti-info-circle" style="color:var(--blue);margin-right:5px"></i>
@@ -1115,7 +1123,9 @@ textarea.fi{resize:vertical;min-height:70px;}
             <strong style="color:var(--text)">To:</strong> <span id="inv-email-preview">—</span><br/>
             <strong style="color:var(--text)">Subject:</strong> You've been invited to the Asset Management system<br/><br/>
             Hi <span id="inv-name-preview">—</span>, you have been added as a <span id="inv-role-preview" style="color:var(--blue);font-weight:600">—</span>.<br/>
-            <strong>Employee ID:</strong> <span id="inv-empid-preview">—</span><br/><br/>
+            <strong>Employee ID:</strong> <span id="inv-empid-preview">—</span><br/>
+            <strong>Invited By:</strong> <span id="inv-invitedby-preview">—</span><br/>
+            <strong>Expires:</strong> <span id="inv-expires-preview">—</span><br/><br/>
             Click the link below to accept your invitation and log in with the temporary credentials provided by the administrator.<br/><br/>
             <span style="color:var(--blue)" id="inv-login-url">→ /login</span>
           </div>
@@ -1258,29 +1268,31 @@ textarea.fi{resize:vertical;min-height:70px;}
       <input type="hidden" id="fmEditId"/>
       <input type="hidden" id="fmPageKey"/>
       <div class="fgrid">
-        <div class="fg-section-label full">Category</div>
         <div class="fg full">
-          <label>Category *</label>
+          <label>Category </label>
           <select class="fi" id="fmCategory" onchange="updateFormPlaceholders()"></select>
         </div>
-        <div class="fg-section-label full">Item Identity</div>
-        <div class="fg full"><label>Name *</label><input type="text" id="fmName" placeholder="e.g. Dell Latitude 5520"/></div>
+        <div class="fg full"><label>item Name </label><input type="text" id="fmName" placeholder="e.g. Dell Latitude 5520"/></div>
         <div class="fg"><label>Manufacturer</label><input type="text" id="fmManufacturer" placeholder="e.g. Dell"/></div>
         <div class="fg"><label>Model</label><input type="text" id="fmModel" placeholder="e.g. Latitude 5520"/></div>
         <div class="fg" id="fmSerialWrap"><label>Serial Number</label><input type="text" id="fmSerial" placeholder="Auto-generated if blank"/></div>
-        <div class="fg"><label>Engraving / Tag No.</label><input type="text" id="fmEngravingNo" placeholder="e.g. MOH-KAB001"/></div>
+        <div class="fg">
+          <label>Engraving / Tag No. <span style="font-size:10px;color:var(--blue);font-weight:400;cursor:pointer" onclick="document.getElementById('fmEngravingNo').value=generateTagNumber(document.getElementById('fmPageKey').value||'assets')">(regenerate)</span></label>
+          <input type="text" id="fmEngravingNo" placeholder="Auto-generated"/>
+        </div>
         <div class="fg" id="fmQtyWrap"><label>Quantity</label><input type="number" id="fmQty" min="1" value="1"/></div>
         <div class="fg" id="fmUnitWrap"><label>Unit</label><input type="text" id="fmUnit" placeholder="e.g. pieces, reams"/></div>
-        <div class="fg full" id="fmSpecsWrap"><label>Specifications</label><textarea class="fi" id="fmSpecs" placeholder="e.g. 8GB RAM, 1TB SSD…"></textarea></div>
+        <div class="fg full" id="fmSpecsWrap"><label>Specifications / Description</label><textarea class="fi" id="fmSpecs" placeholder="e.g. 8GB RAM, 1TB SSD…"></textarea></div>
         <div class="fg full"><label>Notes / Remarks</label><textarea class="fi" id="fmNotes" placeholder="Additional remarks…"></textarea></div>
         <hr class="fg-divider"/>
-        <div class="fg-section-label">Assignment</div>
+  
         <div class="fg"><label>Assigned To (Name)</label><input type="text" id="fmAssignedName"/></div>
         <div class="fg"><label>Title / Designation</label><input type="text" id="fmAssignedTitle"/></div>
         <div class="fg"><label>Tel No.</label><input type="text" id="fmAssignedTel"/></div>
         <hr class="fg-divider"/>
-        <div class="fg-section-label">Location &amp; Status</div>
+    
         <div class="fg"><label>Facility *</label><select class="fi" id="fmFacility"></select></div>
+        <div class="fg"><label>Department</label><input type="text" id="fmDepartment" placeholder="e.g. ICU, Finance"/></div>
         <div class="fg"><label>Status</label>
           <select class="fi" id="fmStatus"><option>Active</option><option>Maintenance</option><option>Inactive</option><option>In Storage</option></select>
         </div>
@@ -1288,6 +1300,22 @@ textarea.fi{resize:vertical;min-height:70px;}
           <select class="fi" id="fmCond"><option>New</option><option>Good</option><option>Fair</option><option>Poor</option></select>
         </div>
         <div class="fg"><label>Date Acquired</label><input type="date" id="fmDate"/></div>
+        <div class="fg"><label>Purchase Value (UGX)</label><input type="number" id="fmValue" placeholder="e.g. 2500000" min="0"/></div>
+        <hr class="fg-divider"/>
+      
+        <div class="fg"><label>Warranty Expiry</label><input type="date" id="fmWarranty"/></div>
+        <div class="fg"><label>Supplier</label><input type="text" id="fmSupplier" placeholder="e.g. Compuline Uganda"/></div>
+        <hr class="fg-divider"/>
+        <div class="fg full" id="fmLinkedWrap">
+          <label>Linked Item <span style="font-size:10px;color:var(--muted);font-weight:400;text-transform:none">(optional)</span></label>
+          <select class="fi" id="fmLinkedItem">
+            <option value="">— None —</option>
+          </select>
+          <div style="font-size:11px;color:var(--muted);margin-top:4px">
+            <i class="ti ti-info-circle" style="font-size:11px"></i>
+            Link this item to a related asset, component, or accessory for tracking purposes.
+          </div>
+        </div>
       </div>
     </div>
     <div class="mft">
@@ -1584,6 +1612,53 @@ textarea.fi{resize:vertical;min-height:70px;}
   <div class="dd-item" onclick="receiptAction('print')"><i class="ti ti-printer"></i> Print</div>
 </div> 
 
+
+<!-- LINK ITEMS -->
+<div class="ov" id="linkOv" onclick="bgClose(event,'linkOv')">
+  <div class="modal">
+    <div class="mhd">
+      <div class="mhd-l">
+        <div class="m-ico" style="background:var(--teal-lt)">
+          <i class="ti ti-link" style="color:var(--teal)"></i>
+        </div>
+        <div>
+          <div class="m-title">Link Accessory to Asset</div>
+          <div class="m-sub">Track which accessories belong to which asset</div>
+        </div>
+      </div>
+      <button class="close-btn" onclick="closeOv('linkOv')"><i class="ti ti-x"></i></button>
+    </div>
+    <div class="mbody">
+      <div class="fgrid">
+        <div class="fg full">
+          <label>Parent Asset</label>
+          <select class="fi" id="linkParent">
+            <option value="">— Select Asset —</option>
+          </select>
+        </div>
+        <div class="fg full">
+          <label>Accessory / Component to Link</label>
+          <select class="fi" id="linkChild">
+            <option value="">— Select Item —</option>
+          </select>
+        </div>
+        <div class="fg full">
+          <label>Relationship Note</label>
+          <input type="text" id="linkNote"
+            placeholder="e.g. Mouse for this desktop…"/>
+        </div>
+      </div>
+      <div id="linkCurrentLinks" style="margin-top:16px"></div>
+    </div>
+    <div class="mft">
+      <button class="btn btn-ghost" onclick="closeOv('linkOv')">Cancel</button>
+      <button class="btn btn-primary" onclick="saveLinkage()">
+        <i class="ti ti-link"></i> Link
+      </button>
+    </div>
+  </div>
+</div>
+
 <!-- ============================= SCRIPT ============================= -->
 <script>
 // ===================== API LAYER =====================
@@ -1762,48 +1837,64 @@ let VERIFY_PAGE = 1;
 const PAGE_SIZE = 10;
 const TABLE_COLUMN_DEFS = {
   assets: [
-    { key: "name",      label: "Name" },
-    { key: "engraving", label: "Engraving" },
-    { key: "serial",    label: "Serial" },
-    { key: "facility",  label: "Facility" },
-    { key: "assigned",  label: "Assigned To" },
-    { key: "status",    label: "Status" },
-    { key: "condition", label: "Condition" },
-    { key: "date",      label: "Date" },
-    { key: "actions",   label: "Actions" },
+    { key: "name",         label: "Name"         },
+    { key: "engraving",    label: "Engraving"     },
+    { key: "serial",       label: "Serial"        },
+    { key: "category",     label: "Category"      },
+    { key: "manufacturer", label: "Manufacturer"  },
+    { key: "model",        label: "Model"         },
+    { key: "specs",        label: "Specs"         },
+    { key: "facility",     label: "Facility"      },
+    { key: "assigned",     label: "Assigned To"   },
+    { key: "status",       label: "Status"        },
+    { key: "condition",    label: "Condition"     },
+    { key: "date",         label: "Date"          },
+    { key: "actions",      label: "Actions"       },
   ],
   components: [
-    { key: "name",      label: "Name" },
-    { key: "engraving", label: "Engraving" },
-    { key: "qty",       label: "Qty" },
-    { key: "facility",  label: "Facility" },
-    { key: "assigned",  label: "Assigned To" },
-    { key: "status",    label: "Status" },
-    { key: "condition", label: "Condition" },
-    { key: "date",      label: "Date" },
-    { key: "actions",   label: "Actions" },
+    { key: "name",         label: "Name"         },
+    { key: "engraving",    label: "Engraving"     },
+    { key: "serial",       label: "Serial"        },
+    { key: "category",     label: "Category"      },
+    { key: "manufacturer", label: "Manufacturer"  },
+    { key: "model",        label: "Model"         },
+    { key: "specs",        label: "Specs"         },
+    { key: "facility",     label: "Facility"      },
+    { key: "assigned",     label: "Assigned To"   },
+    { key: "status",       label: "Status"        },
+    { key: "condition",    label: "Condition"     },
+    { key: "date",         label: "Date"          },
+    { key: "actions",      label: "Actions"       },
   ],
   consumables: [
-    { key: "name",      label: "Name" },
-    { key: "engraving", label: "Engraving" },
-    { key: "qty",       label: "Qty" },
-    { key: "facility",  label: "Facility" },
-    { key: "assigned",  label: "Assigned To" },
-    { key: "status",    label: "Status" },
-    { key: "condition", label: "Condition" },
-    { key: "date",      label: "Date" },
-    { key: "actions",   label: "Actions" },
+    { key: "name",         label: "Name"         },
+    { key: "engraving",    label: "Engraving"     },
+    { key: "serial",       label: "Serial"        },
+    { key: "category",     label: "Category"      },
+    { key: "manufacturer", label: "Manufacturer"  },
+    { key: "model",        label: "Model"         },
+    { key: "specs",        label: "Specs"         },
+    { key: "facility",     label: "Facility"      },
+    { key: "assigned",     label: "Assigned To"   },
+    { key: "status",       label: "Status"        },
+    { key: "condition",    label: "Condition"     },
+    { key: "date",         label: "Date"          },
+    { key: "actions",      label: "Actions"       },
   ],
   accessories: [
-    { key: "name",      label: "Name" },
-    { key: "engraving", label: "Engraving" },
-    { key: "serial",    label: "Serial" },
-    { key: "facility",  label: "Facility" },
-    { key: "assigned",  label: "Assigned To" },
-    { key: "status",    label: "Status" },
-    { key: "condition", label: "Condition" },
-    { key: "date",      label: "Date" },
-    { key: "actions",   label: "Actions" },
+    { key: "name",         label: "Name"         },
+    { key: "engraving",    label: "Engraving"     },
+    { key: "serial",       label: "Serial"        },
+    { key: "category",     label: "Category"      },
+    { key: "manufacturer", label: "Manufacturer"  },
+    { key: "model",        label: "Model"         },
+    { key: "specs",        label: "Specs"         },
+    { key: "facility",     label: "Facility"      },
+    { key: "assigned",     label: "Assigned To"   },
+    { key: "status",       label: "Status"        },
+    { key: "condition",    label: "Condition"     },
+    { key: "date",         label: "Date"          },
+    { key: "actions",      label: "Actions"       },
   ],
 };
 function getVisibleColumns(sk) {
@@ -1819,27 +1910,38 @@ function getVisibleColumns(sk) {
 function saveVisibleColumns(sk, cols) {
   localStorage.setItem(`visibleCols-${sk}`, JSON.stringify(cols));
 }
-function toggleColumnMenu(sk) {
+function toggleColumnMenu(sk, event) {
+  event.stopPropagation();
   const wrapper = document.getElementById(`col-dd-${sk}`);
   if (!wrapper) return;
-  wrapper.classList.toggle("open");
-  if (wrapper.classList.contains("open")) renderColumnMenu(sk);
+  const isOpen = wrapper.classList.contains("open");
+  // close all other col dropdowns first
+  document.querySelectorAll(".col-vis-dropdown.open").forEach(d => d.classList.remove("open"));
+  if (!isOpen) {
+    wrapper.classList.add("open");
+    renderColumnMenu(sk);
+  }
 }
 function closeColumnMenu(sk) {
+  event.stopPropagation();
   document.getElementById(`col-dd-${sk}`)?.classList.remove("open");
 }
+
 function renderColumnMenu(sk) {
   const menu = document.getElementById(`col-menu-${sk}`);
   if (!menu) return;
   const visible = getVisibleColumns(sk);
   const options = TABLE_COLUMN_DEFS[sk].map(col => `
-      <div class="dd-item" style="display:flex;align-items:center;justify-content:space-between;gap:12px;">
-        <label style="flex:1;cursor:pointer;font-size:13px;"><input type="checkbox" ${visible.includes(col.key) ? "checked" : ""} style="margin-right:8px;" onclick="event.stopPropagation(); toggleColumnVisibility('${sk}','${col.key}')"/>${col.label}</label>
+      <div class="col-vis-item" onclick="event.stopPropagation()">
+        <input type="checkbox" id="cvc-${sk}-${col.key}" ${visible.includes(col.key) ? "checked" : ""}
+          onchange="event.stopPropagation(); toggleColumnVisibility('${sk}','${col.key}')"/>
+        <label for="cvc-${sk}-${col.key}" onclick="event.stopPropagation()">${col.label}</label>
       </div>
     `).join("");
   menu.innerHTML = `
-      <div class="dd-head"><div class="dd-head-title">Columns</div></div>
-      <div class="dd-item" style="display:flex;gap:8px;flex-wrap:wrap;">
+      <button class="close-dropdown" onclick="event.stopPropagation(); closeColumnMenu('${sk}')"><i class="ti ti-x"></i></button>
+      <div style="padding:8px 4px 6px;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px">Columns</div>
+      <div style="display:flex;gap:6px;margin-bottom:8px" onclick="event.stopPropagation()">
         <button class="btn btn-ghost btn-xs" onclick="event.stopPropagation(); setAllColumns('${sk}', true)">Show all</button>
         <button class="btn btn-ghost btn-xs" onclick="event.stopPropagation(); setAllColumns('${sk}', false)">Hide all</button>
       </div>
@@ -1881,6 +1983,31 @@ function buildInventoryCell(sk, key, item) {
         </td>`;
     case "engraving":
       return `<td>${item.engraving_no ? `<span class="engrave-tag"><i class="ti ti-hash"></i>${item.engraving_no}</span>` : "—"}</td>`;
+      case "category":
+      return `<td>${item.category_name
+        ? `<span class="badge b-info">${item.category_name}</span>`
+        : "—"}</td>`;
+
+    case "manufacturer":
+      return `<td style="font-weight:600;font-size:12px">
+                ${item.manufacturer || "—"}
+              </td>`;
+
+    case "model":
+      return `<td style="color:var(--muted);font-size:12px;
+                         max-width:120px;overflow:hidden;
+                         text-overflow:ellipsis;white-space:nowrap">
+                ${item.model || "—"}
+              </td>`;
+
+    case "specs":
+      return `<td style="max-width:180px">
+                <div style="font-size:11px;color:var(--muted);
+                            display:-webkit-box;-webkit-line-clamp:2;
+                            -webkit-box-orient:vertical;overflow:hidden">
+                  ${item.specs || item.specifications || "—"}
+                </div>
+              </td>`;
     case "serial":
       return `<td><code style="font-size:11px;background:var(--bg);padding:2px 7px;border-radius:4px;font-family:var(--mono)">${item.serial || "—"}</code></td>`;
     case "qty":
@@ -1895,8 +2022,20 @@ function buildInventoryCell(sk, key, item) {
       return `<td>${cBadge(item.condition)}</td>`;
     case "date":
       return `<td style="font-family:var(--mono);font-size:11px;color:var(--muted)">${item.date || item.date_acquired || "—"}</td>`;
-    case "actions":
-      return `<td><div class="acts"><button class="act v" onclick="openViewItem('${sk}','${item.id}')" title="View"><i class="ti ti-eye"></i></button><button class="act e" onclick="openEditItem('${sk}','${item.id}')" title="Edit"><i class="ti ti-pencil"></i></button><button class="act d" onclick="openDelItem('${sk}','${item.id}','${String(item.name||"").replace(/'/g,"\\'")}')" title="Delete"><i class="ti ti-trash"></i></button></div></td>`;
+    case "actions": {
+      const linkCount = getLinksForItem(String(item.id)).length;
+      const linkBtn = (sk === "assets" || sk === "accessories")
+        ? `<button class="act-link" onclick="openLinkModal()" title="Linked items">
+             <i class="ti ti-link"></i>
+             ${linkCount > 0 ? `<span class="link-count-badge">${linkCount}</span>` : ""}
+           </button>`
+        : "";
+      return `<td><div class="acts">
+        <button class="act v" onclick="openViewItem('${sk}','${item.id}')" title="View"><i class="ti ti-eye"></i></button>
+        <button class="act e" onclick="openEditItem('${sk}','${item.id}')" title="Edit"><i class="ti ti-pencil"></i></button>
+        <button class="act d" onclick="openDelItem('${sk}','${item.id}','${String(item.name||"").replace(/'/g,"\\'")}')" title="Delete"><i class="ti ti-trash"></i></button>
+        ${linkBtn}
+      </div></td>`;}
     default:
       return `<td>—</td>`;
   }
@@ -2194,8 +2333,14 @@ function buildInventoryShell(sk) {
           <select onchange="applyFilter('${sk}','status',this.value)"><option value="">All Status</option><option>Active</option><option>Maintenance</option><option>Inactive</option><option>In Storage</option></select>
           <select onchange="applyFilter('${sk}','condition',this.value)"><option value="">All Conditions</option><option>New</option><option>Good</option><option>Fair</option><option>Poor</option></select>
         </div>
+        ${(sk === "assets" || sk === "accessories")
+          ? `<button class="btn btn-ghost btn-sm" onclick="openLinkModal()" style="white-space:nowrap">
+               <i class="ti ti-link"></i> Link Items
+             </button>`
+          : ""}
         <div class="col-vis-panel" id="col-dd-${sk}">
-          <button class="col-vis-btn" onclick="toggleColumnMenu('${sk}')">
+
+          <button class="col-vis-btn" onclick="toggleColumnMenu('${sk}', event)">
             <i class="ti ti-columns"></i> Columns
           </button>
           <div class="col-vis-dropdown" id="col-menu-${sk}">
@@ -2307,6 +2452,7 @@ async function openAdd(sk) {
   _fillCategorySelect();
   _clearFormInputs();
   updateFormPlaceholders();
+  await _fillLinkedItemSelect(sk, null);
   openOv("formOv");
 }
 
@@ -2345,6 +2491,11 @@ async function openEditItem(sk, id) {
   document.getElementById("fmStatus").value        = item.status || "Active";
   document.getElementById("fmCond").value          = item.condition || "New";
   document.getElementById("fmDate").value          = item.date || item.date_acquired || "";
+  if (document.getElementById("fmDepartment")) document.getElementById("fmDepartment").value = item.department || "";
+  if (document.getElementById("fmValue"))      document.getElementById("fmValue").value      = item.value || "";
+  if (document.getElementById("fmWarranty")) document.getElementById("fmWarranty").value = "";
+  if (document.getElementById("fmSupplier")) document.getElementById("fmSupplier").value = "";
+  await _fillLinkedItemSelect(sk, null);
   openOv("formOv");
 }
 
@@ -2372,15 +2523,58 @@ function _fillCategorySelect(selected) {
     `<option value="${c.id}" ${selected == c.id ? "selected" : ""}>${c.name}</option>`).join("");
 }
 
+async function _fillLinkedItemSelect(sk, selectedId) {
+  const sel = document.getElementById("fmLinkedItem");
+  if (!sel) return;
+  sel.innerHTML = `<option value="">— None —</option>`;
+
+  // Fetch all inventory types except the current one to avoid self-linking
+  const fetches = [
+    { label: "Assets",      api: AssetAPI,      prefix: "asset" },
+    { label: "Components",  api: ComponentAPI,  prefix: "comp"  },
+    { label: "Consumables", api: ConsumableAPI, prefix: "cons"  },
+    { label: "Accessories", api: AccessoryAPI,  prefix: "acc"   },
+  ];
+
+  for (const { label, api, prefix } of fetches) {
+    const data = await api.getAll("?page_size=9999");
+    const items = Array.isArray(data) ? data : (data?.results || []);
+    if (!items.length) continue;
+
+    const group = document.createElement("optgroup");
+    group.label = label;
+    items.forEach(item => {
+      const opt = document.createElement("option");
+      opt.value = `${prefix}:${item.id}`;
+      opt.textContent = `${item.name}${item.engraving_no ? " · " + item.engraving_no : ""}`;
+      if (selectedId && selectedId === `${prefix}:${item.id}`) opt.selected = true;
+      group.appendChild(opt);
+    });
+    sel.appendChild(group);
+  }
+}
+
+function generateTagNumber(sk) {
+  const prefixes = { assets: "AST", components: "CMP", consumables: "CON", accessories: "ACC" };
+  const prefix = prefixes[sk] || "ITM";
+  const timestamp = Date.now().toString().slice(-6);
+  const rand = Math.floor(Math.random() * 900) + 100;
+  return `${prefix}-${rand}-${timestamp}`;
+}
+
 function _clearFormInputs() {
-  ["fmName","fmManufacturer","fmModel","fmSerial","fmEngravingNo",
+  const sk = document.getElementById("fmPageKey").value || "assets";
+  ["fmName","fmManufacturer","fmModel","fmSerial",
    "fmSpecs","fmNotes","fmAssignedName","fmAssignedTitle","fmAssignedTel"].forEach(id => {
     const e = document.getElementById(id); if (e) e.value = "";
   });
+  document.getElementById("fmEngravingNo").value = generateTagNumber(sk);
   document.getElementById("fmQty").value  = 1;
   document.getElementById("fmUnit").value = "";
   document.getElementById("fmStatus").value = "Active";
   document.getElementById("fmCond").value   = "New";
+  const linkedSel = document.getElementById("fmLinkedItem");
+  if (linkedSel) linkedSel.value = "";
 }
 
 const FORM_PLACEHOLDERS = {
@@ -2460,22 +2654,27 @@ async function saveAsset() {
 
   const payload = {
     name,
-    manufacturer:  document.getElementById("fmManufacturer").value.trim(),
-    model:         document.getElementById("fmModel").value.trim(),
-    serial:        document.getElementById("fmSerial").value.trim(),
-    engraving_no:  document.getElementById("fmEngravingNo").value.trim(),
-    qty:           parseInt(document.getElementById("fmQty").value) || 1,
-    unit:          document.getElementById("fmUnit").value.trim(),
-    specs:         document.getElementById("fmSpecs").value.trim(),
-    notes:         document.getElementById("fmNotes").value.trim(),
-    assigned_name: document.getElementById("fmAssignedName").value.trim(),
-    assigned_title:document.getElementById("fmAssignedTitle").value.trim(),
-    assigned_tel:  document.getElementById("fmAssignedTel").value.trim(),
-    Facility:         document.getElementById("fmFacility").value || null,
-    category:      document.getElementById("fmCategory").value || null,
-    status:        document.getElementById("fmStatus").value,
-    condition:     document.getElementById("fmCond").value,
-    date:          document.getElementById("fmDate").value,
+    manufacturer:   document.getElementById("fmManufacturer").value.trim(),
+    model:          document.getElementById("fmModel").value.trim(),
+    serial:         document.getElementById("fmSerial").value.trim(),
+    engraving_no:   document.getElementById("fmEngravingNo").value.trim(),
+    qty:            parseInt(document.getElementById("fmQty").value) || 1,
+    unit:           document.getElementById("fmUnit").value.trim(),
+    specs:          document.getElementById("fmSpecs").value.trim(),
+    notes:          document.getElementById("fmNotes").value.trim(),
+    assigned_name:  document.getElementById("fmAssignedName").value.trim(),
+    assigned_title: document.getElementById("fmAssignedTitle").value.trim(),
+    assigned_tel:   document.getElementById("fmAssignedTel").value.trim(),
+    department:     document.getElementById("fmDepartment")?.value.trim() || "",
+    value:          parseFloat(document.getElementById("fmValue")?.value) || null,
+    warranty_expiry:document.getElementById("fmWarranty")?.value || null,
+    supplier:       document.getElementById("fmSupplier")?.value.trim() || "",
+    linked_item:    document.getElementById("fmLinkedItem")?.value || null,
+    Facility:       document.getElementById("fmFacility").value || null,
+    category:       document.getElementById("fmCategory").value || null,
+    status:         document.getElementById("fmStatus").value,
+    condition:      document.getElementById("fmCond").value,
+    date:           document.getElementById("fmDate").value,
   };
 
   const apiMap = { assets: AssetAPI, components: ComponentAPI, consumables: ConsumableAPI, accessories: AccessoryAPI };
@@ -3233,6 +3432,100 @@ async function saveDispatch() {
   }
 }
 
+
+// ===================== LINK ITEMS =====================
+let ASSET_LINKS = [];
+
+async function openLinkModal() {
+  // Load assets and accessories/components fresh
+  const [assetsData, accData, compData] = await Promise.all([
+    AssetAPI.getAll("?page_size=9999"),
+    AccessoryAPI.getAll("?page_size=9999"),
+    ComponentAPI.getAll("?page_size=9999"),
+  ]);
+  const assets = Array.isArray(assetsData) ? assetsData : (assetsData?.results || []);
+  const accs   = Array.isArray(accData)    ? accData    : (accData?.results    || []);
+  const comps  = Array.isArray(compData)   ? compData   : (compData?.results   || []);
+
+  document.getElementById("linkParent").innerHTML =
+    '<option value="">— Select Asset —</option>' +
+    assets.map(a =>
+      `<option value="${a.id}">${a.name} (${a.engraving_no || a.serial || "—"})</option>`
+    ).join("");
+
+  document.getElementById("linkChild").innerHTML =
+    '<option value="">— Select Item —</option>' +
+    [...accs, ...comps].map(a =>
+      `<option value="${a.id}">[${accs.includes(a) ? "Acc" : "Comp"}] ${a.name}</option>`
+    ).join("");
+
+  document.getElementById("linkNote").value = "";
+  renderCurrentLinks();
+  openOv("linkOv");
+}
+
+function renderCurrentLinks() {
+  const el = document.getElementById("linkCurrentLinks");
+  if (!el) return;
+  if (!ASSET_LINKS.length) { el.innerHTML = ""; return; }
+  el.innerHTML =
+    `<div style="font-size:11px;font-weight:700;color:var(--muted);
+                 text-transform:uppercase;letter-spacing:.5px;margin-bottom:7px">
+       Existing Links (${ASSET_LINKS.length})
+     </div>` +
+    ASSET_LINKS.map(l =>
+      `<div style="display:flex;align-items:center;gap:8px;padding:7px 10px;
+                   background:var(--bg);border-radius:var(--rsm);
+                   margin-bottom:5px;border:1px solid var(--border)">
+         <i class="ti ti-link" style="color:var(--teal);font-size:13px;flex-shrink:0"></i>
+         <div style="flex:1;font-size:11px">
+           <strong>${l.parentName}</strong>
+           <span style="color:var(--muted)">→</span>
+           <strong>${l.childName}</strong><br>
+           <span style="color:var(--muted)">${l.note}</span>
+         </div>
+         <button class="act d" onclick="removeLink('${l.id}')">
+           <i class="ti ti-x"></i>
+         </button>
+       </div>`
+    ).join("");
+}
+
+function saveLinkage() {
+  const pEl = document.getElementById("linkParent");
+  const cEl = document.getElementById("linkChild");
+  const pId = pEl.value, cId = cEl.value;
+
+  if (!pId || !cId) { toast("Select both an asset and an item.", "error"); return; }
+  if (ASSET_LINKS.find(l => l.parentId === pId && l.childId === cId)) {
+    toast("Already linked.", "error"); return;
+  }
+
+  const pName = pEl.options[pEl.selectedIndex].text;
+  const cName = cEl.options[cEl.selectedIndex].text;
+
+  ASSET_LINKS.push({
+    id: "lnk" + Date.now(),
+    parentId: pId, parentName: pName,
+    childId:  cId, childName:  cName,
+    note: document.getElementById("linkNote").value || "Linked item",
+  });
+  renderCurrentLinks();
+  toast(`Linked "${cName}" → "${pName}".`, "success");
+}
+
+function removeLink(id) {
+  ASSET_LINKS = ASSET_LINKS.filter(l => l.id !== id);
+  renderCurrentLinks();
+  toast("Link removed.", "info");
+}
+
+function getLinksForItem(id) {
+  return ASSET_LINKS.filter(l => l.parentId === id || l.childId === id);
+}
+
+
+
 async function viewMovement(id) {
   const data = await API.get(`/movements/${id}/`);
   if (!data) { toast("Could not load movement record","error"); return; }
@@ -3755,7 +4048,7 @@ function renderStatusLabels() {
     <td><div style="display:flex;align-items:center;gap:8px"><span class="color-dot" style="background:${s.color}"></span><strong>${s.label}</strong></div></td>
     <td><span style="width:20px;height:20px;border-radius:4px;background:${s.color};display:inline-block;border:1px solid rgba(0,0,0,.1)"></span></td>
     <td style="color:var(--muted);font-size:12px">${s.type||""}</td>
-    <td>${s.isDefault?'<span class="badge b-active">Default</span>':"—"}</td>
+    <td>${(s.isDefault || s.is_default)?'<span class="badge b-active"><i class="ti ti-star-filled"></i> Default</span>':"—"}</td>
     <td>${cfgActBtns(`cfEdit('sl','${s.id}')`,`cfDel('sl','${s.id}')`)}</td>
   </tr>`).join("") : emptyRow(5,"No status labels");
 }
@@ -3851,15 +4144,26 @@ async function loadDepreciation() {
 }
 function renderDepreciationTable() {
   const b = document.getElementById("depr-body"); if (!b) return;
-  const mColors = { "Straight-Line":["#059669","#ecfdf5"], "Declining Balance":["#d97706","#fffbeb"], "Sum-of-Years":["#7c3aed","#f5f3ff"] };
-  b.innerHTML = CFG.depreciation.length ? CFG.depreciation.map(d => {
-    const [mc, mbg] = mColors[d.method] || ["#6b7280","#f9fafb"];
+  const mColors = {
+    "Straight-Line":     ["#059669", "#ecfdf5"],
+    "Declining Balance": ["#d97706", "#fffbeb"],
+    "Sum-of-Years":      ["#7c3aed", "#f5f3ff"]
+  };
+  if (!CFG.depreciation.length) {
+    b.innerHTML = emptyRow(6, "No depreciation methods defined");
+    return;
+  }
+  b.innerHTML = CFG.depreciation.map(d => {
+    const [mc, mbg] = mColors[d.method] || ["#6b7280", "#f9fafb"];
     return `<tr>
-      <td style="font-weight:600">${d.name}</td><td><span class="depr-method" style="color:${mc};background:${mbg};border:1px solid ${mc}33">${d.method}</span></td>
-      <td style="font-family:var(--mono);font-size:12px">${d.rate||""}</td><td style="color:var(--muted);font-size:12px">${d.appliesTo||""}</td>
-      <td><span class="badge b-teal">${d.using??0}</span></td><td>${cfgActBtns(`cfEdit('depr','${d.id}')`,`cfDel('depr','${d.id}')`)}</td>
+      <td style="font-weight:600">${d.name || "—"}</td>
+      <td><span class="depr-method" style="color:${mc};background:${mbg};border:1px solid ${mc}33">${d.method || "—"}</span></td>
+      <td style="font-family:var(--mono);font-size:12px">${d.rate || "—"}</td>
+      <td style="color:var(--muted);font-size:12px">${d.appliesTo || d.applies_to || "—"}</td>
+      <td><span class="badge b-teal">${d.using ?? d.assets_using ?? 0}</span></td>
+      <td>${cfgActBtns(`cfEdit('depr','${d.id}')`, `cfDel('depr','${d.id}')`)}</td>
     </tr>`;
-  }).join("") : emptyRow(6,"No depreciation methods defined");
+  }).join("");
 }
 
 // ── Invitations + 3-step invite wizard (sends via real UserAPI.invite) ──
@@ -3897,6 +4201,13 @@ async function openInviteModal() {
   const deptEl = document.getElementById("inv-dept");
   if (deptEl) deptEl.innerHTML = '<option value="">Select department</option>' + CFG.departments.map(d => `<option value="${d.name}">${d.name}</option>`).join("");
   const empIdEl = document.getElementById("inv-empid"); if (empIdEl) empIdEl.value = generateEmployeeId();
+  // Default expiry = 7 days from today
+  const expiresEl = document.getElementById("inv-expires");
+  if (expiresEl) {
+    const d = new Date(); d.setDate(d.getDate() + 7);
+    expiresEl.value = d.toISOString().slice(0,10);
+  }
+  const invByEl = document.getElementById("inv-invited-by"); if (invByEl) invByEl.value = "";
   updateInviteStep(1);
   openOv("inviteOv");
 }
@@ -3917,9 +4228,15 @@ function updateInviteStep(step) {
     const last  = document.getElementById("inv-last").value.trim();
     const email = document.getElementById("inv-email").value.trim();
     const role  = document.getElementById("inv-role").value;
-    document.getElementById("inv-email-preview").textContent = email || "—";
-    document.getElementById("inv-name-preview").textContent  = `${first} ${last}`.trim() || "—";
-    document.getElementById("inv-role-preview").textContent  = role || "—";
+    document.getElementById("inv-email-preview").textContent   = email || "—";
+    document.getElementById("inv-name-preview").textContent    = `${first} ${last}`.trim() || "—";
+    document.getElementById("inv-role-preview").textContent    = role || "—";
+    const invbyPrev = document.getElementById("inv-invitedby-preview");
+    if (invbyPrev) invbyPrev.textContent = document.getElementById("inv-invited-by")?.value.trim() || "—";
+    const expPrev = document.getElementById("inv-expires-preview");
+    if (expPrev) expPrev.textContent = document.getElementById("inv-expires")?.value || "—";
+    const empidPrev = document.getElementById("inv-empid-preview");
+    if (empidPrev) empidPrev.textContent = document.getElementById("inv-empid")?.value || "—";
     document.getElementById("inv-login-url").textContent = `→ ${window.location.origin}/login`;
     btn.innerHTML = '<i class="ti ti-send"></i> Send Invitation';
     btn.style.display = ""; footer.querySelector(".btn-ghost").style.display = "";
@@ -3951,7 +4268,9 @@ async function inviteNext() {
     const role  = document.getElementById("inv-role").value;
     const phone = document.getElementById("inv-phone").value.trim();
     const empid = document.getElementById("inv-empid").value.trim();
-    const res = await UserAPI.invite({ email, role, first_name: first, last_name: last, phone, employee_id: empid });
+    const invitedBy = document.getElementById("inv-invited-by")?.value.trim() || "";
+    const expires   = document.getElementById("inv-expires")?.value || "";
+    const res = await UserAPI.invite({ email, role, first_name: first, last_name: last, phone, employee_id: empid, invited_by: invitedBy, expires_at: expires });
     if (!res) { toast("Failed to send invitation.","error"); return; }
     setRoleOverride(res.id || res.user?.id || email, role);
     updateInviteStep(3);
@@ -4008,16 +4327,351 @@ function openCfgModal(title, icon) {
   };
   openOv("cfgOv");
 }
-function cfAdd(){ openCfgModal("Custom Field","forms"); }
-function slAdd(){ openCfgModal("Status Label","tags"); }
-function amAdd(){ openCfgModal("Asset Model","cube"); }
+function cfAdd(){
+  document.getElementById("cfgTitle").textContent = "Add Custom Field";
+  document.getElementById("cfgSub").textContent   = "Define an extra data field for asset records";
+  document.getElementById("cfgIcoI").className    = "ti ti-forms";
+  document.getElementById("cfgBody").innerHTML = `
+    <div class="fgrid">
+      <div class="fg full"><label>Field Name *</label><input type="text" class="fi" id="cfgName" placeholder="e.g. MAC Address"/></div>
+      <div class="fg"><label>Field Type</label>
+        <select class="fi" id="cfgFieldType">
+          <option value="Text">Text</option>
+          <option value="Number">Number</option>
+          <option value="Date">Date</option>
+          <option value="Checkbox">Checkbox</option>
+          <option value="Dropdown">Dropdown</option>
+          <option value="URL">URL</option>
+        </select>
+      </div>
+      <div class="fg"><label>Applies To</label>
+        <select class="fi" id="cfgAppliesTo">
+          <option value="All">All</option>
+          <option value="Assets">Assets</option>
+          <option value="Components">Components</option>
+          <option value="Consumables">Consumables</option>
+          <option value="Accessories">Accessories</option>
+        </select>
+      </div>
+      <div class="fg full" style="display:flex;align-items:center;gap:12px;padding:10px 0">
+        <input type="checkbox" id="cfgRequired" style="width:16px;height:16px;accent-color:var(--blue);cursor:pointer"/>
+        <label for="cfgRequired" style="font-size:13px;font-weight:500;color:var(--text);text-transform:none;letter-spacing:0;cursor:pointer">Required field</label>
+      </div>
+    </div>`;
+  document.getElementById("cfgSaveBtn").onclick = async () => {
+    const n = document.getElementById("cfgName")?.value.trim();
+    if (!n) { toast("Field name is required", "error"); return; }
+    const payload = {
+      name:      n,
+      type:      document.getElementById("cfgFieldType").value,
+      appliesTo: document.getElementById("cfgAppliesTo").value,
+      required:  document.getElementById("cfgRequired").checked,
+    };
+    const res = await CustomFieldAPI.create(payload);
+    if (res) { toast(`Custom field "${n}" added`, "success"); closeOv("cfgOv"); loadCustomFields(); }
+    else toast("Failed to add custom field", "error");
+  };
+  openOv("cfgOv");
+}
+function slAdd(){
+  document.getElementById("cfgTitle").textContent = "Add Status Label";
+  document.getElementById("cfgSub").textContent   = "Define a status label for categorising asset states";
+  document.getElementById("cfgIcoI").className    = "ti ti-tags";
+  document.getElementById("cfgBody").innerHTML = `
+    <div class="fgrid">
+      <div class="fg full"><label>Label Name *</label><input type="text" class="fi" id="cfgName" placeholder="e.g. Decommissioned"/></div>
+      <div class="fg"><label>Color</label>
+        <select class="fi" id="cfgColor" onchange="slPreviewColor(this.value)">
+          <option value="#2563eb" data-hex="#2563eb">🔵 Blue — In Use / Active</option>
+          <option value="#059669" data-hex="#059669">🟢 Green — Operational / Good</option>
+          <option value="#d97706" data-hex="#d97706">🟡 Amber — Maintenance / Warning</option>
+          <option value="#dc2626" data-hex="#dc2626">🔴 Red — Faulty / Critical</option>
+          <option value="#7c3aed" data-hex="#7c3aed">🟣 Purple — In Storage</option>
+          <option value="#0891b2" data-hex="#0891b2">🩵 Teal — Deployed / Available</option>
+          <option value="#db2777" data-hex="#db2777">🩷 Pink — Pending / On Hold</option>
+          <option value="#6b7280" data-hex="#6b7280">⚫ Grey — Inactive / Retired</option>
+          <option value="#ea580c" data-hex="#ea580c">🟠 Orange — Needs Attention</option>
+          <option value="#166534" data-hex="#166534">🌿 Dark Green — Verified / Certified</option>
+        </select>
+      </div>
+      <div class="fg"><label>Type</label>
+        <select class="fi" id="cfgStatusType">
+          <option value="deployable">Deployable</option>
+          <option value="pending">Pending</option>
+          <option value="undeployable">Undeployable</option>
+          <option value="archived">Archived</option>
+        </select>
+      </div>
+      <div class="fg full">
+        <div id="slColorPreview" style="display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--bg);border:1px solid var(--border);border-radius:var(--rsm)">
+          <span id="slColorDot" style="width:14px;height:14px;border-radius:50%;background:#2563eb;flex-shrink:0;display:inline-block"></span>
+          <span id="slColorLabel" style="font-size:12px;font-weight:600;color:#2563eb">Blue — In Use / Active</span>
+          <span id="slColorHex" style="font-size:11px;font-family:var(--mono);color:var(--muted);margin-left:auto">#2563eb</span>
+        </div>
+      </div>
+      <div class="fg full">
+        <div id="slDefaultRow" onclick="slToggleDefault()"
+          style="display:flex;align-items:center;gap:12px;padding:12px 14px;background:var(--bg);border:1px solid var(--border);border-radius:var(--rsm);cursor:pointer;transition:all .15s;user-select:none">
+          <div id="slDefaultCheck"
+            style="width:18px;height:18px;border-radius:4px;border:2px solid var(--border);background:var(--surface);display:grid;place-items:center;flex-shrink:0;transition:all .15s">
+          </div>
+          <div>
+            <div style="font-size:13px;font-weight:600;color:var(--text)">Set as default status</div>
+            <div style="font-size:11px;color:var(--muted);margin-top:2px">New assets will use this status automatically</div>
+          </div>
+          <span id="slDefaultBadge" style="display:none;margin-left:auto" class="badge b-active"><i class="ti ti-star-filled"></i> Default</span>
+        </div>
+      </div>
+    </div>`;
+
+  // initialise default state
+  window._slIsDefault = false;
+
+  document.getElementById("cfgSaveBtn").onclick = async () => {
+    const n = document.getElementById("cfgName")?.value.trim();
+    if (!n) { toast("Label name is required", "error"); return; }
+    const payload = {
+      label:      n,
+      color:      document.getElementById("cfgColor").value,
+      type:       document.getElementById("cfgStatusType").value,
+      isDefault:  window._slIsDefault,
+      is_default: window._slIsDefault,
+    };
+    const res = await StatusLabelAPI.create(payload);
+    if (res) {
+      if (window._slIsDefault) toast(`"${n}" set as default status label`, "success");
+      else toast(`Status label "${n}" added`, "success");
+      closeOv("cfgOv");
+      loadStatusLabels();
+    } else toast("Failed to add status label", "error");
+  };
+  openOv("cfgOv");
+}
+
+function slPreviewColor(hex) {
+  const map = {
+    "#2563eb": "Blue — In Use / Active",
+    "#059669": "Green — Operational / Good",
+    "#d97706": "Amber — Maintenance / Warning",
+    "#dc2626": "Red — Faulty / Critical",
+    "#7c3aed": "Purple — In Storage",
+    "#0891b2": "Teal — Deployed / Available",
+    "#db2777": "Pink — Pending / On Hold",
+    "#6b7280": "Grey — Inactive / Retired",
+    "#ea580c": "Orange — Needs Attention",
+    "#166534": "Dark Green — Verified / Certified",
+  };
+  const dot   = document.getElementById("slColorDot");
+  const label = document.getElementById("slColorLabel");
+  const hexEl = document.getElementById("slColorHex");
+  if (dot)   dot.style.background = hex;
+  if (label) { label.textContent = map[hex] || hex; label.style.color = hex; }
+  if (hexEl) hexEl.textContent = hex;
+}
+
+function slToggleDefault() {
+  window._slIsDefault = !window._slIsDefault;
+  const row   = document.getElementById("slDefaultRow");
+  const check = document.getElementById("slDefaultCheck");
+  const badge = document.getElementById("slDefaultBadge");
+  if (window._slIsDefault) {
+    row.style.borderColor   = "var(--green-bd)";
+    row.style.background    = "var(--green-lt)";
+    check.style.background  = "var(--green)";
+    check.style.borderColor = "var(--green)";
+    check.innerHTML         = `<i class="ti ti-check" style="font-size:11px;color:#fff"></i>`;
+    badge.style.display     = "inline-flex";
+  } else {
+    row.style.borderColor   = "var(--border)";
+    row.style.background    = "var(--bg)";
+    check.style.background  = "var(--surface)";
+    check.style.borderColor = "var(--border)";
+    check.innerHTML         = "";
+    badge.style.display     = "none";
+  }
+}
+
+
+function amAdd(){
+  document.getElementById("cfgTitle").textContent = "Add Asset Model";
+  document.getElementById("cfgSub").textContent   = "Register a specific hardware or software model";
+  document.getElementById("cfgIcoI").className    = "ti ti-cube";
+  document.getElementById("cfgBody").innerHTML = `
+    <div class="fgrid">
+      <div class="fg full"><label>Model Name *</label><input type="text" class="fi" id="cfgName" placeholder="e.g. Latitude 5520"/></div>
+      <div class="fg"><label>Manufacturer</label>
+        <select class="fi" id="cfgAmManufacturer">
+          <option value="">— Select manufacturer —</option>
+          ${CFG.manufacturers.map(m=>`<option value="${m.id}">${m.name}</option>`).join("")}
+        </select>
+      </div>
+      <div class="fg"><label>Category</label>
+        <select class="fi" id="cfgAmCategory">
+          <option value="">— Select category —</option>
+          ${CFG.categories.map(c=>`<option value="${c.id}">${c.name}</option>`).join("")}
+        </select>
+      </div>
+      <div class="fg full"><label>End of Life (EOL) Date</label><input type="date" class="fi" id="cfgEol"/></div>
+    </div>`;
+  document.getElementById("cfgSaveBtn").onclick = async () => {
+    const n = document.getElementById("cfgName")?.value.trim();
+    if (!n) { toast("Model name is required", "error"); return; }
+    const payload = {
+      name:         n,
+      manufacturer: document.getElementById("cfgAmManufacturer").value || null,
+      category:     document.getElementById("cfgAmCategory").value || null,
+      eol:          document.getElementById("cfgEol").value || null,
+    };
+    const res = await AssetModelAPI.create(payload);
+    if (res) { toast(`Asset model "${n}" added`, "success"); closeOv("cfgOv"); loadAssetModels(); }
+    else toast("Failed to add asset model", "error");
+  };
+  openOv("cfgOv");
+}
+
+
 function catAdd(){ openCfgModal("Category","category"); }
 function catSubAdd(){ if (!activeCat) { toast("Select a category first.","error"); return; } openCfgModal("Device Type","box"); }
-function mfgAdd(){ openCfgModal("Manufacturer","building-factory-2"); }
-function deptAdd(){ openCfgModal("Department","sitemap"); }
-function locAdd(){ openCfgModal("Location","map-pin"); }
-function compAdd(){ openCfgModal("Company","building"); }
-function deprAdd(){ openCfgModal("Depreciation Method","chart-line-down"); }
+function mfgAdd(){
+  document.getElementById("cfgTitle").textContent = "Add Manufacturer";
+  document.getElementById("cfgSub").textContent   = "Register a hardware or software manufacturer";
+  document.getElementById("cfgIcoI").className    = "ti ti-building-factory-2";
+  document.getElementById("cfgBody").innerHTML = `
+    <div class="fgrid">
+      <div class="fg full"><label>Manufacturer Name *</label><input type="text" class="fi" id="cfgName" placeholder="e.g. Dell Technologies"/></div>
+      <div class="fg"><label>Website URL</label><input type="text" class="fi" id="cfgUrl" placeholder="e.g. dell.com"/></div>
+      <div class="fg"><label>Support Phone</label><input type="text" class="fi" id="cfgSupport" placeholder="e.g. +1-800-999-3355"/></div>
+      <div class="fg full"><label>Notes</label><textarea class="fi" id="cfgDesc" rows="2" placeholder="Optional notes…"></textarea></div>
+    </div>`;
+  document.getElementById("cfgSaveBtn").onclick = async () => {
+    const n = document.getElementById("cfgName")?.value.trim();
+    if (!n) { toast("Manufacturer name required","error"); return; }
+    const payload = { name:n, url: document.getElementById("cfgUrl").value.trim(), support: document.getElementById("cfgSupport").value.trim(), description: document.getElementById("cfgDesc").value.trim() };
+    const res = await ManufacturerAPI.create(payload);
+    if (res) { toast(`Manufacturer "${n}" added`,"success"); closeOv("cfgOv"); loadManufacturers(); }
+    else toast("Failed to add manufacturer","error");
+  };
+  openOv("cfgOv");
+}
+function deptAdd(){
+  document.getElementById("cfgTitle").textContent = "Add Department";
+  document.getElementById("cfgSub").textContent   = "Define a new department";
+  document.getElementById("cfgIcoI").className    = "ti ti-sitemap";
+  document.getElementById("cfgBody").innerHTML = `
+    <div class="fgrid">
+      <div class="fg full"><label>Department Name *</label><input type="text" class="fi" id="cfgName" placeholder="e.g. Radiology"/></div>
+      <div class="fg"><label>Manager Name</label><input type="text" class="fi" id="cfgManager" placeholder="e.g. Dr. Apio Grace"/></div>
+      <div class="fg"><label>Location / Floor</label><input type="text" class="fi" id="cfgLocation" placeholder="e.g. Block B, Floor 2"/></div>
+      <div class="fg full"><label>Notes</label><textarea class="fi" id="cfgDesc" rows="2" placeholder="Optional notes…"></textarea></div>
+    </div>`;
+  document.getElementById("cfgSaveBtn").onclick = async () => {
+    const n = document.getElementById("cfgName")?.value.trim();
+    if (!n) { toast("Department name required","error"); return; }
+    const payload = { name:n, manager: document.getElementById("cfgManager").value.trim(), location: document.getElementById("cfgLocation").value.trim(), description: document.getElementById("cfgDesc").value.trim() };
+    const res = await DepartmentAPI.create(payload);
+    if (res) { toast(`Department "${n}" added`,"success"); closeOv("cfgOv"); loadDepartments(); }
+    else toast("Failed to add department","error");
+  };
+  openOv("cfgOv");
+}
+function locAdd(){
+  document.getElementById("cfgTitle").textContent = "Add Location";
+  document.getElementById("cfgSub").textContent   = "Map a physical location where assets are deployed";
+  document.getElementById("cfgIcoI").className    = "ti ti-map-pin";
+  document.getElementById("cfgBody").innerHTML = `
+    <div class="fgrid">
+      <div class="fg full"><label>Location Name *</label><input type="text" class="fi" id="cfgName" placeholder="e.g. Block B, Floor 2"/></div>
+      <div class="fg"><label>Parent Location</label><input type="text" class="fi" id="cfgParent" placeholder="e.g. Mulago National Hospital"/></div>
+      <div class="fg"><label>Currency</label>
+        <select class="fi" id="cfgLocCurrency">
+          <option value="UGX">UGX – Ugandan Shilling</option>
+          <option value="USD">USD – US Dollar</option>
+          <option value="KES">KES – Kenyan Shilling</option>
+          <option value="TZS">TZS – Tanzanian Shilling</option>
+          <option value="RWF">RWF – Rwandan Franc</option>
+        </select>
+      </div>
+      <div class="fg full"><label>Address</label><input type="text" class="fi" id="cfgAddress" placeholder="e.g. Plot 1, Upper Mulago Hill Road, Kampala"/></div>
+    </div>`;
+  document.getElementById("cfgSaveBtn").onclick = async () => {
+    const n = document.getElementById("cfgName")?.value.trim();
+    if (!n) { toast("Location name is required", "error"); return; }
+    const payload = {
+      name:     n,
+      parent:   document.getElementById("cfgParent").value.trim(),
+      address:  document.getElementById("cfgAddress").value.trim(),
+      currency: document.getElementById("cfgLocCurrency").value,
+    };
+    const res = await LocationAPI.create(payload);
+    if (res) { toast(`Location "${n}" added`, "success"); closeOv("cfgOv"); loadLocations(); }
+    else toast("Failed to add location", "error");
+  };
+  openOv("cfgOv");
+}
+function compAdd(){
+  document.getElementById("cfgTitle").textContent = "Add Company";
+  document.getElementById("cfgSub").textContent   = "Register an entity or partner company";
+  document.getElementById("cfgIcoI").className    = "ti ti-building";
+  document.getElementById("cfgBody").innerHTML = `
+    <div class="fgrid">
+      <div class="fg full"><label>Company Name *</label><input type="text" class="fi" id="cfgName" placeholder="e.g. Uganda Health Systems Ltd"/></div>
+      <div class="fg"><label>Email</label><input type="email" class="fi" id="cfgEmail" placeholder="info@company.co.ug"/></div>
+      <div class="fg"><label>Phone</label><input type="text" class="fi" id="cfgPhone" placeholder="+256 414 123 456"/></div>
+      <div class="fg full"><label>Address</label><input type="text" class="fi" id="cfgAddress" placeholder="e.g. Plot 4, Nakasero Road"/></div>
+    </div>`;
+  document.getElementById("cfgSaveBtn").onclick = async () => {
+    const n = document.getElementById("cfgName")?.value.trim();
+    if (!n) { toast("Company name required","error"); return; }
+    const payload = { name:n, email: document.getElementById("cfgEmail").value.trim(), phone: document.getElementById("cfgPhone").value.trim(), address: document.getElementById("cfgAddress").value.trim() };
+    const res = await CompanyAPI.create(payload);
+    if (res) { toast(`Company "${n}" added`,"success"); closeOv("cfgOv"); loadCompanies(); }
+    else toast("Failed to add company","error");
+  };
+  openOv("cfgOv");
+}
+function deprAdd() {
+  document.getElementById("cfgTitle").textContent = "Add Depreciation Method";
+  document.getElementById("cfgSub").textContent   = "Configure a depreciation method for asset categories";
+  document.getElementById("cfgIcoI").className    = "ti ti-chart-line-down";
+  document.getElementById("cfgBody").innerHTML = `
+    <div class="fgrid">
+      <div class="fg full">
+        <label>Method Name *</label>
+        <input type="text" class="fi" id="cfgName" placeholder="e.g. IT Equipment Straight-Line"/>
+      </div>
+      <div class="fg">
+        <label>Depreciation Method *</label>
+        <select class="fi" id="cfgDeprMethod">
+          <option value="">— Select method —</option>
+          <option value="Straight-Line">Straight-Line</option>
+          <option value="Declining Balance">Declining Balance</option>
+          <option value="Sum-of-Years">Sum-of-Years</option>
+        </select>
+      </div>
+      <div class="fg">
+        <label>Rate / Years *</label>
+        <input type="text" class="fi" id="cfgDeprRate" placeholder="e.g. 25% or 4 years"/>
+      </div>
+      <div class="fg full">
+        <label>Applies To</label>
+        <input type="text" class="fi" id="cfgDeprApplies" placeholder="e.g. IT Equipment, Vehicles"/>
+      </div>
+    </div>`;
+  document.getElementById("cfgSaveBtn").onclick = async () => {
+    const name    = document.getElementById("cfgName")?.value.trim();
+    const method  = document.getElementById("cfgDeprMethod")?.value;
+    const rate    = document.getElementById("cfgDeprRate")?.value.trim();
+    const applies = document.getElementById("cfgDeprApplies")?.value.trim();
+    if (!name)   { toast("Method name is required", "error"); return; }
+    if (!method) { toast("Please select a depreciation method", "error"); return; }
+    if (!rate)   { toast("Rate / Years is required", "error"); return; }
+    const payload = { name, method, rate, appliesTo: applies, applies_to: applies };
+    const res = await DepreciationAPI.create(payload);
+    if (res) { toast(`Depreciation method "${name}" added`, "success"); closeOv("cfgOv"); loadDepreciation(); }
+    else toast("Failed to add depreciation method", "error");
+  };
+  openOv("cfgOv");
+}
 
 const DELETE_HANDLERS = {
   inv: id => InvitationAPI.revoke(id), cf: id => CustomFieldAPI.delete(id), sl: id => StatusLabelAPI.delete(id), am: id => AssetModelAPI.delete(id),
@@ -4029,7 +4683,361 @@ const RELOAD_AFTER_DELETE = {
   cat: () => selectCat(activeCat), topcat: () => { activeCat = null; loadCategories(); },
   mfg: loadManufacturers, dept: loadDepartments, loc: loadLocations, comp: loadCompanies, depr: loadDepreciation,
 };
-function cfEdit(type, id) { toast("Edit form coming soon for this item.","info"); }
+function cfEdit(type, id) {
+  if (type === "cf") {
+    const item = CFG.customFields.find(x => String(x.id) === String(id));
+    if (!item) return;
+    document.getElementById("cfgTitle").textContent = "Edit Custom Field";
+    document.getElementById("cfgSub").textContent   = "Update this custom field";
+    document.getElementById("cfgIcoI").className    = "ti ti-forms";
+    document.getElementById("cfgBody").innerHTML = `
+      <div class="fgrid">
+        <div class="fg full"><label>Field Name *</label><input type="text" class="fi" id="cfgName" value="${item.name||""}"/></div>
+        <div class="fg"><label>Field Type</label>
+          <select class="fi" id="cfgFieldType">
+            <option ${item.type==="Text"?"selected":""}>Text</option>
+            <option ${item.type==="Number"?"selected":""}>Number</option>
+            <option ${item.type==="Date"?"selected":""}>Date</option>
+            <option ${item.type==="Checkbox"?"selected":""}>Checkbox</option>
+            <option ${item.type==="Dropdown"?"selected":""}>Dropdown</option>
+            <option ${item.type==="URL"?"selected":""}>URL</option>
+          </select>
+        </div>
+        <div class="fg"><label>Applies To</label>
+          <select class="fi" id="cfgAppliesTo">
+            <option ${item.appliesTo==="All"?"selected":""}>All</option>
+            <option ${item.appliesTo==="Assets"?"selected":""}>Assets</option>
+            <option ${item.appliesTo==="Components"?"selected":""}>Components</option>
+            <option ${item.appliesTo==="Consumables"?"selected":""}>Consumables</option>
+            <option ${item.appliesTo==="Accessories"?"selected":""}>Accessories</option>
+          </select>
+        </div>
+        <div class="fg full" style="display:flex;align-items:center;gap:12px;padding:10px 0">
+          <input type="checkbox" id="cfgRequired" ${item.required?"checked":""} style="width:16px;height:16px;accent-color:var(--blue);cursor:pointer"/>
+          <label for="cfgRequired" style="font-size:13px;font-weight:500;color:var(--text);text-transform:none;letter-spacing:0;cursor:pointer">Required field</label>
+        </div>
+      </div>`;
+    document.getElementById("cfgSaveBtn").onclick = async () => {
+      const n = document.getElementById("cfgName")?.value.trim();
+      if (!n) { toast("Field name is required","error"); return; }
+      const res = await API.put(`/custom-fields/${id}/`, {
+        name: n,
+        type: document.getElementById("cfgFieldType").value,
+        appliesTo: document.getElementById("cfgAppliesTo").value,
+        required: document.getElementById("cfgRequired").checked,
+      });
+      if (res) { toast(`Custom field "${n}" updated`,"success"); closeOv("cfgOv"); loadCustomFields(); }
+      else toast("Update failed","error");
+    };
+    openOv("cfgOv");
+
+  } else if (type === "sl") {
+    const item = CFG.statusLabels.find(x => String(x.id) === String(id));
+    if (!item) return;
+    document.getElementById("cfgTitle").textContent = "Edit Status Label";
+    document.getElementById("cfgSub").textContent   = "Update this status label";
+    document.getElementById("cfgIcoI").className    = "ti ti-tags";
+    document.getElementById("cfgBody").innerHTML = `
+      <div class="fgrid">
+        <div class="fg full"><label>Label Name *</label><input type="text" class="fi" id="cfgName" value="${item.label||item.name||""}"/></div>
+        <div class="fg"><label>Color</label>
+          <select class="fi" id="cfgColor" onchange="slPreviewColor(this.value)">
+            <option value="#2563eb" ${item.color==="#2563eb"?"selected":""}>● Blue — In Use / Active</option>
+            <option value="#059669" ${item.color==="#059669"?"selected":""}>● Green — Operational / Good</option>
+            <option value="#d97706" ${item.color==="#d97706"?"selected":""}>● Amber — Maintenance / Warning</option>
+            <option value="#dc2626" ${item.color==="#dc2626"?"selected":""}>● Red — Faulty / Critical</option>
+            <option value="#7c3aed" ${item.color==="#7c3aed"?"selected":""}>● Purple — In Storage</option>
+            <option value="#0891b2" ${item.color==="#0891b2"?"selected":""}>● Teal — Deployed / Available</option>
+            <option value="#db2777" ${item.color==="#db2777"?"selected":""}>● Pink — Pending / On Hold</option>
+            <option value="#6b7280" ${item.color==="#6b7280"?"selected":""}>● Grey — Inactive / Retired</option>
+            <option value="#ea580c" ${item.color==="#ea580c"?"selected":""}>● Orange — Needs Attention</option>
+            <option value="#166534" ${item.color==="#166534"?"selected":""}>● Dark Green — Verified / Certified</option>
+          </select>
+        </div>
+        <div class="fg"><label>Type</label>
+          <select class="fi" id="cfgStatusType">
+            <option value="deployable" ${item.type==="deployable"?"selected":""}>Deployable</option>
+            <option value="pending" ${item.type==="pending"?"selected":""}>Pending</option>
+            <option value="undeployable" ${item.type==="undeployable"?"selected":""}>Undeployable</option>
+            <option value="archived" ${item.type==="archived"?"selected":""}>Archived</option>
+          </select>
+        </div>
+        <div class="fg full">
+          <div id="slColorPreview" style="display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--bg);border:1px solid var(--border);border-radius:var(--rsm)">
+            <span id="slColorDot" style="width:14px;height:14px;border-radius:50%;background:${item.color||"#2563eb"};flex-shrink:0;display:inline-block"></span>
+            <span id="slColorLabel" style="font-size:12px;font-weight:600;color:${item.color||"#2563eb"}">${item.color||"#2563eb"}</span>
+            <span id="slColorHex" style="font-size:11px;font-family:var(--mono);color:var(--muted);margin-left:auto">${item.color||"#2563eb"}</span>
+          </div>
+        </div>
+        <div class="fg full">
+          <div id="slDefaultRow" onclick="slToggleDefault()"
+            style="display:flex;align-items:center;gap:12px;padding:12px 14px;background:${(item.isDefault||item.is_default)?"var(--green-lt)":"var(--bg)"};border:1px solid ${(item.isDefault||item.is_default)?"var(--green-bd)":"var(--border)"};border-radius:var(--rsm);cursor:pointer;transition:all .15s;user-select:none">
+            <div id="slDefaultCheck"
+              style="width:18px;height:18px;border-radius:4px;border:2px solid ${(item.isDefault||item.is_default)?"var(--green)":"var(--border)"};background:${(item.isDefault||item.is_default)?"var(--green)":"var(--surface)"};display:grid;place-items:center;flex-shrink:0;transition:all .15s">
+              ${(item.isDefault||item.is_default)?'<i class="ti ti-check" style="font-size:11px;color:#fff"></i>':""}
+            </div>
+            <div>
+              <div style="font-size:13px;font-weight:600;color:var(--text)">Set as default status</div>
+              <div style="font-size:11px;color:var(--muted);margin-top:2px">New assets will use this status automatically</div>
+            </div>
+            <span id="slDefaultBadge" style="display:${(item.isDefault||item.is_default)?"inline-flex":"none"};margin-left:auto" class="badge b-active"><i class="ti ti-star-filled"></i> Default</span>
+          </div>
+        </div>
+      </div>`;
+    window._slIsDefault = !!(item.isDefault || item.is_default);
+    document.getElementById("cfgSaveBtn").onclick = async () => {
+      const n = document.getElementById("cfgName")?.value.trim();
+      if (!n) { toast("Label name is required","error"); return; }
+      const res = await API.put(`/status-labels/${id}/`, {
+        label: n, color: document.getElementById("cfgColor").value,
+        type: document.getElementById("cfgStatusType").value,
+        isDefault: window._slIsDefault, is_default: window._slIsDefault,
+      });
+      if (res) { toast(`Status label "${n}" updated`,"success"); closeOv("cfgOv"); loadStatusLabels(); }
+      else toast("Update failed","error");
+    };
+    openOv("cfgOv");
+
+  } else if (type === "am") {
+    const item = CFG.assetModels.find(x => String(x.id) === String(id));
+    if (!item) return;
+    document.getElementById("cfgTitle").textContent = "Edit Asset Model";
+    document.getElementById("cfgSub").textContent   = "Update this asset model";
+    document.getElementById("cfgIcoI").className    = "ti ti-cube";
+    document.getElementById("cfgBody").innerHTML = `
+      <div class="fgrid">
+        <div class="fg full"><label>Model Name *</label><input type="text" class="fi" id="cfgName" value="${item.name||""}"/></div>
+        <div class="fg"><label>Manufacturer</label>
+          <select class="fi" id="cfgAmManufacturer">
+            <option value="">— Select manufacturer —</option>
+            ${CFG.manufacturers.map(m=>`<option value="${m.id}" ${String(item.manufacturer)===String(m.id)?"selected":""}>${m.name}</option>`).join("")}
+          </select>
+        </div>
+        <div class="fg"><label>Category</label>
+          <select class="fi" id="cfgAmCategory">
+            <option value="">— Select category —</option>
+            ${CFG.categories.map(c=>`<option value="${c.id}" ${String(item.category)===String(c.id)?"selected":""}>${c.name}</option>`).join("")}
+          </select>
+        </div>
+        <div class="fg full"><label>End of Life (EOL) Date</label><input type="date" class="fi" id="cfgEol" value="${item.eol||""}"/></div>
+      </div>`;
+    document.getElementById("cfgSaveBtn").onclick = async () => {
+      const n = document.getElementById("cfgName")?.value.trim();
+      if (!n) { toast("Model name is required","error"); return; }
+      const res = await API.put(`/asset-models/${id}/`, {
+        name: n,
+        manufacturer: document.getElementById("cfgAmManufacturer").value || null,
+        category: document.getElementById("cfgAmCategory").value || null,
+        eol: document.getElementById("cfgEol").value || null,
+      });
+      if (res) { toast(`Asset model "${n}" updated`,"success"); closeOv("cfgOv"); loadAssetModels(); }
+      else toast("Update failed","error");
+    };
+    openOv("cfgOv");
+
+  } else if (type === "mfg") {
+    const item = CFG.manufacturers.find(x => String(x.id) === String(id));
+    if (!item) return;
+    document.getElementById("cfgTitle").textContent = "Edit Manufacturer";
+    document.getElementById("cfgSub").textContent   = "Update this manufacturer";
+    document.getElementById("cfgIcoI").className    = "ti ti-building-factory-2";
+    document.getElementById("cfgBody").innerHTML = `
+      <div class="fgrid">
+        <div class="fg full"><label>Manufacturer Name *</label><input type="text" class="fi" id="cfgName" value="${item.name||""}"/></div>
+        <div class="fg"><label>Website URL</label><input type="text" class="fi" id="cfgUrl" value="${item.url||""}"/></div>
+        <div class="fg"><label>Support Phone</label><input type="text" class="fi" id="cfgSupport" value="${item.support||""}"/></div>
+        <div class="fg full"><label>Notes</label><textarea class="fi" id="cfgDesc" rows="2">${item.description||""}</textarea></div>
+      </div>`;
+    document.getElementById("cfgSaveBtn").onclick = async () => {
+      const n = document.getElementById("cfgName")?.value.trim();
+      if (!n) { toast("Manufacturer name required","error"); return; }
+      const res = await API.put(`/manufacturers/${id}/`, {
+        name: n, url: document.getElementById("cfgUrl").value.trim(),
+        support: document.getElementById("cfgSupport").value.trim(),
+        description: document.getElementById("cfgDesc").value.trim(),
+      });
+      if (res) { toast(`Manufacturer "${n}" updated`,"success"); closeOv("cfgOv"); loadManufacturers(); }
+      else toast("Update failed","error");
+    };
+    openOv("cfgOv");
+
+  } else if (type === "dept") {
+    const item = CFG.departments.find(x => String(x.id) === String(id));
+    if (!item) return;
+    document.getElementById("cfgTitle").textContent = "Edit Department";
+    document.getElementById("cfgSub").textContent   = "Update this department";
+    document.getElementById("cfgIcoI").className    = "ti ti-sitemap";
+    document.getElementById("cfgBody").innerHTML = `
+      <div class="fgrid">
+        <div class="fg full"><label>Department Name *</label><input type="text" class="fi" id="cfgName" value="${item.name||""}"/></div>
+        <div class="fg"><label>Manager Name</label><input type="text" class="fi" id="cfgManager" value="${item.manager||""}"/></div>
+        <div class="fg"><label>Location / Floor</label><input type="text" class="fi" id="cfgLocation" value="${item.location||""}"/></div>
+        <div class="fg full"><label>Notes</label><textarea class="fi" id="cfgDesc" rows="2">${item.description||""}</textarea></div>
+      </div>`;
+    document.getElementById("cfgSaveBtn").onclick = async () => {
+      const n = document.getElementById("cfgName")?.value.trim();
+      if (!n) { toast("Department name required","error"); return; }
+      const res = await API.put(`/departments/${id}/`, {
+        name: n, manager: document.getElementById("cfgManager").value.trim(),
+        location: document.getElementById("cfgLocation").value.trim(),
+        description: document.getElementById("cfgDesc").value.trim(),
+      });
+      if (res) { toast(`Department "${n}" updated`,"success"); closeOv("cfgOv"); loadDepartments(); }
+      else toast("Update failed","error");
+    };
+    openOv("cfgOv");
+
+  } else if (type === "loc") {
+    const item = CFG.locations.find(x => String(x.id) === String(id));
+    if (!item) return;
+    document.getElementById("cfgTitle").textContent = "Edit Location";
+    document.getElementById("cfgSub").textContent   = "Update this location";
+    document.getElementById("cfgIcoI").className    = "ti ti-map-pin";
+    document.getElementById("cfgBody").innerHTML = `
+      <div class="fgrid">
+        <div class="fg full"><label>Location Name *</label><input type="text" class="fi" id="cfgName" value="${item.name||""}"/></div>
+        <div class="fg"><label>Parent Location</label><input type="text" class="fi" id="cfgParent" value="${item.parent||""}"/></div>
+        <div class="fg"><label>Currency</label>
+          <select class="fi" id="cfgLocCurrency">
+            <option value="UGX" ${item.currency==="UGX"?"selected":""}>UGX – Ugandan Shilling</option>
+            <option value="USD" ${item.currency==="USD"?"selected":""}>USD – US Dollar</option>
+            <option value="KES" ${item.currency==="KES"?"selected":""}>KES – Kenyan Shilling</option>
+            <option value="TZS" ${item.currency==="TZS"?"selected":""}>TZS – Tanzanian Shilling</option>
+            <option value="RWF" ${item.currency==="RWF"?"selected":""}>RWF – Rwandan Franc</option>
+          </select>
+        </div>
+        <div class="fg full"><label>Address</label><input type="text" class="fi" id="cfgAddress" value="${item.address||""}"/></div>
+      </div>`;
+    document.getElementById("cfgSaveBtn").onclick = async () => {
+      const n = document.getElementById("cfgName")?.value.trim();
+      if (!n) { toast("Location name required","error"); return; }
+      const res = await API.put(`/locations/${id}/`, {
+        name: n, parent: document.getElementById("cfgParent").value.trim(),
+        address: document.getElementById("cfgAddress").value.trim(),
+        currency: document.getElementById("cfgLocCurrency").value,
+      });
+      if (res) { toast(`Location "${n}" updated`,"success"); closeOv("cfgOv"); loadLocations(); }
+      else toast("Update failed","error");
+    };
+    openOv("cfgOv");
+
+  } else if (type === "comp") {
+    const item = CFG.companies.find(x => String(x.id) === String(id));
+    if (!item) return;
+    document.getElementById("cfgTitle").textContent = "Edit Company";
+    document.getElementById("cfgSub").textContent   = "Update this company";
+    document.getElementById("cfgIcoI").className    = "ti ti-building";
+    document.getElementById("cfgBody").innerHTML = `
+      <div class="fgrid">
+        <div class="fg full"><label>Company Name *</label><input type="text" class="fi" id="cfgName" value="${item.name||""}"/></div>
+        <div class="fg"><label>Email</label><input type="email" class="fi" id="cfgEmail" value="${item.email||""}"/></div>
+        <div class="fg"><label>Phone</label><input type="text" class="fi" id="cfgPhone" value="${item.phone||""}"/></div>
+        <div class="fg full"><label>Address</label><input type="text" class="fi" id="cfgAddress" value="${item.address||""}"/></div>
+      </div>`;
+    document.getElementById("cfgSaveBtn").onclick = async () => {
+      const n = document.getElementById("cfgName")?.value.trim();
+      if (!n) { toast("Company name required","error"); return; }
+      const res = await API.put(`/companies/${id}/`, {
+        name: n, email: document.getElementById("cfgEmail").value.trim(),
+        phone: document.getElementById("cfgPhone").value.trim(),
+        address: document.getElementById("cfgAddress").value.trim(),
+      });
+      if (res) { toast(`Company "${n}" updated`,"success"); closeOv("cfgOv"); loadCompanies(); }
+      else toast("Update failed","error");
+    };
+    openOv("cfgOv");
+
+  } else if (type === "depr") {
+    const item = CFG.depreciation.find(x => String(x.id) === String(id));
+    if (!item) return;
+    document.getElementById("cfgTitle").textContent = "Edit Depreciation Method";
+    document.getElementById("cfgSub").textContent   = "Update this depreciation method";
+    document.getElementById("cfgIcoI").className    = "ti ti-chart-line-down";
+    document.getElementById("cfgBody").innerHTML = `
+      <div class="fgrid">
+        <div class="fg full"><label>Method Name *</label><input type="text" class="fi" id="cfgName" value="${item.name||""}"/></div>
+        <div class="fg"><label>Depreciation Method *</label>
+          <select class="fi" id="cfgDeprMethod">
+            <option value="Straight-Line" ${item.method==="Straight-Line"?"selected":""}>Straight-Line</option>
+            <option value="Declining Balance" ${item.method==="Declining Balance"?"selected":""}>Declining Balance</option>
+            <option value="Sum-of-Years" ${item.method==="Sum-of-Years"?"selected":""}>Sum-of-Years</option>
+          </select>
+        </div>
+        <div class="fg"><label>Rate / Years *</label><input type="text" class="fi" id="cfgDeprRate" value="${item.rate||""}"/></div>
+        <div class="fg full"><label>Applies To</label><input type="text" class="fi" id="cfgDeprApplies" value="${item.appliesTo||item.applies_to||""}"/></div>
+      </div>`;
+    document.getElementById("cfgSaveBtn").onclick = async () => {
+      const n = document.getElementById("cfgName")?.value.trim();
+      if (!n) { toast("Method name required","error"); return; }
+      const res = await API.put(`/depreciation-methods/${id}/`, {
+        name: n, method: document.getElementById("cfgDeprMethod").value,
+        rate: document.getElementById("cfgDeprRate").value.trim(),
+        appliesTo: document.getElementById("cfgDeprApplies").value.trim(),
+      });
+      if (res) { toast(`Depreciation method "${n}" updated`,"success"); closeOv("cfgOv"); loadDepreciation(); }
+      else toast("Update failed","error");
+    };
+    openOv("cfgOv");
+
+  } else if (type === "topcat") {
+    const item = CFG.categories.find(x => String(x.id) === String(id));
+    if (!item) return;
+    document.getElementById("cfgTitle").textContent = "Edit Category";
+    document.getElementById("cfgSub").textContent   = "Update this category";
+    document.getElementById("cfgIcoI").className    = "ti ti-category";
+    document.getElementById("cfgBody").innerHTML = `
+      <div class="fgrid">
+        <div class="fg full"><label>Category Name *</label><input type="text" class="fi" id="cfgName" value="${item.name||""}"/></div>
+        <div class="fg"><label>Tabler Icon Class</label><input type="text" class="fi" id="cfgIconInput" value="${item.icon||""}"/></div>
+        <div class="fg"><label>Color</label>
+          <select class="fi" id="cfgColor">
+            <option value="blue"   ${item.color==="blue"  ?"selected":""}>Blue</option>
+            <option value="orange" ${item.color==="orange"?"selected":""}>Orange</option>
+            <option value="teal"   ${item.color==="teal"  ?"selected":""}>Teal</option>
+            <option value="green"  ${item.color==="green" ?"selected":""}>Green</option>
+            <option value="purple" ${item.color==="purple"?"selected":""}>Purple</option>
+            <option value="red"    ${item.color==="red"   ?"selected":""}>Red</option>
+          </select>
+        </div>
+      </div>`;
+    document.getElementById("cfgSaveBtn").onclick = async () => {
+      const n = document.getElementById("cfgName")?.value.trim();
+      if (!n) { toast("Category name required","error"); return; }
+      const res = await API.put(`/categories/${id}/`, {
+        name: n, icon: document.getElementById("cfgIconInput").value.trim(),
+        color: document.getElementById("cfgColor").value,
+      });
+      if (res) { toast(`Category "${n}" updated`,"success"); closeOv("cfgOv"); loadCategories(); }
+      else toast("Update failed","error");
+    };
+    openOv("cfgOv");
+
+  } else if (type === "cat") {
+    const subs = CFG.categorySubtypes[activeCat] || [];
+    const item = subs.find(x => String(x.id) === String(id));
+    if (!item) return;
+    document.getElementById("cfgTitle").textContent = "Edit Device Type";
+    document.getElementById("cfgSub").textContent   = "Update this device type";
+    document.getElementById("cfgIcoI").className    = "ti ti-box";
+    document.getElementById("cfgBody").innerHTML = `
+      <div class="fgrid">
+        <div class="fg full"><label>Device Type Name *</label><input type="text" class="fi" id="cfgName" value="${item.name||""}"/></div>
+        <div class="fg"><label>Tabler Icon Class</label><input type="text" class="fi" id="cfgIconInput" value="${item.icon||""}"/></div>
+        <div class="fg"><label>ID Prefix</label><input type="text" class="fi" id="cfgPrefix" maxlength="4" value="${item.prefix||""}"/></div>
+      </div>`;
+    document.getElementById("cfgSaveBtn").onclick = async () => {
+      const n = document.getElementById("cfgName")?.value.trim();
+      if (!n) { toast("Device type name required","error"); return; }
+      const res = await CategoryAPI.updateSubtype(activeCat, id, {
+        name: n, icon: document.getElementById("cfgIconInput").value.trim(),
+        prefix: document.getElementById("cfgPrefix").value.trim().toUpperCase(),
+      });
+      if (res) { toast(`Device type "${n}" updated`,"success"); closeOv("cfgOv"); selectCat(activeCat); }
+      else toast("Update failed","error");
+    };
+    openOv("cfgOv");
+  }
+}
 async function cfDel(type, id) {
   if (!confirm("Are you sure you want to delete this item?")) return;
   const res = await DELETE_HANDLERS[type](id);
@@ -4533,7 +5541,13 @@ document.addEventListener("DOMContentLoaded", async () => {
   });
 
   // Close dropdowns on outside click
-  document.addEventListener("click", e => { if (!e.target.closest(".dd")) closeAllDD(); });
+document.addEventListener("click", e => {
+    if (!e.target.closest(".dd")) closeAllDD();
+    if (!e.target.closest(".col-vis-panel") && !e.target.closest(".col-vis-dropdown")) {
+      document.querySelectorAll(".col-vis-dropdown.open").forEach(d => d.classList.remove("open"));
+    }
+  });
+
 
   // Load user profile for topbar
   await loadUserProfile();
