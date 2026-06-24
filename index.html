@@ -4068,7 +4068,8 @@
                   at registration. The system uses the purchase date and cost to compute the current book value.
                   <strong>Straight-Line</strong> reduces value evenly each year. <strong>Declining Balance</strong>
                   applies a fixed percentage to the remaining value. <strong>Sum-of-Years</strong> front-loads
-                  depreciation.</div>
+                  depreciation.
+                </div>
               </div>
             </div>
 
@@ -7557,7 +7558,7 @@
         const empid = document.getElementById("inv-empid").value.trim();
         const invitedBy = document.getElementById("inv-invited-by")?.value.trim() || "";
         const expires = document.getElementById("inv-expires")?.value || "";
-        const res = await UserAPI.invite({ email, role, first_name: first, last_name: last, phone, employee_id: empid, invited_by: invitedBy, expires_at: expires });
+        const res = await UserAPI.invite({ email, role, first_name: first, last_name: last, phone, employee_id: empid, invited_by: invitedBy, expires: expires });
         if (!res) { toast("Failed to send invitation.", "error"); return; }
         setRoleOverride(res.id || res.user?.id || email, role);
         updateInviteStep(3);
