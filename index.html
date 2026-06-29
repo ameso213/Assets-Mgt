@@ -13,6 +13,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jsqr/1.4.0/dist/jsQR.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/docx/8.5.0/docx.umd.min.js"></script>
   <style>
     :root {
       --sb-bg: #ffffff;
@@ -2674,40 +2675,55 @@
     }
 
     .vg {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-    }
+  display: flex;
+  flex-direction: column;
+}
 
-    .vi {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-      padding: 11px;
-      background: var(--bg);
-      border-radius: var(--rsm);
-    }
+.vi {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border-light);
+}
 
-    .vi.full {
-      grid-column: 1/-1;
-    }
+.vi:last-child {
+  border-bottom: none;
+}
 
-    .vi-lbl {
-      font-size: 10px;
-      font-weight: 600;
-      color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: .5px;
-    }
+.vi.full {
+  grid-column: unset;
+}
 
-    .vi-val {
-      font-size: 13px;
-      font-weight: 500;
-    }
+.vi-lbl {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: .5px;
+  width: 160px;
+  flex-shrink: 0;
+}
 
-    .vi-val.mono {
-      font-family: var(--mono);
-    }
+.vi-val {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text);
+  flex: 1;
+  min-width: 0;
+  word-break: break-word;
+}
+
+.vi-val {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text);
+  flex: 1;
+}
+
+.vi-val.mono {
+  font-family: var(--mono);
+}
 
     .del-body {
       padding: 22px;
@@ -4535,9 +4551,14 @@
           <div class="fg"><label>Tel No.</label><input type="text" id="fmAssignedTel" /></div>
           <hr class="fg-divider" />
 
-          <div class="fg"><label>Facility *</label><select class="fi" id="fmFacility"></select></div>
+         <div class="fg"><label>Facility *</label><select class="fi" id="fmFacility"></select></div>
           <div class="fg"><label>Department</label><input type="text" id="fmDepartment"
               placeholder="e.g. ICU, Finance" /></div>
+          <div class="fg"><label>District</label><input type="text" id="fmDistrict"
+              placeholder="e.g. Gulu, Kampala" /></div>
+          <div class="fg"><label>Region</label><input type="text" id="fmRegion"
+              placeholder="e.g. Northern, Central" /></div>
+
           <div class="fg"><label>Status</label>
             <select class="fi" id="fmStatus">
               <option>Active</option>
@@ -4586,7 +4607,7 @@
 
   <!-- VIEW -->
   <div class="ov" id="viewOv" onclick="bgClose(event,'viewOv')">
-    <div class="modal">
+  <div class="modal" style="width:400px">
       <div class="mhd">
         <div class="mhd-l">
           <div class="m-ico" style="background:var(--blue-lt)"><i class="ti ti-eye" style="color:var(--blue)"></i></div>
@@ -4597,9 +4618,9 @@
         </div>
         <button class="close-btn" onclick="closeOv('viewOv')"><i class="ti ti-x"></i></button>
       </div>
-      <div class="mbody">
-        <div class="vg" id="vmGrid"></div>
-      </div>
+      <div class="mbody" style="padding:0 22px">
+  <div class="vg" id="vmGrid"></div>
+</div>
       <div class="mft"><button class="btn btn-ghost" onclick="closeOv('viewOv')">Close</button></div>
     </div>
   </div>
@@ -4945,8 +4966,107 @@
 
   <!-- TOAST -->
   <div class="toast-wrap" id="toastWrap"></div>
-  <!-- Receipt iframe (hidden, used for live render + print) -->
-  <iframe id="receiptFrame" src="receipt.html" style="display:none;width:0;height:0;border:0"></iframe>
+  <!-- ═══════════════════════════════════════════════════════
+     RECEIPT MODAL (embedded — no iframe needed)
+═══════════════════════════════════════════════════════ -->
+<div class="ov" id="receiptOv" onclick="bgClose(event,'receiptOv')" style="z-index:800">
+  <div class="modal" style="width:700px;max-width:97vw;max-height:92vh;overflow-y:auto">
+    <div class="mhd">
+      <div class="mhd-l">
+        <div class="m-ico" style="background:var(--purple-lt)"><i class="ti ti-receipt" style="color:var(--purple)"></i></div>
+        <div>
+          <div class="m-title">Asset Movement Receipt</div>
+          <div class="m-sub" id="receipt-modal-ref">—</div>
+        </div>
+      </div>
+      <button class="close-btn" onclick="closeOv('receiptOv')"><i class="ti ti-x"></i></button>
+    </div>
+    <div class="mbody" style="padding:0">
+      <!-- The printable receipt lives here -->
+      <div id="receipt-print-area" style="font-family:'Times New Roman',Times,serif;font-size:12pt;padding:18mm 20mm;background:#fff;color:#000;position:relative">
+
+        <!-- watermark -->
+        <div id="receipt-watermark" style="display:none;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-35deg);font-size:80pt;font-weight:900;color:rgba(200,0,0,.07);pointer-events:none;user-select:none;z-index:0;white-space:nowrap">COPY</div>
+
+        <!-- Header -->
+        <div style="text-align:center;margin-bottom:10px;position:relative;z-index:1">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/Coat_of_arms_of_Uganda.svg/960px-Coat_of_arms_of_Uganda.svg.png"
+               style="height:64px;margin-bottom:4px;display:block;margin-left:auto;margin-right:auto"
+               onerror="this.style.display='none'" alt=""/>
+          <div style="font-size:9pt;letter-spacing:.08em;text-transform:uppercase;margin-bottom:2px">Republic of Uganda</div>
+          <div style="font-size:12pt;font-weight:bold;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px">Ministry of Health</div>
+          <div id="rp-doc-title" style="font-size:11pt;font-style:italic;text-decoration:underline;margin-bottom:12px">Equipment Acknowledgement Receipt</div>
+        </div>
+
+        <!-- Meta -->
+        <div style="margin-bottom:14px;position:relative;z-index:1">
+          <div style="display:flex;align-items:flex-end;margin-bottom:7px;font-size:10.5pt">
+            <span style="font-weight:bold;white-space:nowrap;margin-right:5px">Name of Receiving Facility:</span>
+            <span id="rp-facility" style="flex:1;border-bottom:1px dotted #555;min-width:100px;padding-bottom:1px"></span>
+          </div>
+          <div style="display:flex;gap:24px;align-items:flex-end;margin-bottom:7px">
+            <div style="flex:2;display:flex;align-items:flex-end;font-size:10.5pt">
+              <span style="font-weight:bold;white-space:nowrap;margin-right:5px">District:</span>
+              <span id="rp-district" style="flex:1;border-bottom:1px dotted #555;min-width:100px;padding-bottom:1px"></span>
+            </div>
+            <div style="flex:1;display:flex;flex-direction:column;gap:7px">
+              <div style="display:flex;align-items:flex-end;font-size:10.5pt">
+                <span style="font-weight:bold;white-space:nowrap;margin-right:5px">Date:</span>
+                <span id="rp-date" style="flex:1;border-bottom:1px dotted #555;min-width:80px;padding-bottom:1px"></span>
+              </div>
+              <div style="display:flex;align-items:flex-end;font-size:10.5pt">
+                <span style="font-weight:bold;white-space:nowrap;margin-right:5px">No:</span>
+                <span id="rp-ref" style="flex:1;border-bottom:1px dotted #555;min-width:80px;padding-bottom:1px;font-weight:bold"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Items table -->
+        <table style="width:100%;border-collapse:collapse;margin-bottom:16px;position:relative;z-index:1">
+          <thead>
+            <tr>
+              <th style="border:1px solid #000;padding:3px 5px;font-size:10.5pt;text-align:center;width:40px">Qty</th>
+              <th style="border:1px solid #000;padding:3px 5px;font-size:10.5pt;width:45%">Description</th>
+              <th style="border:1px solid #000;padding:3px 5px;font-size:10.5pt">Serial no</th>
+              <th style="border:1px solid #000;padding:3px 5px;font-size:10.5pt">No.Engraved</th>
+            </tr>
+          </thead>
+          <tbody id="rp-tbody"></tbody>
+        </table>
+
+        <!-- Ack -->
+        <p id="rp-ack" style="font-size:10.5pt;margin-bottom:18px;position:relative;z-index:1">
+          I hereby acknowledge receipt of the above equipment from Ministry of Health in good order
+        </p>
+
+        <!-- Signatures -->
+        <div style="display:flex;justify-content:space-between;gap:30px;margin-bottom:14px;position:relative;z-index:1">
+          <div style="flex:1">
+            <div style="font-size:10.5pt;font-weight:bold;margin-bottom:10px">Received by:</div>
+            <div style="display:flex;align-items:flex-end;margin-bottom:9px;font-size:10.5pt"><span style="white-space:nowrap;margin-right:4px;font-weight:bold">Name:</span><span id="rp-recv-name" style="flex:1;border-bottom:1px dotted #555;padding-bottom:1px"></span></div>
+            <div style="display:flex;align-items:flex-end;margin-bottom:9px;font-size:10.5pt"><span style="white-space:nowrap;margin-right:4px;font-weight:bold">Signature:</span><span style="flex:1;border-bottom:1px dotted #555;height:1px;margin-bottom:2px"></span></div>
+            <div style="display:flex;align-items:flex-end;margin-bottom:9px;font-size:10.5pt"><span style="white-space:nowrap;margin-right:4px;font-weight:bold">Phone:</span><span id="rp-recv-phone" style="flex:1;border-bottom:1px dotted #555;padding-bottom:1px"></span></div>
+            <div style="display:flex;align-items:flex-end;font-size:10.5pt"><span style="white-space:nowrap;margin-right:4px;font-weight:bold">Date:</span><span style="flex:1;border-bottom:1px dotted #555;height:1px;margin-bottom:2px"></span></div>
+          </div>
+          <div style="flex:1">
+            <div style="font-size:10.5pt;font-weight:bold;margin-bottom:10px">Issued by:</div>
+            <div style="display:flex;align-items:flex-end;margin-bottom:9px;font-size:10.5pt"><span style="white-space:nowrap;margin-right:4px;font-weight:bold">Name:</span><span id="rp-issue-name" style="flex:1;border-bottom:1px dotted #555;padding-bottom:1px"></span></div>
+            <div style="display:flex;align-items:flex-end;margin-bottom:9px;font-size:10.5pt"><span style="white-space:nowrap;margin-right:4px;font-weight:bold">Signature:</span><span style="flex:1;border-bottom:1px dotted #555;height:1px;margin-bottom:2px"></span></div>
+            <div style="display:flex;align-items:flex-end;margin-bottom:9px;font-size:10.5pt"><span style="white-space:nowrap;margin-right:4px;font-weight:bold">Phone:</span><span id="rp-issue-phone" style="flex:1;border-bottom:1px dotted #555;padding-bottom:1px"></span></div>
+            <div style="display:flex;align-items:flex-end;font-size:10.5pt"><span style="white-space:nowrap;margin-right:4px;font-weight:bold">Date:</span><span style="flex:1;border-bottom:1px dotted #555;height:1px;margin-bottom:2px"></span></div>
+          </div>
+        </div>
+
+      </div><!-- /receipt-print-area -->
+    </div><!-- /mbody -->
+    <div class="mft">
+      <button class="btn btn-ghost" onclick="closeOv('receiptOv')">Close</button>
+      <button class="btn btn-ghost" onclick="receiptDownloadWord()"><i class="ti ti-file-word"></i> Word</button>
+      <button class="btn btn-primary" onclick="receiptPrint()"><i class="ti ti-printer"></i> Print / PDF</button>
+    </div>
+  </div>
+</div>
 
   <!-- Receipt download dropdown menu -->
   <div class="dd-menu" id="receiptMenu" style="position:fixed;min-width:180px;z-index:700">
@@ -5187,9 +5307,13 @@
         { key: "model", label: "Model" },
         { key: "specs", label: "Specs" },
         { key: "facility", label: "Facility" },
+        { key: "district", label: "District" },
+        { key: "region", label: "Region" },
         { key: "assigned", label: "Assigned To" },
         { key: "status", label: "Status" },
         { key: "condition", label: "Condition" },
+        { key: "unit", label: "Unit" },
+        { key: "warranty", label: "Warranty Expiry" },
         { key: "date", label: "Date" },
         { key: "actions", label: "Actions" },
       ],
@@ -5202,9 +5326,13 @@
         { key: "model", label: "Model" },
         { key: "specs", label: "Specs" },
         { key: "facility", label: "Facility" },
+        { key: "district", label: "District" },
+        { key: "region", label: "Region" },
         { key: "assigned", label: "Assigned To" },
         { key: "status", label: "Status" },
         { key: "condition", label: "Condition" },
+        { key: "unit", label: "Unit" },
+        { key: "warranty", label: "Warranty Expiry" },
         { key: "date", label: "Date" },
         { key: "actions", label: "Actions" },
       ],
@@ -5217,9 +5345,13 @@
         { key: "model", label: "Model" },
         { key: "specs", label: "Specs" },
         { key: "facility", label: "Facility" },
+        { key: "district", label: "District" },
+        { key: "region", label: "Region" },
         { key: "assigned", label: "Assigned To" },
         { key: "status", label: "Status" },
         { key: "condition", label: "Condition" },
+        { key: "unit", label: "Unit" },
+        { key: "warranty", label: "Warranty Expiry" },
         { key: "date", label: "Date" },
         { key: "actions", label: "Actions" },
       ],
@@ -5232,9 +5364,13 @@
         { key: "model", label: "Model" },
         { key: "specs", label: "Specs" },
         { key: "facility", label: "Facility" },
+        { key: "district", label: "District" },
+        { key: "region", label: "Region" },
         { key: "assigned", label: "Assigned To" },
         { key: "status", label: "Status" },
         { key: "condition", label: "Condition" },
+        { key: "unit", label: "Unit" },
+        { key: "warranty", label: "Warranty Expiry" },
         { key: "date", label: "Date" },
         { key: "actions", label: "Actions" },
       ],
@@ -5366,15 +5502,33 @@
         case "qty":
           return `<td><span style="font-family:var(--mono);font-weight:700">${item.qty ?? item.quantity ?? "—"}</span>${item.unit ? ` <span style="font-size:11px;color:var(--muted)">${item.unit}</span>` : ""}</td>`;
         case "facility":
-          return `<td>${item.Facility_name || item.Facility || "—"}</td>`;
+          return `<td style="min-width:180px;white-space:nowrap"><span style="font-size:12px;font-weight:600">${item.facility_name || item.Facility_name || item.facility || item.Facility || "—"}</span></td>`;
         case "assigned":
           return `<td>${assigned !== "—" ? `<div class="person-cell"><div class="person-name">${assigned}</div>${assignedTitle ? `<div class="person-title">${assignedTitle}</div>` : ""}${assignedTel ? `<div class="person-tel"><i class="ti ti-phone"></i>${assignedTel}</div>` : ""}</div>` : `<span style="color:var(--muted);font-size:12px">—</span>`}</td>`;
         case "status":
           return `<td>${sBadge(item.status || "Active")}</td>`;
         case "condition":
           return `<td>${cBadge(item.condition)}</td>`;
-        case "date":
+       case "date":
           return `<td style="font-family:var(--mono);font-size:11px;color:var(--muted)">${item.date || item.date_acquired || "—"}</td>`;
+        case "district":
+          return `<td style="font-size:12px;color:var(--muted)">${item.district || "—"}</td>`;
+        case "region":
+          return `<td style="font-size:12px;color:var(--muted)">${item.region || "—"}</td>`;
+        case "unit":
+          return `<td><span style="font-family:var(--mono);font-size:12px">${item.unit || "—"}</span></td>`;
+        case "warranty": {
+          const w = item.warranty_expiry || item.warranty || "";
+          if (!w) return `<td><span style="color:var(--light);font-size:12px">—</span></td>`;
+          const wDate = new Date(w);
+          const now = new Date();
+          const daysLeft = Math.ceil((wDate - now) / 86400000);
+          let cls = "b-warranty-active", label = `${daysLeft}d left`;
+          if (daysLeft < 0) { cls = "b-warranty-expired"; label = "Expired"; }
+          else if (daysLeft <= 90) { cls = "b-warranty-expiring"; label = `${daysLeft}d left`; }
+          return `<td><span class="badge ${cls}" title="${w}">${w}<br><small>${label}</small></span></td>`;
+        }
+
         case "actions": {
           const linkedText = item.linked_item || "";
           const linkBtn = `<button class="act-link" onclick="handleLinkClick('${sk}', '${item.id}', '${linkedText}')" title="${linkedText ? 'Linked to: ' + linkedText : 'Assign Link'}" style="color:${linkedText ? 'var(--green)' : 'inherit'}">
@@ -5393,11 +5547,6 @@
     }
     
     function handleLinkClick(sk, id, linkedText) {
-      if (linkedText) {
-        toast(`Item is linked to ${linkedText}`, "info");
-      } else {
-        toast("Opening edit form to add a link…", "info");
-      }
       openEditItem(sk, id);
     }
 
@@ -5834,7 +5983,7 @@
       document.getElementById("fmTitle").textContent = `Edit ${sk.slice(0, -1).charAt(0).toUpperCase() + sk.slice(1, -1)}`;
       document.getElementById("fmSaveLbl").textContent = "Update";
       _prepareFormFields(sk);
-      _fillFacilitieselect(item.Facility || item.Facility_id);
+      _fillFacilitieselect(item.facility || item.Facility || item.facility_id || item.Facility_id);
       _fillCategorySelect(item.category || item.category_id);
       updateFormPlaceholders();
 
@@ -5854,6 +6003,8 @@
       document.getElementById("fmCond").value = item.condition || "New";
       document.getElementById("fmDate").value = item.date || item.date_acquired || "";
       if (document.getElementById("fmDepartment")) document.getElementById("fmDepartment").value = item.department || "";
+      if (document.getElementById("fmDistrict")) document.getElementById("fmDistrict").value = item.district || "";
+      if (document.getElementById("fmRegion")) document.getElementById("fmRegion").value = item.region || "";
       if (document.getElementById("fmValue")) document.getElementById("fmValue").value = item.value || "";
       if (document.getElementById("fmWarranty")) document.getElementById("fmWarranty").value = "";
       if (document.getElementById("fmSupplier")) document.getElementById("fmSupplier").value = "";
@@ -5869,8 +6020,11 @@
       const show = (id, vis) => { const e = document.getElementById(id); if (e) e.style.display = vis ? "" : "none"; };
       show("fmSerialWrap", isA || isAc);
       show("fmQtyWrap", !isA && !isAc);
-      show("fmUnitWrap", isCs);
+      show("fmUnitWrap", true);
       show("fmSpecsWrap", isA || isC || isAc || isCs);
+      // Always show value, warranty, supplier
+      const alwaysShow = ["fmValue", "fmWarranty", "fmSupplier"];
+      alwaysShow.forEach(id => { const e = document.getElementById(id); if (e) { const wrap = e.closest(".fg"); if (wrap) wrap.style.display = ""; } });
     }
 
     function _fillFacilitieselect(selected) {
@@ -6028,12 +6182,15 @@
         assigned_name: document.getElementById("fmAssignedName").value.trim(),
         assigned_title: document.getElementById("fmAssignedTitle").value.trim(),
         assigned_tel: document.getElementById("fmAssignedTel").value.trim(),
-        department: document.getElementById("fmDepartment")?.value.trim() || "",
+       department: document.getElementById("fmDepartment")?.value.trim() || "",
+        district: document.getElementById("fmDistrict")?.value.trim() || "",
+        region: document.getElementById("fmRegion")?.value.trim() || "", 
         value: parseFloat(document.getElementById("fmValue")?.value) || null,
         warranty_expiry: document.getElementById("fmWarranty")?.value || null,
         supplier: document.getElementById("fmSupplier")?.value.trim() || "",
         linked_item: document.getElementById("fmLinkedItem")?.value || "",
         facility: document.getElementById("fmFacility").value || null,
+        Facility: document.getElementById("fmFacility").value || null,
         category: document.getElementById("fmCategory").value || null,
         status: document.getElementById("fmStatus").value,
         condition: document.getElementById("fmCond").value,
@@ -6069,16 +6226,70 @@
       if (!item) { toast("Could not load item", "error"); return; }
 
       const skip = ["id", "created_at", "updated_at"];
-      const grid = Object.entries(item)
-        .filter(([k]) => !skip.includes(k))
-        .map(([k, v]) => {
-          let val = v ?? "—";
-          if (val === "") val = "—";
-          if (k === "status") val = sBadge(v);
-          if (k === "condition") val = cBadge(v);
-          const lbl = k.replace(/_/g, " ").replace(/\b\w/g, l => l.toUpperCase());
-          return `<div class="vi full"><div class="vi-lbl">${lbl}</div><div class="vi-val">${val}</div></div>`;
-        }).join("");
+
+      // Normalise value field regardless of API key name
+      const rawValue = item.value || item.purchase_value || item.purchase_cost || null;
+
+      const fieldOrder = [
+        "name", "engraving_no", "serial", "category_name", "manufacturer", "model",
+        "specs", "specifications", "unit", "qty", "quantity",
+        "facility_name", "Facility_name", "district", "region", "department",
+        "assigned_name", "assigned_to_name", "assigned_title", "assigned_tel",
+        "status", "condition",
+        "value", "purchase_value", "purchase_cost",
+        "warranty_expiry", "warranty",
+        "supplier", "linked_item", "notes", "date", "date_acquired",
+      ];
+
+      // Build ordered entries first, then append any remaining keys not in the order list
+      const itemEntries = Object.entries(item).filter(([k]) => !skip.includes(k));
+      const ordered = [];
+      const seen = new Set();
+
+      fieldOrder.forEach(key => {
+        const entry = itemEntries.find(([k]) => k === key);
+        if (entry && !seen.has(entry[0])) {
+          ordered.push(entry);
+          seen.add(entry[0]);
+        }
+      });
+      itemEntries.forEach(entry => {
+        if (!seen.has(entry[0])) {
+          ordered.push(entry);
+          seen.add(entry[0]);
+        }
+      });
+
+      const grid = ordered.map(([k, v]) => {
+        // Skip duplicate value keys if we already rendered value
+        if ((k === "purchase_value" || k === "purchase_cost") && seen.has("value")) return "";
+
+        let val = v ?? "—";
+        if (val === "" || val === null) val = "—";
+        if (k === "status") val = sBadge(v);
+        if (k === "condition") val = cBadge(v);
+
+        // Format value / purchase fields as currency
+        if (["value", "purchase_value", "purchase_cost"].includes(k) && v) {
+          val = `<span style="font-family:var(--mono);font-weight:700;color:var(--green)">UGX ${Number(v).toLocaleString()}</span>`;
+        }
+
+        // Format warranty with expiry badge
+        if (["warranty_expiry", "warranty"].includes(k) && v) {
+          const wDate = new Date(v);
+          const daysLeft = Math.ceil((wDate - new Date()) / 86400000);
+          let cls = "b-warranty-active", label = `${daysLeft}d remaining`;
+          if (daysLeft < 0) { cls = "b-warranty-expired"; label = "Expired"; }
+          else if (daysLeft <= 90) { cls = "b-warranty-expiring"; label = `${daysLeft}d remaining`; }
+          val = `<span class="badge ${cls}">${v}</span> <span style="font-size:11px;color:var(--muted)">(${label})</span>`;
+        }
+
+        // Format boolean
+        if (typeof v === "boolean") val = v ? "Yes" : "No";
+
+        const lbl = k.replace(/_/g, " ").replace(/\b\w/g, l => l.toUpperCase());
+        return `<div class="vi full"><div class="vi-lbl">${lbl}</div><div class="vi-val">${val}</div></div>`;
+      }).filter(Boolean).join("");
 
       document.getElementById("vmGrid").innerHTML = grid;
       document.getElementById("vmSub").textContent = `${item.name} · ${item.engraving_no || id}`;
@@ -6375,17 +6586,30 @@
 
     // ── LIVE TRACKING PAGE ──────────────────────────────────────────────
     async function renderTrackingPage() {
-      const el = document.getElementById("page-tracking");
-      if (!el) return;
-      el.innerHTML = `<div class="loading-row"><i class="ti ti-loader-2"></i></div>`;
+  const el = document.getElementById("page-tracking");
+  if (!el) return;
+  el.innerHTML = `<div class="loading-row"><i class="ti ti-loader-2"></i></div>`;
 
-      const [assetsData, FacilitiesData] = await Promise.all([
-        AssetAPI.getAll("?page_size=9999"),
-        FacilityAPI.getAll()
-      ]);
+  const [assetsData, FacilitiesData] = await Promise.all([
+    AssetAPI.getAll("?page_size=9999"),
+    FacilityAPI.getAll()
+  ]);
 
-      const assets = Array.isArray(assetsData) ? assetsData : (assetsData?.results || []);
-      const Facilities = Array.isArray(FacilitiesData) ? FacilitiesData : (FacilitiesData?.results || []);
+  const assets = Array.isArray(assetsData) ? assetsData : (assetsData?.results || []);
+  const Facilities = Array.isArray(FacilitiesData) ? FacilitiesData : (FacilitiesData?.results || []);
+
+  // Normalize each asset so field names are consistent regardless of API casing
+  assets.forEach(a => {
+    a._facilityId = a.facility || a.Facility || a.facility_id || a.Facility_id || null;
+    a._facilityName = a.facility_name || a.Facility_name || a.facility_display || "";
+    a._assignedName = a.assigned_name || a.assigned_to_name || a.assignedTo || a.assigned_to || "";
+    a._assignedTitle = a.assigned_title || a.assignedTitle || "";
+    a._assignedTel = a.assigned_tel || a.assignedTel || "";
+    a._district = a.district || "";
+    a._region = a.region || "";
+    a._department = a.department || "";
+    a._value = a.value || a.purchase_value || null;
+  });
 
       // Update nav badge
       document.getElementById("nb-tracking").textContent = assets.length;
@@ -6453,66 +6677,74 @@
         <table>
           <thead>
             <tr>
-              <th>Asset</th><th>Facility / Location</th><th>Department</th>
-              <th>Assigned To</th><th>Status</th><th>Condition</th><th>Actions</th>
+              <th>Asset</th><th>Facility</th><th>Location / Dept</th>
+              <th>Assigned To</th><th>Status</th><th>Condition</th><th>Value (UGX)</th><th>Actions</th>
             </tr>
           </thead>
           <tbody id="track-tbody">
             ${assets.length === 0
           ? `<tr><td colspan="7" class="empty-td"><i class="ti ti-database-off"></i>No assets found</td></tr>`
           : assets.map(a => {
-            const Facility = Facilities.find(s => s.id === a.Facility || s.id === a.FacilityId);
-            const assigned = a.assigned_to_name || a.assigned_name || a.assignedTo || "";
-            const dept = a.department || "";
+            const Facility = Facilities.find(s =>
+              s.id == a._facilityId ||
+              s.name === a._facilityName
+            );
+            const facilityName = a._facilityName || Facility?.name || "—";
+            const facilityLocation = Facility?.location || Facility?.district || a._district || a._region || "";
+            const assigned = a._assignedName;
+            const dept = a._department;
+            const value = a._value ? `UGX ${Number(a._value).toLocaleString()}` : "—";
+
             return `
-                    <tr data-name="${(a.name || "").toLowerCase()}"
-                        data-serial="${(a.serial || "").toLowerCase()}"
-                        data-assigned="${assigned.toLowerCase()}"
-                        data-Facility="${a.Facility || a.FacilityId || ""}"
-                        data-status="${a.status || ""}">
-                      <td>
-                        <div class="acell">
-                          <div class="acell-ico" style="background:var(--blue-lt)">
-                            <i class="ti ti-package" style="color:var(--blue)"></i>
-                          </div>
-                          <div>
-                            <div class="acell-name">${a.name || "—"}</div>
-                            <div class="acell-id">${a.engraving_no || a.engravingNo || a.serial || "—"}</div>
-                          </div>
-                        </div>
-                      </td>
-                      <td>
-                        <div style="font-weight:600;font-size:12px">${Facility?.name || "—"}</div>
-                        <div style="font-size:11px;color:var(--muted)">${Facility?.location || Facility?.district || ""}</div>
-                      </td>
-                      <td>
-                        ${dept
-                ? `<span class="devtype-tag"><i class="ti ti-sitemap"></i>${dept}</span>`
-                : `<span style="color:var(--light);font-style:italic;font-size:12px">—</span>`}
-                      </td>
-                      <td>
-                        ${assigned
-                ? `<div class="person-cell">
-                              <div class="person-name">${assigned}</div>
-                              ${a.assigned_title || a.assignedTitle ? `<div class="person-title">${a.assigned_title || a.assignedTitle}</div>` : ""}
-                              ${a.assigned_tel || a.assignedTel ? `<div class="person-tel"><i class="ti ti-phone"></i>${a.assigned_tel || a.assignedTel}</div>` : ""}
-                            </div>`
-                : `<span style="color:var(--light);font-style:italic;font-size:12px">Unassigned</span>`}
-                      </td>
-                      <td>${sBadge(a.status || "Active")}</td>
-                      <td>${cBadge(a.condition)}</td>
-                      <td>
-                        <div class="acts">
-                          <button class="act v" onclick="openViewItem('assets','${a.id}')" title="View">
-                            <i class="ti ti-eye"></i>
-                          </button>
-                          <button class="act" style="color:var(--purple);border-color:var(--purple-bd);background:var(--purple-lt)"
-                            onclick="openDispatchModal('${a.id}')" title="Dispatch">
-                            <i class="ti ti-send"></i>
-                          </button>
-                        </div>
-                      </td>
-                    </tr>`;
+              <tr data-name="${(a.name || "").toLowerCase()}"
+                  data-serial="${(a.serial || "").toLowerCase()}"
+                  data-assigned="${assigned.toLowerCase()}"
+                  data-Facility="${a._facilityId || ""}"
+                  data-status="${a.status || ""}">
+                <td>
+                  <div class="acell">
+                    <div class="acell-ico" style="background:var(--blue-lt)">
+                      <i class="ti ti-package" style="color:var(--blue)"></i>
+                    </div>
+                    <div>
+                      <div class="acell-name">${a.name || "—"}</div>
+                      <div class="acell-id">${a.engraving_no || a.serial || "—"}</div>
+                    </div>
+                  </div>
+                </td>
+                <td style="min-width:160px">
+                  <div style="font-weight:600;font-size:13px">${facilityName}</div>
+                  ${facilityLocation ? `<div style="font-size:11px;color:var(--muted)">${facilityLocation}</div>` : ""}
+                </td>
+                <td style="min-width:120px">
+                  ${dept
+                    ? `<span class="devtype-tag">${dept}</span>`
+                    : `<span style="color:var(--light);font-style:italic;font-size:12px">—</span>`}
+                </td>
+                <td style="min-width:160px">
+                  ${assigned
+                    ? `<div class="person-cell">
+                        <div class="person-name">${assigned}</div>
+                        ${a._assignedTitle ? `<div class="person-title">${a._assignedTitle}</div>` : ""}
+                        ${a._assignedTel ? `<div class="person-tel"><i class="ti ti-phone"></i>${a._assignedTel}</div>` : ""}
+                      </div>`
+                    : `<span style="color:var(--light);font-style:italic;font-size:12px">Unassigned</span>`}
+                </td>
+                <td>${sBadge(a.status || "Active")}</td>
+                <td>${cBadge(a.condition)}</td>
+                <td style="font-family:var(--mono);font-size:12px;color:var(--green);font-weight:600">${value}</td>
+                <td>
+                  <div class="acts">
+                    <button class="act v" onclick="openViewItem('assets','${a.id}')" title="View">
+                      <i class="ti ti-eye"></i>
+                    </button>
+                    <button class="act" style="color:var(--purple);border-color:var(--purple-bd);background:var(--purple-lt)"
+                      onclick="openDispatchModal('${a.id}')" title="Dispatch">
+                      <i class="ti ti-send"></i>
+                    </button>
+                  </div>
+                </td>
+              </tr>`;
           }).join("")}
           </tbody>
         </table>
@@ -6540,7 +6772,17 @@
       el.innerHTML = `<div class="loading-row"><i class="ti ti-loader-2"></i></div>`;
 
       const data = await API.get("/movements/");
-      const movements = Array.isArray(data) ? data : (data?.results || []);
+    const movements = Array.isArray(data) ? data : (data?.results || []);
+
+    // Normalize movement field names
+    // Normalize movement field names
+    movements.forEach(m => {
+      m._assetName = m.asset_name || m.assetName || m.asset_display
+        || (m.asset && typeof m.asset === "object" ? m.asset.name : "")
+        || (typeof m.asset === "string" ? m.asset : "") || "—";
+      m._from = m.from_facility_name || m.from_facility || m.from_Facility || m.from || "—";
+      m._to   = m.to_facility_name   || m.to_facility   || m.to_Facility   || m.to   || "—";
+    });
 
       document.getElementById("nb-movements").textContent = movements.length;
 
@@ -6581,7 +6823,12 @@
           <tbody id="mov-tbody">
             ${movements.length === 0
           ? `<tr><td colspan="10" class="empty-td"><i class="ti ti-database-off"></i>No movement records yet</td></tr>`
-          : movements.map((m, i) => `
+         : movements.map((m, i) => {
+              const assetN = m._assetName || "—";
+              const fromN  = m._from || "—";
+              const toN    = m._to   || "—";
+              const byN    = m.transferred_by || m.transferredBy || m.authorised_by || m.by || "—";
+              return `
                 <tr>
                   <td>
                     <span class="badge b-info" style="font-family:var(--mono);font-size:10px">
@@ -6589,22 +6836,16 @@
                     </span>
                   </td>
                   <td style="font-weight:600;max-width:160px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">
-                    ${m.asset_name || m.assetName || "—"}
+                    ${assetN}
                   </td>
                   <td>
-                    <div style="display:flex;align-items:center;gap:5px">
-                      <i class="ti ti-building-hospital" style="font-size:13px;color:var(--muted)"></i>
-                      <span style="font-size:12px">${m.from_Facility || m.from || "—"}</span>
-                    </div>
+                    <span style="font-size:12px">${fromN}</span>
                   </td>
                   <td>
-                    <div style="display:flex;align-items:center;gap:5px">
-                      <i class="ti ti-building-hospital" style="font-size:13px;color:var(--purple)"></i>
-                      <span style="font-size:12px;font-weight:600;color:var(--purple)">${m.to_Facility || m.to || "—"}</span>
-                    </div>
+                    <span style="font-size:12px;font-weight:600;color:var(--purple)">${toN}</span>
                   </td>
-                  <td style="font-family:var(--mono);font-size:11px;color:var(--muted)">${m.date || m.transferred_at || "—"}</td>
-                  <td style="font-size:12px">${m.transferred_by || m.by || "—"}</td>
+                  <td style="font-family:var(--mono);font-size:11px;color:var(--muted)">${m.date || m.transferred_at || m.created_at || "—"}</td>
+                  <td style="font-size:12px">${byN}</td>
                   <td>
                     <span class="devtype-tag" style="font-size:10px">${m.reason || "—"}</span>
                   </td>
@@ -6619,7 +6860,8 @@
                       <i class="ti ti-receipt"></i>
                     </button>
                   </td>
-                </tr>`).join("")}
+                </tr>`;
+            }).join("")}
           </tbody>
         </table>
       </div>
@@ -6695,17 +6937,22 @@
       if (!listEl) return;
       listEl.innerHTML = movs.length === 0
         ? `<div style="padding:20px;text-align:center;color:var(--muted);font-size:13px">No dispatches yet</div>`
-        : movs.map(m => `
-        <div style="display:flex;gap:10px;padding:11px 16px;border-bottom:1px solid var(--border-light);cursor:pointer" onclick="viewMovement(${m.id})">
-          <div style="width:28px;height:28px;border-radius:50%;background:var(--purple-lt);display:grid;place-items:center;flex-shrink:0">
-            <i class="ti ti-transfer" style="font-size:13px;color:var(--purple)"></i>
-          </div>
-          <div style="flex:1">
-            <div style="font-size:12px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:220px">${m.asset_name || "—"}</div>
-            <div style="font-size:11px;color:var(--muted)">${m.from_Facility || "—"} → ${m.to_Facility || "—"}</div>
-            <div style="font-size:10px;color:var(--light);font-family:var(--mono)">${m.date || ""}</div>
-          </div>
-        </div>`).join("");
+        : movs.map(m => {
+          const assetN = m.asset_name || m.assetName || m.asset_display || (typeof m.asset === "string" ? m.asset : "") || "—";
+          const fromN = m.from_facility || m.from_Facility || m.from_facility_name || m.from || "—";
+          const toN = m.to_facility || m.to_Facility || m.to_facility_name || m.to || "—";
+          return `
+          <div style="display:flex;gap:10px;padding:11px 16px;border-bottom:1px solid var(--border-light);cursor:pointer" onclick="viewMovement(${m.id})">
+            <div style="width:28px;height:28px;border-radius:50%;background:var(--purple-lt);display:grid;place-items:center;flex-shrink:0">
+              <i class="ti ti-transfer" style="font-size:13px;color:var(--purple)"></i>
+            </div>
+            <div style="flex:1">
+              <div style="font-size:12px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:220px">${assetN}</div>
+              <div style="font-size:11px;color:var(--muted)">${fromN} → ${toN}</div>
+              <div style="font-size:10px;color:var(--light);font-family:var(--mono)">${m.date || ""}</div>
+            </div>
+          </div>`;
+        }).join("");
     }
 
 
@@ -6725,7 +6972,29 @@
 
       document.getElementById("disp-asset").innerHTML =
         `<option value="">— Select asset —</option>` +
-        assetList.map(a => `<option value="${a.id}" ${a.id == preAssetId ? "selected" : ""}>${a.name} (${a.engraving_no || a.serial || "—"})</option>`).join("");
+        assetList.map(a => {
+          const facilityId = a.facility || a.Facility || a.facility_id || a.Facility_id || "";
+          const facilityName = a.facility_name || a.Facility_name || _FacilitiesCache.find(s => s.id == facilityId)?.name || "—";
+          const assignedName = a.assigned_name || a.assigned_to_name || a.assignedTo || "";
+          const label = `${a.name} (${a.engraving_no || a.serial || "—"}) · ${facilityName}${assignedName ? " · " + assignedName : ""}`;
+          return `<option value="${a.id}"
+            data-facility-id="${facilityId}"
+            data-facility-name="${facilityName}"
+            data-assigned="${assignedName}"
+            data-dept="${a.department || ""}"
+            data-tel="${a.assigned_tel || a.assignedTel || ""}"
+            ${a.id == preAssetId ? "selected" : ""}>${label}</option>`;
+        }).join("");
+
+      // Store current facility on the select element itself for saveDispatch
+      const updateCurrentFacility = () => {
+        const sel = document.getElementById("disp-asset");
+        const opt = sel.options[sel.selectedIndex];
+        sel.dataset.currentFacility = opt?.dataset?.facilityId || "";
+        sel.dataset.currentFacilityName = opt?.dataset?.facilityName || "";
+      };
+      document.getElementById("disp-asset").addEventListener("change", updateCurrentFacility);
+      updateCurrentFacility();
 
       document.getElementById("disp-to-Facility").innerHTML =
         `<option value="">— Select destination —</option>` +
@@ -6733,8 +7002,18 @@
 
       document.getElementById("disp-date").value = new Date().toISOString().slice(0, 10);
 
-      if (preAssetId) updateDispatchAssetInfo(preAssetId, assetList);
+      if (preAssetId) {
+        updateDispatchAssetInfo(preAssetId, assetList);
+      }
+
       document.getElementById("disp-asset").onchange = function () {
+        // Clear auto-filled fields so they refill from the newly selected asset
+        const assignToEl = document.getElementById("disp-assign-to");
+        const deptEl = document.getElementById("disp-dept");
+        const telEl = document.getElementById("disp-tel");
+        if (assignToEl) assignToEl.value = "";
+        if (deptEl) deptEl.value = "";
+        if (telEl) telEl.value = "";
         updateDispatchAssetInfo(this.value, assetList);
       };
     }
@@ -6744,16 +7023,61 @@
       const infoEl = document.getElementById("disp-asset-info");
       if (!infoEl) return;
       if (!a) { infoEl.innerHTML = ""; return; }
-      const Facility = _FacilitiesCache.find(s => s.id === a.Facility || s.id === a.FacilityId);
+
+      // Resolve facility — try name field first, then look up from cache by id
+      const facilityId = a.facility || a.Facility || a.facility_id || a.Facility_id || null;
+      const facilityFromCache = _FacilitiesCache.find(s => s.id == facilityId);
+      const facilityName = a.facility_name || a.Facility_name || a.facility_display || facilityFromCache?.name || "—";
+      const facilityLocation = facilityFromCache?.location || facilityFromCache?.district || a.district || a.region || "";
+
+      // Resolve assigned person
+      const assignedName = a.assigned_name || a.assigned_to_name || a.assignedTo || a.assigned_to || "";
+      const assignedTitle = a.assigned_title || a.assignedTitle || "";
+      const assignedTel = a.assigned_tel || a.assignedTel || "";
+      const department = a.department || "";
+      const value = a.value || a.purchase_value || null;
+
+      // Auto-fill dispatch form fields with current asset assignment
+      const assignToEl = document.getElementById("disp-assign-to");
+      const deptEl = document.getElementById("disp-dept");
+      const telEl = document.getElementById("disp-tel");
+      if (assignToEl && !assignToEl.value) assignToEl.value = assignedName;
+      if (deptEl && !deptEl.value) deptEl.value = department;
+      if (telEl && !telEl.value) telEl.value = assignedTel;
+
       infoEl.innerHTML = `
-    <div style="margin-top:10px;padding:10px 14px;background:var(--bg);border:1px solid var(--border);border-radius:var(--rsm);font-size:12px">
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-        <div><span style="color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.5px">Current Facility</span><br/><strong>${Facility?.name || "—"}</strong></div>
-        <div><span style="color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.5px">Status</span><br/>${sBadge(a.status || "Active")}</div>
-        <div><span style="color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.5px">Assigned To</span><br/>${a.assigned_to_name || a.assignedTo || "Unassigned"}</div>
-        <div><span style="color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.5px">Condition</span><br/>${cBadge(a.condition)}</div>
-      </div>
-    </div>`;
+      <div style="margin-top:10px;padding:14px;background:var(--bg);border:1px solid var(--border);border-radius:var(--rsm);font-size:12px">
+        <div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px">Current Asset Details</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+          <div>
+            <div style="color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.5px">Current Facility</div>
+            <div style="font-weight:700;font-size:13px;margin-top:2px">${facilityName}</div>
+            ${facilityLocation ? `<div style="font-size:11px;color:var(--muted)">${facilityLocation}</div>` : ""}
+          </div>
+          <div>
+            <div style="color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.5px">Status</div>
+            <div style="margin-top:2px">${sBadge(a.status || "Active")}</div>
+          </div>
+          <div>
+            <div style="color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.5px">Assigned To</div>
+            <div style="font-weight:600;font-size:13px;margin-top:2px">${assignedName || "—"}</div>
+            ${assignedTitle ? `<div style="font-size:11px;color:var(--muted)">${assignedTitle}</div>` : ""}
+            ${assignedTel ? `<div style="font-size:11px;color:var(--muted);font-family:var(--mono)">${assignedTel}</div>` : ""}
+          </div>
+          <div>
+            <div style="color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.5px">Condition</div>
+            <div style="margin-top:2px">${cBadge(a.condition)}</div>
+          </div>
+     ${department ? `<div>
+            <div style="color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.5px">Department</div>
+            <div style="font-weight:600;font-size:13px;margin-top:2px">${department}</div>
+          </div>` : ""}
+          ${value ? `<div>
+            <div style="color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.5px">Value</div>
+            <div style="font-weight:700;font-size:13px;color:var(--green);font-family:var(--mono);margin-top:2px">UGX ${Number(value).toLocaleString()}</div>
+          </div>` : ""}
+        </div>
+      </div>`;
     }
 
     async function saveDispatch() {
@@ -6771,14 +7095,32 @@
         toast("Please fill all required fields", "error"); return;
       }
 
+      const dispSel = document.getElementById("disp-asset");
+      const fromFacilityId = dispSel?.dataset?.currentFacility || null;
+      const fromFacilityName = dispSel?.dataset?.currentFacilityName || "—";
+      const toFacilityEl = document.getElementById("disp-to-Facility");
+     
+
+      const toFacilityObj = _FacilitiesCache.find(s => String(s.id) === String(toFacilityId));
+      const toFacilityName = toFacilityObj?.name || toFacilityEl.options[toFacilityEl.selectedIndex]?.text?.split("—")[0].trim() || "";
+
       const payload = {
         asset: assetId,
+        to_facility: toFacilityId,
         to_Facility: toFacilityId,
+        to_facility_name: toFacilityName,
+        from_facility: fromFacilityId || null,
+        from_Facility: fromFacilityId || null,
+        from_facility_name: fromFacilityName || "",
+        asset_name: document.getElementById("disp-asset").options[document.getElementById("disp-asset").selectedIndex]?.text?.split("(")[0].trim() || "",
         reason,
         transferred_by: by,
+        transferredBy: by,
+        authorised_by: by,
         notes,
         date,
         assigned_to: assignTo || null,
+        assigned_name: assignTo || null,
         department: dept || null,
         assigned_tel: tel || null,
       };
@@ -6787,7 +7129,6 @@
       if (res) {
         toast("Asset dispatched successfully! Inventories updated.", "success");
         closeOv("dispatchOv");
-        // Refresh current page
         if (curPage === "tracking") renderTrackingPage();
         if (curPage === "movements") renderMovementsPage();
         if (curPage === "dispatch") renderDispatchPage();
@@ -6894,13 +7235,16 @@
     async function viewMovement(id) {
       const data = await API.get(`/movements/${id}/`);
       if (!data) { toast("Could not load movement record", "error"); return; }
+      const assetN = data.asset_name || data.assetName || data.asset_display || (typeof data.asset === "string" ? data.asset : "") || "—";
+      const fromN = data.from_facility || data.from_Facility || data.from_facility_name || data.from || "—";
+      const toN = data.to_facility || data.to_Facility || data.to_facility_name || data.to || "—";
       const grid = [
         ["Reference", `REF-MOV-${String(data.id).padStart(4, "0")}`],
-        ["Asset", data.asset_name || "—"],
-        ["From", data.from_Facility || "—"],
-        ["To", data.to_Facility || "—"],
+        ["Asset", assetN],
+        ["From", fromN],
+        ["To", toN],
         ["Date", data.date || "—"],
-        ["Authorised By", data.transferred_by || "—"],
+        ["Authorised By", data.transferred_by || data.transferredBy || "—"],
         ["Reason", data.reason || "—"],
         ["Notes", data.notes || "—"],
         ["Status", "Completed"],
@@ -6913,13 +7257,40 @@
 
     // ===================== RECEIPT GENERATION =====================
     let _receiptCtxId = null; // which movement the open dropdown refers to
+// ── Receipt category config ──────────────────────────────────────
+    const RECEIPT_CAT_CONFIG = {
+      "ICT Equipment":     { title:"ICT Equipment Acknowledgement Receipt",           ack:"I hereby acknowledge receipt of the above ICT Equipment from Ministry of Health in good order" },
+      "Medical Equipment": { title:"Medical Equipment Acknowledgement Receipt",        ack:"I hereby acknowledge receipt of the above Medical Equipment from Ministry of Health in good order" },
+      "Furniture":         { title:"Furniture & Fittings Acknowledgement Receipt",    ack:"I hereby acknowledge receipt of the above Furniture & Fittings from Ministry of Health in good order" },
+      "Vehicles":          { title:"Vehicle Acknowledgement Receipt",                 ack:"I hereby acknowledge receipt of the above Vehicle(s) from Ministry of Health in good order" },
+      "Accessories":       { title:"Accessories & Peripherals Acknowledgement Receipt", ack:"I hereby acknowledge receipt of the above Accessories/Peripherals from Ministry of Health in good order" },
+      "Consumables":       { title:"Consumables & Supplies Acknowledgement Receipt",  ack:"I hereby acknowledge receipt of the above Consumables/Supplies from Ministry of Health in good order" },
+      "default":           { title:"Equipment Acknowledgement Receipt",               ack:"I hereby acknowledge receipt of the above items from Ministry of Health in good order" },
+    };
+
+    function receiptGenRef(category) {
+      const now = new Date();
+      const yr = now.getFullYear();
+      const mo = String(now.getMonth()+1).padStart(2,"0");
+      const ts = now.getTime().toString().slice(-5);
+      const rand = Math.floor(Math.random()*900)+100;
+      const prefix = {"ICT Equipment":"ICT","Medical Equipment":"MED","Furniture":"FRN","Vehicles":"VEH","Accessories":"ACC","Consumables":"CSM"}[category] || "GEN";
+      return `MOH-${prefix}-${yr}${mo}-${ts}${rand}`;
+    }
+
+    function receiptTodayStr() {
+      const now = new Date();
+      return String(now.getDate()).padStart(2,"0") + "/" + String(now.getMonth()+1).padStart(2,"0") + "/" + now.getFullYear();
+    }
+
+    let _receiptLiveData = null;
 
     function openReceiptMenu(ev, movementId) {
       ev.stopPropagation();
       _receiptCtxId = movementId;
       const menu = document.getElementById("receiptMenu");
       const rect = ev.currentTarget.getBoundingClientRect();
-      menu.style.top = `${rect.bottom + 6}px`;
+      menu.style.top  = `${rect.bottom + 6}px`;
       menu.style.left = `${Math.min(rect.left, window.innerWidth - 200)}px`;
       menu.classList.add("open");
     }
@@ -6934,65 +7305,180 @@
       document.getElementById("receiptMenu").classList.remove("open");
       if (!_receiptCtxId) return;
 
+      toast("Loading receipt…", "info");
       const movement = await API.get(`/movements/${_receiptCtxId}/`);
       if (!movement) { toast("Could not load movement record", "error"); return; }
 
-      await generateReceiptForMovement(movement, action);
-    }
-
-    async function generateReceiptForMovement(movement, action = "print") {
-      // Pull the linked asset for richer item details (serial, tag, value, condition)
+      // Resolve asset details for richer receipt
       let asset = null;
-      if (movement.asset) {
-        asset = await AssetAPI.getOne(movement.asset);
-      }
+      const assetId = movement.asset && typeof movement.asset === "object" ? movement.asset.id : movement.asset;
+      if (assetId) asset = await AssetAPI.getOne(assetId);
+
+      // Resolve facility names from cache
+      const toId   = movement.to_facility   || movement.to_Facility;
+      const fromId = movement.from_facility || movement.from_Facility;
+      const toFac  = _FacilitiesCache.find(s => String(s.id) === String(toId));
+      const fromFac= _FacilitiesCache.find(s => String(s.id) === String(fromId));
+
+      const facilityName = movement.to_facility_name   || toFac?.name   || movement.to   || "—";
+      const fromFacName  = movement.from_facility_name || fromFac?.name || movement.from || "—";
+      const district     = toFac?.location || toFac?.district || asset?.district || "";
+      const assetName    = movement.asset_name || movement.assetName
+        || (asset?.name) || (typeof movement.asset === "string" ? movement.asset : "") || "—";
 
       const receiptData = {
-        category: asset?.category_name || "ICT Equipment",
-        facility: movement.to_Facility || movement.to_Facility_name || "—",
-        district: asset?.district || "",
-        region: asset?.region || "",
-        fromStore: movement.from_Facility || "Ministry of Health, Kampala",
-        transferDate: movement.date || new Date().toLocaleDateString("en-GB"),
-        receiverName: movement.assigned_to || asset?.assigned_to_name || "",
-        receiverTitle: movement.department || "",
-        receiverPhone: movement.assigned_tel || "",
-        issuerName: movement.transferred_by || "",
-        issuerPhone: "",
+        category:      asset?.category_name || "ICT Equipment",
+        facility:      facilityName,
+        district:      district,
+        region:        toFac?.region || asset?.region || "",
+        fromStore:     fromFacName,
+        transferDate:  movement.date || receiptTodayStr(),
+        receiverName:  movement.assigned_to || movement.assigned_name || asset?.assigned_name || asset?.assigned_to_name || "",
+        receiverTitle: movement.department || asset?.department || "",
+        receiverPhone: movement.assigned_tel || asset?.assigned_tel || "",
+        issuerName:    movement.transferred_by || movement.transferredBy || movement.authorised_by || "",
+        issuerPhone:   "",
         items: [{
-          name: asset?.name || movement.asset_name || "—",
-          serial: asset?.serial || "",
-          tag: asset?.engraving_no || "",
-          qty: asset?.qty || 1,
+          name:      assetName,
+          serial:    asset?.serial || "",
+          tag:       asset?.engraving_no || "",
+          qty:       asset?.qty || asset?.quantity || 1,
           condition: asset?.condition || "Good",
-          value: asset?.value || null,
+          value:     asset?.value || asset?.purchase_value || null,
         }],
       };
 
-      const frame = document.getElementById("receiptFrame");
+      _receiptLiveData = receiptData;
+      renderReceiptModal(receiptData);
 
-      const renderAndAct = () => {
-        frame.contentWindow.showReceipt(receiptData);
-        setTimeout(() => {
-          if (action === "print") {
-            frame.contentWindow.print();
-          } else if (action === "pdf") {
-            frame.contentWindow.document.title = `MOH-Receipt-${frame.contentWindow._currentRef || "receipt"}`;
-            frame.contentWindow.print(); // user selects "Save as PDF" in print dialog
-          } else if (action === "word") {
-            frame.contentWindow.downloadWord();
-          }
-        }, 150);
-      };
-
-      // If the iframe hasn't loaded yet, wait for it
-      if (frame.contentWindow && frame.contentWindow.showReceipt) {
-        renderAndAct();
-      } else {
-        frame.onload = renderAndAct;
+      if (action === "pdf" || action === "print") {
+        openOv("receiptOv");
+      } else if (action === "word") {
+        openOv("receiptOv");
+        setTimeout(() => receiptDownloadWord(), 200);
       }
     }
 
+    function renderReceiptModal(data) {
+      const cat = data.category || "default";
+      const cfg = RECEIPT_CAT_CONFIG[cat] || RECEIPT_CAT_CONFIG["default"];
+      const ref = receiptGenRef(cat);
+      _receiptCurrentRef = ref;
+
+      document.getElementById("receipt-modal-ref").textContent = ref;
+      document.getElementById("rp-doc-title").textContent = cfg.title;
+      document.getElementById("rp-ref").textContent       = ref;
+      document.getElementById("rp-date").textContent      = receiptTodayStr();
+      document.getElementById("rp-facility").textContent  = data.facility  || "—";
+      document.getElementById("rp-district").textContent  = data.district  || "—";
+      document.getElementById("rp-ack").textContent       = cfg.ack;
+      document.getElementById("rp-recv-name").textContent  = data.receiverName  || "—";
+      document.getElementById("rp-recv-phone").textContent = data.receiverPhone || "—";
+      document.getElementById("rp-issue-name").textContent = data.issuerName    || "—";
+      document.getElementById("rp-issue-phone").textContent= data.issuerPhone   || "—";
+
+      const tbody = document.getElementById("rp-tbody");
+      tbody.innerHTML = "";
+      const BLANK = 14;
+      const items = data.items || [];
+
+      items.forEach(item => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td style="border:1px solid #000;padding:3px 5px;text-align:center;font-weight:bold;height:22px">${item.qty||1}</td>
+          <td style="border:1px solid #000;padding:3px 5px;height:22px">${item.name||"—"}</td>
+          <td style="border:1px solid #000;padding:3px 5px;font-family:'Courier New',monospace;font-size:9.5pt;height:22px">${item.serial||"—"}</td>
+          <td style="border:1px solid #000;padding:3px 5px;font-family:'Courier New',monospace;font-size:9.5pt;height:22px">${item.tag||item.engraving||"—"}</td>`;
+        tbody.appendChild(tr);
+      });
+
+      for (let i = items.length; i < BLANK; i++) {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `<td style="border:1px solid #000;padding:3px 5px;height:22px"></td><td style="border:1px solid #000;padding:3px 5px;height:22px"></td><td style="border:1px solid #000;padding:3px 5px;height:22px"></td><td style="border:1px solid #000;padding:3px 5px;height:22px"></td>`;
+        tbody.appendChild(tr);
+      }
+    }
+
+    let _receiptCurrentRef = "";
+
+    function receiptPrint() {
+      const area = document.getElementById("receipt-print-area");
+      if (!area) return;
+      const win = window.open("", "_blank", "width=800,height=1000");
+      win.document.write(`<!DOCTYPE html><html><head><title>Receipt ${_receiptCurrentRef}</title>
+        <style>
+          * { margin:0; padding:0; box-sizing:border-box; }
+          body { font-family:'Times New Roman',Times,serif; font-size:12pt; background:#fff; color:#000; }
+          table { border-collapse:collapse; width:100%; }
+          td, th { border:1px solid #000; padding:3px 5px; font-size:10.5pt; }
+          @media print { button { display:none; } }
+        </style></head><body>
+        ${area.innerHTML}
+        <br><button onclick="window.print()" style="padding:10px 24px;background:#2563eb;color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:14px;margin:16px">Print / Save as PDF</button>
+        </body></html>`);
+      win.document.close();
+    }
+
+    async function receiptDownloadWord() {
+      if (!window.docx) { toast("Word library loading, try again in a moment.", "error"); return; }
+      const data = _receiptLiveData;
+      if (!data) { toast("No receipt data loaded.", "error"); return; }
+      const cat = data.category || "default";
+      const cfg = RECEIPT_CAT_CONFIG[cat] || RECEIPT_CAT_CONFIG["default"];
+      const ref = _receiptCurrentRef || receiptGenRef(cat);
+
+      const { Document, Packer, Paragraph, Table, TableRow, TableCell, TextRun, AlignmentType, WidthType } = window.docx;
+
+      const bold = (text, size=20, extra={}) => new TextRun({ text, bold:true, size, font:"Times New Roman", ...extra });
+      const norm = (text, size=20, extra={}) => new TextRun({ text, size, font:"Times New Roman", ...extra });
+      const para = (children, align=AlignmentType.LEFT, spacing={}) => new Paragraph({ children, alignment:align, spacing:{after:60,...spacing} });
+      const linePara = (labelTxt, valueTxt) => new Paragraph({
+        children:[ bold(labelTxt+" ",20), norm(valueTxt||"—",20,{underline:{type:"dotted",color:"000000"}}) ],
+        spacing:{after:80}
+      });
+
+      const items = data.items || [];
+      const BLANK = 14;
+      const tableRows = [
+        new TableRow({ children:["Qty","Description","Serial no","No.Engraved"].map(h => new TableCell({children:[para([bold(h,18)])]})) }),
+        ...items.map(item => new TableRow({ children:[String(item.qty||1),item.name||"—",item.serial||"—",item.tag||"—"].map(txt => new TableCell({children:[para([norm(txt,18)],AlignmentType.LEFT,{after:20})]})) })),
+        ...Array.from({length:Math.max(0,BLANK-items.length)}, ()=> new TableRow({ children:Array(4).fill("").map(()=> new TableCell({children:[para([norm("",18)],AlignmentType.LEFT,{after:20})]})) })),
+      ];
+
+      const doc = new Document({ sections:[{ properties:{ page:{ margin:{top:1080,right:1080,bottom:1080,left:1080} } },
+        children:[
+          para([bold("REPUBLIC OF UGANDA",18)], AlignmentType.CENTER, {after:30}),
+          para([bold("MINISTRY OF HEALTH",22)], AlignmentType.CENTER, {after:60}),
+          para([bold(cfg.title.toUpperCase(),20,{underline:{type:"single",color:"000000"},italics:true})], AlignmentType.CENTER, {after:160}),
+          linePara("Name of Receiving Facility:", data.facility),
+          linePara("District:", data.district),
+          linePara("Date:", receiptTodayStr()),
+          linePara("No:", ref),
+          para([],AlignmentType.LEFT,{after:100}),
+          new Table({rows:tableRows, width:{size:100,type:WidthType.PERCENTAGE}}),
+          para([],AlignmentType.LEFT,{after:80}),
+          para([norm(cfg.ack,19)],AlignmentType.LEFT,{after:160}),
+          para([bold("Received by:",19)],AlignmentType.LEFT,{after:60}),
+          linePara("Name:", data.receiverName),
+          linePara("Signature:", ""),
+          linePara("Phone Number:", data.receiverPhone),
+          linePara("Date:", ""),
+          para([],AlignmentType.LEFT,{after:120}),
+          para([bold("Issued by:",19)],AlignmentType.LEFT,{after:60}),
+          linePara("Name:", data.issuerName),
+          linePara("Signature:", ""),
+          linePara("Phone Number:", data.issuerPhone),
+          linePara("Date:", ""),
+        ]
+      }]});
+
+      const blob = await Packer.toBlob(doc);
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url; a.download = `MOH-Receipt-${ref}.docx`; a.click();
+      URL.revokeObjectURL(url);
+      toast("Receipt downloaded as Word document", "success");
+    }
 
     // ===================== ALERTS =====================
     async function renderAlertsPage() {
