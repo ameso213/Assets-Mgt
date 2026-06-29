@@ -5310,13 +5310,10 @@
         case "date":
           return `<td style="font-family:var(--mono);font-size:11px;color:var(--muted)">${item.date || item.date_acquired || "—"}</td>`;
         case "actions": {
-          const linkCount = getLinksForItem(String(item.id)).length;
-          const linkBtn = (sk === "assets" || sk === "accessories")
-            ? `<button class="act-link" onclick="openLinkModal()" title="Linked items">
+          const linkedText = item.linked_item || "";
+          const linkBtn = `<button class="act-link" onclick="handleLinkClick('${sk}', '${item.id}', '${linkedText}')" title="${linkedText ? 'Linked to: ' + linkedText : 'Assign Link'}" style="color:${linkedText ? 'var(--green)' : 'inherit'}">
              <i class="ti ti-link"></i>
-             ${linkCount > 0 ? `<span class="link-count-badge">${linkCount}</span>` : ""}
-           </button>`
-            : "";
+           </button>`;
           return `<td><div class="acts">
         <button class="act v" onclick="openViewItem('${sk}','${item.id}')" title="View"><i class="ti ti-eye"></i></button>
         <button class="act e" onclick="openEditItem('${sk}','${item.id}')" title="Edit"><i class="ti ti-pencil"></i></button>
@@ -5327,6 +5324,15 @@
         default:
           return `<td>—</td>`;
       }
+    }
+    
+    function handleLinkClick(sk, id, linkedText) {
+      if (linkedText) {
+        toast(`Item is linked to ${linkedText}`, "info");
+      } else {
+        toast("Opening edit form to add a link…", "info");
+      }
+      openEditItem(sk, id);
     }
 
     // Settings extended state
@@ -5796,7 +5802,7 @@
       show("fmSerialWrap", isA || isAc);
       show("fmQtyWrap", !isA && !isAc);
       show("fmUnitWrap", isCs);
-      show("fmSpecsWrap", isC);
+      show("fmSpecsWrap", isA || isC || isAc || isCs);
     }
 
     function _fillFacilitieselect(selected) {
@@ -5857,6 +5863,7 @@
           const e = document.getElementById(id); if (e) e.value = "";
         });
       document.getElementById("fmEngravingNo").value = generateTagNumber(sk);
+      document.getElementById("fmSerial").value = generateTagNumber(sk).replace(/^[^-]+/, "SN");
       document.getElementById("fmQty").value = 1;
       document.getElementById("fmUnit").value = "";
       document.getElementById("fmStatus").value = "Active";
@@ -5998,6 +6005,7 @@
         .filter(([k]) => !skip.includes(k))
         .map(([k, v]) => {
           let val = v ?? "—";
+          if (val === "") val = "—";
           if (k === "status") val = sBadge(v);
           if (k === "condition") val = cBadge(v);
           const lbl = k.replace(/_/g, " ").replace(/\b\w/g, l => l.toUpperCase());
