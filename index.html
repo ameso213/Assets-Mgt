@@ -1520,18 +1520,15 @@
       background: var(--surface);
       color: var(--text);
     }
-
-    .col-vis-dropdown {
-      position: absolute;
-      top: calc(100% + 6px);
-      right: 0;
+.col-vis-dropdown {
+      position: fixed;
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: var(--rlg);
       box-shadow: var(--sh3);
       padding: 12px;
       min-width: 200px;
-      z-index: 200;
+      z-index: 1000;
       display: none;
     }
 
@@ -3074,20 +3071,7 @@
       flex-wrap: wrap;
     }
 
-    .mob-menu-btn {
-      display: none;
-      width: 36px;
-      height: 36px;
-      border-radius: var(--rsm);
-      background: transparent;
-      border: 1px solid var(--border);
-      place-items: center;
-      color: var(--muted);
-      cursor: pointer;
-      transition: all .15s;
-      flex-shrink: 0;
-    }
-
+    
     .mob-menu-btn:hover {
       background: var(--bg);
       color: var(--text);
@@ -3110,6 +3094,28 @@
       display: block;
     }
 
+
+
+    .mob-menu-btn {
+      display: none;
+      width: 36px;
+      height: 36px;
+      border-radius: var(--rsm);
+      background: transparent;
+      border: 1px solid var(--border);
+      place-items: center;
+      color: var(--muted);
+      cursor: pointer;
+      transition: all .15s;
+      flex-shrink: 0;
+      visibility: visible;
+      opacity: 1;
+    }
+
+
+
+
+
     @keyframes toastIn {
       from {
         opacity: 0;
@@ -3124,7 +3130,7 @@
 
     @media(max-width:768px) {
       .mob-menu-btn {
-        display: grid;
+        display: grid !important;
       }
 
       .sidebar {
@@ -3152,7 +3158,33 @@
 
       .kpi-row {
         grid-template-columns: 1fr 1fr;
-        gap: 10px;
+        gap: 8px;
+      }
+
+      .kpi {
+        padding: 12px;
+        gap: 9px;
+      }
+
+      .kpi-icon {
+        width: 34px;
+        height: 34px;
+      }
+
+      .kpi-icon i {
+        font-size: 16px;
+      }
+
+      .kpi-val {
+        font-size: 19px;
+      }
+
+      .kpi-lbl {
+        font-size: 11px;
+      }
+
+      .kpi-note {
+        font-size: 10px;
       }
 
       .dash-grid {
@@ -3211,8 +3243,31 @@
         width: 100%;
       }
 
+      .ph-actions .btn-primary {
+        width: 40px;
+        height: 40px;
+        padding: 0;
+        justify-content: center;
+        border-radius: 50%;
+        flex-shrink: 0;
+      }
+
+      .ph-actions .btn-primary i {
+        font-size: 18px;
+        margin: 0;
+      }
+
+      .ph-actions .btn-primary span,
+      .ph-actions .btn-primary > :not(i) {
+        display: none;
+      }
+
       .dst-grid {
         grid-template-columns: 1fr;
+      }
+
+      .acct-settings-grid {
+        grid-template-columns: 1fr !important;
       }
 
       .toast-wrap {
@@ -3240,24 +3295,24 @@
     <div class="nav-item active" data-page="dashboard"><i class="ti ti-layout-dashboard"></i> Dashboard</div>
     <div class="sb-section">Inventory</div>
     <div class="nav-item" data-page="assets"><i class="ti ti-device-laptop"></i> Assets <span class="nav-badge"
-        id="nb-assets">—</span></div>
+        id="nb-assets">0</span></div>
     <div class="nav-item" data-page="components"><i class="ti ti-circuit-board"></i> Components <span class="nav-badge"
-        id="nb-components">—</span></div>
+        id="nb-components">0</span></div>
     <div class="nav-item" data-page="consumables"><i class="ti ti-package"></i> Consumables <span class="nav-badge"
-        id="nb-consumables">—</span></div>
+        id="nb-consumables">0</span></div>
     <div class="nav-item" data-page="accessories"><i class="ti ti-plug"></i> Accessories <span class="nav-badge"
-        id="nb-accessories">—</span></div>
+        id="nb-accessories">0</span></div>
     <div class="nav-item" data-page="verify"><i class="ti ti-scan"></i> Verify Assets <span class="nav-badge"
-        style="background:var(--green-lt);color:var(--green);border-color:var(--green-bd)" id="nb-verify">—</span></div>
+        style="background:var(--green-lt);color:var(--green);border-color:var(--green-bd)" id="nb-verify">0</span></div>
     <div class="sb-section">Tracking</div>
     <div class="nav-item" data-page="tracking">
       <i class="ti ti-map-pin-bolt"></i> Live Tracking
       <span class="nav-badge" style="background:var(--green-lt);color:var(--green);border-color:var(--green-bd)"
-        id="nb-tracking">—</span>
+        id="nb-tracking">0</span>
     </div>
     <div class="nav-item" data-page="movements">
       <i class="ti ti-transfer"></i> Movement Log
-      <span class="nav-badge" id="nb-movements">—</span>
+      <span class="nav-badge" id="nb-movements">0</span>
     </div>
     <div class="nav-item" data-page="dispatch">
       <i class="ti ti-send"></i> Dispatch Asset
@@ -3275,7 +3330,7 @@
       <div class="nav-item sub" data-page="maintenance_scheduled"><i class="ti ti-calendar-event"></i> Scheduled</div>
       <div class="nav-item sub" data-page="maintenance_history"><i class="ti ti-history"></i> History</div>
       <div class="nav-item sub" data-page="maintenance_requests"><i class="ti ti-tool"></i> Service Requests <span
-          class="nav-badge red" id="nb-maint-requests">—</span></div>
+          class="nav-badge red" id="nb-maint-requests">0</span></div>
     </div>
     <div class="sb-section">Analysis</div>
     <div class="nav-group-header" onclick="toggleGroup('grp-analysis',this)">
@@ -3292,9 +3347,9 @@
     </div>
     <div class="sb-section">System</div>
     <div class="nav-item" data-page="Facilities"><i class="ti ti-building-hospital"></i> All Facilities <span
-        class="nav-badge" id="nb-Facilities">—</span></div>
+        class="nav-badge" id="nb-Facilities">0</span></div>
     <div class="nav-item" data-page="alerts"><i class="ti ti-alert-triangle"></i> Alerts <span class="nav-badge red"
-        id="nb-alerts">—</span></div>
+        id="nb-alerts">0</span></div>
     <div class="nav-item" data-page="settings"><i class="ti ti-settings"></i> Settings</div>
     <div class="sb-footer">
       <div class="sb-user" onclick="navigate('profile')">
@@ -3470,7 +3525,7 @@
             </div>
           </div>
           <div class="ph-actions">
-            <button class="btn btn-primary" onclick="openAddFacility()"><i class="ti ti-plus"></i> Add Facility</button>
+            <button class="btn btn-primary" onclick="openAddFacility()"><i class="ti ti-plus"></i><span> Add Facility</span></button>
             <button class="btn btn-ghost" onclick="exportFacilities()"><i class="ti ti-download"></i> Export</button>
           </div>
         </div>
@@ -4325,7 +4380,7 @@
           </div><button class="btn btn-primary" onclick="toast('Account settings saved.','success')"><i
               class="ti ti-device-floppy"></i> Save</button>
         </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px">
+       <div class="acct-settings-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:18px">
           <div class="panel">
             <div class="panel-hd">
               <div class="panel-title">Change Password</div>
@@ -5200,11 +5255,22 @@
     function toggleColumnMenu(sk, event) {
       event.stopPropagation();
       const wrapper = document.getElementById(`col-dd-${sk}`);
-      if (!wrapper) return;
+      const menu = document.getElementById(`col-menu-${sk}`);
+      if (!wrapper || !menu) return;
       const isOpen = wrapper.classList.contains("open");
       // close all other col dropdowns first
       document.querySelectorAll(".col-vis-dropdown.open").forEach(d => d.classList.remove("open"));
       if (!isOpen) {
+        // Position the dropdown relative to the clicked button since it's now `fixed`
+        const btn = event.currentTarget;
+        const rect = btn.getBoundingClientRect();
+        menu.style.top = `${rect.bottom + 6}px`;
+        const menuWidth = 200;
+        let left = rect.right - menuWidth;
+        if (left < 8) left = 8;
+        if (left + menuWidth > window.innerWidth - 8) left = window.innerWidth - menuWidth - 8;
+        menu.style.left = `${left}px`;
+
         wrapper.classList.add("open");
         renderColumnMenu(sk);
       }
@@ -5296,7 +5362,7 @@
                 </div>
               </td>`;
         case "serial":
-          return `<td><code style="font-size:11px;background:var(--bg);padding:2px 7px;border-radius:4px;font-family:var(--mono)">${item.serial || "—"}</code></td>`;
+  return `<td style="min-width:160px"><code style="font-size:11px;background:var(--bg);padding:2px 7px;border-radius:4px;font-family:var(--mono);white-space:nowrap">${item.serial || "—"}</code></td>`;
         case "qty":
           return `<td><span style="font-family:var(--mono);font-weight:700">${item.qty ?? item.quantity ?? "—"}</span>${item.unit ? ` <span style="font-size:11px;color:var(--muted)">${item.unit}</span>` : ""}</td>`;
         case "facility":
@@ -5514,12 +5580,12 @@
       const maint = kData.maintenance ?? allAssets.filter(a => a.status === "Maintenance").length;
       const fault = kData.inactive ?? allAssets.filter(a => a.status === "Inactive" || a.status === "In Storage").length;
 
-      document.getElementById("kpi-total").textContent = total;
-      document.getElementById("kpi-active").textContent = active;
-      document.getElementById("kpi-maint").textContent = maint;
-      document.getElementById("kpi-fault").textContent = fault;
-      document.getElementById("ps-total").textContent = total;
-      document.getElementById("ps-active").textContent = active;
+      document.getElementById("kpi-total").textContent = total || 0;
+      document.getElementById("kpi-active").textContent = active || 0;
+      document.getElementById("kpi-maint").textContent = maint || 0;
+      document.getElementById("kpi-fault").textContent = fault || 0;
+      document.getElementById("ps-total").textContent = total || 0;
+      document.getElementById("ps-active").textContent = active || 0;
 
       const recent = allAssets.slice().sort((a, b) => new Date(b.created_at || b.date || 0) - new Date(a.created_at || a.date || 0)).slice(0, 6);
       const actEl = document.getElementById("dash-activity");
@@ -5560,17 +5626,19 @@
     }
 
     async function updateNavBadges(total, active, maint, fault) {
-      document.getElementById("nb-assets").textContent = total ?? "—";
-      document.getElementById("nb-verify").textContent = "—";
+      document.getElementById("nb-assets").textContent = total ?? 0;
+      const verifyData = await AssetAPI.getAll("?verified=false&page_size=1");
+      const verifyCount = verifyData?.count ?? (Array.isArray(verifyData) ? verifyData.length : 0);
+      document.getElementById("nb-verify").textContent = verifyCount ?? 0;
       const alerts = await AlertAPI.getAll();
       const alertList = Array.isArray(alerts) ? alerts : (alerts?.results || []);
       const unread = alertList.filter(a => !a.resolved).length;
-      document.getElementById("nb-alerts").textContent = unread;
+      document.getElementById("nb-alerts").textContent = unread || 0;
       document.getElementById("ndot").style.display = unread > 0 ? "block" : "none";
-      document.getElementById("nBadge").textContent = unread;
+      document.getElementById("nBadge").textContent = unread || 0;
       const reqs = await MaintenanceAPI.getRequests();
       const reqList = Array.isArray(reqs) ? reqs : (reqs?.results || []);
-      document.getElementById("nb-maint-requests").textContent = reqList.length;
+      document.getElementById("nb-maint-requests").textContent = reqList.length || 0;
     }
 
     // ===================== INVENTORY PAGE =====================
@@ -5611,7 +5679,7 @@
       <div class="ph-actions">
         <button class="btn btn-ghost" onclick="exportInventory('${sk}')"><i class="ti ti-download"></i> Export</button>
         <button class="btn btn-ghost" onclick="importInventory('${sk}')"><i class="ti ti-file-import"></i> Import</button>
-        <button class="btn btn-primary" onclick="openAdd('${sk}')"><i class="ti ti-plus"></i> Add ${labels[sk].slice(0, -1)}</button>
+        <button class="btn btn-primary" onclick="openAdd('${sk}')"><i class="ti ti-plus"></i><span> Add ${labels[sk].slice(0, -1)}</span></button>
       </div>
     </div>
     <div class="panel">
@@ -6225,7 +6293,7 @@
           <tr>
             <td><div class="acell"><div class="acell-ico" style="background:var(--teal-lt)"><i class="ti ti-building-hospital" style="color:var(--teal)"></i></div><div><div class="acell-name">${s.name}</div><div class="acell-id">${s.id}</div></div></div></td>
             <td>${s.location || s.district || "—"}</td>
-            <td>${s.contact || s.contact_person || "—"}</td>
+            <td>${s.contact_person || s.contact || "—"}</td>
             <td style="font-family:var(--mono);font-size:12px">${s.phone || "—"}</td>
             <td><span class="badge b-teal">${s.item_count ?? "—"}</span></td>
             <td><div class="acts">
@@ -6242,7 +6310,8 @@
     async function viewFacility(id) {
       const s = await FacilityAPI.getOne(id);
       if (!s) { toast("Could not load Facility", "error"); return; }
-      const grid = [["Name", s.name], ["Location", s.location || "—"], ["Contact", s.contact || "—"], ["Phone", s.phone || "—"], ["Items", s.item_count ?? 0]]
+      const contactName = s.contact_person || s.contact || "—";
+      const grid = [["Name", s.name], ["Location", s.location || "—"], ["Contact Person", contactName], ["Phone", s.phone || "—"], ["Items", s.item_count ?? 0]]
         .map(([l, v]) => `<div class="vi full"><div class="vi-lbl">${l}</div><div class="vi-val">${v}</div></div>`).join("");
       document.getElementById("vmGrid").innerHTML = grid;
       document.getElementById("vmSub").textContent = s.name;
@@ -8397,15 +8466,45 @@
       const el = document.getElementById("page-maintenance_overview"); if (!el) return;
       el.innerHTML = `
     <div class="ph">
-      <div class="ph-left"><div class="ph-icon" style="background:var(--orange-lt)"><i class="ti ti-tool" style="color:var(--orange)"></i></div><div><div class="ph-title">Maintenance Overview</div><div class="ph-sub">Active jobs and service status</div></div></div>
-      <button class="btn btn-primary" onclick="openMaintModal('schedule')"><i class="ti ti-calendar-plus"></i> Schedule New</button>
+      <div class="ph-left"><div class="ph-icon" style="background:var(--orange-lt)"><i class="ti ti-tool" style="color:var(--orange)"></i></div><div><div class="ph-title">Maintenance Overview</div><div class="ph-sub" id="maint-ov-sub">Loading…</div></div></div>
+      <button class="btn btn-primary" onclick="openMaintModal('schedule')"><i class="ti ti-calendar-plus"></i><span> Schedule New</span></button>
+    </div>
+    <div class="kpi-row" id="maint-ov-kpis">
+      <div class="loading-row"><i class="ti ti-loader-2"></i></div>
     </div>
     <div class="panel"><div class="panel-hd"><div class="panel-title">Active Maintenance Jobs</div></div>
     <div class="tw" id="maint-overview-table"><div class="loading-row"><i class="ti ti-loader-2"></i></div></div></div>`;
 
-      const data = await MaintenanceAPI.getScheduled();
-      const rows = Array.isArray(data) ? data : (data?.results || []);
-      const active = rows.filter(r => r.status === "In Progress" || r.status === "Pending" || r.status === "Awaiting Parts");
+      // Fetch ALL maintenance sources together, the same way the dashboard
+      // pulls from multiple endpoints in one Promise.all
+      const [schedData, histData, reqData] = await Promise.all([
+        MaintenanceAPI.getScheduled(),
+        MaintenanceAPI.getHistory(),
+        MaintenanceAPI.getRequests(),
+      ]);
+
+      const scheduled = Array.isArray(schedData) ? schedData : (schedData?.results || []);
+      const history = Array.isArray(histData) ? histData : (histData?.results || []);
+      const requests = Array.isArray(reqData) ? reqData : (reqData?.results || []);
+
+      const active = scheduled.filter(r => r.status === "In Progress" || r.status === "Pending" || r.status === "Awaiting Parts");
+      const completedCount = history.length;
+      const openRequests = requests.length;
+      const scheduledCount = scheduled.length;
+
+      const subEl = document.getElementById("maint-ov-sub");
+      if (subEl) subEl.textContent = `${scheduledCount} scheduled · ${openRequests} request${openRequests !== 1 ? "s" : ""} · ${completedCount} completed`;
+
+      const kpiEl = document.getElementById("maint-ov-kpis");
+      if (kpiEl) {
+        kpiEl.innerHTML = [
+          { val: scheduledCount, lbl: "Scheduled", color: "var(--purple)", icon: "ti-calendar-event", bg: "var(--purple-lt)" },
+          { val: active.length, lbl: "Active Jobs", color: "var(--orange)", icon: "ti-tool", bg: "var(--orange-lt)" },
+          { val: openRequests, lbl: "Open Requests", color: "var(--red)", icon: "ti-alert-circle", bg: "var(--red-lt)" },
+          { val: completedCount, lbl: "Completed", color: "var(--green)", icon: "ti-circle-check", bg: "var(--green-lt)" },
+        ].map(k => `<div class="kpi"><div class="kpi-icon" style="background:${k.bg}"><i class="ti ${k.icon}" style="color:${k.color}"></i></div><div><div class="kpi-val" style="color:${k.color}">${k.val}</div><div class="kpi-lbl">${k.lbl}</div></div></div>`).join("");
+      }
+
       const wrap = document.getElementById("maint-overview-table");
       if (!active.length) { wrap.innerHTML = `<div class="empty-td"><i class="ti ti-mood-empty"></i>No active jobs</div>`; return; }
       wrap.innerHTML = `<table><thead><tr><th>Asset</th><th>Service</th><th>Priority</th><th>Date</th><th>Assigned</th><th>Status</th><th>Actions</th></tr></thead><tbody>
