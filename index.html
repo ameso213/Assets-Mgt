@@ -3285,37 +3285,6 @@
 
       #ss-data div[style*="display:flex"][style*="gap:10px"] .btn-ghost i {
         font-size: 13px;
-      }calc(100vw - 28px) !important;
-      }
-
-      .modal.sm {
-        width: calc(100vw - 28px) !important;
-      }
-
-      .mbody {
-        padding: 14px 16px;
-      }
-
-      .vg {
-        width: 100%;
-      }
-
-      .vi {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 3px;
-        padding: 8px 0;
-      }
-
-      .vi-lbl {
-        width: auto;
-        font-size: 10px;
-      }
-
-      .vi-val {
-        width: 100%;
-        font-size: 12px;
-        word-break: break-word;
       }
 
       .fgrid {
@@ -9420,9 +9389,61 @@
       await exportReport("inventory");
     }
 
-    function exportData(fmt) {
-      if (fmt === "csv") exportReport("inventory");
-      else toast(`${fmt} export coming soon`, "info");
+    async function exportData(fmt) {
+      if (fmt === "csv") {
+        exportReport("inventory");
+        return;
+      }
+
+      toast(`Preparing ${fmt.toUpperCase()} export…`, "info");
+      const data = await AssetAPI.getAll("?page_size=9999");
+      const rows = Array.isArray(data) ? data : (data?.results || []);
+      if (!rows.length) { toast("No data to export", "info"); return; }
+
+      if (fmt === "excel") {
+        const keys = Object.keys(rows[0]).filter(k => !["id"].includes(k));
+        const sheetData = rows.map(r => {
+          const obj = {};
+          keys.forEach(k => obj[k] = r[k]);
+          return obj;
+        });
+        const ws = XLSX.utils.json_to_sheet(sheetData);
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, "Inventory");
+        XLSX.writeFile(wb, `inventory_${new Date().toISOString().slice(0, 10)}.xlsx`);
+        toast("Excel file downloaded", "success");
+
+      } else if (fmt === "pdf") {
+        const keys = ["name", "engraving_no", "serial", "facility_name", "status", "condition", "date"];
+        const labels = ["Name", "Engraving", "Serial", "Facility", "Status", "Condition", "Date"];
+        const html = `<!DOCTYPE html><html><head><title>Inventory Report</title>
+        <style>
+          body { font-family: Arial, sans-serif; padding: 24px; color: #111; }
+          h2 { margin-bottom: 4px; }
+          .sub { color: #666; font-size: 12px; margin-bottom: 18px; }
+          table { width: 100%; border-collapse: collapse; font-size: 11px; }
+          th, td { border: 1px solid #ddd; padding: 6px 8px; text-align: left; }
+          th { background: #f4f4f4; font-weight: 700; }
+          @media print { button { display: none; } }
+        </style></head><body>
+        <h2>Inventory Report</h2>
+        <div class="sub">Generated ${new Date().toLocaleString()} · ${rows.length} records</div>
+        <table>
+          <thead><tr>${labels.map(l => `<th>${l}</th>`).join("")}</tr></thead>
+          <tbody>
+            ${rows.map(r => `<tr>${keys.map(k => `<td>${r[k] ?? r[k.replace("facility_name","Facility_name")] ?? "—"}</td>`).join("")}</tr>`).join("")}
+          </tbody>
+        </table>
+        <br><button onclick="window.print()" style="padding:10px 24px;background:#2563eb;color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:14px">Print / Save as PDF</button>
+        </body></html>`;
+
+        const blob = new Blob([html], { type: "text/html" });
+        const url = URL.createObjectURL(blob);
+        const win = window.open(url, "_blank");
+        if (!win) toast("Allow popups to export PDF", "error");
+        setTimeout(() => URL.revokeObjectURL(url), 10000);
+        toast("PDF report opened in new tab", "success");
+      }
     }
 
     // ===================== PROFILE TOPBAR =====================
