@@ -3234,11 +3234,16 @@
       }
 
       .modal {
-        width: calc(100vw - 28px);
+        width: calc(100vw - 28px) !important;
+        max-width: calc(100vw - 28px) !important;
       }
 
       .modal.sm {
-        width: calc(100vw - 28px);
+        width: calc(100vw - 28px) !important;
+      }
+
+      .mbody {
+        padding: 14px 16px;
       }
 
       .vg {
@@ -3254,10 +3259,13 @@
 
       .vi-lbl {
         width: auto;
+        font-size: 10px;
       }
 
       .vi-val {
         width: 100%;
+        font-size: 12px;
+        word-break: break-word;
       }
 
       .fgrid {
