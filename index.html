@@ -995,6 +995,12 @@
       width: 100%;
     }
 
+    .settings-section .tw {
+      border: 1px solid var(--border);
+      border-radius: var(--rlg);
+      overflow: hidden;
+    }
+
     table {
       width: 100%;
       border-collapse: collapse;
@@ -2259,6 +2265,21 @@
       opacity: .2;
     }
 
+
+    .cfg-tw{
+  border:1px solid var(--border);
+  border-radius:var(--rlg);
+  overflow:hidden;
+}
+.cfg-tw table{margin:0}
+.cfg-toolbar{
+  display:flex;
+  gap:10px;
+  align-items:center;
+  margin-bottom:14px;
+  flex-wrap:wrap;
+}
+.cfg-toolbar .sw{flex:1;min-width:180px}
     /* ── CATEGORY CARDS ── */
     .cat-grid {
       display: grid;
@@ -3984,7 +4005,7 @@
               <div style="display:flex;justify-content:flex-end;margin-bottom:14px">
                 <button class="btn btn-primary btn-sm" onclick="cfAdd()"><i class="ti ti-plus"></i> Add Field</button>
               </div>
-              <div class="tw">
+              <div class="tw cfg-tw">
                 <table class="cfg-table">
                   <thead>
                     <tr>
@@ -4216,7 +4237,7 @@
                 <button class="btn btn-primary btn-sm" onclick="compAdd()"><i class="ti ti-plus"></i> Add
                   Company</button>
               </div>
-              <div class="tw">
+              <div class="tw cfg-tw">
                 <table class="cfg-table">
                   <thead>
                     <tr>
@@ -4238,11 +4259,11 @@
               <h3>Depreciation</h3>
               <div class="desc">Configure depreciation methods and rates. Applied per asset category to compute current
                 book value.</div>
-              <div style="display:flex;justify-content:flex-end;margin-bottom:14px">
+             <div style="display:flex;justify-content:flex-end;margin-bottom:14px">
                 <button class="btn btn-primary btn-sm" onclick="deprAdd()"><i class="ti ti-plus"></i> Add
                   Method</button>
               </div>
-              <div class="tw">
+              <div class="tw" style="border:1px solid var(--border);border-radius:var(--rlg);overflow:hidden">
                 <table class="cfg-table">
                   <thead>
                     <tr>
@@ -4335,6 +4356,16 @@
                   <select class="fi" id="inv-dept">
                     <option value="">Select department</option>
                   </select>
+                </div>
+                <div class="fg">
+                  <label>Facility *</label>
+                  <select class="fi" id="inv-facility">
+                    <option value="">Select facility</option>
+                  </select>
+                </div>
+                <div class="fg full">
+                  <label>Location / District</label>
+                  <input type="text" class="fi" id="inv-location" placeholder="e.g. Gulu, Kampala" />
                 </div>
                 <div class="fg">
                   <label>Employee ID</label>
@@ -4657,11 +4688,10 @@
           </div>
           <div class="fg"><label>Model</label><input type="text" id="fmModel" placeholder="e.g. Latitude 5520" /></div>
           <div class="fg" id="fmSerialWrap"><label>Serial Number</label><input type="text" id="fmSerial"
-              placeholder="Auto-generated if blank" /></div>
+              placeholder="Enter serial number" /></div>
           <div class="fg">
-            <label>Engraving / Tag No. <span style="font-size:10px;color:var(--blue);font-weight:400;cursor:pointer"
-                onclick="document.getElementById('fmEngravingNo').value=generateTagNumber(document.getElementById('fmPageKey').value||'assets')">(regenerate)</span></label>
-            <input type="text" id="fmEngravingNo" placeholder="Auto-generated" />
+            <label>Engraving / Tag No.</label>
+            <input type="text" id="fmEngravingNo" placeholder="Enter tag number" />
           </div>
           <div class="fg" id="fmQtyWrap"><label>Quantity</label><input type="number" id="fmQty" min="1" value="1" />
           </div>
@@ -5127,9 +5157,15 @@
 
         <!-- Meta -->
         <div style="margin-bottom:14px;position:relative;z-index:1">
-          <div style="display:flex;align-items:flex-end;margin-bottom:7px;font-size:10.5pt">
-            <span style="font-weight:bold;white-space:nowrap;margin-right:5px">Name of Receiving Facility:</span>
-            <span id="rp-facility" style="flex:1;border-bottom:1px dotted #555;min-width:100px;padding-bottom:1px"></span>
+          <div style="display:flex;gap:24px;align-items:flex-end;margin-bottom:7px">
+            <div style="flex:1;display:flex;align-items:flex-end;font-size:10.5pt">
+              <span style="font-weight:bold;white-space:nowrap;margin-right:5px">Name of Receiving Facility:</span>
+              <span id="rp-facility" style="flex:1;border-bottom:1px dotted #555;min-width:100px;padding-bottom:1px"></span>
+            </div>
+            <div style="flex:1;display:flex;align-items:flex-end;font-size:10.5pt">
+              <span style="font-weight:bold;white-space:nowrap;margin-right:5px">Issuing Facility:</span>
+              <span id="rp-issuing-facility" style="flex:1;border-bottom:1px dotted #555;min-width:100px;padding-bottom:1px"></span>
+            </div>
           </div>
           <div style="display:flex;gap:24px;align-items:flex-end;margin-bottom:7px">
             <div style="flex:2;display:flex;align-items:flex-end;font-size:10.5pt">
@@ -5520,11 +5556,10 @@
       const wrapper = document.getElementById(`col-dd-${sk}`);
       const menu = document.getElementById(`col-menu-${sk}`);
       if (!wrapper || !menu) return;
-      const isOpen = wrapper.classList.contains("open");
-      // close all other col dropdowns first
+      const isOpen = menu.classList.contains("open");
       document.querySelectorAll(".col-vis-dropdown.open").forEach(d => d.classList.remove("open"));
+      document.querySelectorAll(".col-vis-panel.open").forEach(p => p.classList.remove("open"));
       if (!isOpen) {
-        // Position the dropdown relative to the clicked button since it's now `fixed`
         const btn = event.currentTarget;
         const rect = btn.getBoundingClientRect();
         menu.style.top = `${rect.bottom + 6}px`;
@@ -5535,12 +5570,16 @@
         menu.style.left = `${left}px`;
 
         wrapper.classList.add("open");
+        menu.classList.add("open");
         renderColumnMenu(sk);
       }
     }
-    function closeColumnMenu(sk) {
-      event.stopPropagation();
-      document.getElementById(`col-dd-${sk}`)?.classList.remove("open");
+    function closeColumnMenu(sk, event) {
+      if (event) event.stopPropagation();
+      const wrapper = document.getElementById(`col-dd-${sk}`);
+      const menu = document.getElementById(`col-menu-${sk}`);
+      wrapper?.classList.remove("open");
+      menu?.classList.remove("open");
     }
 
     function renderColumnMenu(sk) {
@@ -5579,6 +5618,153 @@
       renderColumnMenu(sk);
       drawInventoryTable(sk);
     }
+
+    function getTableVisibilityState(tableKey) {
+      const stored = localStorage.getItem(`tableCols-${tableKey}`);
+      if (!stored) return null;
+      try {
+        const parsed = JSON.parse(stored);
+        return Array.isArray(parsed) ? parsed : null;
+      } catch (e) { return null; }
+    }
+
+    function saveTableVisibilityState(tableKey, cols) {
+      localStorage.setItem(`tableCols-${tableKey}`, JSON.stringify(cols));
+    }
+
+    function applyTableColumnVisibility(tableKey, tableEl) {
+      if (!tableEl) return;
+      const headers = Array.from(tableEl.querySelectorAll("thead > tr > th"));
+      if (!headers.length) return;
+      const state = getTableVisibilityState(tableKey);
+      const visibleIndexes = state || headers.map((_, index) => index);
+      const visibleSet = new Set(visibleIndexes);
+
+      headers.forEach((th, index) => {
+        th.style.display = visibleSet.has(index) ? "" : "none";
+      });
+
+      tableEl.querySelectorAll("tbody > tr").forEach(row => {
+        Array.from(row.children).forEach((cell, index) => {
+          if (index < headers.length) cell.style.display = visibleSet.has(index) ? "" : "none";
+        });
+      });
+
+      tableEl.querySelectorAll("tfoot > tr > th, tfoot > tr > td").forEach((cell, index) => {
+        if (index < headers.length) cell.style.display = visibleSet.has(index) ? "" : "none";
+      });
+    }
+
+    function renderTableColumnMenu(tableKey) {
+      const menu = document.getElementById(`col-menu-${tableKey}`);
+      const tableEl = document.querySelector(`table[data-table-key="${tableKey}"]`);
+      if (!menu || !tableEl) return;
+      const headers = Array.from(tableEl.querySelectorAll("thead > tr > th"));
+      const state = getTableVisibilityState(tableKey);
+      const visibleIndexes = state || headers.map((_, index) => index);
+      const visibleSet = new Set(visibleIndexes);
+      const options = headers.map((th, index) => `
+        <div class="col-vis-item" onclick="event.stopPropagation()">
+          <input type="checkbox" id="table-col-${tableKey}-${index}" ${visibleSet.has(index) ? "checked" : ""}
+            onchange="event.stopPropagation(); toggleTableColumnVisibility('${tableKey}', ${index})"/>
+          <label for="table-col-${tableKey}-${index}" onclick="event.stopPropagation()">${(th.textContent || "Column").trim()}</label>
+        </div>`).join("");
+
+      menu.innerHTML = `
+        <button class="close-dropdown" onclick="event.stopPropagation(); closeTableColumnMenu('${tableKey}')"><i class="ti ti-x"></i></button>
+        <div style="padding:8px 4px 6px;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px">Columns</div>
+        <div style="display:flex;gap:6px;margin-bottom:8px" onclick="event.stopPropagation()">
+          <button class="btn btn-ghost btn-xs" onclick="event.stopPropagation(); setAllTableColumns('${tableKey}', true)">Show all</button>
+          <button class="btn btn-ghost btn-xs" onclick="event.stopPropagation(); setAllTableColumns('${tableKey}', false)">Hide all</button>
+        </div>
+        ${options}`;
+    }
+
+    function toggleTableColumnVisibility(tableKey, colIndex) {
+      const tableEl = document.querySelector(`table[data-table-key="${tableKey}"]`);
+      const headers = Array.from(tableEl?.querySelectorAll("thead > tr > th") || []);
+      if (!headers.length) return;
+      const state = getTableVisibilityState(tableKey);
+      const visibleIndexes = state || headers.map((_, index) => index);
+      const next = visibleIndexes.includes(colIndex)
+        ? visibleIndexes.filter(index => index !== colIndex)
+        : [...visibleIndexes, colIndex].sort((a, b) => a - b);
+      saveTableVisibilityState(tableKey, next);
+      applyTableColumnVisibility(tableKey, tableEl);
+      renderTableColumnMenu(tableKey);
+    }
+
+    function setAllTableColumns(tableKey, show) {
+      const tableEl = document.querySelector(`table[data-table-key="${tableKey}"]`);
+      const headers = Array.from(tableEl?.querySelectorAll("thead > tr > th") || []);
+      const next = show ? headers.map((_, index) => index) : [];
+      saveTableVisibilityState(tableKey, next);
+      applyTableColumnVisibility(tableKey, tableEl);
+      renderTableColumnMenu(tableKey);
+    }
+
+    function toggleTableColumnMenu(tableKey, event) {
+      event.stopPropagation();
+      const wrapper = document.getElementById(`col-dd-${tableKey}`);
+      const menu = document.getElementById(`col-menu-${tableKey}`);
+      if (!wrapper || !menu) return;
+      const isOpen = menu.classList.contains("open");
+      document.querySelectorAll(".col-vis-dropdown.open").forEach(drop => drop.classList.remove("open"));
+      document.querySelectorAll(".col-vis-panel.open").forEach(p => p.classList.remove("open"));
+      if (!isOpen) {
+        const btn = event.currentTarget;
+        const rect = btn.getBoundingClientRect();
+        menu.style.top = `${rect.bottom + 6}px`;
+        const menuWidth = 200;
+        let left = rect.right - menuWidth;
+        if (left < 8) left = 8;
+        if (left + menuWidth > window.innerWidth - 8) left = window.innerWidth - menuWidth - 8;
+        menu.style.left = `${left}px`;
+        wrapper.classList.add("open");
+        menu.classList.add("open");
+        renderTableColumnMenu(tableKey);
+      }
+    }
+
+    function closeTableColumnMenu(tableKey, event) {
+      if (event) event.stopPropagation();
+      const wrapper = document.getElementById(`col-dd-${tableKey}`);
+      const menu = document.getElementById(`col-menu-${tableKey}`);
+      wrapper?.classList.remove("open");
+      menu?.classList.remove("open");
+    }
+
+    function enhanceTableVisibilityControls(root = document) {
+      const wrappers = root.querySelectorAll(".tw");
+      wrappers.forEach((wrapper, index) => {
+        if (wrapper.querySelector(".col-vis-panel")) return;
+        if (wrapper.closest(".panel")?.querySelector(".fbar .col-vis-panel")) return;
+        const table = wrapper.querySelector("table");
+        if (!table) return;
+        const tableKey = table.getAttribute("data-table-key") || wrapper.getAttribute("data-table-key") || table.id || `table-${index}`;
+        table.setAttribute("data-table-key", tableKey);
+        wrapper.setAttribute("data-table-key", tableKey);
+        const panel = document.createElement("div");
+        panel.className = "col-vis-panel";
+        panel.id = `col-dd-${tableKey}`;
+        panel.innerHTML = `
+          <button class="col-vis-btn" onclick="toggleTableColumnMenu('${tableKey}', event)">
+            <i class="ti ti-columns"></i> Columns
+          </button>
+          <div class="col-vis-dropdown" id="col-menu-${tableKey}">
+            <button class="close-dropdown" onclick="event.stopPropagation(); closeTableColumnMenu('${tableKey}')"><i class="ti ti-x"></i></button>
+          </div>`;
+
+        const host = wrapper.closest(".panel")?.querySelector(".fbar");
+        if (host && host.classList.contains("fbar") && !host.querySelector(".col-vis-panel")) {
+          host.appendChild(panel);
+        } else {
+          wrapper.insertBefore(panel, wrapper.firstChild);
+        }
+        applyTableColumnVisibility(tableKey, table);
+      });
+    }
+
     function buildInventoryCell(sk, key, item) {
       const isA = sk === "assets";
       const isAc = sk === "accessories";
@@ -5818,6 +6004,7 @@
         analysis_reports: renderAnalysisReports,
       };
       if (handlers[page]) await handlers[page]();
+      enhanceTableVisibilityControls(document);
     }
 
     function setBreadcrumb(page) {
@@ -5844,14 +6031,21 @@
       document.getElementById("dash-activity").innerHTML = `<div class="loading-row"><i class="ti ti-loader-2"></i></div>`;
       document.getElementById("dash-Facility-bars").innerHTML = `<div class="loading-row"><i class="ti ti-loader-2"></i></div>`;
 
+      const scoped = isFacilityScoped() && CURRENT_USER_FACILITY_ID;
+      const assetQuery = scoped ? `?facility=${CURRENT_USER_FACILITY_ID}` : "";
+
       const [overview, Facilities, assets] = await Promise.all([
         DashboardAPI.getOverview(),
         FacilityAPI.getAll(),
-        AssetAPI.getAll(),
+        AssetAPI.getAll(assetQuery),
       ]);
 
-      const kData = overview || {};
-      const allAssets = (Array.isArray(assets) ? assets : assets?.results || []);
+      const kData = scoped ? {} : (overview || {}); // scoped users compute KPIs from the filtered list, not the global overview
+      let allAssets = (Array.isArray(assets) ? assets : assets?.results || []);
+      if (scoped) {
+        // Safety net in case the API ignores the ?facility= param
+        allAssets = allAssets.filter(a => String(a.facility || a.Facility || a.facility_id || a.Facility_id || "") === String(CURRENT_USER_FACILITY_ID));
+      }
       const total = kData.total ?? allAssets.length;
       const active = kData.active ?? allAssets.filter(a => a.status === "Active").length;
       const maint = kData.maintenance ?? allAssets.filter(a => a.status === "Maintenance").length;
@@ -5879,9 +6073,12 @@
       </div>`).join("");
       }
 
-      const FacilityList = Array.isArray(Facilities) ? Facilities : (Facilities?.results || []);
-      _FacilitiesCache = FacilityList;
+      _FacilitiesCache = Array.isArray(Facilities) ? Facilities : (Facilities?.results || []); // full list kept for forms/filters elsewhere
+      let FacilityList = scoped ? _FacilitiesCache.filter(s => String(s.id) === String(CURRENT_USER_FACILITY_ID)) : _FacilitiesCache;
       document.getElementById("nb-Facilities").textContent = FacilityList.length;
+
+      const subEl = document.querySelector("#page-dashboard .ph-sub");
+      if (subEl) subEl.textContent = scoped ? `Showing ${CURRENT_USER_FACILITY_NAME || "your facility"} only` : "Live asset infrastructure summary — all facilities";
       const stBarEl = document.getElementById("dash-Facility-bars");
       if (!FacilityList.length) {
         stBarEl.innerHTML = `<div style="color:var(--muted);font-size:12px">No Facilities available</div>`;
@@ -6075,24 +6272,37 @@
 
     // ===================== ASSET FORM =====================
     async function openAdd(sk) {
-      if (!_FacilitiesCache.length) {
-        const s = await FacilityAPI.getAll(); _FacilitiesCache = Array.isArray(s) ? s : (s?.results || []);
-      }
-      if (!_categoriesCache.length) {
-        const c = await CategoryAPI.getAll(); _categoriesCache = Array.isArray(c) ? c : (c?.results || []);
-      }
       document.getElementById("fmEditId").value = "";
       document.getElementById("fmPageKey").value = sk;
       document.getElementById("fmTitle").textContent = `Add ${sk.slice(0, -1).charAt(0).toUpperCase() + sk.slice(1, -1)}`;
       document.getElementById("fmSaveLbl").textContent = "Save";
       document.getElementById("fmDate").value = new Date().toISOString().slice(0, 10);
       _prepareFormFields(sk);
-      _fillFacilitieselect();
-      _fillCategorySelect();
       _clearFormInputs();
       updateFormPlaceholders();
-      await _fillLinkedItemSelect(sk, null);
       openOv("formOv");
+
+      try {
+        await Promise.all([
+          !_FacilitiesCache.length
+            ? FacilityAPI.getAll().then(s => {
+                _FacilitiesCache = Array.isArray(s) ? s : (s?.results || []);
+              })
+            : Promise.resolve(),
+          !_categoriesCache.length
+            ? CategoryAPI.getAll().then(c => {
+                _categoriesCache = Array.isArray(c) ? c : (c?.results || []);
+              })
+            : Promise.resolve(),
+        ]);
+
+        _fillFacilitieselect();
+        _fillCategorySelect();
+        await _fillLinkedItemSelect(sk, null);
+      } catch (err) {
+        console.error("Failed to load form options", err);
+        toast("Some form options could not be loaded", "warning");
+      }
     }
 
     async function openEditItem(sk, id) {
@@ -6148,7 +6358,7 @@
       const show = (id, vis) => { const e = document.getElementById(id); if (e) e.style.display = vis ? "" : "none"; };
       show("fmSerialWrap", isA || isAc);
       show("fmQtyWrap", !isA && !isAc);
-      show("fmUnitWrap", true);
+      show("fmUnitWrap", !isA);
       show("fmSpecsWrap", isA || isC || isAc || isCs);
       // Always show value, warranty, supplier
       const alwaysShow = ["fmValue", "fmWarranty", "fmSupplier"];
@@ -6207,13 +6417,10 @@
     }
 
     function _clearFormInputs() {
-      const sk = document.getElementById("fmPageKey").value || "assets";
-      ["fmName", "fmManufacturer", "fmModel", "fmSerial",
+      ["fmName", "fmManufacturer", "fmModel", "fmSerial", "fmEngravingNo",
         "fmSpecs", "fmNotes", "fmAssignedName", "fmAssignedTitle", "fmAssignedTel"].forEach(id => {
           const e = document.getElementById(id); if (e) e.value = "";
         });
-      document.getElementById("fmEngravingNo").value = generateTagNumber(sk);
-      document.getElementById("fmSerial").value = generateTagNumber(sk).replace(/^[^-]+/, "SN");
       document.getElementById("fmQty").value = 1;
       document.getElementById("fmUnit").value = "";
       document.getElementById("fmStatus").value = "Active";
@@ -6227,8 +6434,8 @@
         name: "e.g. Dell Latitude 5520",
         manufacturer: "e.g. Dell",
         model: "e.g. Latitude 5520",
-        serial: "Auto-generated if blank",
-        engraving: "e.g. MOH-KAB001",
+        serial: "Enter serial number",
+        engraving: "Enter tag number",
         specs: "e.g. 8GB RAM, 1TB SSD…",
         notes: "Additional remarks…",
         assignedName: "Person's full name",
@@ -6239,8 +6446,8 @@
         name: "e.g. A4 Paper Reams",
         manufacturer: "e.g. Double A",
         model: "e.g. 80gsm White",
-        serial: "Batch/Lot number",
-        engraving: "e.g. CONS-001",
+        serial: "Enter batch or lot number",
+        engraving: "Enter tag number",
         specs: "e.g. 500 sheets per ream",
         notes: "Storage or handling notes…",
         assignedName: "Department or person",
@@ -6251,8 +6458,8 @@
         name: "e.g. 8GB DDR4 RAM Module",
         manufacturer: "e.g. Kingston",
         model: "e.g. KVR32N22S8/8",
-        serial: "Component serial number",
-        engraving: "e.g. COMP-001",
+        serial: "Enter component serial number",
+        engraving: "Enter tag number",
         specs: "e.g. DDR4, 3200MHz, 1.35V",
         notes: "Installation or compatibility notes…",
         assignedName: "Technician or asset name",
@@ -6263,8 +6470,8 @@
         name: "e.g. USB-C Docking Station",
         manufacturer: "e.g. Anker",
         model: "e.g. A8396",
-        serial: "Accessory serial number",
-        engraving: "e.g. ACC-001",
+        serial: "Enter accessory serial number",
+        engraving: "Enter tag number",
         specs: "e.g. 7-in-1 hub, 100W PD",
         notes: "Pairing or usage notes…",
         assignedName: "Person's full name",
@@ -6513,6 +6720,16 @@
     </div>
     <div class="panel">
       <div class="panel-hd"><div class="panel-title">Unverified Assets</div></div>
+      <div class="fbar">
+        <div class="sw">
+          <i class="ti ti-search"></i>
+          <input type="text" id="verify-search" placeholder="Search by name, serial, facility…" oninput="filterVerifyTable()" spellcheck="false" autocomplete="off" />
+        </div>
+        <select id="verify-status" class="fsel" onchange="filterVerifyTable()">
+          <option value="">All Statuses</option>
+          <option>Active</option><option>Maintenance</option><option>Inactive</option><option>In Storage</option>
+        </select>
+      </div>
       <div id="verify-table-wrap"><div class="loading-row"><i class="ti ti-loader-2"></i></div></div>
     </div>`;
 
@@ -6524,10 +6741,10 @@
         wrap.innerHTML = `<div class="empty-td"><i class="ti ti-circle-check"></i>All assets verified!</div>`;
         return;
       }
-      wrap.innerHTML = `<div class="tw"><table>
+      wrap.innerHTML = `<div class="tw"><table data-table-key="verify-assets">
     <thead><tr><th>Name / Serial</th><th>Facility</th><th>Assigned To</th><th>Status</th><th>Action</th></tr></thead>
-    <tbody>${rows.map(item => `
-      <tr>
+    <tbody id="verify-tbody">${rows.map(item => `
+      <tr data-name="${(item.name || "").toLowerCase()}" data-serial="${(item.serial || "").toLowerCase()}" data-facility="${(item.Facility_name || "").toLowerCase()}" data-assigned="${(item.assigned_name || "").toLowerCase()}" data-status="${(item.status || "Active").toLowerCase()}">
         <td><div class="acell"><div class="acell-ico" style="background:var(--blue-lt)"><i class="ti ti-device-laptop" style="color:var(--blue)"></i></div><div><div class="acell-name">${item.name}</div><div class="acell-id">${item.serial || "—"}</div></div></div></td>
         <td>${item.Facility_name || "—"}</td>
         <td>${item.assigned_name || "—"}</td>
@@ -6536,6 +6753,16 @@
       </tr>`).join("")}
     </tbody>
   </table></div>`;
+    }
+
+    function filterVerifyTable() {
+      const q = (document.getElementById("verify-search")?.value || "").toLowerCase();
+      const status = (document.getElementById("verify-status")?.value || "").toLowerCase();
+      document.querySelectorAll("#verify-tbody tr").forEach(row => {
+        const matchQ = !q || row.dataset.name.includes(q) || row.dataset.serial.includes(q) || row.dataset.facility.includes(q) || row.dataset.assigned.includes(q);
+        const matchSt = !status || row.dataset.status === status;
+        row.style.display = matchQ && matchSt ? "" : "none";
+      });
     }
 
     async function markVerified(id, serial) {
@@ -6624,12 +6851,24 @@
         return;
       }
 
+      const locations = [...new Set(Facilities.map(s => (s.location || s.district || "").trim()).filter(Boolean))].sort();
+
       document.getElementById("Facilities-grid").innerHTML = `
     <div class="panel">
-      <div class="tw"><table>
+      <div class="fbar">
+        <div class="sw">
+          <i class="ti ti-search"></i>
+          <input type="text" id="facility-search" placeholder="Search by name, location, contact…" oninput="filterFacilitiesTable()" spellcheck="false" autocomplete="off" />
+        </div>
+        <select id="facility-location" class="fsel" onchange="filterFacilitiesTable()">
+          <option value="">All Locations</option>
+          ${locations.map(loc => `<option value="${loc}">${loc}</option>`).join("")}
+        </select>
+      </div>
+      <div class="tw"><table data-table-key="facilities-list">
         <thead><tr><th>Facility Name</th><th>Location</th><th>Contact Person</th><th>Phone</th><th>Items</th><th>Actions</th></tr></thead>
-        <tbody>${Facilities.map(s => `
-          <tr>
+        <tbody id="facility-tbody">${Facilities.map(s => `
+          <tr data-name="${(s.name || "").toLowerCase()}" data-location="${((s.location || s.district || "").toLowerCase())}" data-contact="${((s.contact_person || s.contact || "").toLowerCase())}" data-phone="${((s.phone || "").toLowerCase())}">
             <td><div class="acell"><div class="acell-ico" style="background:var(--teal-lt)"><i class="ti ti-building-hospital" style="color:var(--teal)"></i></div><div><div class="acell-name">${s.name}</div><div class="acell-id">${s.id}</div></div></div></td>
             <td>${s.location || s.district || "—"}</td>
             <td>${s.contact_person || s.contact || "—"}</td>
@@ -6644,6 +6883,16 @@
         </tbody>
       </table></div>
     </div>`;
+    }
+
+    function filterFacilitiesTable() {
+      const q = (document.getElementById("facility-search")?.value || "").toLowerCase();
+      const location = (document.getElementById("facility-location")?.value || "").toLowerCase();
+      document.querySelectorAll("#facility-tbody tr").forEach(row => {
+        const matchQ = !q || row.dataset.name.includes(q) || row.dataset.location.includes(q) || row.dataset.contact.includes(q) || row.dataset.phone.includes(q);
+        const matchLoc = !location || row.dataset.location.includes(location);
+        row.style.display = matchQ && matchLoc ? "" : "none";
+      });
     }
 
     async function viewFacility(id) {
@@ -6725,6 +6974,11 @@
 
   const assets = Array.isArray(assetsData) ? assetsData : (assetsData?.results || []);
   const Facilities = Array.isArray(FacilitiesData) ? FacilitiesData : (FacilitiesData?.results || []);
+  const realAssetCount = Array.isArray(assets) ? assets.length : 0;
+  const normalizeStatus = (value) => String(value || "").trim().toLowerCase();
+  const inUseCount = assets.filter(a => ["active", "in use", "in_use", "assigned", "available"].includes(normalizeStatus(a.status || a.status_label || a.state || a.Status))).length;
+  const maintenanceCount = assets.filter(a => ["maintenance", "under maintenance", "service", "repair"].includes(normalizeStatus(a.status || a.status_label || a.state || a.Status))).length;
+  const storageCount = assets.filter(a => ["in storage", "in_storage", "stored", "storage"].includes(normalizeStatus(a.status || a.status_label || a.state || a.Status))).length;
 
   // Normalize each asset so field names are consistent regardless of API casing
   assets.forEach(a => {
@@ -6740,7 +6994,7 @@
   });
 
       // Update nav badge
-      document.getElementById("nb-tracking").textContent = assets.length;
+      document.getElementById("nb-tracking").textContent = realAssetCount;
 
       el.innerHTML = `
     <div class="ph">
@@ -6750,7 +7004,7 @@
         </div>
         <div>
           <div class="ph-title">Live Asset Tracking</div>
-          <div class="ph-sub">${assets.length} assets tracked across ${Facilities.length} Facilities</div>
+          <div class="ph-sub">${realAssetCount} assets tracked across ${Facilities.length} Facilities</div>
         </div>
       </div>
       <div class="ph-actions">
@@ -6767,19 +7021,19 @@
     <div class="kpi-row">
       <div class="kpi">
         <div class="kpi-icon" style="background:var(--blue-lt)"><i class="ti ti-packages" style="color:var(--blue)"></i></div>
-        <div><div class="kpi-val" style="color:var(--blue)">${assets.length}</div><div class="kpi-lbl">Total Assets</div></div>
+        <div><div class="kpi-val" style="color:var(--blue)">${realAssetCount}</div><div class="kpi-lbl">Total Assets</div></div>
       </div>
       <div class="kpi">
         <div class="kpi-icon" style="background:var(--green-lt)"><i class="ti ti-circle-check" style="color:var(--green)"></i></div>
-        <div><div class="kpi-val" style="color:var(--green)">${assets.filter(a => a.status === "Active" || a.status === "In Use").length}</div><div class="kpi-lbl">In Use</div></div>
+        <div><div class="kpi-val" style="color:var(--green)">${inUseCount}</div><div class="kpi-lbl">In Use</div></div>
       </div>
       <div class="kpi">
         <div class="kpi-icon" style="background:var(--orange-lt)"><i class="ti ti-tool" style="color:var(--orange)"></i></div>
-        <div><div class="kpi-val" style="color:var(--orange)">${assets.filter(a => a.status === "Maintenance").length}</div><div class="kpi-lbl">Maintenance</div></div>
+        <div><div class="kpi-val" style="color:var(--orange)">${maintenanceCount}</div><div class="kpi-lbl">Maintenance</div></div>
       </div>
       <div class="kpi">
         <div class="kpi-icon" style="background:var(--purple-lt)"><i class="ti ti-archive" style="color:var(--purple)"></i></div>
-        <div><div class="kpi-val" style="color:var(--purple)">${assets.filter(a => a.status === "In Storage").length}</div><div class="kpi-lbl">In Storage</div></div>
+        <div><div class="kpi-val" style="color:var(--purple)">${storageCount}</div><div class="kpi-lbl">In Storage</div></div>
       </div>
     </div>
 
@@ -6810,7 +7064,7 @@
             </tr>
           </thead>
           <tbody id="track-tbody">
-            ${assets.length === 0
+            ${realAssetCount === 0
           ? `<tr><td colspan="7" class="empty-td"><i class="ti ti-database-off"></i>No assets found</td></tr>`
           : assets.map(a => {
             const Facility = Facilities.find(s =>
@@ -6939,6 +7193,10 @@
           <input type="text" id="mov-search" placeholder="Search by asset, Facility, person, reason…"
             oninput="filterMovementsTable()" spellcheck="false"/>
         </div>
+        <select id="mov-facility" class="fsel" onchange="filterMovementsTable()">
+          <option value="">All Facilities</option>
+          ${[...new Set(movements.flatMap(m => [m._from, m._to].filter(Boolean)))] .map(f => `<option value="${f}">${f}</option>`).join("")}
+        </select>
       </div>
       <div class="tw">
         <table>
@@ -6956,8 +7214,9 @@
               const fromN  = m._from || "—";
               const toN    = m._to   || "—";
               const byN    = m.transferred_by || m.transferredBy || m.authorised_by || m.by || "—";
+              const facilityKey = `${fromN}|${toN}`.toLowerCase();
               return `
-                <tr>
+                <tr data-facility="${facilityKey}" data-search="${(assetN + " " + fromN + " " + toN + " " + byN + " " + (m.reason || "")).toLowerCase()}">
                   <td>
                     <span class="badge b-info" style="font-family:var(--mono);font-size:10px">
                       REF-MOV-${String(m.id).padStart(4, "0")}
@@ -6998,8 +7257,11 @@
 
     function filterMovementsTable() {
       const q = (document.getElementById("mov-search")?.value || "").toLowerCase();
+      const facility = (document.getElementById("mov-facility")?.value || "").toLowerCase();
       document.querySelectorAll("#mov-tbody tr").forEach(row => {
-        row.style.display = !q || row.textContent.toLowerCase().includes(q) ? "" : "none";
+        const matchQ = !q || row.dataset.search.includes(q) || row.textContent.toLowerCase().includes(q);
+        const matchFacility = !facility || row.dataset.facility.includes(facility);
+        row.style.display = matchQ && matchFacility ? "" : "none";
       });
     }
 
@@ -7498,6 +7760,7 @@
       document.getElementById("rp-ref").textContent       = ref;
       document.getElementById("rp-date").textContent      = receiptTodayStr();
       document.getElementById("rp-facility").textContent  = data.facility  || "—";
+      document.getElementById("rp-issuing-facility").textContent = data.fromStore || "—";
       document.getElementById("rp-district").textContent  = data.district  || "—";
       document.getElementById("rp-ack").textContent       = cfg.ack;
       document.getElementById("rp-recv-name").textContent  = data.receiverName  || "—";
@@ -7578,7 +7841,8 @@
           para([bold("REPUBLIC OF UGANDA",18)], AlignmentType.CENTER, {after:30}),
           para([bold("MINISTRY OF HEALTH",22)], AlignmentType.CENTER, {after:60}),
           para([bold(cfg.title.toUpperCase(),20,{underline:{type:"single",color:"000000"},italics:true})], AlignmentType.CENTER, {after:160}),
-          linePara("Name of Receiving Facility:", data.facility),
+         linePara("Name of Receiving Facility:", data.facility),
+          linePara("Issuing Facility:", data.fromStore),
           linePara("District:", data.district),
           linePara("Date:", receiptTodayStr()),
           linePara("No:", ref),
@@ -7707,6 +7971,25 @@
       overrides[String(userId)] = role;
       localStorage.setItem("userRoles", JSON.stringify(overrides));
     }
+    // ── Facility overrides — client-side fallback until /api/profile/ persists facility+location itself ──
+    function getFacilityOverrides() {
+      try { return JSON.parse(localStorage.getItem("userFacilities") || "{}"); }
+      catch { return {}; }
+    }
+    function setFacilityOverride(userId, facilityId, facilityName, location) {
+      const overrides = getFacilityOverrides();
+      overrides[String(userId)] = { facilityId, facilityName, location };
+      localStorage.setItem("userFacilities", JSON.stringify(overrides));
+    }
+    function getFacilityForUser(u) {
+      const overrides = getFacilityOverrides();
+      const o = overrides[String(u.id)] || overrides[String(u.email)];
+      return {
+        facilityId: u.facility || u.Facility || u.facility_id || o?.facilityId || null,
+        facilityName: u.facility_name || u.Facility_name || o?.facilityName || "",
+        location: u.location || u.district || o?.location || "",
+      };
+    }
     function getRoleDisplay(u) {
       const overrides = getRoleOverrides();
       const Facilityd = overrides[String(u.id)];
@@ -7725,6 +8008,23 @@
       return map[role] || "b-info";
     }
 
+    function filterSettingsTable(table) {
+      if (!table) return;
+      const toolbar = table.closest(".tw")?.previousElementSibling;
+      const searchInput = toolbar?.querySelector('input[type="text"]');
+      const filterSelect = toolbar?.querySelector('select');
+      const q = (searchInput?.value || "").toLowerCase();
+      const filterValue = (filterSelect?.value || "").toLowerCase();
+      table.querySelectorAll("tbody > tr").forEach(row => {
+        const rowText = row.textContent.toLowerCase();
+        const matchSearch = !q || rowText.includes(q);
+        const matchFilter = !filterValue || rowText.includes(filterValue);
+        row.style.display = matchSearch && matchFilter ? "" : "none";
+      });
+    }
+
+   
+
     // ── Orchestrator: called by navigate() ──
     async function renderSettingsPage() {
       await Promise.all([
@@ -7734,6 +8034,7 @@
         renderSupplierSettings(),
         loadManufacturers(), loadDepartments(), loadLocations(), loadCompanies(), loadDepreciation(),
       ]);
+      enhanceSettingsTableControls(document);
     }
 
     // ── General / Notifications / Backup / Save ──
@@ -8004,6 +8305,16 @@
       CFG.customFields = await fetchListSafe(() => CustomFieldAPI.getAll(), "custom fields");
       renderCustomFields();
     }
+    function renderCustomFields() {
+      const b = document.getElementById("cf-body"); if (!b) return;
+      b.innerHTML = CFG.customFields.length ? CFG.customFields.map(f => `<tr>
+    <td style="font-weight:600">${f.name || "—"}</td>
+    <td>${f.field_type || f.type || "—"}</td>
+    <td>${f.applies_to || f.appliesTo || "—"}</td>
+    <td>${(f.required || f.is_required) ? '<span class="badge b-active"><i class="ti ti-check"></i> Yes</span>' : "—"}</td>
+    <td>${cfgActBtns(`cfEdit('cf','${f.id}')`, `cfDel('cf','${f.id}')`, `cfView('cf','${f.id}')`)}</td>
+  </tr>`).join("") : emptyRow(5, "No custom fields defined");
+    }
     function renderStatusLabels() {
       const b = document.getElementById("sl-body"); if (!b) return;
       b.innerHTML = CFG.statusLabels.length ? CFG.statusLabels.map(s => `<tr>
@@ -8176,10 +8487,27 @@
 
     async function openInviteModal() {
       inviteStep = 1;
-      ["inv-first", "inv-last", "inv-email", "inv-phone", "inv-empid", "inv-pwd", "inv-cpwd", "inv-note"].forEach(id => { const el = document.getElementById(id); if (el) el.value = ""; });
+      ["inv-first", "inv-last", "inv-email", "inv-phone", "inv-empid", "inv-pwd", "inv-cpwd", "inv-note", "inv-location"].forEach(id => { const el = document.getElementById(id); if (el) el.value = ""; });
       const roleEl = document.getElementById("inv-role"); if (roleEl) roleEl.value = "";
       const deptEl = document.getElementById("inv-dept");
       if (deptEl) deptEl.innerHTML = '<option value="">Select department</option>' + CFG.departments.map(d => `<option value="${d.name}">${d.name}</option>`).join("");
+
+      // Populate Facility dropdown from the live Facilities list, auto-fill Location on selection
+      if (!_FacilitiesCache.length) {
+        const s = await FacilityAPI.getAll();
+        _FacilitiesCache = Array.isArray(s) ? s : (s?.results || []);
+      }
+      const facEl = document.getElementById("inv-facility");
+      if (facEl) {
+        facEl.innerHTML = '<option value="">Select facility</option>' +
+          _FacilitiesCache.map(f => `<option value="${f.id}" data-location="${(f.location || f.district || "").replace(/"/g, "&quot;")}">${f.name}</option>`).join("");
+        facEl.onchange = function () {
+          const opt = this.options[this.selectedIndex];
+          const locEl = document.getElementById("inv-location");
+          if (locEl && opt) locEl.value = opt.dataset.location || "";
+        };
+      }
+
       const empIdEl = document.getElementById("inv-empid"); if (empIdEl) empIdEl.value = generateEmployeeId();
       // Default expiry = 7 days from today
       const expiresEl = document.getElementById("inv-expires");
@@ -8237,9 +8565,11 @@
         const first = document.getElementById("inv-first").value.trim();
         const email = document.getElementById("inv-email").value.trim();
         const role = document.getElementById("inv-role").value;
+        const facility = document.getElementById("inv-facility")?.value || "";
         if (!first) { toast("Please enter the first name.", "error"); return; }
         if (!email || !email.includes("@")) { toast("Please enter a valid email address.", "error"); return; }
         if (!role) { toast("Please select a role.", "error"); return; }
+        if (!UNSCOPED_ROLES.includes(role) && !facility) { toast("Please select a facility for this role.", "error"); return; }
         updateInviteStep(2);
       } else if (inviteStep === 2) {
         const first = document.getElementById("inv-first").value.trim();
@@ -8250,9 +8580,19 @@
         const empid = document.getElementById("inv-empid").value.trim();
         const invitedBy = document.getElementById("inv-invited-by")?.value.trim() || "";
         const expires = document.getElementById("inv-expires")?.value || "";
-        const res = await UserAPI.invite({ email, role, first_name: first, last_name: last, phone, employee_id: empid, invited_by: invitedBy, expires: expires });
+        const facilityEl = document.getElementById("inv-facility");
+        const facilityId = facilityEl?.value || "";
+        const facilityName = facilityEl?.options[facilityEl.selectedIndex]?.text || "";
+        const location = document.getElementById("inv-location")?.value.trim() || "";
+        const res = await UserAPI.invite({
+          email, role, first_name: first, last_name: last, phone,
+          employee_id: empid, invited_by: invitedBy, expires: expires,
+          facility: facilityId || null, Facility: facilityId || null,
+          facility_name: facilityName || "", location: location || "",
+        });
         if (!res) { toast("Failed to send invitation.", "error"); return; }
         setRoleOverride(res.id || res.user?.id || email, role);
+        setFacilityOverride(res.id || res.user?.id || email, facilityId, facilityName, location);
         updateInviteStep(3);
       }
     }
@@ -9163,7 +9503,7 @@
 
       const wrap = document.getElementById("maint-overview-table");
       if (!active.length) { wrap.innerHTML = `<div class="empty-td"><i class="ti ti-mood-empty"></i>No active jobs</div>`; return; }
-      wrap.innerHTML = `<table><thead><tr><th>Asset</th><th>Service</th><th>Priority</th><th>Date</th><th>Assigned</th><th>Status</th><th>Actions</th></tr></thead><tbody>
+      wrap.innerHTML = `<table data-table-key="maintenance-overview"><thead><tr><th>Asset</th><th>Service</th><th>Priority</th><th>Date</th><th>Assigned</th><th>Status</th><th>Actions</th></tr></thead><tbody>
     ${active.map(j => `<tr>
       <td style="font-weight:600">${j.asset || j.asset_name || "—"}</td>
       <td>${j.service || j.issue || "—"}</td>
@@ -9190,7 +9530,7 @@
       const rows = Array.isArray(data) ? data : (data?.results || []);
       const wrap = document.getElementById("sched-table");
       if (!rows.length) { wrap.innerHTML = `<div class="empty-td"><i class="ti ti-database-off"></i>No scheduled tasks</div>`; return; }
-      wrap.innerHTML = `<table><thead><tr><th>Asset</th><th>Service</th><th>Date</th><th>Assigned</th><th>Duration</th><th>Status</th><th>Priority</th><th>Actions</th></tr></thead><tbody>
+      wrap.innerHTML = `<table data-table-key="maintenance-scheduled"><thead><tr><th>Asset</th><th>Service</th><th>Date</th><th>Assigned</th><th>Duration</th><th>Status</th><th>Priority</th><th>Actions</th></tr></thead><tbody>
     ${rows.map(t => `<tr>
       <td style="font-weight:600">${t.asset || t.asset_name || "—"}</td>
       <td>${t.service || "—"}</td>
@@ -9218,7 +9558,7 @@
       const rows = Array.isArray(data) ? data : (data?.results || []);
       const wrap = document.getElementById("history-table");
       if (!rows.length) { wrap.innerHTML = `<div class="empty-td"><i class="ti ti-database-off"></i>No history records</div>`; return; }
-      wrap.innerHTML = `<table><thead><tr><th>Date</th><th>Asset</th><th>Service</th><th>Technician</th><th>Cost</th><th>Notes</th></tr></thead><tbody>
+      wrap.innerHTML = `<table data-table-key="maintenance-history"><thead><tr><th>Date</th><th>Asset</th><th>Service</th><th>Technician</th><th>Cost</th><th>Notes</th></tr></thead><tbody>
     ${rows.map(r => `<tr>
       <td style="font-family:var(--mono);font-size:11px">${r.date || "—"}</td>
       <td style="font-weight:600">${r.asset || "—"}</td>
@@ -9252,7 +9592,7 @@
       if (sub) sub.textContent = `${rows.length} open ticket${rows.length !== 1 ? "s" : ""}`;
       const wrap = document.getElementById("requests-table");
       if (!rows.length) { wrap.innerHTML = `<div class="empty-td"><i class="ti ti-database-off"></i>No open requests</div>`; return; }
-      wrap.innerHTML = `<table><thead><tr><th>ID</th><th>Asset</th><th>Reporter</th><th>Issue</th><th>Priority</th><th>Status</th><th>Reported</th><th>Actions</th></tr></thead><tbody>
+      wrap.innerHTML = `<table data-table-key="maintenance-requests"><thead><tr><th>ID</th><th>Asset</th><th>Reporter</th><th>Issue</th><th>Priority</th><th>Status</th><th>Reported</th><th>Actions</th></tr></thead><tbody>
     ${rows.map(r => `<tr>
       <td><span class="badge b-info" style="font-size:10px">${r.id}</span></td>
       <td style="font-weight:600">${r.asset || "—"}</td>
@@ -9431,7 +9771,7 @@
       const depTbl = document.getElementById("dep-table");
       if (depTbl) {
         if (!rows.length) { depTbl.innerHTML = `<div class="empty-td">No depreciation data</div>`; }
-        else depTbl.innerHTML = `<table><thead><tr><th>Category</th><th>Purchase Value</th><th>Current Value</th><th>Depreciation %</th><th>Method</th></tr></thead><tbody>
+        else depTbl.innerHTML = `<table data-table-key="analysis-depreciation"><thead><tr><th>Category</th><th>Purchase Value</th><th>Current Value</th><th>Depreciation %</th><th>Method</th></tr></thead><tbody>
       ${rows.map(r => `<tr>
         <td><strong>${r.category || "—"}</strong></td>
         <td>${r.purchase_value ? `UGX ${Number(r.purchase_value).toLocaleString()}` : "—"}</td>
@@ -9571,6 +9911,13 @@
     }
 
     // ===================== PROFILE TOPBAR =====================
+    // Who is logged in, and what facility (if any) scopes their dashboard
+    let CURRENT_USER_ROLE = "User";
+    let CURRENT_USER_FACILITY_ID = null;
+    let CURRENT_USER_FACILITY_NAME = "";
+    const UNSCOPED_ROLES = ["Administrator", "System Manager"];
+    function isFacilityScoped() { return !UNSCOPED_ROLES.includes(CURRENT_USER_ROLE); }
+
     async function loadUserProfile() {
       const p = await UserAPI.getProfile();
       if (!p) return;
@@ -9578,6 +9925,11 @@
       const av = initials(name);
       const role = p.role || "User";
       const email = p.email || "";
+
+      const fac = getFacilityForUser({ ...p, id: p.id || email });
+      CURRENT_USER_ROLE = role;
+      CURRENT_USER_FACILITY_ID = fac.facilityId;
+      CURRENT_USER_FACILITY_NAME = fac.facilityName;
 
       document.getElementById("sb-av").textContent = av;
       document.getElementById("sb-name").textContent = name;
